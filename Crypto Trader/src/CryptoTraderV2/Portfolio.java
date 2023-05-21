@@ -1,59 +1,37 @@
 package CryptoTraderV2;
-
 import java.util.Map;
 import java.util.TreeMap;
-import CryptoTraderV2.Currency;
+
 import static CryptoTraderV2.Currency.isSameDenominationStatic;
+/*
+Portfolio
+    - Dollars
+        ~ Add ✔
+        ~ Subtract ✔
+        ~ Get ✔
+        ~ Set ✔
+        ~ hasEnough ✔
+    - currencyShares
+        ~ Add Asset ✔
+        ~ Increase Shares ✔
+        ~ Decrease Shares
+        ~ Get Shares Amount ✔
+        ~ Has Enough Shares ✔
+        ~ Contains Currency ✔
+    - Utilities
+        ~ Dollars to Shares ✔
+        ~ Shares to Dollars ✔
+ */
+
 public class Portfolio {
-    Currency currency;
     double dollars;
     TreeMap<Currency, Double> currencyShares;
-    TreeMap<Double, TreeMap<Currency, Double>> dollarPortfolio;
+
     public Portfolio(double dollars) {
         this.dollars = dollars;
         this.currencyShares = new TreeMap<>();
-        this.dollarPortfolio = new TreeMap<>();
     }
-    public void addAsset(Currency currency, double shares) {
-        this.currencyShares.put(currency, shares);
-    }
-
-    public void increaseAsset(Currency currency, double amount) {
-        if (this.containsCurrency(currency)) {
-            for (Map.Entry<Currency, Double> portfolioEntry : this.currencyShares.entrySet()) {
-                if (isSameDenominationStatic(currency, portfolioEntry.getKey())) {
-                    this.currencyShares.replace(currency, portfolioEntry.getValue(), portfolioEntry.getValue() + amount);
-                }
-            }
-        }
-    }
-
-    public void decreaseAsset(Currency currency, double amount) {
-        for (Map.Entry<Currency, Double> portfolioEntry : this.currencyShares.entrySet()) {
-            if (isSameDenominationStatic(currency, portfolioEntry.getKey())) {
-                this.currencyShares.replace(currency, portfolioEntry.getValue(),portfolioEntry.getValue() + amount);
-            }
-        }
-    }
-
-    public double dollarsToShares(Currency currency, double dollars) {
-        return dollars * currency.getValue();
-    }
-    public double sharesToDollars(Currency currency, double shares) {
-        return shares * currency.getValue();
-    }
-    public boolean containsCurrency(Currency currency) {
-        for (Map.Entry<Currency, Double> portfolioEntry : this.currencyShares.entrySet()) {
-            if (isSameDenominationStatic(currency, portfolioEntry.getKey())){
-                return true;
-            }
-        }
-        System.out.println("Your portfolio does not contain " + currency.getName() + ".");
-        return false;
-    }
-    public double getSharesFromCurrency(Currency currency) {
-        return this.currencyShares.get(currency);
-    }
+    //==========================-Dollar-Methods-==============================
     public double getDollars() {
         return this.dollars;
     }
@@ -73,6 +51,52 @@ public class Portfolio {
     public boolean hasEnoughDollars(double amount) {
         return amount <= this.dollars;
     }
+    //=====================-Currency-Shares-Methods-==========================
+    public void addAsset(Currency currency, double shares) {
+        this.currencyShares.put(currency, shares);
+    }
+
+    public void increaseShares(Currency currency, double amount) {
+        if (this.containsCurrency(currency)) {
+            for (Map.Entry<Currency, Double> portfolioEntry : this.currencyShares.entrySet()) {
+                if (isSameDenominationStatic(currency, portfolioEntry.getKey())) {
+                    this.currencyShares.replace(currency, portfolioEntry.getValue(), portfolioEntry.getValue() + amount);
+                }
+            }
+        } else {
+            System.out.println("You do not have any " + currency.getName() + " to deposit into.");
+        }
+    }
+
+    public void decreaseDecrease(Currency currency, double amount) {
+        if (this.containsCurrency(currency)) {
+            for (Map.Entry<Currency, Double> portfolioEntry : this.currencyShares.entrySet()) {
+                if (isSameDenominationStatic(currency, portfolioEntry.getKey())) {
+
+                    this.currencyShares.replace(currency, portfolioEntry.getValue(), portfolioEntry.getValue() + amount);
+                }
+            }
+        } else {
+            System.out.println("You do not have any " + currency.getName() + " withdraw from.");
+        }
+    }
+    public boolean containsCurrency(Currency currency) {
+        for (Map.Entry<Currency, Double> portfolioEntry : this.currencyShares.entrySet()) {
+            if (isSameDenominationStatic(currency, portfolioEntry.getKey())) {
+                return true;
+            }
+        }
+        System.out.println("Your portfolio does not contain " + currency.getName() + ".");
+        return false;
+    }
+    public double getSharesFromCurrency(Currency currency) {
+        if (this.containsCurrency(currency)) {
+            return this.currencyShares.get(currency);
+        } else {
+            System.out.println("Your portfolio does not contain " + currency.getName() + ". Returning 0.");
+            return 0;
+        }
+    }
     public boolean hasEnoughShares(Currency currency, double amount) {
         if (this.containsCurrency(currency)) {
             if (this.currencyShares.get(currency) - amount >= 0) {
@@ -81,9 +105,22 @@ public class Portfolio {
                 return false;
             }
         } else {
-            System.out.println("You do not have enough shares to withdraw " + amount + " shares.");
+            System.out.println("You do not have any shares of " + currency.getName() + ".");
             return false;
         }
     }
+
+    //==========================-Utility-Methods-=============================
+    public double dollarsToShares(Currency currency, double dollars) {
+        return dollars * currency.getValue();
+    }
+    public double sharesToDollars(Currency currency, double shares) {
+        return shares * currency.getValue();
+    }
+
+
+
+
+
 
 }

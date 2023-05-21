@@ -13,10 +13,12 @@ public class CryptoTraderDatabase {
     Connection connection;
     Currency shib;
     Currency btc;
-    public CryptoTraderDatabase() throws IOException {
+    Currency currency;
+    public CryptoTraderDatabase(Currency currency) throws IOException {
         // Test Currency for now
-        this.shib = new Currency("Shiba-Inu", "SHIB", "https://api.coinbase.com/v2/prices/SHIB-USD/spot");
-        this.btc = new Currency("Bitcoin", "BTC", "https://api.coinbase.com/v2/prices/BTC-USD/spot");
+        this.currency = currency;
+//        this.shib = new Currency("Shiba-Inu", "SHIB", "https://api.coinbase.com/v2/prices/SHIB-USD/spot");
+//        this.btc = new Currency("Bitcoin", "BTC", "https://api.coinbase.com/v2/prices/BTC-USD/spot");
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         } catch (ClassNotFoundException e) {
@@ -44,70 +46,73 @@ public class CryptoTraderDatabase {
         }
     }
 
-    public Currency getSHIB() {
-        return this.shib;
-    }
-    public Currency getBTC() {
-        return this.btc;
+//    public Currency getSHIB() {
+//        return this.shib;
+//    }
+//    public Currency getBTC() {
+//        return this.btc;
+//    }
+    public Currency getCurrency() {
+        return this.currency;
     }
     public Connection getConnection() {
         return this.connection;
     }
+    public void commandQuery(String command) {
+        try {
+            PreparedStatement statement = this.getConnection().prepareStatement(command);
+            try {
+                statement.execute();
+            } finally {
+                statement.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+//    public void SHIBMethod() {
+//        double shibValue = this.getSHIB().getUpdatedValue();
+//        String query1 = "DECLARE @shib_value DECIMAL(14, 8); SET @shib_value = " + shibValue + "; UPDATE CurrencyValue SET exchange_rate = @shib_value WHERE currency_code = 'SHIB';";
+//        query1 += "UPDATE CurrencyValue SET time_updated = SWITCHOFFSET(GETDATE(), '-05:00')  WHERE currency_code = 'SHIB';";
+//        this.commandQuery(query1);
+//
+//        String shibValueFormat = this.getSHIB().getFormattedValue().trim();
+//        String query2 = "DECLARE @shib_value_format VARCHAR(255); SET @shib_value_format = " + "'" + shibValueFormat + "'" + "; UPDATE CurrencyValue SET exchange_rate_formatted = @shib_value_format WHERE currency_code = 'SHIB';";
+//        this.commandQuery(query2);
+//        String query5 = "INSERT INTO CurrencyValueHistory (time_event, currency_code, currency_name, exchange_rate, exchange_rate_formatted)";
+//        query5 += "VALUES (SWITCHOFFSET(GETDATE(), '-05:00'), 'SHIB', 'Shiba-Inu', " + shibValue + ", " + "'" + shibValueFormat + "'" + ")";
+//        this.commandQuery(query5);
+//    }
+    public void updateCurrency() {
+        double exchangeRate = this.getCurrency().getUpdatedValue();
+        String query3 = "DECLARE @exchange_rate_value DECIMAL(14, 8); SET @exchange_rate_value = " + exchangeRate + " UPDATE CurrencyValue SET exchange_rate = @exchange_rate_value WHERE currency_code = '" + this.getCurrency().getCurrencyCode() + "';";
+        query3 += "UPDATE CurrencyValue SET time_updated = SWITCHOFFSET(GETDATE(), '-05:00') WHERE currency_code = '" + this.getCurrency().getCurrencyCode() + "';";
+        this.commandQuery(query3);
 
+
+        String formattedExchangeRate = this.getCurrency().getFormattedValue().trim();
+        String query4 = "DECLARE @exchange_rate_value_formatted VARCHAR(255); SET @exchange_rate_value_formatted = " + "'" + formattedExchangeRate + "'" + "; UPDATE CurrencyValue SET exchange_rate_formatted = @exchange_rate_value_formatted WHERE currency_code = '" + this.getCurrency().getCurrencyCode() + "';";
+        this.commandQuery(query4);
+
+
+
+        String query6 = "INSERT INTO CurrencyValueHistory (time_event, currency_code, currency_name, exchange_rate, exchange_rate_formatted)";
+        query6 += "VALUES (SWITCHOFFSET(GETDATE(), '-05:00'), '" + this.getCurrency().getCurrencyCode() + "', '" + this.getCurrency().getName()+ "', " + exchangeRate + ", " + "'" + formattedExchangeRate + "'" + ")";
+        this.commandQuery(query6);
+    }
+    public void updateCurrencyInterval() {
+        double exchangeRate = this.getCurrency().getUpdatedValue();
+
+        String formattedExchangeRate = this.getCurrency().getFormattedValue().trim();
+
+        String query6 = "INSERT INTO CurrencyValueHistoryInterval (time_event, currency_code, currency_name, exchange_rate, exchange_rate_formatted)";
+        query6 += "VALUES (SWITCHOFFSET(GETDATE(), '-05:00'), '" + this.getCurrency().getCurrencyCode() + "', '" + this.getCurrency().getName()+ "', " + exchangeRate + ", " + "'" + formattedExchangeRate + "'" + ")";
+        this.commandQuery(query6);
+    }
     public static void main(String[] args) throws IOException {
-        CryptoTraderDatabase cryptoTraderDatabase = new CryptoTraderDatabase();
-
-        double shibValue = cryptoTraderDatabase.getSHIB().getUpdatedValue();
-        String query1 = "DECLARE @shib_value DECIMAL(14, 8); SET @shib_value = " + shibValue + "; UPDATE CurrencyValues SET exchange_rate = @shib_value WHERE currency_code = 'SHIB'";
-        try {
-            PreparedStatement statement = cryptoTraderDatabase.getConnection().prepareStatement(query1);
-            try {
-                statement.execute();
-            } finally {
-                statement.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        String shibValueFormat = cryptoTraderDatabase.getSHIB().getFormattedValue().trim();
-        String query2 = "DECLARE @shib_value_format VARCHAR(255); SET @shib_value_format = " + "'" + shibValueFormat + "'" + "; UPDATE CurrencyValues SET exchange_rate_formatted = @shib_value_format WHERE currency_code = 'SHIB'";
-        try {
-            PreparedStatement statement = cryptoTraderDatabase.getConnection().prepareStatement(query2);
-            try {
-                statement.execute();
-            } finally {
-                statement.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        double btcValue = cryptoTraderDatabase.getBTC().getUpdatedValue();
-        String query3 = "DECLARE @btc_value DECIMAL(14, 8); SET @btc_value = " + btcValue + " UPDATE CurrencyValues SET exchange_rate = @btc_value WHERE currency_code = 'BTC'";
-        try {
-            PreparedStatement statement = cryptoTraderDatabase.getConnection().prepareStatement(query3);
-            try {
-                statement.execute();
-            } finally {
-                statement.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
 
-        String btcValueFormat = cryptoTraderDatabase.getBTC().getFormattedValue().trim();
-        String query4 = "DECLARE @btc_value_format VARCHAR(255); SET @btc_value_format = " + "'" + btcValueFormat + "'" + "; UPDATE CurrencyValues SET exchange_rate_formatted = @btc_value_format WHERE currency_code = 'BTC'";
-        try {
-            PreparedStatement statement = cryptoTraderDatabase.getConnection().prepareStatement(query4);
-            try {
-                statement.execute();
-            } finally {
-                statement.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
 
     }
 }
