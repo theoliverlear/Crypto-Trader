@@ -23,7 +23,7 @@ public class CurrencyThread implements Runnable {
             if (previousValue != this.getCurrency().getUpdatedValue()) {
                 System.out.println("Updating...");
                 cryptoTraderDatabase.updateCurrency();
-                previousValue = this.getCurrency().getUpdatedValue();
+                previousValue = this.getCurrency().getValue();
             }
         } while (true);
     }

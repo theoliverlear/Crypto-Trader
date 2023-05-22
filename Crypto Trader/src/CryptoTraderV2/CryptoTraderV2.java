@@ -59,6 +59,10 @@ public class CryptoTraderV2 {
         Currency litecoin = new Currency("Litecoin", "LTC", "https://api.coinbase.com/v2/prices/LTC-USD/spot");
         Currency cardano = new Currency("Cardano", "ADA", "https://api.coinbase.com/v2/prices/ADA-USD/spot");
         Currency solana = new Currency("Solana", "SOL", "https://api.coinbase.com/v2/prices/SOL-USD/spot");
+        Currency polygon = new Currency("Polygon", "MATIC", "https://api.coinbase.com/v2/prices/MATIC-USD/spot");
+        Currency chainlink = new Currency("Chainlink", "LINK", "https://api.coinbase.com/v2/prices/LINK-USD/spot");
+        Currency stellarLumens = new Currency("Stellar Lumens", "XLM", "https://api.coinbase.com/v2/prices/XLM-USD/spot");
+        Currency polkadot = new Currency("Polkadot", "DOT", "https://api.coinbase.com/v2/prices/DOT-USD/spot");
 
         CurrencyThread bitcoinThread = new CurrencyThread(bitcoin);
         CurrencyThread shibaThread = new CurrencyThread(shiba);
@@ -67,6 +71,10 @@ public class CryptoTraderV2 {
         CurrencyThread litecoinThread = new CurrencyThread(litecoin);
         CurrencyThread cardanoThread = new CurrencyThread(cardano);
         CurrencyThread solanaThread = new CurrencyThread(solana);
+        CurrencyThread polygonThread = new CurrencyThread(polygon);
+        CurrencyThread chainlinkThread = new CurrencyThread(chainlink);
+        CurrencyThread stellarLumensThread = new CurrencyThread(stellarLumens);
+        CurrencyThread polkadotThread = new CurrencyThread(polkadot);
 
         CurrencyIntervalThread bitcoinIntervalThread = new CurrencyIntervalThread(bitcoin);
         CurrencyIntervalThread shibaIntervalThread = new CurrencyIntervalThread(shiba);
@@ -75,6 +83,10 @@ public class CryptoTraderV2 {
         CurrencyIntervalThread litecoinIntervalThread = new CurrencyIntervalThread(litecoin);
         CurrencyIntervalThread cardanoIntervalThread = new CurrencyIntervalThread(cardano);
         CurrencyIntervalThread solanaIntervalThread = new CurrencyIntervalThread(solana);
+        CurrencyIntervalThread polygonIntervalThread = new CurrencyIntervalThread(polygon);
+        CurrencyIntervalThread chainlinkIntervalThread = new CurrencyIntervalThread(chainlink);
+        CurrencyIntervalThread stellarLumensIntervalThread = new CurrencyIntervalThread(stellarLumens);
+        CurrencyIntervalThread polkadotIntervalThread = new CurrencyIntervalThread(polkadot);
 
         Thread BTCThread = new Thread(bitcoinThread);
         Thread SHIBThread = new Thread(shibaThread);
@@ -83,6 +95,10 @@ public class CryptoTraderV2 {
         Thread LTCThread = new Thread(litecoinThread);
         Thread ADAThread = new Thread(cardanoThread);
         Thread SOLThread = new Thread(solanaThread);
+        Thread POLYThread = new Thread(polygonThread);
+        Thread LINKThread = new Thread(chainlinkThread);
+        Thread XLMThread = new Thread(stellarLumensThread);
+        Thread DOTThread = new Thread(polkadotThread);
 
         Thread BTCIntervalThread = new Thread(bitcoinIntervalThread);
         Thread SHIBIntervalThread = new Thread(shibaIntervalThread);
@@ -91,6 +107,10 @@ public class CryptoTraderV2 {
         Thread LTCIntervalThread = new Thread(litecoinIntervalThread);
         Thread ADAIntervalThread = new Thread(cardanoIntervalThread);
         Thread SOLIntervalThread = new Thread(solanaIntervalThread);
+        Thread POLYIntervalThread = new Thread(polygonIntervalThread);
+        Thread LINKIntervalThread = new Thread(chainlinkIntervalThread);
+        Thread XLMIntervalThread = new Thread(stellarLumensIntervalThread);
+        Thread DOTIntervalThread = new Thread(polkadotIntervalThread);
 
         BTCThread.start();
         SHIBThread.start();
@@ -99,6 +119,10 @@ public class CryptoTraderV2 {
         LTCThread.start();
         ADAThread.start();
         SOLThread.start();
+        POLYThread.start();
+        LINKThread.start();
+        XLMThread.start();
+        DOTThread.start();
 
         BTCIntervalThread.start();
         SHIBIntervalThread.start();
@@ -107,5 +131,9 @@ public class CryptoTraderV2 {
         LTCIntervalThread.start();
         ADAIntervalThread.start();
         SOLIntervalThread.start();
+        POLYIntervalThread.start();
+        LINKIntervalThread.start();
+        XLMIntervalThread.start();
+        DOTIntervalThread.start();
     }
 }
