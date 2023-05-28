@@ -1,5 +1,7 @@
 package CryptoTraderV2;
 
+import java.io.IOException;
+
 public class PortfolioAssetThread implements Runnable {
     PortfolioAsset portfolioAsset;
     public PortfolioAssetThread(PortfolioAsset portfolioAsset) {
@@ -11,7 +13,11 @@ public class PortfolioAssetThread implements Runnable {
     @Override
     public void run() {
         do {
-            this.portfolioAsset.poll();
+            try {
+                this.portfolioAsset.poll();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } while (true);
     }
 }

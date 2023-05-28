@@ -19,7 +19,11 @@ public class CurrencyIntervalThread implements Runnable {
             throw new RuntimeException(e);
         }
         do {
-            cryptoTraderDatabase.updateCurrencyInterval();
+            try {
+                cryptoTraderDatabase.updateCurrencyInterval();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             try {
                 Thread.currentThread().sleep(1000);
             } catch (InterruptedException e) {

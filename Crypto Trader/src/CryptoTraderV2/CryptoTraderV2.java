@@ -1,6 +1,9 @@
 package CryptoTraderV2;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Calendar;
 
 /*
@@ -58,7 +61,7 @@ public class CryptoTraderV2 {
     public CryptoTraderV2() {
 
     }
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException, SQLException {
         Currency bitcoin = new Currency("Bitcoin", "BTC", "https://api.coinbase.com/v2/prices/BTC-USD/spot");
         Currency shiba = new Currency("Shiba Inu", "SHIB", "https://api.coinbase.com/v2/prices/SHIB-USD/spot");
         Currency ethereum = new Currency("Ethereum", "ETH", "https://api.coinbase.com/v2/prices/ETH-USD/spot");
@@ -71,19 +74,29 @@ public class CryptoTraderV2 {
         Currency stellarLumens = new Currency("Stellar Lumens", "XLM", "https://api.coinbase.com/v2/prices/XLM-USD/spot");
         Currency polkadot = new Currency("Polkadot", "DOT", "https://api.coinbase.com/v2/prices/DOT-USD/spot");
 
+        CryptoTraderDatabase bitcoinDatabase = new CryptoTraderDatabase(bitcoin);
+        CryptoTraderDatabase shibaDatabase = new CryptoTraderDatabase(shiba);
+        CryptoTraderDatabase ethereumDatabase = new CryptoTraderDatabase(ethereum);
+        CryptoTraderDatabase dogeDatabase = new CryptoTraderDatabase(doge);
+        CryptoTraderDatabase litecoinDatabase = new CryptoTraderDatabase(litecoin);
+        CryptoTraderDatabase cardanoDatabase = new CryptoTraderDatabase(cardano);
+        CryptoTraderDatabase solanaDatabase = new CryptoTraderDatabase(solana);
+        CryptoTraderDatabase polygonDatabase = new CryptoTraderDatabase(polygon);
+        CryptoTraderDatabase chainlinkDatabase = new CryptoTraderDatabase(chainlink);
+        CryptoTraderDatabase stellarLumensDatabase = new CryptoTraderDatabase(stellarLumens);
+        CryptoTraderDatabase polkadotDatabase = new CryptoTraderDatabase(polkadot);
 
-        PortfolioAsset bitcoinAsset = new PortfolioAsset(bitcoin, bitcoin.getValue(), 1, 0);
-        PortfolioAsset shibaAsset = new PortfolioAsset(shiba, shiba.getValue(), 1, 0);
-        PortfolioAsset ethereumAsset = new PortfolioAsset(ethereum, ethereum.getValue(), 1, 0);
-        PortfolioAsset dogeAsset = new PortfolioAsset(doge, doge.getValue(), 1, 0);
-        PortfolioAsset litecoinAsset = new PortfolioAsset(litecoin, litecoin.getValue(), 1, 0);
-        PortfolioAsset cardanoAsset = new PortfolioAsset(cardano, cardano.getValue(), 1, 0);
-        PortfolioAsset solanaAsset = new PortfolioAsset(solana, solana.getValue(), 1, 0);
-        PortfolioAsset polygonAsset = new PortfolioAsset(polygon, polygon.getValue(), 1, 0);
-        PortfolioAsset chainlinkAsset = new PortfolioAsset(chainlink, chainlink.getValue(), 1, 0);
-        PortfolioAsset stellarLumensAsset = new PortfolioAsset(stellarLumens, stellarLumens.getValue(), 1, 0);
-        PortfolioAsset polkadotAsset = new PortfolioAsset(polkadot, polkadot.getValue(), 1, 0);
-
+        PortfolioAsset bitcoinAsset = new PortfolioAsset(bitcoin, bitcoin.getValue(), bitcoinDatabase.getValueFromPortfolioDatabase("Portfolio","shares"), bitcoinDatabase.getValueFromPortfolioDatabase("Portfolio","dollars"));
+        PortfolioAsset shibaAsset = new PortfolioAsset(shiba, shiba.getValue(), shibaDatabase.getValueFromPortfolioDatabase("Portfolio","shares"), shibaDatabase.getValueFromPortfolioDatabase("Portfolio","dollars"));
+        PortfolioAsset ethereumAsset = new PortfolioAsset(ethereum, ethereum.getValue(), ethereumDatabase.getValueFromPortfolioDatabase("Portfolio","shares"), ethereumDatabase.getValueFromPortfolioDatabase("Portfolio","dollars"));
+        PortfolioAsset dogeAsset = new PortfolioAsset(doge, doge.getValue(), dogeDatabase.getValueFromPortfolioDatabase("Portfolio","shares"), dogeDatabase.getValueFromPortfolioDatabase("Portfolio","dollars"));
+        PortfolioAsset litecoinAsset = new PortfolioAsset(litecoin, litecoin.getValue(), litecoinDatabase.getValueFromPortfolioDatabase("Portfolio","shares"), litecoinDatabase.getValueFromPortfolioDatabase("Portfolio","dollars"));
+        PortfolioAsset cardanoAsset = new PortfolioAsset(cardano, cardano.getValue(), cardanoDatabase.getValueFromPortfolioDatabase("Portfolio","shares"), cardanoDatabase.getValueFromPortfolioDatabase("Portfolio","dollars"));
+        PortfolioAsset solanaAsset = new PortfolioAsset(solana, solana.getValue(), solanaDatabase.getValueFromPortfolioDatabase("Portfolio","shares"), solanaDatabase.getValueFromPortfolioDatabase("Portfolio","dollars"));
+        PortfolioAsset polygonAsset = new PortfolioAsset(polygon, polygon.getValue(), polygonDatabase.getValueFromPortfolioDatabase("Portfolio","shares"), polygonDatabase.getValueFromPortfolioDatabase("Portfolio","dollars"));
+        PortfolioAsset chainlinkAsset = new PortfolioAsset(chainlink, chainlink.getValue(), chainlinkDatabase.getValueFromPortfolioDatabase("Portfolio","shares"), chainlinkDatabase.getValueFromPortfolioDatabase("Portfolio","dollars"));
+        PortfolioAsset stellarLumensAsset = new PortfolioAsset(stellarLumens, stellarLumens.getValue(), stellarLumensDatabase.getValueFromPortfolioDatabase("Portfolio","shares"), stellarLumensDatabase.getValueFromPortfolioDatabase("Portfolio","dollars"));
+        PortfolioAsset polkadotAsset = new PortfolioAsset(polkadot, polkadot.getValue(), polkadotDatabase.getValueFromPortfolioDatabase("Portfolio","shares"), polkadotDatabase.getValueFromPortfolioDatabase("Portfolio","dollars"));
 
         PortfolioAssetThread bitcoinAssetThread = new PortfolioAssetThread(bitcoinAsset);
         PortfolioAssetThread shibaAssetThread = new PortfolioAssetThread(shibaAsset);

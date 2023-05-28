@@ -2,10 +2,7 @@ package CryptoTraderV2;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Scanner;
 
 
@@ -15,10 +12,7 @@ public class CryptoTraderDatabase {
     Currency btc;
     Currency currency;
     public CryptoTraderDatabase(Currency currency) throws IOException {
-        // Test Currency for now
         this.currency = currency;
-//        this.shib = new Currency("Shiba-Inu", "SHIB", "https://api.coinbase.com/v2/prices/SHIB-USD/spot");
-//        this.btc = new Currency("Bitcoin", "BTC", "https://api.coinbase.com/v2/prices/BTC-USD/spot");
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         } catch (ClassNotFoundException e) {
@@ -45,13 +39,6 @@ public class CryptoTraderDatabase {
             System.out.println("Failed to connect to database!");
         }
     }
-
-//    public Currency getSHIB() {
-//        return this.shib;
-//    }
-//    public Currency getBTC() {
-//        return this.btc;
-//    }
     public Currency getCurrency() {
         return this.currency;
     }
@@ -64,12 +51,23 @@ public class CryptoTraderDatabase {
             try {
                 statement.execute();
             } finally {
-                statement.close();
+                //statement.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+    public double getValueFromPortfolioDatabase(String table, String columnName) throws SQLException {
+        double amount = 0.00;
+        String command = "SELECT " + columnName + " FROM " + table + " WHERE currency_code = '" + this.getCurrency().getCurrencyCode() + "'";
+        Statement statement = this.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(command);
+        if (resultSet.next()) {
+            amount = resultSet.getDouble(columnName);
+        }
+        return amount;
+    }
+
 //    public void SHIBMethod() {
 //        double shibValue = this.getSHIB().getUpdatedValue();
 //        String query1 = "DECLARE @shib_value DECIMAL(14, 8); SET @shib_value = " + shibValue + "; UPDATE CurrencyValue SET exchange_rate = @shib_value WHERE currency_code = 'SHIB';";
@@ -83,7 +81,7 @@ public class CryptoTraderDatabase {
 //        query5 += "VALUES (SWITCHOFFSET(GETDATE(), '-05:00'), 'SHIB', 'Shiba-Inu', " + shibValue + ", " + "'" + shibValueFormat + "'" + ")";
 //        this.commandQuery(query5);
 //    }
-    public void updateCurrency() {
+    public void updateCurrency() throws IOException {
         double exchangeRate = this.getCurrency().getUpdatedValue();
         String query3 = "DECLARE @exchange_rate_value DECIMAL(14, 8); SET @exchange_rate_value = " + exchangeRate + " UPDATE CurrencyValue SET exchange_rate = @exchange_rate_value WHERE currency_code = '" + this.getCurrency().getCurrencyCode() + "';";
         query3 += "UPDATE CurrencyValue SET time_updated = SWITCHOFFSET(GETDATE(), '-05:00') WHERE currency_code = '" + this.getCurrency().getCurrencyCode() + "';";
@@ -100,7 +98,7 @@ public class CryptoTraderDatabase {
         query6 += "VALUES (SWITCHOFFSET(GETDATE(), '-05:00'), '" + this.getCurrency().getCurrencyCode() + "', '" + this.getCurrency().getName()+ "', " + exchangeRate + ", " + "'" + formattedExchangeRate + "'" + ")";
         this.commandQuery(query6);
     }
-    public void updateCurrencyInterval() {
+    public void updateCurrencyInterval() throws IOException {
         double exchangeRate = this.getCurrency().getUpdatedValue();
 
         String formattedExchangeRate = this.getCurrency().getFormattedValue().trim();
@@ -110,7 +108,6 @@ public class CryptoTraderDatabase {
         this.commandQuery(query6);
     }
     public static void main(String[] args) throws IOException {
-
         Currency bitcoin = new Currency("Bitcoin", "BTC", "https://api.coinbase.com/v2/prices/BTC-USD/spot");
         Currency shiba = new Currency("Shiba Inu", "SHIB", "https://api.coinbase.com/v2/prices/SHIB-USD/spot");
         Currency ethereum = new Currency("Ethereum", "ETH", "https://api.coinbase.com/v2/prices/ETH-USD/spot");
@@ -194,7 +191,5 @@ public class CryptoTraderDatabase {
         LINKIntervalThread.start();
         XLMIntervalThread.start();
         DOTIntervalThread.start();
-
-
     }
 }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.text.DecimalFormat;
 public class Currency {
     //----------------------------Class Variables-----------------------------
@@ -23,18 +24,21 @@ public class Currency {
         this.formattedValue = this.formatValue(valueFromAPI);
     }
     //========================-Get-Value-From-API-Method-=====================
-    public double getValueAPI() {
+    public double getValueAPI() throws IOException {
         // ------------------------Set Variables In Try Scope-----------------
         StringBuilder currencyJSON;
+        HttpURLConnection urlConnection = null;
+        BufferedReader apiReader = null;
         // ------------------------Get Data From API/URL----------------------
         try {
+
             //---------------------Create Connection Objects------------------
             URL url = new URL(this.urlPath);
-            HttpURLConnection urlConnection = (HttpURLConnection)
+            urlConnection = (HttpURLConnection)
                                                url.openConnection();
             urlConnection.setRequestMethod("GET");
             //--------------------------Read the Data-------------------------
-            BufferedReader apiReader = new BufferedReader(new InputStreamReader(
+            apiReader = new BufferedReader(new InputStreamReader(
                                        urlConnection.getInputStream()));
             currencyJSON = new StringBuilder();
             String jsonLine;
@@ -44,6 +48,13 @@ public class Currency {
             apiReader.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            if (apiReader != null) {
+                apiReader.close();
+            }
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
         }
         //-------------------------Format JSON Data---------------------------
         currencyJSON.delete(0, currencyJSON.indexOf("amount"));
@@ -76,27 +87,40 @@ public class Currency {
         return formatBuilder.toString();
     }
     //=====================-Update-Value-From-API-Method-=====================
-    public void updateValue() {
+    public void updateValue() throws IOException {
         // ------------------------Set Variables In Try Scope-----------------
         StringBuilder currencyJSON;
+        HttpURLConnection urlConnection = null;
+        BufferedReader apiReader = null;
         // ------------------------Get Data From API/URL----------------------
         try {
             //---------------------Create Connection Objects------------------
             URL url = new URL(this.urlPath);
-            HttpURLConnection urlConnection = (HttpURLConnection)
+            urlConnection = (HttpURLConnection)
                                                url.openConnection();
             urlConnection.setRequestMethod("GET");
             //--------------------------Read the Data-------------------------
-            BufferedReader apiReader = new BufferedReader(new InputStreamReader(
+            apiReader = new BufferedReader(new InputStreamReader(
                                        urlConnection.getInputStream()));
+//            int responseCode = urlConnection.getResponseCode();
+//            if (responseCode == 429) {
+//                Thread.currentThread().sleep(100);
+//            }
             currencyJSON = new StringBuilder();
             String jsonLine;
             while ((jsonLine = apiReader.readLine()) != null) {
                 currencyJSON.append(jsonLine);
             }
-            apiReader.close();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            if (apiReader != null) {
+                apiReader.close();
+            }
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
         }
         //-------------------------Format JSON Data---------------------------
         currencyJSON.delete(0, currencyJSON.indexOf("amount"));
@@ -138,7 +162,7 @@ public class Currency {
     public static boolean isSameDenominationStatic(Currency currencyOne, Currency currencyTwo) {
         return currencyOne.getName().equals(currencyTwo.getName());
     }
-    public double getUpdatedValue() {
+    public double getUpdatedValue() throws IOException {
         this.updateValue();
         return this.getValue();
     }
