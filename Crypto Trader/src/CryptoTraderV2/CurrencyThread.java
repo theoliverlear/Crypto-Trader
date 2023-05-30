@@ -28,8 +28,11 @@ public class CurrencyThread implements Runnable {
                     System.out.println("Thread: " + Thread.currentThread().getName() + " Currency: " + this.getCurrency().getName() + " Updating...");
                     cryptoTraderDatabase.updateCurrency();
                     previousValue = this.getCurrency().getValue();
+                    Thread.currentThread().sleep(4000);
                 }
             } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         } while (true);
