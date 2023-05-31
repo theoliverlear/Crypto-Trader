@@ -118,9 +118,4 @@ public class Portfolio {
         return shares * currency.getValue();
     }
 
-
-
-
-
-
 }

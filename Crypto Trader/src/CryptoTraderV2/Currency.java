@@ -119,7 +119,7 @@ public class Currency {
                 apiReader.close();
             }
             if (urlConnection != null) {
-                urlConnection.disconnect();
+                //urlConnection.disconnect();
             }
         }
         //-------------------------Format JSON Data---------------------------

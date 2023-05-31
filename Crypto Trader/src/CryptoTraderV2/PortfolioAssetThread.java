@@ -15,7 +15,7 @@ public class PortfolioAssetThread implements Runnable {
         do {
             try {
                 this.portfolioAsset.poll();
-                Thread.currentThread().sleep(4000);
+                Thread.currentThread().sleep(5000);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } catch (InterruptedException e) {

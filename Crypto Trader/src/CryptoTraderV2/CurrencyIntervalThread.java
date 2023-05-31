@@ -25,7 +25,7 @@ public class CurrencyIntervalThread implements Runnable {
                 throw new RuntimeException(e);
             }
             try {
-                Thread.currentThread().sleep(4000);
+                Thread.currentThread().sleep(5000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

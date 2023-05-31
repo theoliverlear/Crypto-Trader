@@ -11,6 +11,7 @@ public class CryptoTraderDatabase {
     Currency shib;
     Currency btc;
     Currency currency;
+    String connectionUrl;
     public CryptoTraderDatabase(Currency currency) throws IOException {
         this.currency = currency;
         try {
@@ -25,7 +26,7 @@ public class CryptoTraderDatabase {
             username = scanner.next();
             password = scanner.next();
         }
-        String connectionUrl = "jdbc:sqlserver://crypto-trader-server.database.windows.net:1433;database=CryptoTrader;user={" + username + "};password={" + password + "};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;authentication=ActiveDirectoryPassword";
+        this.connectionUrl = "jdbc:sqlserver://crypto-trader-server.database.windows.net:1433;database=CryptoTrader;user={" + username + "};password={" + password + "};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;authentication=ActiveDirectoryPassword;autoReconnect=true";
         //String connectionUrl = "jdbc:sqlserver://crypto-trader-server.database.windows.net:1433;database=CryptoTrader;encrypt=true;trustServerCertificate=false;loginTimeout=30;Authentication=ActiveDirectoryIntegrated";
         try {
             this.connection = DriverManager.getConnection(connectionUrl);
@@ -37,6 +38,13 @@ public class CryptoTraderDatabase {
         }
         else {
             System.out.println("Failed to connect to database!");
+        }
+    }
+    public void reconnect() {
+        try {
+            this.connection = DriverManager.getConnection(this.connectionUrl);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
     public Currency getCurrency() {
@@ -55,6 +63,7 @@ public class CryptoTraderDatabase {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            this.reconnect();
         }
     }
     public double getValueFromPortfolioDatabase(String table, String columnName) throws SQLException {
