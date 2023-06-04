@@ -5,14 +5,17 @@ import pyodbc
 from azure.identity import DefaultAzureCredential
 
 matplotlib.use('TkAgg')
-#matplotlib.use('Qt5Agg')
-#matplotlib.use('WXAgg')
+
+
+# matplotlib.use('Qt5Agg')
 # matplotlib.use('WXAgg')
-# matplotlib.use('') add others
+# matplotlib.use('WXAgg')
+
 def single_item_line_graph(connection_string, auth, currency_code, table_name):
     connection = pyodbc.connect(connection_string, auth=auth)
     cursor = connection.cursor()
-    query = "SELECT time_event, exchange_rate FROM " + table_name + " WHERE currency_code = '" + currency_code + "';"
+    query = "SELECT time_event, exchange_rate FROM " + table_name + \
+            " WHERE currency_code = '" + currency_code + "';"
     cursor.execute(query)
     results = cursor.fetchall()
     df = pd.DataFrame.from_records(results, columns=['time_event', 'exchange_rate'])
@@ -34,11 +37,14 @@ def multiple_item_line_graph(connection_string, auth, table_name, currency_codes
     query = "SELECT time_event, exchange_rate, currency_code FROM " + table_name + ";"
     cursor.execute(query)
     results = cursor.fetchall()
-    df = pd.DataFrame.from_records(results, columns=['time_event', 'exchange_rate', 'currency_code'])
+    df = pd.DataFrame.from_records(results, columns=['time_event',
+                                                     'exchange_rate',
+                                                     'currency_code'])
     colors = plt.cm.get_cmap('tab10', len(currency_codes))
     for i, currency_code in enumerate(currency_codes):
         df_currency = df[df['currency_code'] == currency_code]
-        plt.plot(df_currency['time_event'], df_currency['exchange_rate'], color=colors(i), label=currency_code)
+        plt.plot(df_currency['time_event'], df_currency['exchange_rate'],
+                 color=colors(i), label=currency_code)
     plt.xlabel('Time')
     plt.ylabel('Exchange Rate')
     plt.title('Exchange Rate Distribution')
@@ -48,10 +54,42 @@ def multiple_item_line_graph(connection_string, auth, table_name, currency_codes
     connection.close()
 
 
+def multiple_item_portfolio_bar_graph(connection_string, auth, show_profit=False):
+    connection = pyodbc.connect(connection_string, auth=auth)
+    cursor = connection.cursor()
+    query = "SELECT currency_code, total_value FROM Portfolio;"
+    cursor.execute(query)
+    results = cursor.fetchall()
+    df = pd.DataFrame.from_records(results, columns=['currency_code', 'total_value'])
+    if show_profit:
+        df['total_value'] -= 1000
+    df['total_value'] = pd.to_numeric(df['total_value'])
+    df = df.sort_values(by=['total_value'], ascending=False)
+    currency_codes = df['currency_code'].unique()
+    colors = plt.cm.get_cmap('tab10', len(currency_codes))
+    for i, currency_code in enumerate(currency_codes):
+        df_currency = df[df['currency_code'] == currency_code]
+        plt.bar(df_currency['currency_code'], df_currency['total_value'],
+                color=colors(i), label=currency_code)
+
+    plt.xlabel('Currency Code')
+    if show_profit:
+        plt.ylabel('Total Value Increase')
+    else:
+        plt.ylabel('Total Value')
+    plt.title('Portfolio Value Distribution')
+    max_value = df['total_value'].max() + (df['total_value'].max() * 0.1)
+    plt.ylim(0, max_value)
+    plt.show()
+    cursor.close()
+    connection.close()
+
+
 def single_item_portfolio_line_graph(connection_string, auth, currency_code):
     connection = pyodbc.connect(connection_string, auth=auth)
     cursor = connection.cursor()
-    query = "SELECT time_event, total_value FROM PortfolioHistory WHERE currency_code = '" + currency_code + "';"
+    query = "SELECT time_event, total_value FROM PortfolioHistory" \
+            " WHERE currency_code = '" + currency_code + "';"
     cursor.execute(query)
     results = cursor.fetchall()
     df = pd.DataFrame.from_records(results, columns=['time_event', 'total_value'])
@@ -87,7 +125,8 @@ def get_portfolio_profit(connection_string, auth):
     cursor.execute(query)
     results = cursor.fetchall()
     for result in results:
-        return_phrase += str(result[0]) + " " + f"{(result[1] - 1000):.2f}" + "\n"
+        return_phrase += str(result[0]) + " " + \
+                         f"${(result[1] - 1000):.2f}" + "\n"
     cursor.close()
     connection.close()
     return return_phrase
@@ -96,9 +135,11 @@ def get_portfolio_profit(connection_string, auth):
 server_name = 'crypto-trader-server.database.windows.net'
 database_name = 'CryptoTrader'
 credential = DefaultAzureCredential()
-connection_string = 'Driver={ODBC Driver 17 for SQL Server};Server=' + server_name + ';Database=' + database_name + \
+connection_string = 'Driver={ODBC Driver 17 for SQL Server};' \
+                    'Server=' + server_name + ';Database=' + database_name + \
                     ';Authentication=ActiveDirectoryInteractive'
-currency_codes = get_currency_codes(connection_string, credential)  # returns ['SHIB' 'ETH' 'LTC' 'ADA' 'BTC' 'SOL'
+currency_codes = get_currency_codes(connection_string, credential)
+# returns ['SHIB' 'ETH' 'LTC' 'ADA' 'BTC' 'SOL'
 # 'DOGE' 'XLM' 'MATIC' 'DOT' 'LINK']
 
 # %% Get Currency Codes
@@ -175,3 +216,6 @@ single_item_portfolio_line_graph(connection_string, credential, 'XLM')
 
 # %% Polkadot Line Graph - Portfolio
 single_item_portfolio_line_graph(connection_string, credential, 'DOT')
+
+# %% All Bar Graph - Portfolio Profits
+multiple_item_portfolio_bar_graph(connection_string, credential, True)

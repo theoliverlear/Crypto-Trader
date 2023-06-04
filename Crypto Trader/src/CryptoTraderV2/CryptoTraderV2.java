@@ -14,6 +14,38 @@ import java.util.Calendar;
      =============================
 
      =============================
+           [CryptoTraderV2]
+                  |
+                  V
+         [PortfolioAssetThread]
+                  |
+                  V
+           [PortfolioAsset]
+                  |
+                  V
+         <PortfolioAsset.poll()>
+             |          |
+             V          V
+          (dollars)  (shares)
+     =============================
+
+     =============================
+         [CryptoTraderDatabase]
+                  |
+                  V
+            [CurrencyThread]
+                  |
+                  V
+           [PortfolioAsset]
+                  |
+                  V
+         <PortfolioAsset.poll()>
+             |          |
+             V          V
+          (dollars)  (shares)
+     =============================
+
+     =============================
                [Main] -> [Thread]
                   |          |
                   V          |

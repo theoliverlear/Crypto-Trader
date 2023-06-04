@@ -31,12 +31,11 @@ public class Currency {
         BufferedReader apiReader = null;
         // ------------------------Get Data From API/URL----------------------
         try {
-
             //---------------------Create Connection Objects------------------
             URL url = new URL(this.urlPath);
-            urlConnection = (HttpURLConnection)
-                                               url.openConnection();
+            urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
+            urlConnection.connect();
             //--------------------------Read the Data-------------------------
             apiReader = new BufferedReader(new InputStreamReader(
                                        urlConnection.getInputStream()));
@@ -96,9 +95,9 @@ public class Currency {
         try {
             //---------------------Create Connection Objects------------------
             URL url = new URL(this.urlPath);
-            urlConnection = (HttpURLConnection)
-                                               url.openConnection();
+            urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
+            urlConnection.connect();
             //--------------------------Read the Data-------------------------
             apiReader = new BufferedReader(new InputStreamReader(
                                        urlConnection.getInputStream()));
