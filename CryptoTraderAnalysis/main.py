@@ -71,7 +71,6 @@ def multiple_item_portfolio_bar_graph(connection_string, auth, show_profit=False
         df_currency = df[df['currency_code'] == currency_code]
         plt.bar(df_currency['currency_code'], df_currency['total_value'],
                 color=colors(i), label=currency_code)
-
     plt.xlabel('Currency Code')
     if show_profit:
         plt.ylabel('Total Value Increase')

@@ -25,7 +25,9 @@ public class CurrencyThread implements Runnable {
         do {
             try {
                 if (previousValue != this.getCurrency().getUpdatedValue()) {
-                    System.out.println("Thread: " + Thread.currentThread().getName() + " Currency: " + this.getCurrency().getName() + " Updating...");
+                    System.out.println("Thread: " + Thread.currentThread().getName() +
+                                       " Currency: " + this.getCurrency().getName() +
+                                       " Updating...");
                     cryptoTraderDatabase.updateCurrency();
                     previousValue = this.getCurrency().getValue();
                     Thread.currentThread().sleep(5000);

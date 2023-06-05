@@ -1,4 +1,4 @@
-This document highlights the capabilities of CryptoTrader v0.71, a sophisticated 
+This document highlights the capabilities of CryptoTrader v0.71, a 
 cryptocurrency trading software. In this explanation, I will dissect its diverse functionalities.
 
 The program continuously monitors the current values of cryptocurrencies and logs them 
