@@ -12,14 +12,18 @@ public class Currency {
     String name, currencyCode, urlPath, formattedValue;
     double value;
     DecimalFormat decimalFormat = new DecimalFormat("##,#00.00000000");
-    public Currency(String name, String currencyCode, String urlPath)
-                                                 throws IOException {
+    public Currency(String name, String currencyCode, String urlPath) {
         //----------------------Set Instance Variables------------------------
         this.name = name;
         this.currencyCode = currencyCode;
         this.urlPath = urlPath;
         //----------------------Set Format Required Variables-----------------
-        double valueFromAPI = this.getValueAPI();
+        double valueFromAPI = 0;
+        try {
+            valueFromAPI = this.getValueAPI();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.value = valueFromAPI;
         this.formattedValue = this.formatValue(valueFromAPI);
     }
@@ -44,7 +48,6 @@ public class Currency {
             while ((jsonLine = apiReader.readLine()) != null) {
                 currencyJSON.append(jsonLine);
             }
-            apiReader.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {

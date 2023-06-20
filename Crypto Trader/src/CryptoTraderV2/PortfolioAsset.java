@@ -10,9 +10,9 @@ public class PortfolioAsset {
     CryptoTraderDatabase cryptoTraderDatabase;
     double totalValue;
 
-    public PortfolioAsset(Currency currency, double buyPrice, double shares, double portfolioDollars) throws IOException {
+    public PortfolioAsset(Currency currency, double targetPrice, double shares, double portfolioDollars) throws IOException {
         this.currency = currency;
-        this.targetPrice = buyPrice;
+        this.targetPrice = targetPrice;
         this.shares = shares;
         this.portfolioDollars = portfolioDollars;
         this.cryptoTraderDatabase = new CryptoTraderDatabase(this.currency);
@@ -52,14 +52,14 @@ public class PortfolioAsset {
         this.targetPrice = currentValue;
         this.cryptoTraderDatabase.commandQuery("INSERT INTO PortfolioHistory " +
                 "(time_event, currency_code, currency_name, exchange_rate," +
-                " exchange_rate_formatted, exchange_type, shares, dollars, total_value) " +
+                " exchange_rate_formatted, target_price, exchange_type, shares, dollars, total_value) " +
                 "VALUES (SWITCHOFFSET(GETDATE(), '-05:00'), '" + this.currency.getCurrencyCode() + "'," +
                 " '" + this.currency.getName() + "', " + this.currency.getValue() + ", '" +
-                this.currency.getFormattedValue() + "', 'sell', " + this.shares + ", " +
+                this.currency.getFormattedValue() + "', "  + this.targetPrice + ", 'sell', " + this.shares + ", " +
                 this.portfolioDollars + ", " + this.getTotalValue() + ");");
         this.cryptoTraderDatabase.commandQuery("UPDATE Portfolio SET exchange_rate = " + this.currency.getValue() +
                 ", exchange_rate_formatted = '" + this.currency.getFormattedValue() +
-                "', shares = " + this.shares + ", dollars = " + this.portfolioDollars + "," +
+                "', target_price = " + this.targetPrice + ", shares = " + this.shares + ", dollars = " + this.portfolioDollars + "," +
                 " total_value = " + this.getTotalValue() + " , time_updated = SWITCHOFFSET(GETDATE(), '-05:00')" +
                 " WHERE currency_code = '" + this.currency.getCurrencyCode() + "';");
 
@@ -72,23 +72,21 @@ public class PortfolioAsset {
         this.portfolioDollars = 0;
         this.targetPrice = currentValue;
         this.cryptoTraderDatabase.commandQuery("INSERT INTO PortfolioHistory (time_event, currency_code, currency_name," +
-                " exchange_rate, exchange_rate_formatted, exchange_type, shares, dollars, total_value)" +
+                " exchange_rate, exchange_rate_formatted, target_price, exchange_type, shares, dollars, total_value)" +
                 " VALUES (SWITCHOFFSET(GETDATE(), '-05:00'), '" + this.currency.getCurrencyCode() + "', " +
                 "'" + this.currency.getName() + "', " + this.currency.getValue() + ", '" +
-                this.currency.getFormattedValue() + "', 'buy', " + this.shares + ", " +
+                this.currency.getFormattedValue() + "'," + this.targetPrice + ", 'buy', " + this.shares + ", " +
                 this.portfolioDollars + ", " + this.getTotalValue() + ");");
         this.cryptoTraderDatabase.commandQuery("UPDATE Portfolio SET exchange_rate = " + this.currency.getValue() +
                 ", exchange_rate_formatted = '" + this.currency.getFormattedValue() +
-                "', shares = " + this.shares + ", dollars = " + this.portfolioDollars +
+                "', target_price = " + this.targetPrice + ", shares = " + this.shares + ", dollars = " + this.portfolioDollars +
                 ", total_value = " + this.getTotalValue() + ",time_updated = SWITCHOFFSET(GETDATE(), '-05:00') " +
                 "WHERE currency_code = '" + this.currency.getCurrencyCode() + "';");
 
     }
-
     public void setTargetPrice(double targetPrice) {
         this.targetPrice = targetPrice;
     }
-
     public void poll() throws IOException {
         double currentValue = this.currency.getUpdatedValue();
         if (currentValue > this.targetPrice) {

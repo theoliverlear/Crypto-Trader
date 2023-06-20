@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="CryptoTrader@crypto-trader-server.database.windows.net" uuid="e5364bf8-1773-4fa4-9801-8d5ad6830393">
+    <data-source source="LOCAL" name="CryptoTrader@crypto-trader-server.database.windows.net" uuid="d2e3d2a0-e103-4b51-a4fa-976e50b434b6">
       <driver-ref>azure.ms</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>

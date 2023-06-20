@@ -1,0 +1,10 @@
+/.ai/
+/.idea/
+/node_modules/
+/target/
+/CryptoTraderAnalysis/Environment/
+
+/CryptoTraderAnalysis/.idea/
+
+*.json
+*.xml
