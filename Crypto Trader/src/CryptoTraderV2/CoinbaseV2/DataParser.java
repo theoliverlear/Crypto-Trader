@@ -1,6 +1,5 @@
-package CryptoTraderV2.Coinbase;
+package CryptoTraderV2.CoinbaseV2;
 
-import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,12 +11,14 @@ import java.util.regex.Pattern;
 public class DataParser {
     String rawData;
     String data;
+    String dataBlock;
     TreeMap<String, String> jsonMap;
     public DataParser(String rawData) {
         this.rawData = rawData;
         this.data = parse();
         this.jsonMap = new TreeMap<>();
-        this.jsonMap = parseJson();
+        this.jsonMap = this.parseJson();
+        this.dataBlock = this.parseDataPoint();
     }
     public String parse() {
         StringBuilder dataSB = new StringBuilder();
@@ -28,16 +29,33 @@ public class DataParser {
         for (String regexPattern : regexPatterns) {
             Pattern pattern = Pattern.compile(regexPattern);
             Matcher matcher = pattern.matcher(this.rawData);
-            while (matcher.find()) {
-                dataSB.append(matcher.group(1) + " : " + matcher.group(2).replace("\"", "") + "\n");
+            int groupCount = matcher.groupCount();
+            if (groupCount == 2) {
+                while (matcher.find()) {
+                    dataSB.append(matcher.group(1) + " : " + matcher.group(2).replace("\"", "") + "\n");
+                }
             }
+        }
+        return dataSB.toString();
+    }
+
+    public String parseDataPoint() {
+        StringBuilder dataSB = new StringBuilder();
+        //String[] regexPatterns = {"\"(\\w+)\":\\s*(\"[^\"]*\"|[^\",\\n}]+)"};
+        String regexPattern = "\"id\".*?(\\}\\},\\{|(ls\":(true|false)\\}))";
+
+        Pattern pattern = Pattern.compile(regexPattern);
+        Matcher matcher = pattern.matcher(this.rawData);
+        while (matcher.find()) {
+            //dataSB.append(matcher.group(1) + " : " + matcher.group(2).replace("\"", "") + "\n");
+            dataSB.append((matcher.group(0) + "\n"));
         }
         return dataSB.toString();
     }
     public TreeMap<String, String> parseJson() {
         TreeMap<String, String> jsonMap = new TreeMap<>();
         for (String line : this.data.split("\n")) {
-            String[] keyValue = line.split(" : ");
+            String[] keyValue = line.split(":");
             jsonMap.put(keyValue[0].trim()
                     .replace("{", "")
                     .replace("}", ""),
@@ -47,14 +65,18 @@ public class DataParser {
         }
         return jsonMap;
     }
-
+    public String getValue(String key) {
+        return this.jsonMap.getOrDefault(key, null);
+    }
     public String getData() {
         return this.data;
     }
     public String getRawData() {
         return this.rawData;
     }
-
+    public String getDataBlock() {
+        return this.dataBlock;
+    }
     public TreeMap<String, String> getJsonMap() {
         return this.jsonMap;
     }
