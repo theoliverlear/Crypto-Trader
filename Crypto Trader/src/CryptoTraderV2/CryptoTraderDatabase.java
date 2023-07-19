@@ -10,25 +10,32 @@ public class CryptoTraderDatabase {
     public CryptoTraderDatabase(Currency currency) throws IOException {
         this.currency = currency;
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+            Class.forName(driver);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        Scanner scanner = new Scanner(new File(
-                "C:\\Users\\olive\\OneDrive\\Documents\\Key Folder\\CryptoTraderLogin.txt"));
+        String path = "C:\\Users\\olive\\OneDrive\\Documents\\" +
+                      "Key Folder\\CryptoTraderLogin.txt";
+        File file = new File(path);
+        Scanner scanner = new Scanner(file);
         String username = "";
         String password = "";
         while (scanner.hasNext()) {
             username = scanner.next();
             password = scanner.next();
         }
-        this.connectionUrl = "jdbc:sqlserver://crypto-trader-server.database.windows.net:1433;database=CryptoTrader;user={"
-                             + username + "};password={" + password + "};encrypt=true;trustServerCertificate=false;" +
-                             "hostNameInCertificate=*.database.windows.net;loginTimeout=30;authentication=ActiveDirectoryPassword" +
-                             ";autoReconnect=true";
-        //String connectionUrl = "jdbc:sqlserver://crypto-trader-server.database.windows.net:1433;database=CryptoTrader;encrypt=true;trustServerCertificate=false;loginTimeout=30;Authentication=ActiveDirectoryIntegrated";
+        String serverPrefix = "jdbc:sqlserver://";
+        String server = "crypto-trader-server.database.windows.net:1433;";
+        String database = "database=CryptoTrader;";
+        String user = "user={" + username + "};password={" + password + "};";
+        String ending = "encrypt=true;trustServerCertificate=false;" +
+                        "hostNameInCertificate=*.database.windows.net;" +
+                        "loginTimeout=30;authentication=ActiveDirectoryPassword" +
+                        ";autoReconnect=true";
+        this.connectionUrl = serverPrefix + server + database + user + ending;
         try {
-            this.connection = DriverManager.getConnection(connectionUrl);
+            this.connection = DriverManager.getConnection(this.connectionUrl);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -68,7 +75,8 @@ public class CryptoTraderDatabase {
     public double getValueFromPortfolioDatabase(String table, String columnName) throws SQLException {
         double amount = 0.00;
         String command = "SELECT " + columnName + " FROM " + table +
-                         " WHERE currency_code = '" + this.getCurrency().getCurrencyCode() + "'";
+                         " WHERE currency_code = '" + this.getCurrency().getCurrencyCode()
+                       + "'";
         Statement statement = this.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(command);
         if (resultSet.next()) {
@@ -101,9 +109,11 @@ public class CryptoTraderDatabase {
     public void updateCurrencyInterval() throws IOException {
         double exchangeRate = this.getCurrency().getUpdatedValue();
         String formattedExchangeRate = this.getCurrency().getFormattedValue().trim();
-        String query6 = "INSERT INTO CurrencyValueHistoryInterval (time_event, currency_code, currency_name, exchange_rate, exchange_rate_formatted)";
-        query6 += "VALUES (SWITCHOFFSET(GETDATE(), '-05:00'), '" + this.getCurrency().getCurrencyCode() + "', '"
-                  + this.getCurrency().getName()+ "', " + exchangeRate + ", " + "'" + formattedExchangeRate + "'" + ")";
+        String query6 = "INSERT INTO CurrencyValueHistoryInterval (time_event, " +
+                "currency_code, currency_name, exchange_rate, exchange_rate_formatted)";
+        query6 += "VALUES (SWITCHOFFSET(GETDATE(), '-05:00'), '" + this.getCurrency().getCurrencyCode() +
+                "', '" + this.getCurrency().getName()+ "', " + exchangeRate +
+                ", " + "'" + formattedExchangeRate + "'" + ")";
         this.commandQuery(query6);
     }
     public static void main(String[] args) throws IOException {
