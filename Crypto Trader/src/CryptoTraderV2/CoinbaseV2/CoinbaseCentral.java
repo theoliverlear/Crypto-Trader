@@ -9,14 +9,15 @@ import java.security.NoSuchAlgorithmException;
 public class CoinbaseCentral {
     static String header = "---------------------------------------------------------" +
             "---------------------------------------------------------";
+            //String requestPath = "/v2/accounts";
+        //String requestPath = "/v2/user/auth";
+        //String requestPath = "/v2/transaction_summary";
+        //String requestPath = "/v2/exchange-rates?currency=USD";
     public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
         String baseURL = "https://api.coinbase.com";
         String methodCall = "GET";
         String requestPath = "/v2/user";
-        //String requestPath = "/v2/accounts";
-        //String requestPath = "/v2/user/auth";
-        //String requestPath = "/v2/transaction_summary";
-        //String requestPath = "/v2/exchange-rates?currency=USD";
+
 
         String body = "";
         String hashAlgorithm = "HmacSHA256";

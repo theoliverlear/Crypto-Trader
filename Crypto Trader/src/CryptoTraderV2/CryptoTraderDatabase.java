@@ -61,14 +61,15 @@ public class CryptoTraderDatabase {
     }
     public void commandQuery(String command) {
         try {
-            PreparedStatement statement = this.getConnection().prepareStatement(command);
-            try {
-                statement.execute();
-            } finally {
-                //statement.close();
+            try (PreparedStatement statement = this.getConnection().prepareStatement(command)) {
+                try {
+                    statement.execute();
+                } finally {
+                    //statement.close();
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
             this.reconnect();
         }
     }
@@ -77,11 +78,14 @@ public class CryptoTraderDatabase {
         String command = "SELECT " + columnName + " FROM " + table +
                          " WHERE currency_code = '" + this.getCurrency().getCurrencyCode()
                        + "'";
-        Statement statement = this.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(command);
-        if (resultSet.next()) {
-            amount = resultSet.getDouble(columnName);
+        ResultSet resultSet;
+        try (Statement statement = this.getConnection().createStatement()) {
+            resultSet = statement.executeQuery(command);
+            if (resultSet.next()) {
+                amount = resultSet.getDouble(columnName);
+            }
         }
+
         return amount;
     }
 
@@ -117,6 +121,7 @@ public class CryptoTraderDatabase {
         this.commandQuery(query6);
     }
     public static void main(String[] args) throws IOException {
+        /*
         Currency bitcoin = new Currency("Bitcoin", "BTC", "https://api.coinbase.com/v2/prices/BTC-USD/spot");
         Currency shiba = new Currency("Shiba Inu", "SHIB", "https://api.coinbase.com/v2/prices/SHIB-USD/spot");
         Currency ethereum = new Currency("Ethereum", "ETH", "https://api.coinbase.com/v2/prices/ETH-USD/spot");
@@ -128,6 +133,19 @@ public class CryptoTraderDatabase {
         Currency chainlink = new Currency("Chainlink", "LINK", "https://api.coinbase.com/v2/prices/LINK-USD/spot");
         Currency stellarLumens = new Currency("Stellar Lumens", "XLM", "https://api.coinbase.com/v2/prices/XLM-USD/spot");
         Currency polkadot = new Currency("Polkadot", "DOT", "https://api.coinbase.com/v2/prices/DOT-USD/spot");
+        */
+
+        Currency bitcoin = new Currency(CurrencyData.BTC);
+        Currency shiba = new Currency(CurrencyData.SHIB);
+        Currency ethereum = new Currency(CurrencyData.ETH);
+        Currency doge = new Currency(CurrencyData.DOGE);
+        Currency litecoin = new Currency(CurrencyData.LTC);
+        Currency cardano = new Currency(CurrencyData.ADA);
+        Currency solana = new Currency(CurrencyData.SOL);
+        Currency polygon = new Currency(CurrencyData.MATIC);
+        Currency chainlink = new Currency(CurrencyData.LINK);
+        Currency stellarLumens = new Currency(CurrencyData.XLM);
+        Currency polkadot = new Currency(CurrencyData.DOT);
 
         CurrencyThread bitcoinThread = new CurrencyThread(bitcoin);
         CurrencyThread shibaThread = new CurrencyThread(shiba);
@@ -177,28 +195,14 @@ public class CryptoTraderDatabase {
         Thread XLMIntervalThread = new Thread(stellarLumensIntervalThread);
         Thread DOTIntervalThread = new Thread(polkadotIntervalThread);
 
-        BTCThread.start();
-        SHIBThread.start();
-        ETHThread.start();
-        DOGEThread.start();
-        LTCThread.start();
-        ADAThread.start();
-        SOLThread.start();
-        POLYThread.start();
-        LINKThread.start();
-        XLMThread.start();
-        DOTThread.start();
-
-        BTCIntervalThread.start();
-        SHIBIntervalThread.start();
-        ETHIntervalThread.start();
-        DOGEIntervalThread.start();
-        LTCIntervalThread.start();
-        ADAIntervalThread.start();
-        SOLIntervalThread.start();
-        POLYIntervalThread.start();
-        LINKIntervalThread.start();
-        XLMIntervalThread.start();
-        DOTIntervalThread.start();
+        Thread[] threads = {BTCThread, SHIBThread, ETHThread, DOGEThread,
+                LTCThread, ADAThread, SOLThread, POLYThread, LINKThread,
+                XLMThread, DOTThread, BTCIntervalThread, SHIBIntervalThread,
+                ETHIntervalThread, DOGEIntervalThread, LTCIntervalThread,
+                ADAIntervalThread, SOLIntervalThread, POLYIntervalThread,
+                LINKIntervalThread, XLMIntervalThread, DOTIntervalThread};
+        for (Thread thread : threads) {
+            thread.start();
+        }
     }
 }

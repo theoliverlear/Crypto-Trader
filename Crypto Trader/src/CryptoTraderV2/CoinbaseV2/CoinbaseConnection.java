@@ -22,7 +22,8 @@ String hashAlgorithm;
 String methodCall;
 String endpointURL;
 String body;
-final String fileDataPath = "C:\\Users\\olive\\OneDrive\\Documents\\Key Folder\\CoinbaseAPI.txt";
+final String FILE_DATA_PATH = "C:\\Users\\olive\\OneDrive\\Documents\\" +
+                              "Key Folder\\CoinbaseAPI.txt";
     public CoinbaseConnection(String baseURL,
                               String methodCall,
                               String apiKey,

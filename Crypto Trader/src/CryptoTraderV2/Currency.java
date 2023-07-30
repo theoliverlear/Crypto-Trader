@@ -27,6 +27,21 @@ public class Currency {
         this.value = valueFromAPI;
         this.formattedValue = this.formatValue(valueFromAPI);
     }
+    public Currency(CurrencyData currency) {
+        //----------------------Set Instance Variables------------------------
+        this.name = currency.getName();
+        this.currencyCode = currency.getCurrencyCode();
+        this.urlPath = currency.getUrlPath();
+        //----------------------Set Format Required Variables-----------------
+        double valueFromAPI = 0;
+        try {
+            valueFromAPI = this.getValueAPI();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.value = valueFromAPI;
+        this.formattedValue = this.formatValue(valueFromAPI);
+    }
     //========================-Get-Value-From-API-Method-=====================
     public double getValueAPI() throws IOException {
         // ------------------------Set Variables In Try Scope-----------------

@@ -9,14 +9,17 @@ public class PortfolioAsset {
     double portfolioDollars;
     CryptoTraderDatabase cryptoTraderDatabase;
     double totalValue;
-
-    public PortfolioAsset(Currency currency, double targetPrice, double shares, double portfolioDollars) throws IOException {
+    public PortfolioAsset(Currency currency,
+                          double targetPrice,
+                          double shares,
+                          double portfolioDollars) throws IOException {
         this.currency = currency;
         this.targetPrice = targetPrice;
         this.shares = shares;
         this.portfolioDollars = portfolioDollars;
         this.cryptoTraderDatabase = new CryptoTraderDatabase(this.currency);
-        this.totalValue = (this.shares * this.currency.getValue()) + this.portfolioDollars;
+        this.totalValue = (this.shares * this.currency.getValue()) +
+                           this.portfolioDollars;
     }
 
     public double getTotalValue() {
@@ -62,7 +65,6 @@ public class PortfolioAsset {
                 "', target_price = " + this.targetPrice + ", shares = " + this.shares + ", dollars = " + this.portfolioDollars + "," +
                 " total_value = " + this.getTotalValue() + " , time_updated = SWITCHOFFSET(GETDATE(), '-05:00')" +
                 " WHERE currency_code = '" + this.currency.getCurrencyCode() + "';");
-
     }
     public void buyAsset() {
         double currentValue = this.currency.getValue();
@@ -82,7 +84,6 @@ public class PortfolioAsset {
                 "', target_price = " + this.targetPrice + ", shares = " + this.shares + ", dollars = " + this.portfolioDollars +
                 ", total_value = " + this.getTotalValue() + ",time_updated = SWITCHOFFSET(GETDATE(), '-05:00') " +
                 "WHERE currency_code = '" + this.currency.getCurrencyCode() + "';");
-
     }
     public void setTargetPrice(double targetPrice) {
         this.targetPrice = targetPrice;

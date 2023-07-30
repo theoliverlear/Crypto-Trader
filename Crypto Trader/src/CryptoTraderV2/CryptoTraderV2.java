@@ -65,10 +65,10 @@ import java.util.Calendar;
      =============================
 
         Main
-        - Loops (updates data)
-            ~ Loop is a thread with defined runnable
-            ~ Polls Trading Algo
-        - Evaluates if currency is different from previous
+            - Loops (updates data)
+                ~ Loop is a thread with defined runnable
+                ~ Polls Trading Algo
+            - Evaluates if currency is different from previous
             ~ Displays if different
         Trading Algo
             - Detects current value compared to value at previous purchase
@@ -94,6 +94,7 @@ public class CryptoTraderV2 {
 
     }
     public static void main(String[] args) throws IOException, InterruptedException, SQLException {
+        /*
         Currency bitcoin = new Currency("Bitcoin", "BTC", "https://api.coinbase.com/v2/prices/BTC-USD/spot");
         Currency shiba = new Currency("Shiba Inu", "SHIB", "https://api.coinbase.com/v2/prices/SHIB-USD/spot");
         Currency ethereum = new Currency("Ethereum", "ETH", "https://api.coinbase.com/v2/prices/ETH-USD/spot");
@@ -105,6 +106,19 @@ public class CryptoTraderV2 {
         Currency chainlink = new Currency("Chainlink", "LINK", "https://api.coinbase.com/v2/prices/LINK-USD/spot");
         Currency stellarLumens = new Currency("Stellar Lumens", "XLM", "https://api.coinbase.com/v2/prices/XLM-USD/spot");
         Currency polkadot = new Currency("Polkadot", "DOT", "https://api.coinbase.com/v2/prices/DOT-USD/spot");
+        */
+
+        Currency bitcoin = new Currency(CurrencyData.BTC);
+        Currency shiba = new Currency(CurrencyData.SHIB);
+        Currency ethereum = new Currency(CurrencyData.ETH);
+        Currency doge = new Currency(CurrencyData.DOGE);
+        Currency litecoin = new Currency(CurrencyData.LTC);
+        Currency cardano = new Currency(CurrencyData.ADA);
+        Currency solana = new Currency(CurrencyData.SOL);
+        Currency polygon = new Currency(CurrencyData.MATIC);
+        Currency chainlink = new Currency(CurrencyData.LINK);
+        Currency stellarLumens = new Currency(CurrencyData.XLM);
+        Currency polkadot = new Currency(CurrencyData.DOT);
 
         CryptoTraderDatabase bitcoinDatabase = new CryptoTraderDatabase(bitcoin);
         CryptoTraderDatabase shibaDatabase = new CryptoTraderDatabase(shiba);
@@ -154,17 +168,11 @@ public class CryptoTraderV2 {
         Thread XLMThread = new Thread(stellarLumensAssetThread);
         Thread DOTThread = new Thread(polkadotAssetThread);
 
-        BTCThread.start();
-        SHIBThread.start();
-        ETHThread.start();
-        DOGEThread.start();
-        LTCThread.start();
-        ADAThread.start();
-        SOLThread.start();
-        MATICThread.start();
-        LINKThread.start();
-        XLMThread.start();
-        DOTThread.start();
-
+        Thread[] threads = {BTCThread, SHIBThread, ETHThread, DOGEThread,
+                LTCThread, ADAThread, SOLThread, MATICThread, LINKThread,
+                XLMThread, DOTThread};
+        for (Thread thread : threads) {
+            thread.start();
+        }
     }
 }

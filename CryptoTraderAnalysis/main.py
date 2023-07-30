@@ -32,7 +32,6 @@ def single_item_line_graph(connection_string, auth, currency_code,
     cursor.close()
     connection.close()
 
-
 def multiple_item_line_graph(connection_string, auth, table_name,
                              currency_codes):
     connection = pyodbc.connect(connection_string, auth=auth)

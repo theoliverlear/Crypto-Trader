@@ -60,7 +60,8 @@ public class Portfolio {
         if (this.containsCurrency(currency)) {
             for (Map.Entry<Currency, Double> portfolioEntry : this.currencyShares.entrySet()) {
                 if (isSameDenominationStatic(currency, portfolioEntry.getKey())) {
-                    this.currencyShares.replace(currency, portfolioEntry.getValue(), portfolioEntry.getValue() + amount);
+                    this.currencyShares.replace(currency, portfolioEntry.getValue(),
+                                       portfolioEntry.getValue() + amount);
                 }
             }
         } else {
@@ -73,7 +74,8 @@ public class Portfolio {
             for (Map.Entry<Currency, Double> portfolioEntry : this.currencyShares.entrySet()) {
                 if (isSameDenominationStatic(currency, portfolioEntry.getKey())) {
 
-                    this.currencyShares.replace(currency, portfolioEntry.getValue(), portfolioEntry.getValue() + amount);
+                    this.currencyShares.replace(currency, portfolioEntry.getValue(),
+                                       portfolioEntry.getValue() + amount);
                 }
             }
         } else {

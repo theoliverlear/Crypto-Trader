@@ -1,7 +1,5 @@
 package CryptoTraderV2;
-
 import java.io.IOException;
-
 public class CurrencyIntervalThread implements Runnable {
     Currency currency;
     public CurrencyIntervalThread(Currency currency) {
