@@ -1,4 +1,6 @@
 package CryptoTraderV2;
+import CryptoTraderV2.CoinbaseV2.FileDataRetriever;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
@@ -18,13 +20,10 @@ public class CryptoTraderDatabase {
         String path = "C:\\Users\\olive\\OneDrive\\Documents\\" +
                       "Key Folder\\CryptoTraderLogin.txt";
         File file = new File(path);
-        Scanner scanner = new Scanner(file);
-        String username = "";
-        String password = "";
-        while (scanner.hasNext()) {
-            username = scanner.next();
-            password = scanner.next();
-        }
+        FileDataRetriever fdrUsername = new FileDataRetriever(0, path);
+        FileDataRetriever fdrPassword = new FileDataRetriever(1, path);
+        String username = fdrUsername.getData();
+        String password = fdrPassword.getData();
         String serverPrefix = "jdbc:sqlserver://";
         String server = "crypto-trader-server.database.windows.net:1433;";
         String database = "database=CryptoTrader;";
