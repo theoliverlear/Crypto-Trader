@@ -7,8 +7,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 public class CoinbaseCentral {
-    static String header = "---------------------------------------------------------" +
-            "---------------------------------------------------------";
+    static String header = "-".repeat(50);
             //String requestPath = "/v2/accounts";
         //String requestPath = "/v2/user/auth";
         //String requestPath = "/v2/transaction_summary";
