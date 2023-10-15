@@ -14,12 +14,11 @@ public class CryptoTraderDatabase {
         try {
             String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
             Class.forName(driver);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
         }
         String path = "C:\\Users\\olive\\OneDrive\\Documents\\" +
                       "Key Folder\\CryptoTraderLogin.txt";
-        File file = new File(path);
         FileDataRetriever fdrUsername = new FileDataRetriever(0, path);
         FileDataRetriever fdrPassword = new FileDataRetriever(1, path);
         String username = fdrUsername.getData();
@@ -35,21 +34,20 @@ public class CryptoTraderDatabase {
         this.connectionUrl = serverPrefix + server + database + user + ending;
         try {
             this.connection = DriverManager.getConnection(this.connectionUrl);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
         if (this.connection != null) {
             System.out.println("Connected to database!");
-        }
-        else {
+        } else {
             System.out.println("Failed to connect to database!");
         }
     }
     public void reconnect() {
         try {
             this.connection = DriverManager.getConnection(this.connectionUrl);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
     public Currency getCurrency() {
