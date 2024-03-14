@@ -1,4 +1,4 @@
-package org.theoliverlear.model;
+package org.theoliverlear.model.deprecated;
 import java.io.IOException;
 public class CurrencyIntervalThread implements Runnable {
     Currency currency;
