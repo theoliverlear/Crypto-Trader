@@ -1,4 +1,4 @@
-package org.theoliverlear.model;
+package org.theoliverlear.model.deprecated;
 
 public enum OfficialCurrency {
     BTC("Bitcoin", "BTC", "https://api.coinbase.com/v2/prices/BTC-USD/spot"),
