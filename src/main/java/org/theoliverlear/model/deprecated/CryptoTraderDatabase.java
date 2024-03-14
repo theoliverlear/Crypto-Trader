@@ -1,4 +1,4 @@
-package org.theoliverlear.model;
+package org.theoliverlear.model.deprecated;
 import org.theoliverlear.coinbasev2.FileDataRetriever;
 
 import java.io.IOException;
