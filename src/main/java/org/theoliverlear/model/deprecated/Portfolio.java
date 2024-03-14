@@ -1,8 +1,8 @@
-package org.theoliverlear.model;
+package org.theoliverlear.model.deprecated;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static org.theoliverlear.model.Currency.isSameDenominationStatic;
+import static org.theoliverlear.model.deprecated.Currency.isSameDenominationStatic;
 /*
 Portfolio
     - Dollars
