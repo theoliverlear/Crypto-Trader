@@ -1,4 +1,4 @@
-package org.theoliverlear.model;
+package org.theoliverlear.model.deprecated;
 
 import java.io.BufferedReader;
 import java.io.IOException;
