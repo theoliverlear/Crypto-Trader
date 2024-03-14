@@ -1,5 +1,5 @@
 package junit;
-import org.theoliverlear.model.Currency;
+import org.theoliverlear.model.deprecated.Currency;
 import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CurrencyTest {
