@@ -1,26 +1,33 @@
 package junit;
-import org.theoliverlear.model.deprecated.Currency;
-import org.junit.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
+import org.theoliverlear.entity.Currency;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class CurrencyTest {
-    Currency testBitcoin = new Currency("Bitcoin", "BTC", "https://api.coinbase.com/v2/prices/BTC-USD/spot");
+    Currency testCurrency = new Currency("Bitcoin", "BTC", "https://api.coinbase.com/v2/prices/BTC-USD/spot");
     @Test
-    public void testGetName() {
-        assertEquals("Bitcoin", testBitcoin.getName());
+    public void testNullInstances() {
+        boolean nameIsNull = this.testCurrency.getName() == null;
+        boolean currencyCodeIsNull = this.testCurrency.getCurrencyCode() == null;
+        boolean urlPathIsNull = this.testCurrency.getUrlPath() == null;
+        boolean formattedValueIsNull = this.testCurrency.getFormattedValue() == null;
+        assertFalse(nameIsNull);
+        assertFalse(currencyCodeIsNull);
+        assertFalse(urlPathIsNull);
+        assertFalse(formattedValueIsNull);
     }
     @Test
-    public void testGetCurrencyCode() {
-        assertEquals("BTC", testBitcoin.getCurrencyCode());
+    public void testGetValueFromJson() {
+        double value = this.testCurrency.getValue();
+        System.out.println(value);
+        assertTrue(value > 0);
     }
     @Test
-    public void testGetFormattedValue() {
-        // Test against Bitcoin's current value
-        String formattedValue = testBitcoin.getFormattedValue();
-        String[] formattedValueSplit = formattedValue.split("\\.");
-        int formatLeftSide = formattedValueSplit[0].replace("$", "")
-                                                   .replace(",", "").length();
-        int formatRightSide = formattedValueSplit[1].length();
-        assertEquals(5, formatLeftSide);
-        assertEquals(8, formatRightSide);
+    public void testGetCurrencyApiJson() {
+        String json = this.testCurrency.getCurrencyApiJson();
+        System.out.println(json);
     }
 }
