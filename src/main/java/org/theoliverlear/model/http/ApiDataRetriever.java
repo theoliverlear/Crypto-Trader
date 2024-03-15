@@ -1,24 +1,29 @@
 package org.theoliverlear.model.http;
-
+//=================================-Imports-==================================
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 public class ApiDataRetriever {
+    //============================-Variables-=================================
     String url;
     String response;
+    //============================-Constants-=================================
+    static final String NO_DATA_ERROR_MESSAGE = "Error: No data received " +
+                                                "from API";
+    //===========================-Constructors-===============================
     public ApiDataRetriever(String url) {
         this.url = url;
         this.response = "";
         this.fetchResponse();
     }
+    //=============================-Methods-==================================
     public void fetchResponse() {
-        StringBuilder currencyJson = new StringBuilder();
+        StringBuilder responseJson = new StringBuilder();
         HttpsURLConnection urlConnection = null;
         BufferedReader apiReader = null;
         try {
@@ -31,15 +36,16 @@ public class ApiDataRetriever {
             apiReader = new BufferedReader(urlStreamReader);
             String jsonLine;
             while ((jsonLine = apiReader.readLine()) != null) {
-                currencyJson.append(jsonLine);
+                responseJson.append(jsonLine);
             }
         } catch (URISyntaxException | IOException ex) {
             ex.printStackTrace();
         } finally {
-            if (currencyJson.length() == 0) {
-                this.response = "Error: No data received from API";
+            if (responseJson.isEmpty()) {
+                this.response = NO_DATA_ERROR_MESSAGE;
+                System.out.println(NO_DATA_ERROR_MESSAGE);
             } else {
-                this.response = currencyJson.toString();
+                this.response = responseJson.toString();
             }
             this.shutDownConnections(urlConnection, apiReader);
         }
@@ -56,7 +62,17 @@ public class ApiDataRetriever {
             urlConnection.disconnect();
         }
     }
+    //============================-Overrides-=================================
+
+    //------------------------------Equals------------------------------------
+
+    //------------------------------Hash-Code---------------------------------
+
+    //------------------------------To-String---------------------------------
+
+    //=============================-Getters-==================================
     public String getResponse() {
         return this.response;
     }
+    //=============================-Setters-==================================
 }
