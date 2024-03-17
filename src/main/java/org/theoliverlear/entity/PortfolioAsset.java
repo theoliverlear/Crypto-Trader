@@ -32,6 +32,12 @@ public class PortfolioAsset {
     public void fetchSharesValueInDollars() {
         this.sharesValueInDollars = this.shares * this.currency.getValue();
     }
+    public boolean canSell() {
+        return this.shares > 0;
+    }
+    public boolean canBuy() {
+        return this.assetWalletDollars > 0;
+    }
     //============================-Overrides-=================================
 
     //------------------------------Equals------------------------------------
