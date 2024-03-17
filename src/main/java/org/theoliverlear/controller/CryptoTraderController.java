@@ -6,12 +6,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.theoliverlear.CryptoTrader;
 import org.theoliverlear.comm.UserRequest;
 import org.theoliverlear.entity.User;
 import org.theoliverlear.service.CryptoTraderService;
 
 @Controller
 public class CryptoTraderController {
+    User currentUser;
+    CryptoTrader cryptoTrader;
     @Autowired
     CryptoTraderService cryptoTraderService;
     @RequestMapping("/")
