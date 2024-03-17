@@ -9,3 +9,4 @@
 
 *.json
 *.xml
+/src/main/resources/ssl/keystore.p12
