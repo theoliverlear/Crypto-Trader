@@ -3,7 +3,8 @@
 /node_modules/
 /target/
 /CryptoTraderAnalysis/Environment/
-
+/Crypto-Trader.iml
+/crpto-trader.iml
 /CryptoTraderAnalysis/.idea/
 
 *.json
