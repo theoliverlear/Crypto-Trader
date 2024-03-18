@@ -1,7 +1,17 @@
 package org.theoliverlear.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
 //=================================-Imports-==================================
+@Entity
 public class PortfolioAsset {
     //============================-Variables-=================================
+    @Id
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "currency_code", nullable = false)
     private Currency currency;
     private double shares;
     private double sharesValueInDollars;
@@ -54,12 +64,15 @@ public class PortfolioAsset {
         return this.shares;
     }
     public double getSharesValueInDollars() {
+        this.updateValues();
         return this.sharesValueInDollars;
     }
     public double getAssetWalletDollars() {
+        this.updateValues();
         return this.assetWalletDollars;
     }
     public double getTotalValueInDollars() {
+        this.updateValues();
         return this.totalValueInDollars;
     }
     public double getTargetPrice() {
