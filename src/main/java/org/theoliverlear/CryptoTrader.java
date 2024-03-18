@@ -1,8 +1,6 @@
 package org.theoliverlear;
 //=================================-Imports-==================================
-import org.theoliverlear.entity.Currency;
 import org.theoliverlear.model.trade.Trader;
-import org.theoliverlear.model.thread.CurrencyUpdaterThread;
 
 import java.util.ArrayList;
 
@@ -19,6 +17,9 @@ public class CryptoTrader {
     public void addTrader(Trader trader) {
         this.traders.add(trader);
     }
+    public void addTraders(ArrayList<Trader> traders) {
+        this.traders.addAll(traders);
+    }
     public void startTraders() {
         for (Trader trader : this.traders) {
             trader.tradeAllAssets();
@@ -26,8 +27,6 @@ public class CryptoTrader {
     }
     //===============================-Main-===================================
     public static void main(String[] args) {
-        Currency bitcoin = new Currency("Bitcoin", "BTC", "https://api.coinbase.com/v2/prices/BTC-USD/spot");
-        CurrencyUpdaterThread currencyUpdaterThread = new CurrencyUpdaterThread(bitcoin);
-        currencyUpdaterThread.start();
+        CryptoTrader cryptoTrader = new CryptoTrader();
     }
 }
