@@ -1,9 +1,13 @@
 package org.theoliverlear.entity;
 //=================================-Imports-==================================
+import jakarta.persistence.*;
 import org.theoliverlear.model.http.ApiDataRetriever;
-
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "currencies")
+@SecondaryTable(name = "currency_history")
 public class Currency {
     // TODO: Instead of enums, perhaps have static constants instantiated
     //       during runtime.
@@ -12,18 +16,30 @@ public class Currency {
     //       difference price and percentage change.
     //============================-Variables-=================================
     private String name;
+    @Id
     private String currencyCode;
+    @Transient
     private String urlPath;
     private String formattedValue;
     private double value;
     private DecimalFormat decimalFormat = new DecimalFormat("##,#00.00000000");
+    private LocalDateTime lastUpdated;
     //===========================-Constructors-===============================
+    public Currency() {
+        this.name = "";
+        this.currencyCode = "";
+        this.urlPath = "";
+        this.value = 0;
+        this.formattedValue = "";
+        this.lastUpdated = LocalDateTime.now();
+    }
     public Currency(String name, String currencyCode, String urlPath) {
         this.name = name;
         this.currencyCode = currencyCode;
         this.urlPath = urlPath;
         this.value = this.getApiValue();
         this.formattedValue = this.decimalFormat.format(this.value);
+        this.lastUpdated = LocalDateTime.now();
     }
     public Currency(String name, String currencyCode, double value, String urlPath) {
         this.name = name;
@@ -31,6 +47,15 @@ public class Currency {
         this.value = value;
         this.urlPath = urlPath;
         this.formattedValue = this.decimalFormat.format(value);
+        this.lastUpdated = LocalDateTime.now();
+    }
+    public Currency(String name, String currencyCode, String urlPath, double value, LocalDateTime lastUpdated) {
+        this.name = name;
+        this.currencyCode = currencyCode;
+        this.urlPath = urlPath;
+        this.value = value;
+        this.formattedValue = this.decimalFormat.format(value);
+        this.lastUpdated = lastUpdated;
     }
     //=============================-Methods-==================================
 
@@ -82,7 +107,7 @@ public class Currency {
     @Override
     public String toString() {
         String currencyString = """
-                %s - %s - $%s""".formatted(this.name, this.currencyCode,
+                %20s --- %5s - $%16s""".formatted(this.name, this.currencyCode,
                                           this.formattedValue);
         return currencyString;
     }
