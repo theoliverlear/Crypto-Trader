@@ -2,7 +2,7 @@ package org.theoliverlear.model.thread;
 
 import org.theoliverlear.entity.Currency;
 
-public class CurrencyUpdaterThread extends Thread implements Runnable {
+public class CurrencyUpdaterThread extends Thread {
     Currency currency;
     public CurrencyUpdaterThread(Currency currency) {
         this.currency = currency;
