@@ -9,13 +9,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.theoliverlear.comm.UserRequest;
 import org.theoliverlear.entity.User;
 import org.theoliverlear.service.CryptoTraderService;
+import org.theoliverlear.service.CurrencyService;
+import org.theoliverlear.service.PortfolioService;
 
 @Controller
 public class CryptoTraderController {
     //============================-Variables-=================================
     User currentUser;
-    @Autowired
     CryptoTraderService cryptoTraderService;
+    CurrencyService currencyService;
+    @Autowired
+    public CryptoTraderController(CryptoTraderService cryptoTraderService,
+                                  CurrencyService currencyService,
+                                  PortfolioService portfolioService) {
+        this.cryptoTraderService = cryptoTraderService;
+        this.currencyService = currencyService;
+    }
     //=============================-Methods-==================================
 
     //-------------------------------Index------------------------------------
