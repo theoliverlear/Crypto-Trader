@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html"
+      dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>Crypto Trader</title>
+    <link rel="stylesheet" href="../static/style/global-style.css"
+          th:href="@{/style/global-style.css}">
+    <link rel="stylesheet" href="../static/style/home-style.css"
+          th:href="@{/style/home-style.css}">
+
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li>
+                <h5>Home</h5>
+            </li>
+            <li>
+                <h5>Portfolio</h5>
+            </li>
+            <li>
+                <h5>Trader</h5>
+            </li>
+        </ul>
+        <div id="account-image-container">
+            <img id="default-avatar-image"
+                 src="../static/images/default_avatar.jpg"
+                 th:src="@{/images/default_avatar.jpg}" alt="user avatar">
+        </div>
+    </nav>
+</header>
+<main>
+    <section id="intro-stripe-section">
+        <div class="stripe-div-partition">
+
+            <div id="intro-text-container">
+                <p>
+                    Welcome to the Crypto Trader application! This application is
+                    designed to help you trade your favorite cryptocurrencies. The
+                    best part is that you don't have to do a single thing. Our
+                    application will do all the trading for you. Our program is
+                    written to only trade profitably. Often times in the market,
+                    speed and timing is all. Luckily, these are two things that
+                    our computers excel at We leverage that to make you money.
+                    We make the right trades, at the right time, every time.
+                </p>
+            </div>
+            <div id="get-started-button">
+                <h3>Get Started</h3>
+            </div>
+
+        </div>
+        <div class="stripe-div-partition">
+            <h1>Crypto Trader</h1>
+            <div>
+                <h5 id="motto-text">Right trades, at the right time, every time.</h5>
+            </div>
+        </div>
+    </section>
+
+    <section id="functionality-section">
+        <div id="combined-functionality-and-text">
+            <div id="functionalities-div">
+                <div class="functionality-text-container">
+                    <h3>View Earnings</h3>
+                </div>
+                <div class="functionality-text-container">
+                    <h3>Detailed Statistics</h3>
+                </div>
+                <div class="functionality-text-container">
+                    <h3>Live Updates</h3>
+                </div>
+
+            </div>
+            <div id="chart-explain-div">
+                <p>
+                    You will get a real-time view of your earnings. The live
+                    chart will show you how much money you have made. You can
+                    see when your dedicated trader has bought or sold an
+                    asset.
+                </p>
+                <div id="chart-container">
+                    <canvas id="chart-div">Chart did not render.</canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <h3>Premium</h3>
+        <p>
+            At Crypto Trader, we believe everyone should access to an
+            automatic trader. We offer that with our free tier. We also have
+            options for those who want more. Our premium tier offers priority
+            trading and faster trading software. A single asset's price is
+            checked every 5 seconds in the free tier. In the premium tier,
+            the price is checked every 1 second. This means that you can
+            make trades faster, and that can mean more money. Our premium
+            tier also offers priority which means that your trades are
+            performed before the free tier. Instead of waiting in a queue
+            behind other users, your trades jump to the front of the line.
+
+            While premium users on average perform better than free users, we
+            offer both tiers to cover the cost of running the application. We
+            want to make sure that everyone has access to a trader, and so we
+            offer a higher performing tier which supports both the premium
+            user and the rest of our free users.
+        </p>
+    </section>
+    <section>
+        <h3>Integrations</h3>
+        <img class="supported-platform-image"
+             src="../static/images/coinbase_logo.svg"
+             th:src="@{/images/coinbase_logo.svg}" alt="coinbase logo">
+        <img class="supported-platform-image"
+             src="../static/images/binance_logo.png"
+             th:src="@{/images/binance_logo.svg}" alt="binance logo">
+    </section>
+    <section>
+        <section>
+            <h4>Sign-up</h4>
+            <form action="/signup" method="post">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Sign-up</button>
+            </form>
+        </section>
+    </section>
+</main>
+<script src="../static/script/global-script.js" type="module"
+        th:src="@{../static/script/global-script.js}"></script>
+<script src="../static/script/home-script.js" type="module"
+        th:src="@{../static/script/home-script.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>
