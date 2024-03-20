@@ -73,10 +73,10 @@ public class Indexer {
             }
         }
         Path directory = Paths.get(dir);
-        setNoIndex("index.html", "html/header.html", "html/search.html",
+        setNoIndex("home.html", "html/header.html", "html/search.html",
                 "html/frame.html", "html/fragments.html",
                 "html/sourceError.html", "html/source.html",
-                "html/mainWeb.html", "javadoc/index.html",
+                "html/mainWeb.html", "javadoc/home.html",
                 "javadoc/classes.html", "javadoc/allclasses-frame.html",
                 "javadoc/allclasses-noframe.html",
                 "javadoc/constant-values.html", "javadoc/overview-frame.html",
