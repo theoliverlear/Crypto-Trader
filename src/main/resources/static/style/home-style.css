@@ -1,0 +1,95 @@
+#intro-stripe-section {
+    background-color: #4074a8;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0;
+    left: 0;
+    margin: calc(((1vh + 1vw) / 2) + 1em) 0 0 0;
+}
+#intro-stripe-section p {
+    color: black;
+    margin: calc(((1vh + 1vw) / 2) + 1em);
+}
+.stripe-div-partition {
+    width: 50%;
+    margin: calc(((0.8vh + 0.8vw) / 2) + 0.8em) calc(((1vh + 1vw) / 2) + 1em);
+
+}
+.supported-platform-image {
+    width: calc(((4vh + 4vw) / 2) + 2em);
+    height: calc(((4vh + 4vw) / 2) + 2em);
+}
+#chart-container {
+    width: 70vw;
+    height: 20vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0 calc(((1vh + 1vw) / 2) + 1em);
+    background-color: #f8f9fa;
+
+}
+#functionality-section {
+    width: 100%;
+}
+#combined-functionality-and-text {
+    /*margin: 0 calc(((1vh + 1vw) / 2) + 1em);*/
+
+}
+#functionalities-div {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: calc(((1vh + 1vw) / 2) + 1em) 0;
+    margin: calc(((1vh + 1vw) / 2) + 1em) 0;
+    background-color: black;
+    box-shadow: #2c4557 0 0 calc(((1vh + 1vw) / 2) + 1em);
+    
+}
+.functionality-text-container {
+    background-color: #152f41;
+    padding: 0 calc(((1vh + 1vw) / 2) + 1em);
+    border-radius: calc(((1vh + 1vw) / 2) + 1em);
+    color: #f8f9fa;
+}
+#chart-explain-div {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: calc(((1vh + 1vw) / 2) + 1em) 0;
+    margin: calc(((1vh + 1vw) / 2) + 1em) 0;
+    background-color: #f8f9fa;
+    box-shadow: #2c4557 0 0 calc(((1vh + 1vw) / 2) + 1em);
+}
+#chart-explain-div p {
+     margin: calc(((1vh + 1vw) / 2) + 1em);
+}
+#intro-text-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: calc(((1vh + 1vw) / 2) + 1em) 0;
+    margin: calc(((1vh + 1vw) / 2) + 1em) 0;
+    background-color: hsl(210, 45%, 70%);
+    box-shadow: #2c4557 0 0 calc(((1vh + 1vw) / 2) + 1em);
+    border-radius: calc(((1vh + 1vw) / 2) + 1em);
+}
+#motto-text {
+    color: #152f41;
+    font-style: italic;
+}
+
+#get-started-button {
+    background-color: #ffe17b;
+    padding: calc(((0.5vh + 0.5vw) / 2) + 0.25em) 0;
+    border-radius: calc(((1vh + 1vw) / 2) + 1em);
+    width: calc(((20vh + 20vw) / 2) + 2em);
+    height: calc(((4vh + 4vw) / 2) + 2em);
+    margin: 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: #2c4557 0 0 calc(((1vh + 1vw) / 2) + 1em);
+}
