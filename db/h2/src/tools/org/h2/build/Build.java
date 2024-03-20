@@ -314,7 +314,7 @@ public class Build extends BuildBase {
         Method m = desktop.getMethod("getDesktop");
         Object d = m.invoke(null);
         m = d.getClass().getMethod("open", File.class);
-        m.invoke(d, new File("coverage/report/index.html"));
+        m.invoke(d, new File("coverage/report/home.html"));
     }
 
     private static String getTargetJavaVersion() {
@@ -357,7 +357,7 @@ public class Build extends BuildBase {
     @Description(summary = "Create the documentation from sources (incl. API Javadocs).")
     public void docs() {
         javadoc();
-        copy("docs", files("src/docsrc/index.html"), "src/docsrc");
+        copy("docs", files("src/docsrc/home.html"), "src/docsrc");
         java("org.h2.build.doc.XMLChecker", null);
         java("org.h2.build.code.CheckJavadoc", null);
         java("org.h2.build.code.CheckTextFiles", null);
