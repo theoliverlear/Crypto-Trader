@@ -52,7 +52,7 @@ public class UploadBuild {
         FtpClient ftp = FtpClient.open("h2database.com");
         ftp.login("h2database", password);
         ftp.changeWorkingDirectory("/httpdocs");
-        Path coverageFile = Paths.get("coverage/index.html");
+        Path coverageFile = Paths.get("coverage/home.html");
         boolean coverage = Files.exists(coverageFile);
         boolean coverageFailed;
         if (coverage) {
