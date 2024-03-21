@@ -9,33 +9,37 @@
           th:href="@{/style/global-style.css}">
     <link rel="stylesheet" href="../static/style/home-style.css"
           th:href="@{/style/home-style.css}">
-
 </head>
 <body>
 <header>
     <nav>
         <ul>
             <li>
-                <h5>Home</h5>
+                <div class="nav-bar-item-container">
+                    <h5>Home</h5>
+                </div>
             </li>
             <li>
-                <h5>Portfolio</h5>
+                <div class="nav-bar-item-container">
+                    <h5>Portfolio</h5>
+                </div>
             </li>
             <li>
-                <h5>Trader</h5>
+                <div class="nav-bar-item-container">
+                    <h5>Trader</h5>
+                </div>
             </li>
         </ul>
         <div id="account-image-container">
             <img id="default-avatar-image"
-                 src="../static/images/default_avatar.jpg"
-                 th:src="@{/images/default_avatar.jpg}" alt="user avatar">
+                 src="../static/images/default_avatar.png"
+                 th:src="@{/images/default_avatar.png}" alt="user avatar">
         </div>
     </nav>
 </header>
 <main>
     <section id="intro-stripe-section">
         <div class="stripe-div-partition">
-
             <div id="intro-text-container">
                 <p>
                     Welcome to the Crypto Trader application! This application is
@@ -47,20 +51,22 @@
                     our computers excel at We leverage that to make you money.
                     We make the right trades, at the right time, every time.
                 </p>
+                <a href="user.html" class="button-navigator">
+                    <div id="get-started-button" class="general-button">
+                        <h3>Get Started</h3>
+                    </div>
+                </a>
             </div>
-            <div id="get-started-button">
-                <h3>Get Started</h3>
-            </div>
-
         </div>
-        <div class="stripe-div-partition">
+        <div id="title-and-motto-div" class="stripe-div-partition">
             <h1>Crypto Trader</h1>
             <div>
-                <h5 id="motto-text">Right trades, at the right time, every time.</h5>
+                <h5 id="motto-text">
+                    Right trades, at the right time, every time.
+                </h5>
             </div>
         </div>
     </section>
-
     <section id="functionality-section">
         <div id="combined-functionality-and-text">
             <div id="functionalities-div">
@@ -89,34 +95,94 @@
         </div>
     </section>
     <section>
-        <h3>Premium</h3>
-        <p>
-            At Crypto Trader, we believe everyone should access to an
-            automatic trader. We offer that with our free tier. We also have
-            options for those who want more. Our premium tier offers priority
-            trading and faster trading software. A single asset's price is
-            checked every 5 seconds in the free tier. In the premium tier,
-            the price is checked every 1 second. This means that you can
-            make trades faster, and that can mean more money. Our premium
-            tier also offers priority which means that your trades are
-            performed before the free tier. Instead of waiting in a queue
-            behind other users, your trades jump to the front of the line.
-
-            While premium users on average perform better than free users, we
-            offer both tiers to cover the cost of running the application. We
-            want to make sure that everyone has access to a trader, and so we
-            offer a higher performing tier which supports both the premium
-            user and the rest of our free users.
-        </p>
+        <h3>Benefits of Crypto Trader</h3>
+        <div>
+            PROJECTIONS, STATISTICS, AND USER STORIES
+        </div>
     </section>
-    <section>
+    <h3>Premium</h3>
+    <section id="features-section">
+        <div id="features-combined-div">
+            <div id="features-explained-div">
+                <p>
+                    At Crypto Trader, we believe everyone should access to an
+                    automatic trader. We offer that with our free tier. We also have
+                    options for those who want more. Our premium tier offers priority
+                    trading and faster trading software. A single asset's price is
+                    checked every 5 seconds in the free tier. In the premium tier,
+                    the price is checked every 1 second. This means that you can
+                    make trades faster, and that can mean more money. Our premium
+                    tier also offers priority which means that your trades are
+                    performed before the free tier. Instead of waiting in a queue
+                    behind other users, your trades jump to the front of the line.
+                    You get to secure the best deals at the best times with
+                    Crypto Trader Premium.
+                </p>
+                <p>
+                    While premium users on average perform better than free users, we
+                    offer both tiers to cover the cost of running the application. We
+                    want to make sure that everyone has access to a trader, and so we
+                    offer a higher performing tier which supports both the premium
+                    user and the rest of our free users.
+                </p>
+            </div>
+            <div id="feature-table-div">
+                <div id="feature-table">
+                    <div class="feature-row" id="feature-table-top-row">
+                        <div class="feature-column feature-table-first-column">
+                            <h4></h4>
+                        </div>
+                        <div class="feature-column">
+                            <h4>Free</h4>
+                        </div>
+                        <div class="feature-column">
+                            <h4>Premium</h4>
+                        </div>
+                    </div>
+                    <div class="feature-row">
+                        <div class="feature-column feature-table-first-column">
+                            <h5>Speed</h5>
+                        </div>
+                        <div class="feature-column">
+                            <h5>5 Seconds</h5>
+                        </div>
+                        <div class="feature-column">
+                            <h5>1 Second</h5>
+                        </div>
+                    </div>
+                    <div class="feature-row">
+                        <div class="feature-column feature-table-first-column">
+                            <h5>Priority</h5>
+                        </div>
+                        <div class="feature-column">
+                            <h5>✘</h5>
+                        </div>
+                        <div class="feature-column">
+                            <h5>✔</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="integrations-section">
         <h3>Integrations</h3>
-        <img class="supported-platform-image"
-             src="../static/images/coinbase_logo.svg"
-             th:src="@{/images/coinbase_logo.svg}" alt="coinbase logo">
-        <img class="supported-platform-image"
-             src="../static/images/binance_logo.png"
-             th:src="@{/images/binance_logo.svg}" alt="binance logo">
+        <p>
+            We currently are working on integrations with Coinbase and
+            Binance. Since they allow for API trading, we can implement our
+            trading software to work with their platforms. This means that
+            you can simply link your account and let our software do the money
+            making for you. We are working on adding more platforms, so stay
+            tuned for more updates.
+        </p>
+        <div id="integrations-div">
+            <img class="supported-platform-image"
+                 src="../static/images/coinbase_logo.svg"
+                 th:src="@{/images/coinbase_logo.svg}" alt="coinbase logo">
+            <img class="supported-platform-image"
+                 src="../static/images/binance_logo.png"
+                 th:src="@{/images/binance_logo.svg}" alt="binance logo">
+        </div>
     </section>
     <section>
         <section>
