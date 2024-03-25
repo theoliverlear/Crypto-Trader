@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html"
+      dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>Portfolio Builder | Crypto Trader</title>
+    <link rel="stylesheet" href="../static/style/global-style.css"
+          th:href="@{/style/global-style.css}">
+    <link rel="stylesheet" href="../static/style/portfolio-builder-style.css"
+          th:href="@{/style/portfolio-builder-style.css}">
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li>
+                <a href="home.html" class="link-no-style">
+                    <div class="nav-bar-item-container">
+                        <h5>Home</h5>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <div class="nav-bar-item-container">
+                    <h5>Portfolio</h5>
+                </div>
+            </li>
+            <li>
+                <div class="nav-bar-item-container">
+                    <h5>Trader</h5>
+                </div>
+            </li>
+        </ul>
+        <a href="user.html" class="link-no-style">
+            <div id="account-image-container">
+                <img id="default-avatar-image"
+                     src="../static/images/default_avatar.png"
+                     th:src="@{/images/default_avatar.png}" alt="user avatar">
+            </div>
+        </a>
+    </nav>
+</header>
+<main>
+    <section id="portfolio-builder-section">
+        <div id="portfolio-builder-header" class="stripe-div-partition">
+            <h2>Portfolio Builder</h2>
+            <h5 class="subtitle-text">
+                Select the currencies you would like to have traded.
+            </h5>
+        </div>
+        <div id="portfolio-builder-div">
+            <div class="small-button" id="add-currency-button">
+                <h5 class="small-button-text">Add Currency</h5>
+            </div>
+            <div>
+                <div id="your-currencies-header"
+                     class="portfolio-builder-header">
+                    <h5>Your Currencies</h5>
+                </div>
+                <div id="your-currencies-list" class="portfolio-builder-list">
+                    <div class="portfolio-builder-item">
+                        <img class="your-currency-image">
+                        <div>
+                            <h5>Currency From Script</h5>
+                        </div>
+                        <div>
+                            <div class="shares-div">
+                                <div>
+                                    <h5>Shares: </h5>
+                                </div>
+                                <div>
+                                    <input min="0"  type="number" class="shares-input">
+                                </div>
+                            </div>
+                            <div class="wallet-div">
+                                <div>
+                                    <h5>Wallet <var>$</var>: </h5>
+                                </div>
+                                <div>
+                                    <input min="0" type="number" class="wallet-input">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="currency-dropdown-list" class="general-dropdown-list">
+                        <div id="currency-dropdown"
+                             class="dropdown-item dropdown-with-caret">
+                            <h5 id="currency-selection-text">Select Currency</h5>
+                            <div id="currency-dropdown-caret" class="dropdown-caret">
+                                <img id="currency-dropdown-caret-image"
+                                     src="../static/images/down_caret.svg"
+                                     alt="dropdown caret">
+                            </div>
+                        </div>
+                        <div class="dropdown-selection hide"
+                             id="currency-dropdown-selection">
+                            <div class="dropdown-option currency-dropdown-option" id="bitcoin-option">
+                                <img class="currency-option-image"
+                                     src="../static/images/logo/bitcoin_logo.png"
+                                     alt="bitcoin logo">
+                                <h5 class="dropdown-option-text currency-option-text">Bitcoin</h5>
+                            </div>
+                            <div class="dropdown-option currency-dropdown-option" id="ethereum-option">
+                                <img class="currency-option-image"
+                                     src="../static/images/logo/ethereum_logo.png"
+                                     alt="ethereum logo">
+                                <h5 class="dropdown-option-text currency-option-text">Ethereum</h5>
+                            </div>
+                            <div class="dropdown-option round-bottom currency-dropdown-option"
+                                 id="litecoin-option">
+                                <img class="currency-option-image"
+                                     src="../static/images/logo/litecoin_logo.png"
+                                     alt="litecoin logo">
+                                <h5 class="dropdown-option-text currency-option-text">Litecoin</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<script src="../static/script/global-script.js"
+        th:src="@{/scripts/global-script.js}"></script>
+<script src="../static/script/portfolio-builder-script.js"
+        th:src="@{/scripts/portfolio-builder-script.js}"></script>
+</body>
+</html>
