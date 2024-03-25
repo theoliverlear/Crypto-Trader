@@ -1,0 +1,60 @@
+#portfolio-builder-section {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+#currency-dropdown {
+
+}
+#portfolio-builder-header {
+    background-color: var(--muted-blue);
+    padding: calc(((0.25vh + 0.25vw) / 2) + 0.15em) 0;
+    margin: calc(((1vh + 1vw) / 2) + 0.5em) 0;
+    width: 100%;
+}
+.currency-option-image {
+    width: calc(((2vh + 2vw) / 2) + 1em);
+    height: calc(((2vh + 2vw) / 2) + 1em);
+    margin: 0;
+    padding: 0;
+}
+#portfolio-builder-div {
+    /*width: 50%;*/
+}
+#currency-dropdown-list {
+    width: calc(((15vh + 15vw) / 2) + 1em);
+
+}
+#currency-dropdown h5 {
+    margin: 0;
+    padding: 0;
+}
+#bitcoin-option:hover {
+    background-color: #F7931A;
+}
+#ethereum-option:hover {
+    background-color: #6480EB;
+}
+#litecoin-option:hover {
+    background-color: #375F9E;
+}
+.portfolio-builder-item {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    padding: calc(((0.5vh + 0.5vw) / 2) + 0.5em);
+    margin: calc(((0.5vh + 0.5vw) / 2) + 0.5em) 0;
+    background-color: var(--almost-white);
+    box-shadow: var(--blue-grey) 0 0 calc(((0.5vh + 0.5vw) / 2) + 0.5em);
+    border-radius: calc(((0.5vh + 0.5vw) / 2) + 0.5em);
+
+}
+.shares-div, .wallet-div {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
