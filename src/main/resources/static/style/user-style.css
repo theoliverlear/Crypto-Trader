@@ -2,11 +2,16 @@
     margin: calc(((5vh + 5vw) / 2) + 2em) 0 0 0;
     padding: 0;
     height: auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 #tab-selectors-div {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: start;
+    /*margin: 0 calc(((14vh + 14vw) / 2) + 5em) 0 0;*/
+    width: 50%;
 }
 .user-info-tab-selector-tab {
     border-top: black calc(((0.05vh + 0.05vw) / 2) + 0.05em) solid;
@@ -14,12 +19,20 @@
     border-right: black calc(((0.05vh + 0.05vw) / 2) + 0.05em) solid;
     border-radius: calc(((1vh + 1vw) / 2) + 1em) calc(((1vh + 1vw) / 2) + 1em) 0 0;
     padding: 0 calc(((1vh + 1vw) / 2) + 1em);
-    margin: 0 calc(((5vh + 5vw) / 2) + 2em) 0 0;
+    margin: 0 calc(((1vh + 1vw) / 2) + 0.2em) 0 0;
     box-shadow: var(--blue-grey) calc(((0.25vh + 0.25vw) / 2) + 0.25em) calc((((0.25vh + 0.25vw) / 2) + 0.25em) * -1) 0 0;
     z-index: 0;
     background-color: var(--almost-white);
     transition: box-shadow, margin-top, margin-left, padding-bottom, 0.3s;
     width: calc(((5vh + 5vw) / 2) + 1.5em);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.user-info-tab-selector-tab h5 {
+    margin: calc(((0.25vh + 0.25vw) / 2) + 0.25em) 0 0 0;
+    height: calc(((2vh + 2vw) / 2) + 0.7em);
 }
 #login-tab-selector {
     margin-left: calc(((0.35vh + 0.35vw) / 2) + 0.35em);
@@ -39,13 +52,14 @@
     margin-left: calc(((0.65vh + 0.65vw) / 2) + 0.65em);
 }
 #user-info-container {
-    width: 80%;
+    width: 60%;
     display: flex;
     justify-content: space-around;
     align-items: center;
     flex-direction: column;
     height: auto;
-
+    padding: 0;
+    margin: 0;
 }
 .prompt-popup-div {
     display: none;
@@ -59,7 +73,7 @@
     border: calc(((0.05vh + 0.05vw) / 2) + 0.05em) solid black;
     width: 60%;
     margin: calc((((0.05vh + 0.05vw) / 2) + 0.05em) * -1) 0 calc(((5vh + 5vw) / 2) + 2em) 0;
-    padding: 0;
+    padding: 0 0 calc(((2vh + 2vw) / 2) + 1em) 0;
     border-radius: calc(((1vh + 1vw) / 2) + 1em);
     display: flex;
     justify-content: space-around;
@@ -71,4 +85,10 @@
 #user-content-container:hover {
     box-shadow: var(--blue-grey) calc(((0.45vh + 0.45vw) / 2) + 0.45em) calc((((0.45vh + 0.45vw) / 2) + 0.45em) * -1) 0 0;
 }
-
+.input-with-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    margin: 0;
+}
