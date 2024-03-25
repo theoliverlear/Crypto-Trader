@@ -10,14 +10,17 @@
     <link rel="stylesheet" href="../static/style/home-style.css"
           th:href="@{/style/home-style.css}">
 </head>
+<!-- TODO: Turn the following nav bar into a Thymeleaf template. -->
 <body>
 <header>
     <nav>
         <ul>
             <li>
-                <div class="nav-bar-item-container">
-                    <h5>Home</h5>
-                </div>
+                <a href="home.html" class="link-no-style">
+                    <div class="nav-bar-item-container">
+                        <h5>Home</h5>
+                    </div>
+                </a>
             </li>
             <li>
                 <div class="nav-bar-item-container">
@@ -30,11 +33,13 @@
                 </div>
             </li>
         </ul>
+        <a href="user.html" class="link-no-style">
         <div id="account-image-container">
             <img id="default-avatar-image"
                  src="../static/images/default_avatar.png"
                  th:src="@{/images/default_avatar.png}" alt="user avatar">
         </div>
+        </a>
     </nav>
 </header>
 <main>
@@ -42,16 +47,17 @@
         <div class="stripe-div-partition">
             <div id="intro-text-container">
                 <p>
-                    Welcome to the Crypto Trader application! This application is
-                    designed to help you trade your favorite cryptocurrencies. The
-                    best part is that you don't have to do a single thing. Our
-                    application will do all the trading for you. Our program is
-                    written to only trade profitably. Often times in the market,
-                    speed and timing is all. Luckily, these are two things that
-                    our computers excel at We leverage that to make you money.
-                    We make the right trades, at the right time, every time.
+                    Welcome to the Crypto Trader application! This application
+                    is designed to help you trade your favorite
+                    cryptocurrencies. The best part is that you don't have to
+                    do a single thing. Our application will do all the trading
+                    for you. Our program is written to only trade profitably.
+                    Often times in the market, speed and timing is all.
+                    Luckily, these are two things that our computers excel at
+                    We leverage that to make you money. We make the right
+                    trades, at the right time, every time.
                 </p>
-                <a href="user.html" class="button-navigator">
+                <a href="get-started.html" class="link-no-style">
                     <div id="get-started-button" class="general-button">
                         <h3>Get Started</h3>
                     </div>
@@ -61,7 +67,7 @@
         <div id="title-and-motto-div" class="stripe-div-partition">
             <h1>Crypto Trader</h1>
             <div>
-                <h5 id="motto-text">
+                <h5 class="subtitle-text" id="motto-text">
                     Right trades, at the right time, every time.
                 </h5>
             </div>
@@ -79,7 +85,6 @@
                 <div class="functionality-text-container">
                     <h3>Live Updates</h3>
                 </div>
-
             </div>
             <div id="chart-explain-div">
                 <p>
@@ -106,24 +111,26 @@
             <div id="features-explained-div">
                 <p>
                     At Crypto Trader, we believe everyone should access to an
-                    automatic trader. We offer that with our free tier. We also have
-                    options for those who want more. Our premium tier offers priority
-                    trading and faster trading software. A single asset's price is
-                    checked every 5 seconds in the free tier. In the premium tier,
-                    the price is checked every 1 second. This means that you can
-                    make trades faster, and that can mean more money. Our premium
-                    tier also offers priority which means that your trades are
-                    performed before the free tier. Instead of waiting in a queue
-                    behind other users, your trades jump to the front of the line.
-                    You get to secure the best deals at the best times with
-                    Crypto Trader Premium.
+                    automatic trader. We offer that with our free tier. We
+                    also have options for those who want more. Our premium
+                    tier offers priority trading and faster trading software.
+                    A single asset's price is checked every 5 seconds in the
+                    free tier. In the premium tier, the price is checked every
+                    1 second. This means that you can make trades faster, and
+                    that can mean more money. Our premium tier also offers
+                    priority which means that your trades are performed before
+                    the free tier. Instead of waiting in a queue behind other
+                    users, your trades jump to the front of the line. You get
+                    to secure the best deals at the best times with Crypto
+                    Trader Premium.
                 </p>
                 <p>
-                    While premium users on average perform better than free users, we
-                    offer both tiers to cover the cost of running the application. We
-                    want to make sure that everyone has access to a trader, and so we
-                    offer a higher performing tier which supports both the premium
-                    user and the rest of our free users.
+                    While premium users on average perform better than free
+                    users, we offer both tiers to cover the cost of running
+                    the application. We want to make sure that everyone has
+                    access to a trader, and so we offer a higher performing
+                    tier which supports both the premium user and the rest of
+                    our free users.
                 </p>
             </div>
             <div id="feature-table-div">
@@ -177,11 +184,11 @@
         </p>
         <div id="integrations-div">
             <img class="supported-platform-image"
-                 src="../static/images/coinbase_logo.svg"
-                 th:src="@{/images/coinbase_logo.svg}" alt="coinbase logo">
+                 src="../static/images/logo/coinbase_logo.svg"
+                 th:src="@{/images/logo/coinbase_logo.svg}" alt="coinbase logo">
             <img class="supported-platform-image"
-                 src="../static/images/binance_logo.png"
-                 th:src="@{/images/binance_logo.svg}" alt="binance logo">
+                 src="../static/images/logo/binance_logo.png"
+                 th:src="@{/images/logo/binance_logo.svg}" alt="binance logo">
         </div>
     </section>
     <section>
