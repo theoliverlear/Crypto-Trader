@@ -6,39 +6,41 @@
     <meta charset="UTF-8">
     <title>Get Started | Crypto Trader</title>
     <link rel="stylesheet" href="../static/style/global-style.css"
-            th:href="@{/style/global-style.css}">
+          th:href="@{/style/global-style.css}">
     <link rel="stylesheet" href="../static/style/get-started-style.css"
-            th:href="@{/style/get-started-style.css}">
+          th:href="@{/style/get-started-style.css}">
 </head>
 <body>
 <header>
     <nav>
-        <ul>
-            <li>
-                <a href="home.html" class="link-no-style">
+        <div id="nav-div">
+            <div class="nav-item">
+                <a href="/" class="link-no-style">
                     <div class="nav-bar-item-container">
                         <h5>Home</h5>
                     </div>
                 </a>
-            </li>
-            <li>
+            </div>
+            <div class="nav-item">
                 <div class="nav-bar-item-container">
                     <h5>Portfolio</h5>
                 </div>
-            </li>
-            <li>
+            </div>
+            <div class="nav-item">
                 <div class="nav-bar-item-container">
                     <h5>Trader</h5>
                 </div>
-            </li>
-        </ul>
-        <a href="user.html" class="link-no-style">
-            <div id="account-image-container">
-                <img id="default-avatar-image"
-                     src="../static/images/default_avatar.png"
-                     th:src="@{/images/default_avatar.png}" alt="user avatar">
             </div>
-        </a>
+        </div>
+        <div>
+            <a href="user.html" class="link-no-style">
+                <div id="account-image-container">
+                    <img id="default-avatar-image"
+                         src="../static/images/default_avatar.png"
+                         th:src="@{/images/default_avatar.png}" alt="user avatar">
+                </div>
+            </a>
+        </div>
     </nav>
 </header>
 <main>
@@ -64,14 +66,15 @@
                         <h5>Confirm Password: </h5>
                         <input type="password" id="signup-confirm-password-input">
                     </div>
-                    <div>
-                        <p id="terms-agree-text">
+                    <div class="prompt-popup-div" id="signup-prompt-popup-div">
+                        <p class="popup-text" id="signup-prompt-popup-text"></p>
+                    </div>
+                    <div class="agree-terms-div">
+                        <input type="checkbox" class="terms-agree-checkbox" id="signup-terms-agree-checkbox">
+                        <p class="terms-agree-text">
                             By signing up, you agree to our terms and
                             conditions.
                         </p>
-                    </div>
-                    <div class="prompt-popup-div" id="signup-prompt-popup-div">
-
                     </div>
                     <div id="signup-button-container" class="general-button-inverted">
                         <h4>Sign Up</h4>
