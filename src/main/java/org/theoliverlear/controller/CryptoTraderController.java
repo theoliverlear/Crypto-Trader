@@ -18,19 +18,26 @@ public class CryptoTraderController {
     User currentUser;
     CryptoTraderService cryptoTraderService;
     CurrencyService currencyService;
+    PortfolioService portfolioService;
     @Autowired
     public CryptoTraderController(CryptoTraderService cryptoTraderService,
                                   CurrencyService currencyService,
                                   PortfolioService portfolioService) {
         this.cryptoTraderService = cryptoTraderService;
         this.currencyService = currencyService;
+        this.portfolioService = portfolioService;
     }
     //=============================-Methods-==================================
 
-    //-------------------------------Index------------------------------------
+    //--------------------------------Home------------------------------------
     @RequestMapping("/")
     public String home() {
         return "home";
+    }
+    //----------------------------Get-Started---------------------------------
+    @RequestMapping("/get-started")
+    public String getStarted() {
+        return "get-started";
     }
     //-------------------------------Login------------------------------------
     @RequestMapping("/signup")
