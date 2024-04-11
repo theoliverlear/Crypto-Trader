@@ -7,7 +7,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "currencies")
-@SecondaryTable(name = "currency_history")
+@SecondaryTable(name = "currency_history", pkJoinColumns = @PrimaryKeyJoinColumn(name = "currency_code",
+                referencedColumnName = "currency_code"))
 public class Currency {
     // TODO: Instead of enums, perhaps have static constants instantiated
     //       during runtime.
@@ -17,12 +18,17 @@ public class Currency {
     //============================-Variables-=================================
     private String name;
     @Id
+    @Column(name = "currency_code")
     private String currencyCode;
     @Transient
     private String urlPath;
-    private String formattedValue;
+    @Column(name = "currency_value")
     private double value;
+    @Column(name = "currency_value_formatted")
+    private String formattedValue;
+    @Transient
     private DecimalFormat decimalFormat = new DecimalFormat("##,#00.00000000");
+    @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
     //===========================-Constructors-===============================
     public Currency() {
@@ -61,6 +67,7 @@ public class Currency {
 
     //----------------------------Update-Value--------------------------------
     public void updateValue() {
+        this.lastUpdated = LocalDateTime.now();
         this.value = this.getApiValue();
         this.formattedValue = this.formatValue(this.value);
     }
