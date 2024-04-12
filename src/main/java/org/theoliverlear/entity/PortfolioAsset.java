@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import org.theoliverlear.update.SupportedCurrencies;
 
 //=================================-Imports-==================================
 @Entity
@@ -21,6 +22,14 @@ public class PortfolioAsset {
     // TODO: Add buying strategy which may sell the whole asset, only the
     //       profits, or a set amount or percentage of the asset.
     //===========================-Constructors-===============================
+    public PortfolioAsset() {
+        this.currency = SupportedCurrencies.BITCOIN;
+        this.shares = 0;
+        this.sharesValueInDollars = 0;
+        this.assetWalletDollars = 0;
+        this.fetchTotalValueInDollars();
+        this.targetPrice = 0;
+    }
     public PortfolioAsset(Currency currency, double shares, double assetWalletDollars) {
         this.currency = currency;
         this.shares = shares;
