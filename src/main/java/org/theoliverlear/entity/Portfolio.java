@@ -1,9 +1,7 @@
 package org.theoliverlear.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
+import org.theoliverlear.convert.PortfolioAssetArrayListConverter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,7 +14,7 @@ public class Portfolio {
     double shareBalance;
     double totalWorth;
     LocalDateTime lastUpdated;
-    @Transient
+    @Convert(converter = PortfolioAssetArrayListConverter.class)
     private ArrayList<PortfolioAsset> assets;
     //===========================-Constructors-===============================
     public Portfolio() {
