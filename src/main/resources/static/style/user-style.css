@@ -64,11 +64,6 @@
 .prompt-popup-div {
     display: none;
 }
-#terms-agree-text {
-    text-decoration: underline;
-    margin: calc(((0.25vh + 0.25vw) / 2) + 0.25em) 0;
-    height: calc(((2vh + 2vw) / 2) + 0.7em);
-}
 #user-content-container {
     border: calc(((0.05vh + 0.05vw) / 2) + 0.05em) solid black;
     width: 60%;
