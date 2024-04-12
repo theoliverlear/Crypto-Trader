@@ -23,7 +23,8 @@
     box-shadow: var(--blue-grey) calc(((0.25vh + 0.25vw) / 2) + 0.25em)
                                  calc((((0.25vh + 0.25vw) / 2) + 0.25em) * -1) 0 0;
     z-index: 0;
-    background-color: var(--almost-white);
+    /*background-color: var(--almost-white);*/
+    background-color: var(--pure-white);
     transition: box-shadow, margin-top, margin-left, padding-bottom, 0.3s;
     width: calc(((5vh + 5vw) / 2) + 1.5em);
     text-align: center;
@@ -84,6 +85,8 @@
     box-shadow: var(--blue-grey) calc(((0.35vh + 0.35vw) / 2) + 0.35em)
                                  calc((((0.35vh + 0.35vw) / 2) + 0.35em) * -1) 0 0;
     transition: box-shadow, 0.3s;
+    /*background-color: var(--almost-white);*/
+
 }
 #user-content-container:hover {
     box-shadow: var(--blue-grey) calc(((0.45vh + 0.45vw) / 2) + 0.45em) calc((((0.45vh + 0.45vw) / 2) + 0.45em) * -1) 0 0;
