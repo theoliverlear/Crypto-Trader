@@ -14,32 +14,34 @@
 <body>
 <header>
     <nav>
-        <ul>
-            <li>
-                <a href="home.html" class="link-no-style">
+        <div id="nav-div">
+            <div class="nav-item">
+                <a href="/" class="link-no-style">
                     <div class="nav-bar-item-container">
                         <h5>Home</h5>
                     </div>
                 </a>
-            </li>
-            <li>
+            </div>
+            <div class="nav-item">
                 <div class="nav-bar-item-container">
                     <h5>Portfolio</h5>
                 </div>
-            </li>
-            <li>
+            </div>
+            <div class="nav-item">
                 <div class="nav-bar-item-container">
                     <h5>Trader</h5>
                 </div>
-            </li>
-        </ul>
-        <a href="user.html" class="link-no-style">
-        <div id="account-image-container">
-            <img id="default-avatar-image"
-                 src="../static/images/default_avatar.png"
-                 th:src="@{/images/default_avatar.png}" alt="user avatar">
+            </div>
         </div>
-        </a>
+        <div>
+            <a href="user.html" class="link-no-style">
+                <div id="account-image-container">
+                    <img id="default-avatar-image"
+                         src="../static/images/default_avatar.png"
+                         th:src="@{/images/default_avatar.png}" alt="user avatar">
+                </div>
+            </a>
+        </div>
     </nav>
 </header>
 <main>
@@ -57,7 +59,7 @@
                     We leverage that to make you money. We make the right
                     trades, at the right time, every time.
                 </p>
-                <a href="get-started.html" class="link-no-style">
+                <a href="/get-started" class="link-no-style">
                     <div id="get-started-button" class="general-button">
                         <h3>Get Started</h3>
                     </div>
@@ -99,13 +101,19 @@
             </div>
         </div>
     </section>
+    <!--
     <section>
         <h3>Benefits of Crypto Trader</h3>
         <div>
             PROJECTIONS, STATISTICS, AND USER STORIES
         </div>
     </section>
-    <h3>Premium</h3>
+    -->
+    <div id="premium-title-div" class="stripe-div-partition">
+        <div id="premium-title-text-div" class="header-section-bubble">
+            <h3 id="premium-title-text" class="header-section-text">Premium</h3>
+        </div>
+    </div>
     <section id="features-section">
         <div id="features-combined-div">
             <div id="features-explained-div">
@@ -173,22 +181,24 @@
         </div>
     </section>
     <section id="integrations-section">
-        <h3>Integrations</h3>
-        <p>
-            We currently are working on integrations with Coinbase and
-            Binance. Since they allow for API trading, we can implement our
-            trading software to work with their platforms. This means that
-            you can simply link your account and let our software do the money
-            making for you. We are working on adding more platforms, so stay
-            tuned for more updates.
-        </p>
+        <div class="header-section-bubble">
+            <h3 class="header-section-text">Integrations</h3>
+        </div>
         <div id="integrations-div">
             <img class="supported-platform-image"
                  src="../static/images/logo/coinbase_logo.svg"
                  th:src="@{/images/logo/coinbase_logo.svg}" alt="coinbase logo">
+            <p id="integrations-text">
+                We currently are working on integrations with Coinbase and
+                Binance. Since they allow for API trading, we can implement our
+                trading software to work with their platforms. This means that
+                you can simply link your account and let our software do the money
+                making for you. We are working on adding more platforms, so stay
+                tuned for more updates.
+            </p>
             <img class="supported-platform-image"
                  src="../static/images/logo/binance_logo.png"
-                 th:src="@{/images/logo/binance_logo.svg}" alt="binance logo">
+                 th:src="@{/images/logo/binance_logo.png}" alt="binance logo">
         </div>
     </section>
     <section>
