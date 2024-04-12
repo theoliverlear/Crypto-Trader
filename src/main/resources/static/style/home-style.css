@@ -13,7 +13,8 @@
 }
 .stripe-div-partition {
     width: 50%;
-    margin: calc(((0.8vh + 0.8vw) / 2) + 0.8em) calc(((1vh + 1vw) / 2) + 1em);
+    margin: calc(((0.8vh + 0.8vw) / 2) + 0.8em)
+            calc(((1vh + 1vw) / 2) + 1em);
 }
 #title-and-motto-div {
     text-align: center;
@@ -83,6 +84,33 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+    padding: calc(((1vh + 1vw) / 2) + 1em);
+    margin: calc(((1vh + 1vw) / 2) + 1em) 0;
+    background-color: var(--almost-white);
+    border-top: calc(((0.05vh + 0.05vw) / 2) + 0.05em) solid var(--blue-grey);
+    border-bottom: calc(((0.05vh + 0.05vw) / 2) + 0.05em) solid var(--blue-grey);
+}
+#premium-title-div {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(100% - ((1vh + 1vw) / 2) + 1em)
+}
+#premium-title-text-div {
+
+
+}
+#premium-title-text {
+    font-style: italic;
+}
+.header-section-bubble {
+    background-color: var(--morning-frost-blue);
+    padding: calc(((0.5vh + 0.5vw) / 2) + 0.5em) calc(((3vh + 3vw) / 2) + 3em);
+    border-radius: calc(((1vh + 1vw) / 2) + 1em);
+}
+.header-section-text {
+    font-style: italic;
 }
 #features-combined-div {
     display: flex;
@@ -101,11 +129,11 @@
     flex-direction: column;
 }
 #integrations-div {
-    width: 40%;
+    width: 75%;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: calc(((1vh + 1vw) / 2) + 1em) 0;
+    padding: calc(((1vh + 1vw) / 2) + 1em);
     margin: calc(((1vh + 1vw) / 2) + 1em) 0;
     /*background-color: cadetblue;*/
     /*background-color: #296367;*/
@@ -118,6 +146,10 @@
     height: calc(((7vh + 7vw) / 2) + 3em);
     box-shadow: var(--blue-grey) 0 0 calc(((1vh + 1vw) / 2) + 1em);
     border-radius: 50%;
+    margin: calc(((1vh + 1vw) / 2) + 1em);
+}
+#integrations-text {
+    text-indent: calc(((1vh + 1vw) / 2) + 1em);
 }
 #feature-table {
     display: flex;
@@ -126,6 +158,7 @@
     flex-direction: column;
     border: calc(((0.05vh + 0.05vw) / 2) + 0.05em) solid black;
     border-radius: calc(((1vh + 1vw) / 2) + 1em);
+    margin: 0 calc(((1vh + 1vw) / 2) + 1em);
 }
 .feature-row {
     display: flex;
