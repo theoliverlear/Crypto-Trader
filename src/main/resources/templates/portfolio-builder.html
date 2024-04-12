@@ -13,32 +13,34 @@
 <body>
 <header>
     <nav>
-        <ul>
-            <li>
-                <a href="home.html" class="link-no-style">
+        <div id="nav-div">
+            <div class="nav-item">
+                <a href="/" class="link-no-style">
                     <div class="nav-bar-item-container">
                         <h5>Home</h5>
                     </div>
                 </a>
-            </li>
-            <li>
+            </div>
+            <div class="nav-item">
                 <div class="nav-bar-item-container">
                     <h5>Portfolio</h5>
                 </div>
-            </li>
-            <li>
+            </div>
+            <div class="nav-item">
                 <div class="nav-bar-item-container">
                     <h5>Trader</h5>
                 </div>
-            </li>
-        </ul>
-        <a href="user.html" class="link-no-style">
-            <div id="account-image-container">
-                <img id="default-avatar-image"
-                     src="../static/images/default_avatar.png"
-                     th:src="@{/images/default_avatar.png}" alt="user avatar">
             </div>
-        </a>
+        </div>
+        <div>
+            <a href="user.html" class="link-no-style">
+                <div id="account-image-container">
+                    <img id="default-avatar-image"
+                         src="../static/images/default_avatar.png"
+                         th:src="@{/images/default_avatar.png}" alt="user avatar">
+                </div>
+            </a>
+        </div>
     </nav>
 </header>
 <main>
@@ -59,10 +61,63 @@
                     <h5>Your Currencies</h5>
                 </div>
                 <div id="your-currencies-list" class="portfolio-builder-list">
-                    <div class="portfolio-builder-item">
-                        <img class="your-currency-image">
-                        <div>
-                            <h5>Currency From Script</h5>
+                    <!----------Currency-Dropdown-List----------------------->
+                    <div id="currency-dropdown-with-selection">
+                        <div class="portfolio-builder-item">
+                            <div id="currency-dropdown-list"
+                                 class="general-dropdown-list">
+                                <div id="currency-dropdown"
+                                     class="dropdown-item dropdown-with-caret">
+                                    <h5 id="currency-selection-text">
+                                        Select Currency
+                                    </h5>
+                                    <div id="currency-dropdown-caret"
+                                         class="dropdown-caret">
+                                        <img id="currency-dropdown-caret-image"
+                                             src="../static/images/down_caret.svg"
+                                             alt="dropdown caret">
+                                    </div>
+                                </div>
+                                <div class="dropdown-selection hide"
+                                     id="currency-dropdown-selection">
+                                    <div class="dropdown-option currency-dropdown-option"
+                                         id="bitcoin-option">
+                                        <img class="currency-option-image"
+                                             src="../static/images/logo/bitcoin_logo.png"
+                                             alt="bitcoin logo">
+                                        <h5 class="dropdown-option-text currency-option-text">
+                                            Bitcoin
+                                        </h5>
+                                    </div>
+                                    <div class="dropdown-option currency-dropdown-option"
+                                         id="ethereum-option">
+                                        <img class="currency-option-image"
+                                             src="../static/images/logo/ethereum_logo.png"
+                                             alt="ethereum logo">
+                                        <h5 class="dropdown-option-text currency-option-text">
+                                            Ethereum
+                                        </h5>
+                                    </div>
+                                    <div class="dropdown-option round-bottom currency-dropdown-option"
+                                         id="litecoin-option">
+                                        <img class="currency-option-image"
+                                             src="../static/images/logo/litecoin_logo.png"
+                                             alt="litecoin logo">
+                                        <h5 class="dropdown-option-text currency-option-text">
+                                            Litecoin
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <!---End-Currency-Dropdown-List------------------>
+                            <div id="chosen-currency-div">
+                                <img id="your-currency-image"
+                                     src="../static/images/default_currency_icon.png"
+                                     alt="chosen currency">
+                                <div>
+                                    <h5>None Selected</h5>
+                                </div>
+                            </div>
                         </div>
                         <div>
                             <div class="shares-div">
@@ -73,47 +128,19 @@
                                     <input min="0"  type="number" class="shares-input">
                                 </div>
                             </div>
+                            <div>
+                                <h5 class="thin-text">Or</h5>
+                            </div>
                             <div class="wallet-div">
                                 <div>
-                                    <h5>Wallet <var>$</var>: </h5>
+                                    <h5>Wallet <span class="italic-span">$</span>: </h5>
                                 </div>
                                 <div>
                                     <input min="0" type="number" class="wallet-input">
                                 </div>
                             </div>
-
-                        </div>
-                    </div>
-                    <div id="currency-dropdown-list" class="general-dropdown-list">
-                        <div id="currency-dropdown"
-                             class="dropdown-item dropdown-with-caret">
-                            <h5 id="currency-selection-text">Select Currency</h5>
-                            <div id="currency-dropdown-caret" class="dropdown-caret">
-                                <img id="currency-dropdown-caret-image"
-                                     src="../static/images/down_caret.svg"
-                                     alt="dropdown caret">
-                            </div>
-                        </div>
-                        <div class="dropdown-selection hide"
-                             id="currency-dropdown-selection">
-                            <div class="dropdown-option currency-dropdown-option" id="bitcoin-option">
-                                <img class="currency-option-image"
-                                     src="../static/images/logo/bitcoin_logo.png"
-                                     alt="bitcoin logo">
-                                <h5 class="dropdown-option-text currency-option-text">Bitcoin</h5>
-                            </div>
-                            <div class="dropdown-option currency-dropdown-option" id="ethereum-option">
-                                <img class="currency-option-image"
-                                     src="../static/images/logo/ethereum_logo.png"
-                                     alt="ethereum logo">
-                                <h5 class="dropdown-option-text currency-option-text">Ethereum</h5>
-                            </div>
-                            <div class="dropdown-option round-bottom currency-dropdown-option"
-                                 id="litecoin-option">
-                                <img class="currency-option-image"
-                                     src="../static/images/logo/litecoin_logo.png"
-                                     alt="litecoin logo">
-                                <h5 class="dropdown-option-text currency-option-text">Litecoin</h5>
+                            <div class="small-button" id="add-button">
+                                <h5 class="small-button-text">Add</h5>
                             </div>
                         </div>
                     </div>
