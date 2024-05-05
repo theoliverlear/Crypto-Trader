@@ -34,7 +34,7 @@
             </div>
         </div>
         <div>
-            <a href="user.html" class="link-no-style">
+            <a href="/user/" class="link-no-style">
                 <div id="account-image-container">
                     <img id="default-avatar-image"
                          src="../static/images/default_avatar.png"
@@ -109,7 +109,7 @@
         </div>
     </section>
     -->
-    <div id="premium-title-div" class="stripe-div-partition">
+    <div id="premium-title-div">
         <div id="premium-title-text-div" class="header-section-bubble">
             <h3 id="premium-title-text" class="header-section-text">Premium</h3>
         </div>
@@ -214,10 +214,17 @@
         </section>
     </section>
 </main>
-<script src="../static/script/global-script.js" type="module"
-        th:src="@{../static/script/global-script.js}"></script>
-<script src="../static/script/home-script.js" type="module"
-        th:src="@{../static/script/home-script.js}"></script>
+<footer>
+    <section id="footer-content">
+        <div>
+            <p>&copy; 2022 Sigwarth Software. All rights reserved.</p>
+        </div>
+    </section>
+</footer>
+<script src="../static/script/globalScript.js" type="module"
+        th:src="@{../static/script/globalScript.js}"></script>
+<script src="../static/script/homeScript.js" type="module"
+        th:src="@{../static/script/homeScript.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
