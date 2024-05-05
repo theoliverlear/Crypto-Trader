@@ -1,10 +1,30 @@
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
 #user-info-section {
-    margin: calc(((5vh + 5vw) / 2) + 2em) 0 0 0;
+    margin: calc(((3vh + 3vw) / 2) + 1em) 0 0 0;
     padding: 0;
     height: auto;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
+    width: calc(((70vw + 70vh) / 2) + 10em);
+}
+#user-info-container {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: auto;
+    padding: 0;
+    margin: 0;
 }
 #tab-selectors-div {
     display: flex;
@@ -51,16 +71,7 @@
 #login-tab-selector:active {
     margin-left: calc(((0.65vh + 0.65vw) / 2) + 0.65em);
 }
-#user-info-container {
-    width: 60%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-direction: column;
-    height: auto;
-    padding: 0;
-    margin: 0;
-}
+
 .prompt-popup-div {
     display: none;
 }
@@ -85,5 +96,21 @@
     justify-content: space-between;
     align-items: center;
     width: 80%;
-    margin: 0;
+    margin: calc(((0.75vw + 0.75vh) / 2) + 0.5em);
+}
+.input-with-title:first-child {
+    margin-top: calc(((2vh + 2vw) / 2) + 0.5em);
+}
+#login-form-container {
+    display: none;
+}
+.user-content-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+.user-info-button {
+    margin-top: calc(((1vh + 1vw) / 2) + 0.5em);
 }
