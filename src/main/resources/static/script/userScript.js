@@ -19,4 +19,3 @@ function toggleUserInfoContainer() {
 selectors.forEach(selector => {
     selector.addEventListener('click', toggleUserInfoContainer)
 });
-console.log('userScript.js loaded');
