@@ -39,11 +39,4 @@ public class CryptoTraderController {
     public String getStarted() {
         return "get-started";
     }
-    //-------------------------------Login------------------------------------
-    @RequestMapping("/signup")
-    public ResponseEntity<String> signup(@ModelAttribute UserRequest userRequest) {
-        User newUser = new User(userRequest.getUsername(), userRequest.getPassword(), 1L);
-        this.cryptoTraderService.saveUser(newUser);
-        return ResponseEntity.ok("User " + userRequest.getUsername() + " has been signed up!");
-    }
 }
