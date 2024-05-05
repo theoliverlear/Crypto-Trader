@@ -4,11 +4,11 @@
       dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <title>Portfolio Builder | Crypto Trader</title>
+    <title>Portfolio | Crypto Trader</title>
     <link rel="stylesheet" href="../static/style/global-style.css"
           th:href="@{/style/global-style.css}">
-    <link rel="stylesheet" href="../static/style/portfolio-builder-style.css"
-          th:href="@{/style/portfolio-builder-style.css}">
+    <link rel="stylesheet" href="../static/style/portfolio-style.css"
+          th:href="@{/style/portfolio-style.css}">
 </head>
 <body>
 <header>
@@ -33,7 +33,7 @@
             </div>
         </div>
         <div>
-            <a href="user.html" class="link-no-style">
+            <a href="/user/" class="link-no-style">
                 <div id="account-image-container">
                     <img id="default-avatar-image"
                          src="../static/images/default_avatar.png"
@@ -46,19 +46,69 @@
 <main>
     <section id="portfolio-builder-section">
         <div id="portfolio-builder-header" class="stripe-div-partition">
-            <h2>Portfolio Builder</h2>
-            <h5 class="subtitle-text">
-                Select the currencies you would like to have traded.
-            </h5>
-        </div>
-        <div id="portfolio-builder-div">
-            <div class="small-button" id="add-currency-button">
-                <h5 class="small-button-text">Add Currency</h5>
+            <div>
+                <h2>Portfolio Builder</h2>
             </div>
             <div>
-                <div id="your-currencies-header"
-                     class="portfolio-builder-header">
-                    <h5>Your Currencies</h5>
+                <h5 class="subtitle-text">
+                    Select the currencies you would like to have traded.
+                </h5>
+            </div>
+        </div>
+        <div id="portfolio-builder-div">
+            <div>
+                <div id="your-currencies-div">
+                    <div id="your-currencies-header-with-button">
+                        <div id="your-currencies-header-div"
+                             class="portfolio-builder-header">
+                            <h4 id="your-currencies-header-text">Your Currencies</h4>
+                        </div>
+                        <div class="small-button" id="add-currency-button">
+                            <h5 class="small-button-text">Add Currency</h5>
+                        </div>
+                    </div>
+                    <section id="your-currencies-list-section">
+                        <div class="simple-space-inline-div">
+                            <div class="simple-space-inline-div">
+                                <div class="currency-image-name-code-div simple-space-inline-div your-currency-info-div">
+                                    <div class="your-currency-image-div">
+                                        <img class="your-currency-image"
+                                             src="../static/images/logo/bitcoin_logo.png"
+                                             alt="bitcoin logo">
+                                    </div>
+                                    <div>
+                                        <h5 class="your-currency-info-text">
+                                            Bitcoin - BTC
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="simple-space-inline-div your-currency-info-div">
+                                    <div>
+                                        <h6 class="your-currency-info-text">
+                                            Shares: 0.0
+                                        </h6>
+                                    </div>
+                                    <div>
+                                        <h6 class="your-currency-info-text">
+                                            Wallet: $0.0
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div class="simple-space-inline-div your-currency-info-div">
+                                    <div>
+                                        <h6 class="your-currency-info-text">
+                                            All Time Profit: $0.0
+                                        </h6>
+                                    </div>
+                                    <div class="small-button">
+                                        <h6 class="small-button-text">As Percent</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+                    </section>
+
                 </div>
                 <div id="your-currencies-list" class="portfolio-builder-list">
                     <!----------Currency-Dropdown-List----------------------->
@@ -149,9 +199,9 @@
         </div>
     </section>
 </main>
-<script src="../static/script/global-script.js"
-        th:src="@{/scripts/global-script.js}"></script>
-<script src="../static/script/portfolio-builder-script.js"
-        th:src="@{/scripts/portfolio-builder-script.js}"></script>
+<script src="../static/script/globalScript.js"
+        th:src="@{/scripts/globalScript.js}"></script>
+<script src="../static/script/portfolioScript.js"
+        th:src="@{/scripts/portfolioScript.js}"></script>
 </body>
 </html>
