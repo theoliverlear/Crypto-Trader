@@ -12,6 +12,7 @@
     --sunbeam-yellow: #ffe17b;
 
     --thin-border: calc(((0.05vw + 0.05vh) / 2) + 0.05em);
+    --small-border: calc(((0.1vw + 0.1vh) / 2) + 0.1em);
 }
 body {
     font-family: 'Roboto', sans-serif;
