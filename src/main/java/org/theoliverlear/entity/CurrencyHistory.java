@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "currency_history")
 public class CurrencyHistory {
+    @Column(name = "currency_name")
+    String name;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,18 +27,21 @@ public class CurrencyHistory {
     private LocalDateTime lastUpdated;
     public CurrencyHistory() {
         this.currency = new Currency();
+        this.name = "";
         this.value = 0;
         this.formattedValue = "";
         this.lastUpdated = LocalDateTime.now();
     }
     public CurrencyHistory(Currency currency, double value) {
         this.currency = currency;
+        this.name = currency.getName();
         this.value = value;
         this.formattedValue = currency.getDecimalFormat().format(value);
         this.lastUpdated = LocalDateTime.now();
     }
     public CurrencyHistory(Currency currency, double value, LocalDateTime lastUpdated) {
         this.currency = currency;
+        this.name = currency.getName();
         this.value = value;
         this.formattedValue = currency.getDecimalFormat().format(value);
         this.lastUpdated = lastUpdated;
