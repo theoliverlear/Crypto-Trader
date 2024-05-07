@@ -19,3 +19,22 @@ function toggleUserInfoContainer() {
 selectors.forEach(selector => {
     selector.addEventListener('click', toggleUserInfoContainer)
 });
+
+
+
+let signupUsernameInput = document.getElementById('signup-username-input');
+let signupPasswordInput = document.getElementById('signup-password-input');
+let signupConfirmPasswordInput = document.getElementById('signup-confirm-password-input');
+
+let loginUsernameInput = document.getElementById('login-username-input');
+let loginPasswordInput = document.getElementById('login-password-input');
+
+
+let signupButton = document.getElementById('signup-button-container');
+let loginButton = document.getElementById('login-button-container');
+function sendSignUpToServer() {
+
+}
+function sendLoginToServer() {
+
+}
