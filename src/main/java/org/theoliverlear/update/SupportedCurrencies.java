@@ -45,5 +45,7 @@ public class SupportedCurrencies {
         SUPPORTED_CURRENCIES.add(MONERO);
         SUPPORTED_CURRENCIES.add(TRON);
         SUPPORTED_CURRENCIES.add(TEZOS);
+        SUPPORTED_CURRENCIES.add(STELLAR_LUMENS);
+        SUPPORTED_CURRENCIES.add(SHIBA_INU);
     }
 }
