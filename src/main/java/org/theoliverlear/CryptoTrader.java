@@ -2,8 +2,6 @@ package org.theoliverlear;
 //=================================-Imports-==================================
 import org.theoliverlear.entity.Portfolio;
 import org.theoliverlear.entity.PortfolioAsset;
-import org.theoliverlear.model.thread.TraderThread;
-import org.theoliverlear.model.thread.ThreadManager;
 import org.theoliverlear.model.trade.Trader;
 import org.theoliverlear.update.SupportedCurrencies;
 
@@ -15,23 +13,17 @@ import java.util.ArrayList;
 public class CryptoTrader {
     //============================-Variables-=================================
     ArrayList<Trader> traders;
-    ArrayList<Thread> traderThreads;
-    ThreadManager traderThreadManager;
     //===========================-Constructors-===============================
     public CryptoTrader() {
         this.traders = new ArrayList<>();
-        this.traderThreads = new ArrayList<>();
     }
     public CryptoTrader(ArrayList<Trader> traders) {
         this.traders = traders;
-        this.traderThreads = new ArrayList<>();
-        this.buildTraderThreads();
     }
-    public void buildTraderThreads() {
+    public void tradeAllPortfolios() {
         for (Trader trader : this.traders) {
-            this.traderThreads.add(new TraderThread(trader));
+            trader.tradeAllAssets();
         }
-        this.traderThreadManager = new ThreadManager(this.traderThreads);
     }
     public void addTrader(Trader trader) {
         this.traders.add(trader);
@@ -39,8 +31,11 @@ public class CryptoTrader {
     public void addTraders(ArrayList<Trader> traders) {
         this.traders.addAll(traders);
     }
-    public void startTraders() {
-        this.traderThreadManager.startThreads();
+    public int size() {
+        return this.traders.size();
+    }
+    public boolean isEmpty() {
+        return this.traders.isEmpty();
     }
     public ArrayList<Trader> getTraders() {
         return this.traders;
@@ -53,6 +48,6 @@ public class CryptoTrader {
         ArrayList<Trader> traders = new ArrayList<>();
         traders.add(trader);
         CryptoTrader cryptoTrader = new CryptoTrader(traders);
-        cryptoTrader.startTraders();
+
     }
 }
