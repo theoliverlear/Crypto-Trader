@@ -20,8 +20,8 @@ public class TraderController {
             return "trader";
         }
     }
-    @RequestMapping("/history")
-    public ResponseEntity</* make response class */> history() {
-
-    }
+//    @RequestMapping("/history")
+//    public ResponseEntity</* make response class */> history() {
+//
+//    }
 }
