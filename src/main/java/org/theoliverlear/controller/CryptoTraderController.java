@@ -17,18 +17,7 @@ import org.theoliverlear.service.PortfolioService;
 public class CryptoTraderController {
     //============================-Variables-=================================
     User currentUser;
-    CryptoTraderService cryptoTraderService;
-    CurrencyService currencyService;
-//    PortfolioService portfolioService;
-    @Autowired
-    public CryptoTraderController(CryptoTraderService cryptoTraderService,
-                                  CurrencyService currencyService
-//                                  PortfolioService portfolioService
-    ) {
-        this.cryptoTraderService = cryptoTraderService;
-        this.currencyService = currencyService;
-//        this.portfolioService = portfolioService;
-    }
+
     //=============================-Methods-==================================
 
     //--------------------------------Home------------------------------------
