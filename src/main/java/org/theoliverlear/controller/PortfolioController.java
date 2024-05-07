@@ -13,15 +13,9 @@ import org.theoliverlear.service.PortfolioService;
 @RequestMapping("/portfolio")
 public class PortfolioController {
     User currentUser;
-    CryptoTraderService cryptoTraderService;
-    CurrencyService currencyService;
     PortfolioService portfolioService;
     @Autowired
-    public PortfolioController(CryptoTraderService cryptoTraderService,
-                               CurrencyService currencyService,
-                               PortfolioService portfolioService) {
-        this.cryptoTraderService = cryptoTraderService;
-        this.currencyService = currencyService;
+    public PortfolioController(PortfolioService portfolioService) {
         this.portfolioService = portfolioService;
     }
     @RequestMapping("/")
