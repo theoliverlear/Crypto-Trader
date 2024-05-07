@@ -1,14 +1,16 @@
 package org.theoliverlear.entity;
 //=================================-Imports-==================================
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.theoliverlear.model.http.ApiDataRetriever;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "currencies")
-@SecondaryTable(name = "currency_history", pkJoinColumns = @PrimaryKeyJoinColumn(name = "currency_code",
-                referencedColumnName = "currency_code"))
 public class Currency {
     // TODO: Instead of enums, perhaps have static constants instantiated
     //       during runtime.
@@ -119,36 +121,7 @@ public class Currency {
         return currencyString;
     }
     //=============================-Getters-==================================
-    public String getName() {
-        return this.name;
-    }
-    public String getCurrencyCode() {
-        return this.currencyCode;
-    }
-    public String getUrlPath() {
-        return this.urlPath;
-    }
-    public String getFormattedValue() {
-        return this.formattedValue;
-    }
-    public double getValue() {
-        return this.value;
-    }
+
     //=============================-Setters-==================================
-    public void setName(String name) {
-        this.name = name;
-    }
-    public void setCurrencyCode(String currencyCode) {
-        this.currencyCode = currencyCode;
-    }
-    public void setUrlPath(String urlPath) {
-        this.urlPath = urlPath;
-    }
-    public void setValue(double value) {
-        this.value = value;
-    }
-    public void setFormattedValue(String formattedValue) {
-        this.formattedValue = formattedValue;
-    }
 
 }
