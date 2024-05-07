@@ -11,12 +11,18 @@ import org.theoliverlear.service.PortfolioService;
 
 @Controller
 @RequestMapping("/portfolio")
-public class PortfolioController extends CryptoTraderController {
+public class PortfolioController {
+    User currentUser;
+    CryptoTraderService cryptoTraderService;
+    CurrencyService currencyService;
+    PortfolioService portfolioService;
     @Autowired
     public PortfolioController(CryptoTraderService cryptoTraderService,
                                CurrencyService currencyService,
                                PortfolioService portfolioService) {
-        super(cryptoTraderService, currencyService, portfolioService);
+        this.cryptoTraderService = cryptoTraderService;
+        this.currencyService = currencyService;
+        this.portfolioService = portfolioService;
     }
     @RequestMapping("/")
     public String builder(HttpSession session) {
@@ -24,6 +30,8 @@ public class PortfolioController extends CryptoTraderController {
         if (user == null) {
             return "redirect:/user/";
         }
+        this.currentUser = user;
         return "portfolio";
     }
+    
 }
