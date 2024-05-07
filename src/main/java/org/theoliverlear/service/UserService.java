@@ -21,4 +21,7 @@ public class UserService {
     public boolean comparePassword(User user, String password) {
         return user.getSafePassword().compareUnencodedPassword(password);
     }
+    public void saveUser(User user) {
+        this.userRepository.save(user);
+    }
 }
