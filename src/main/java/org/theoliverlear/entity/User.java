@@ -33,6 +33,16 @@ public class User {
         this.portfolioId = null;
         this.lastLogin = null;
     }
+    public User(String username, String rawPassword) {
+        this.username = username;
+        this.safePassword = new SafePassword(rawPassword);
+        this.lastLogin = LocalDateTime.now();
+    }
+    public User(String username, SafePassword encodedPassword) {
+        this.username = username;
+        this.safePassword = encodedPassword;
+        this.lastLogin = LocalDateTime.now();
+    }
     public User(String username, String rawPassword, Long portfolioId) {
         this.username = username;
         this.safePassword = new SafePassword(rawPassword);
