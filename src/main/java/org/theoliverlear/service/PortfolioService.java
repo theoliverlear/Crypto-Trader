@@ -1,6 +1,8 @@
 package org.theoliverlear.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.theoliverlear.CryptoTrader;
@@ -17,40 +19,35 @@ import java.util.ArrayList;
 public class PortfolioService {
     ArrayList<Portfolio> allUsersPortfolios;
     PortfolioRepository portfolioRepository;
-    PortfolioUpdater portfolioUpdater;
     CryptoTrader cryptoTrader;
     @Autowired
     public PortfolioService(PortfolioRepository portfolioRepository) {
         this.portfolioRepository = portfolioRepository;
+        this.allUsersPortfolios = new ArrayList<>();
         this.allUsersPortfolios = this.getPortfolios();
-        ArrayList<PortfolioAsset> assets = new ArrayList<>();
-        assets.add(new PortfolioAsset(SupportedCurrencies.BITCOIN, 1.0, 0));
-        this.allUsersPortfolios.add(new Portfolio(1L, assets));
-        this.portfolioUpdater = new PortfolioUpdater(this.allUsersPortfolios);
-        this.portfolioUpdater.startPortfolioUpdaters();
-        this.startPortfolioRepositoryUpdater();
-        ArrayList<Trader> traders = new ArrayList<>();
-        for (Portfolio portfolio : this.allUsersPortfolios) {
-            traders.add(new Trader(portfolio));
-        }
-        this.cryptoTrader = new CryptoTrader(traders);
-        this.cryptoTrader.startTraders();
-    }
-
-    public void startPortfolioRepositoryUpdater() {
-        Runnable updatePortfolios = () -> {
-            ArrayList<Portfolio> updatedPortfolios = this.portfolioUpdater.getPortfolios();
-            for (Portfolio portfolio : updatedPortfolios) {
-                this.savePortfolio(portfolio);
+        if (this.allUsersPortfolios != null) {
+            for (Portfolio portfolio : this.allUsersPortfolios) {
+                this.cryptoTrader.addTrader(new Trader(portfolio));
             }
-        };
-        Thread portfolioRepositoryUpdater = new Thread(updatePortfolios);
-        portfolioRepositoryUpdater.start();
+        }
+    }
+    @Async
+    @Scheduled(fixedRate = 5000)
+    public void trade() {
+        if (!this.cryptoTrader.isEmpty()) {
+            for (Trader trader : this.cryptoTrader.getTraders()) {
+                Portfolio previousPortfolio = trader.getPortfolio();
+                trader.tradeAllAssets();
+                if (!previousPortfolio.equals(trader.getPortfolio())) {
+                    this.savePortfolio(trader.getPortfolio());
+                }
+            }
+        }
     }
     public void savePortfolio(Portfolio portfolio) {
         this.portfolioRepository.save(portfolio);
     }
-    @Transactional
+
     public Portfolio getPortfolio(Long userId) {
         return this.portfolioRepository.findPortfolioByUserId(userId);
     }
