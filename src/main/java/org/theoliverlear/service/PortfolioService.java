@@ -22,6 +22,7 @@ public class PortfolioService {
     CryptoTrader cryptoTrader;
     @Autowired
     public PortfolioService(PortfolioRepository portfolioRepository) {
+        this.cryptoTrader = new CryptoTrader();
         this.portfolioRepository = portfolioRepository;
         this.allUsersPortfolios = new ArrayList<>();
         this.allUsersPortfolios = this.getPortfolios();
