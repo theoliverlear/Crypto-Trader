@@ -1,6 +1,7 @@
 package org.theoliverlear.controller;
 
 //=================================-Imports-==================================
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,14 +19,15 @@ public class CryptoTraderController {
     User currentUser;
     CryptoTraderService cryptoTraderService;
     CurrencyService currencyService;
-    PortfolioService portfolioService;
+//    PortfolioService portfolioService;
     @Autowired
     public CryptoTraderController(CryptoTraderService cryptoTraderService,
-                                  CurrencyService currencyService,
-                                  PortfolioService portfolioService) {
+                                  CurrencyService currencyService
+//                                  PortfolioService portfolioService
+    ) {
         this.cryptoTraderService = cryptoTraderService;
         this.currencyService = currencyService;
-        this.portfolioService = portfolioService;
+//        this.portfolioService = portfolioService;
     }
     //=============================-Methods-==================================
 
@@ -36,7 +38,11 @@ public class CryptoTraderController {
     }
     //----------------------------Get-Started---------------------------------
     @RequestMapping("/get-started")
-    public String getStarted() {
+    public String getStarted(HttpSession session) {
+        this.currentUser = (User) session.getAttribute("user");
+        if (this.currentUser != null) {
+            return "redirect:/account/";
+        }
         return "get-started";
     }
 }
