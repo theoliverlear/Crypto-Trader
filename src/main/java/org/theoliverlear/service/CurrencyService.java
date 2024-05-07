@@ -24,10 +24,14 @@ public class CurrencyService {
     @Scheduled(fixedRate = 5000)
     public void saveCurrencies() {
         for (final Currency currency : SupportedCurrencies.SUPPORTED_CURRENCIES) {
+            Currency previousCurrency = Currency.from(currency);
             currency.updateValue();
-            this.currencyRepository.saveCurrencyByCurrencyCode(currency);
-            CurrencyHistory currencyHistory = new CurrencyHistory(currency, currency.getValue());
-            this.currencyHistoryRepository.save(currencyHistory);
+            System.out.println(currency);
+            if (!previousCurrency.equals(currency)) {
+                this.currencyRepository.saveCurrencyByCurrencyCode(currency);
+                CurrencyHistory currencyHistory = new CurrencyHistory(currency, currency.getValue());
+                this.currencyHistoryRepository.save(currencyHistory);
+            }
         }
     }
 }
