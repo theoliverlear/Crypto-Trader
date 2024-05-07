@@ -106,6 +106,11 @@ public class Currency {
         this.updateValue();
         return this.value;
     }
+    public static Currency from(Currency currency) {
+        return new Currency(currency.getName(), currency.getCurrencyCode(),
+                             currency.getUrlPath(), currency.getValue(),
+                            currency.getLastUpdated());
+    }
     //============================-Overrides-=================================
 
     //------------------------------Equals------------------------------------
