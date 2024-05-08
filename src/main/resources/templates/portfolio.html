@@ -67,48 +67,6 @@
                             <h5 class="small-button-text">Add Currency</h5>
                         </div>
                     </div>
-                    <section id="your-currencies-list-section">
-                        <div class="simple-space-inline-div">
-                            <div class="simple-space-inline-div">
-                                <div class="currency-image-name-code-div simple-space-inline-div your-currency-info-div">
-                                    <div class="your-currency-image-div">
-                                        <img class="your-currency-image"
-                                             src="../static/images/logo/bitcoin_logo.png"
-                                             alt="bitcoin logo">
-                                    </div>
-                                    <div>
-                                        <h5 class="your-currency-info-text">
-                                            Bitcoin - BTC
-                                        </h5>
-                                    </div>
-                                </div>
-                                <div class="simple-space-inline-div your-currency-info-div">
-                                    <div>
-                                        <h6 class="your-currency-info-text">
-                                            Shares: 0.0
-                                        </h6>
-                                    </div>
-                                    <div>
-                                        <h6 class="your-currency-info-text">
-                                            Wallet: $0.0
-                                        </h6>
-                                    </div>
-                                </div>
-                                <div class="simple-space-inline-div your-currency-info-div">
-                                    <div>
-                                        <h6 class="your-currency-info-text">
-                                            All Time Profit: $0.0
-                                        </h6>
-                                    </div>
-                                    <div class="small-button">
-                                        <h6 class="small-button-text">As Percent</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr />
-                        </div>
-                    </section>
-
                 </div>
                 <div id="your-currencies-list" class="portfolio-builder-list">
                     <!----------Currency-Dropdown-List----------------------->
@@ -169,24 +127,40 @@
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            <div class="shares-div">
-                                <div>
-                                    <h5>Shares: </h5>
+                        <div id="shares-wallet-with-button">
+                            <div id="shares-div">
+                                <div class="currency-input-with-title">
+                                    <div>
+                                        <h5>Shares: </h5>
+                                    </div>
+                                    <div>
+                                        <input min="0" type="number" id="shares-input">
+                                    </div>
                                 </div>
                                 <div>
-                                    <input min="0"  type="number" class="shares-input">
+                                    <p class="currency-input-subtext">
+                                        How many shares you own.
+                                    </p>
                                 </div>
                             </div>
-                            <div>
+                            <div id="shares-wallet-seperator">
                                 <h5 class="thin-text">Or</h5>
                             </div>
-                            <div class="wallet-div">
-                                <div>
-                                    <h5>Wallet <span class="italic-span">$</span>: </h5>
+                            <div id="wallet-div">
+                                <div class="currency-input-with-title">
+                                    <div>
+                                        <div>
+                                            <h5>Wallet <span class="italic-span">$</span>: </h5>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <input min="0" type="number" id="wallet-input">
+                                    </div>
                                 </div>
                                 <div>
-                                    <input min="0" type="number" class="wallet-input">
+                                    <p class="currency-input-subtext">
+                                        How much you would like to invest.
+                                    </p>
                                 </div>
                             </div>
                             <div class="small-button" id="add-button">
@@ -196,7 +170,49 @@
                     </div>
                 </div>
             </div>
+            <section id="your-currencies-list-section">
+                <div class="simple-space-inline-div">
+                    <div class="simple-space-inline-div">
+                        <div class="currency-image-name-code-div simple-space-inline-div your-currency-info-div">
+                            <div class="your-currency-image-div">
+                                <img class="your-currency-image"
+                                     src="../static/images/logo/bitcoin_logo.png"
+                                     alt="bitcoin logo">
+                            </div>
+                            <div>
+                                <h5 class="your-currency-info-text">
+                                    Bitcoin - BTC
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="simple-space-inline-div your-currency-info-div">
+                            <div>
+                                <h6 class="your-currency-info-text">
+                                    Shares: 0.0
+                                </h6>
+                            </div>
+                            <div>
+                                <h6 class="your-currency-info-text">
+                                    Wallet: $0.0
+                                </h6>
+                            </div>
+                        </div>
+                        <div class="simple-space-inline-div your-currency-info-div">
+                            <div>
+                                <h6 class="your-currency-info-text">
+                                    All Time Profit: $0.0
+                                </h6>
+                            </div>
+                            <div class="small-button">
+                                <h6 class="small-button-text">As Percent</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+            </section>
         </div>
+
     </section>
 </main>
 <script src="../static/script/globalScript.js"
