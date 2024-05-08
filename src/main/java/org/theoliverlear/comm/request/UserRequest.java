@@ -1,4 +1,4 @@
-package org.theoliverlear.comm;
+package org.theoliverlear.comm.request;
 
 public class UserRequest {
     private String username;
