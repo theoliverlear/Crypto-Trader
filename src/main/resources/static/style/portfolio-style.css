@@ -173,5 +173,29 @@
     flex-direction: column;
 }
 #add-button {
-    margin: calc(((0.5vh + 0.5vw) / 2) + 0.5em) 0;
+    margin: calc(((0.5vh + 0.5vw) / 2) + 0.5em) calc(((1vh + 1vw) / 2) + 1em);
 }
+#add-currency-buttons-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+#add-currency-div {
+    display: none;
+}
+#selected-currency-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#selected-currency-text {
+    margin: 0;
+    padding: 0;
+}
+#popup-div {
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
