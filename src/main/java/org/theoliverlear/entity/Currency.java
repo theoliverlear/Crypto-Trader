@@ -18,6 +18,7 @@ public class Currency {
     //       currencies, or passes one with this keyword, and returns the
     //       difference price and percentage change.
     //============================-Variables-=================================
+    @Column(name = "currency_name")
     private String name;
     @Id
     @Column(name = "currency_code")
@@ -47,6 +48,9 @@ public class Currency {
         this.urlPath = urlPath;
         this.value = this.getApiValue();
         this.formattedValue = this.decimalFormat.format(this.value);
+        if (this.formattedValue == null) {
+            this.formattedValue = "";
+        }
         this.lastUpdated = LocalDateTime.now();
     }
     public Currency(String name, String currencyCode, double value, String urlPath) {
@@ -55,6 +59,9 @@ public class Currency {
         this.value = value;
         this.urlPath = urlPath;
         this.formattedValue = this.decimalFormat.format(value);
+        if (this.formattedValue == null) {
+            this.formattedValue = "";
+        }
         this.lastUpdated = LocalDateTime.now();
     }
     public Currency(String name, String currencyCode, String urlPath, double value, LocalDateTime lastUpdated) {
@@ -63,6 +70,9 @@ public class Currency {
         this.urlPath = urlPath;
         this.value = value;
         this.formattedValue = this.decimalFormat.format(value);
+        if (this.formattedValue == null) {
+            this.formattedValue = "";
+        }
         this.lastUpdated = lastUpdated;
     }
     //=============================-Methods-==================================
@@ -80,7 +90,11 @@ public class Currency {
     }
     //----------------------------Format-Value--------------------------------
     public String formatValue(double value) {
-        return this.decimalFormat.format(value);
+        String reformattedValue = this.decimalFormat.format(value);
+        if (reformattedValue == null) {
+            reformattedValue = "";
+        }
+        return reformattedValue;
     }
     //-----------------------Get-Currency-Api-Json----------------------------
     public String getCurrencyApiJson() {
@@ -106,10 +120,30 @@ public class Currency {
         this.updateValue();
         return this.value;
     }
+    public static Currency from(Currency currency) {
+        Currency newCurrency = new Currency(currency.getName(), currency.getCurrencyCode(),
+                currency.getUrlPath(), currency.getValue(),
+                currency.getLastUpdated());
+        return newCurrency;
+    }
     //============================-Overrides-=================================
 
     //------------------------------Equals------------------------------------
-
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof Currency comparedCurrency) {
+            boolean sameName = this.name.equals(comparedCurrency.name);
+            boolean sameCode = this.currencyCode.equals(comparedCurrency.currencyCode);
+            boolean sameValue = this.value == comparedCurrency.value;
+            boolean sameUrl = this.urlPath.equals(comparedCurrency.urlPath);
+            boolean sameLastUpdated = this.lastUpdated.equals(comparedCurrency.lastUpdated);
+            return sameName && sameCode && sameValue && sameUrl && sameLastUpdated;
+        }
+        return false;
+    }
     //------------------------------Hash-Code---------------------------------
 
     //------------------------------To-String---------------------------------
