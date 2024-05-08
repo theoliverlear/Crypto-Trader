@@ -68,7 +68,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="your-currencies-list" class="portfolio-builder-list">
+                <div id="add-currency-div" class="portfolio-builder-list">
                     <!----------Currency-Dropdown-List----------------------->
                     <div id="currency-dropdown-with-selection">
                         <div class="portfolio-builder-item">
@@ -83,6 +83,7 @@
                                          class="dropdown-caret">
                                         <img id="currency-dropdown-caret-image"
                                              src="../static/images/down_caret.svg"
+                                             th:src="@{/images/down_caret.svg}"
                                              alt="dropdown caret">
                                     </div>
                                 </div>
@@ -91,7 +92,8 @@
                                     <div class="dropdown-option currency-dropdown-option"
                                          id="bitcoin-option">
                                         <img class="currency-option-image"
-                                             src="../static/images/logo/bitcoin_logo.png"
+                                             src="../static/images/logo/currency/bitcoin_logo.png"
+                                             th:src="@{/images/logo/currency/bitcoin_logo.png}"
                                              alt="bitcoin logo">
                                         <h5 class="dropdown-option-text currency-option-text">
                                             Bitcoin
@@ -100,7 +102,8 @@
                                     <div class="dropdown-option currency-dropdown-option"
                                          id="ethereum-option">
                                         <img class="currency-option-image"
-                                             src="../static/images/logo/ethereum_logo.png"
+                                             src="../static/images/logo/currency/ethereum_logo.png"
+                                             th:src="@{/images/logo/currency/ethereum_logo.png}"
                                              alt="ethereum logo">
                                         <h5 class="dropdown-option-text currency-option-text">
                                             Ethereum
@@ -109,7 +112,8 @@
                                     <div class="dropdown-option round-bottom currency-dropdown-option"
                                          id="litecoin-option">
                                         <img class="currency-option-image"
-                                             src="../static/images/logo/litecoin_logo.png"
+                                             src="../static/images/logo/currency/litecoin_logo.png"
+                                             th:src="@{/images/logo/currency/litecoin_logo.png}"
                                              alt="litecoin logo">
                                         <h5 class="dropdown-option-text currency-option-text">
                                             Litecoin
@@ -121,9 +125,10 @@
                             <div id="chosen-currency-div">
                                 <img id="your-currency-image"
                                      src="../static/images/default_currency_icon.png"
+                                     th:src="@{/images/default_currency_icon.png}"
                                      alt="chosen currency">
-                                <div>
-                                    <h5>None Selected</h5>
+                                <div id="selected-currency-div">
+                                    <h5 id="selected-currency-text">None Selected</h5>
                                 </div>
                             </div>
                         </div>
@@ -163,8 +168,18 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="small-button" id="add-button">
-                                <h5 class="small-button-text">Add</h5>
+                            <div id="popup-div">
+                                <p>
+                                    Please fill out either the shares or wallet field.
+                                </p>
+                            </div>
+                            <div id="add-currency-buttons-div">
+                                <div class="small-button" id="add-button">
+                                    <h5 class="small-button-text">Add</h5>
+                                </div>
+                                <div class="small-button" id="cancel-button">
+                                    <h5 class="small-button-text">Cancel</h5>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -176,31 +191,33 @@
                         <div class="currency-image-name-code-div simple-space-inline-div your-currency-info-div">
                             <div class="your-currency-image-div">
                                 <img class="your-currency-image"
-                                     src="../static/images/logo/bitcoin_logo.png"
+                                     src="../static/images/logo/currency/bitcoin_logo.png"
+                                     th:src="@{/images/logo/currency/bitcoin_logo.png}"
                                      alt="bitcoin logo">
                             </div>
                             <div>
                                 <h5 class="your-currency-info-text">
-                                    Bitcoin - BTC
+                                    <span class="your-currency-info-name-text">Bitcoin</span> -
+                                    <span class="your-currency-info-code-text">BTC</span>
                                 </h5>
                             </div>
                         </div>
                         <div class="simple-space-inline-div your-currency-info-div">
                             <div>
                                 <h6 class="your-currency-info-text">
-                                    Shares: 0.0
+                                    Shares: <span class="your-currency-info-shares-text">0.0</span>
                                 </h6>
                             </div>
                             <div>
                                 <h6 class="your-currency-info-text">
-                                    Wallet: $0.0
+                                    Wallet: $<span class="your-currency-info-wallet-text">0.0</span>
                                 </h6>
                             </div>
                         </div>
                         <div class="simple-space-inline-div your-currency-info-div">
                             <div>
                                 <h6 class="your-currency-info-text">
-                                    All Time Profit: $0.0
+                                    All Time Profit: $<span class="your-currency-info-profit-text">0.0</span>
                                 </h6>
                             </div>
                             <div class="small-button">
@@ -212,12 +229,13 @@
                 </div>
             </section>
         </div>
-
     </section>
 </main>
 <script src="../static/script/globalScript.js"
+        type="module"
         th:src="@{/scripts/globalScript.js}"></script>
 <script src="../static/script/portfolioScript.js"
+        type="module"
         th:src="@{/scripts/portfolioScript.js}"></script>
 </body>
 </html>
