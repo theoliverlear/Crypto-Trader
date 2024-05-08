@@ -1,40 +1,67 @@
 package org.theoliverlear.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.theoliverlear.convert.PortfolioAssetArrayListConverter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+@Getter
+@Setter
 @Entity
 @Table(name = "portfolios")
 public class Portfolio {
     @Id
-    private Long userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+    @OneToOne(mappedBy = "portfolio")
+    User user;
+    @Column(name = "dollar_balance")
     double dollarBalance;
+    @Column(name = "share_balance")
     double shareBalance;
+    @Column(name = "total_worth")
     double totalWorth;
+    @Column(name = "last_updated")
     LocalDateTime lastUpdated;
-    @Convert(converter = PortfolioAssetArrayListConverter.class)
+    @OneToMany(mappedBy = "portfolio")
+    @JoinColumn(name = "portfolio_assets")
     private ArrayList<PortfolioAsset> assets;
     //===========================-Constructors-===============================
     public Portfolio() {
+        this.user = new User();
         this.assets = new ArrayList<>();
     }
-    public Portfolio(Long userId) {
-        this.userId = userId;
+    public Portfolio(User user) {
+        this.user = user;
+        this.assets = new ArrayList<>();
+    }
+    public Portfolio(User user, ArrayList<PortfolioAsset> assets) {
+        this.user = user;
+        this.assets = assets;
+        this.updateValues();
+    }
+    public Portfolio(Long id) {
+        this.user = new User();
+        this.id = id;
         this.dollarBalance = 0;
         this.shareBalance = 0;
         this.totalWorth = 0;
     }
-    public Portfolio(Long userId, double dollarBalance, double shareBalance, double totalWorth) {
-        this.userId = userId;
+    public Portfolio(Long id, double dollarBalance, double shareBalance, double totalWorth) {
+        this.user = new User();
+        this.id = id;
         this.dollarBalance = dollarBalance;
         this.shareBalance = shareBalance;
         this.totalWorth = totalWorth;
     }
-    public Portfolio(Long userId,ArrayList<PortfolioAsset> assets) {
-        this(userId);
+    public Portfolio(Long id, ArrayList<PortfolioAsset> assets) {
+        this(id);
+        this.user = new User();
         this.assets = assets;
+        this.updateValues();
     }
     //=============================-Methods-==================================
     public void updateValues() { // TODO: Make an Updatable interface
@@ -47,19 +74,34 @@ public class Portfolio {
         this.totalWorth = this.dollarBalance + this.shareBalance;
         this.lastUpdated = LocalDateTime.now();
     }
+    public void addAsset(PortfolioAsset asset) {
+        this.assets.add(asset);
+        this.updateValues();
+    }
+    public boolean removeAsset(PortfolioAsset asset) {
+        boolean removed = this.assets.remove(asset);
+        if (removed) {
+            this.updateValues();
+        }
+        return removed;
+    }
     //============================-Overrides-=================================
 
     //------------------------------Equals------------------------------------
     @Override
     public boolean equals(Object object) {
         if (object instanceof Portfolio portfolio) {
-            boolean sameUserId = this.userId.equals(portfolio.userId);
             boolean sameDollarBalance = this.dollarBalance == portfolio.dollarBalance;
             boolean sameShareBalance = this.shareBalance == portfolio.shareBalance;
             boolean sameTotalWorth = this.totalWorth == portfolio.totalWorth;
             boolean sameLastUpdated = this.lastUpdated.equals(portfolio.lastUpdated);
             boolean sameAssets = this.assets.equals(portfolio.assets);
-            return  sameUserId && sameDollarBalance && sameShareBalance &&
+            if (this.id != null) {
+                boolean sameId = this.id.equals(portfolio.id);
+                return  sameId && sameDollarBalance && sameShareBalance &&
+                        sameTotalWorth && sameLastUpdated && sameAssets;
+            }
+            return sameDollarBalance && sameShareBalance &&
                     sameTotalWorth && sameLastUpdated && sameAssets;
         }
         return false;
@@ -69,11 +111,7 @@ public class Portfolio {
     //------------------------------To-String---------------------------------
 
     //=============================-Getters-==================================
-    public ArrayList<PortfolioAsset> getAssets() {
-        return this.assets;
-    }
+
     //=============================-Setters-==================================
-    public void setAssets(ArrayList<PortfolioAsset> assets) {
-        this.assets = assets;
-    }
+
 }
