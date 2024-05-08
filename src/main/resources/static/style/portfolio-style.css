@@ -1,3 +1,9 @@
+:root {
+    --bitcoin-color: #F7931A;
+    --ethereum-color: #6480EB;
+    --litecoin-color: #375F9E;
+}
+
 #portfolio-builder-section {
     display: flex;
     justify-content: space-around;
@@ -10,9 +16,12 @@
 }
 #portfolio-builder-header {
     background-color: var(--muted-blue);
-    padding: calc(((0.25vh + 0.25vw) / 2) + 0.15em) 0;
+    padding: calc(((3.25vh + 3.25vw) / 2) + 0.15em) 0;
     margin: calc(((1vh + 1vw) / 2) + 0.5em) 0;
     width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 .currency-option-image {
     width: calc(((2vh + 2vw) / 2) + 1em);
@@ -25,20 +34,19 @@
 }
 #currency-dropdown-list {
     width: calc(((15vh + 15vw) / 2) + 1em);
-
 }
 #currency-dropdown h5 {
     margin: 0;
     padding: 0;
 }
 #bitcoin-option:hover {
-    background-color: #F7931A;
+    background-color: var(--bitcoin-color);
 }
 #ethereum-option:hover {
-    background-color: #6480EB;
+    background-color: var(--ethereum-color);
 }
 #litecoin-option:hover {
-    background-color: #375F9E;
+    background-color: var(--litecoin-color);
 }
 #currency-dropdown-with-selection {
     display: flex;
@@ -51,11 +59,23 @@
     box-shadow: var(--blue-grey) 0 0 calc(((0.5vh + 0.5vw) / 2) + 0.5em);
     border-radius: calc(((0.5vh + 0.5vw) / 2) + 0.5em);
 }
-.shares-div, .wallet-div {
+#shares-div, #wallet-div {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+.currency-input-with-title {
     display: flex;
     justify-content: space-around;
     align-items: center;
     width: 100%;
+    padding: calc(((0.5vh + 0.5vw) / 2) + 0.5em);
+    margin: calc(((0.5vh + 0.5vw) / 2) + 0.5em) 0;
+    background-color: var(--almost-white);
+    box-shadow: var(--blue-grey) 0 0 calc(((0.5vh + 0.5vw) / 2) + 0.5em);
+    border-radius: calc(((0.5vh + 0.5vw) / 2) + 0.5em);
 }
 #your-currencies-header-with-button {
     display: flex;
@@ -65,7 +85,8 @@
 }
 #your-currencies-header-div {
     margin: 0;
-    padding: 0;
+    padding: calc(((1vh + 1vw) / 2) + 1em);
+    border-radius: calc(((0.5vh + 0.5vw) / 2) + 0.5em);
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -84,6 +105,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+    margin: calc(((0.75vh + 0.75vw) / 2) + 0.75em) 0 0 0;
 }
 #your-currencies-list-section {
     display: flex;
@@ -94,9 +116,10 @@
     padding: calc(((0.5vh + 0.5vw) / 2) + 0.5em);
     margin: calc(((0.5vh + 0.5vw) / 2) + 0.5em) calc(((0.5vh + 0.5vw) / 2) + 0.5em) 0;
     background-color: var(--almost-white);
-    box-shadow: var(--blue-grey) calc(((0.5vh + 0.5vw) / 2) + 0.5em)
-                                 calc(((0.5vh + 0.5vw) / 2) + 0.5em) 0 0;
+    box-shadow: var(--blue-grey) calc(((0.25vh + 0.25vw) / 2) + 0.25em)
+                                 calc(((0.25vh + 0.25vw) / 2) + 0.25em) 0 0;
     border-radius: calc(((0.5vh + 0.5vw) / 2) + 0.5em);
+    border: var(--blue-grey) solid var(--thin-border);
 }
 .your-currency-image {
     width:  calc(((2vh + 2vw) / 2) + 2em);
@@ -129,4 +152,26 @@
 }
 .your-currency-info-text {
     color: var(--blue-grey);
+}
+#shares-wallet-seperator {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    /*padding: calc(((0.5vh + 0.5vw) / 2) + 0.5em);*/
+    margin: calc(((0.5vh + 0.5vw) / 2) + 0.5em) 0;
+}
+.currency-input-subtext {
+    /*font-size: calc(((0.75vh + 0.75vw) / 2) + 0.75em);*/
+    color: var(--blue-grey);
+    font-style: italic;
+}
+#shares-wallet-with-button {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+}
+#add-button {
+    margin: calc(((0.5vh + 0.5vw) / 2) + 0.5em) 0;
 }
