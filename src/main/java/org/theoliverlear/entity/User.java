@@ -22,15 +22,16 @@ public class User {
     @Column(name = "password_hash")
     @Convert(converter = SafePasswordConverter.class)
     private SafePassword safePassword;
-    @Column(name = "portfolio_id")
-    private Long portfolioId;
+    @OneToOne
+    @JoinColumn(name = "portfolio_id")
+    private Portfolio portfolio;
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
     //===========================-Constructors-===============================
     public User() {
         this.username = null;
         this.safePassword = null;
-        this.portfolioId = null;
+        this.portfolio = null;
         this.lastLogin = null;
     }
     public User(String username, String rawPassword) {
@@ -43,16 +44,16 @@ public class User {
         this.safePassword = encodedPassword;
         this.lastLogin = LocalDateTime.now();
     }
-    public User(String username, String rawPassword, Long portfolioId) {
+    public User(String username, String rawPassword, Portfolio portfolio) {
         this.username = username;
         this.safePassword = new SafePassword(rawPassword);
-        this.portfolioId = portfolioId;
+        this.portfolio = portfolio;
         this.lastLogin = LocalDateTime.now();
     }
-    public User(String username, String rawPassword, Long portfolioId, LocalDateTime lastLogin) {
+    public User(String username, String rawPassword, Portfolio portfolio, LocalDateTime lastLogin) {
         this.username = username;
         this.safePassword = new SafePassword(rawPassword);
-        this.portfolioId = portfolioId;
+        this.portfolio = portfolio;
         this.lastLogin = lastLogin;
     }
     //=============================-Methods-==================================
