@@ -1,23 +1,35 @@
 package org.theoliverlear.entity;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+//=================================-Imports-==================================
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.theoliverlear.update.SupportedCurrencies;
 
-//=================================-Imports-==================================
+@Getter
+@Setter
 @Entity
+@Table(name = "portfolio_assets")
 public class PortfolioAsset {
     //============================-Variables-=================================
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+    @ManyToOne
+    @JoinColumn(name = "portfolio_id")
+    private Portfolio portfolio;
     @ManyToOne(optional = false)
     @JoinColumn(name = "currency_code", nullable = false)
     private Currency currency;
+    @Column(name = "shares")
     private double shares;
+    @Column(name = "shares_value_in_dollars")
     private double sharesValueInDollars;
+    @Column(name = "asset_wallet_dollars")
     private double assetWalletDollars;
+    @Column(name = "total_value_in_dollars")
     private double totalValueInDollars;
+    @Column(name = "target_price")
     private double targetPrice;
     // TODO: Add buying strategy which may sell the whole asset, only the
     //       profits, or a set amount or percentage of the asset.
@@ -29,6 +41,14 @@ public class PortfolioAsset {
         this.assetWalletDollars = 0;
         this.fetchTotalValueInDollars();
         this.targetPrice = 0;
+    }
+    public PortfolioAsset(Portfolio portfolio, Currency currency, double shares, double assetWalletDollars) {
+        this.portfolio = portfolio;
+        this.currency = currency;
+        this.shares = shares;
+        this.assetWalletDollars = assetWalletDollars;
+        this.portfolio.addAsset(this);
+        this.fetchTotalValueInDollars();
     }
     public PortfolioAsset(Currency currency, double shares, double assetWalletDollars) {
         this.currency = currency;
@@ -66,44 +86,7 @@ public class PortfolioAsset {
     //------------------------------To-String---------------------------------
 
     //=============================-Getters-==================================
-    public Currency getCurrency() {
-        return this.currency;
-    }
-    public double getShares() {
-        return this.shares;
-    }
-    public double getSharesValueInDollars() {
-        this.updateValues();
-        return this.sharesValueInDollars;
-    }
-    public double getAssetWalletDollars() {
-        this.updateValues();
-        return this.assetWalletDollars;
-    }
-    public double getTotalValueInDollars() {
-        this.updateValues();
-        return this.totalValueInDollars;
-    }
-    public double getTargetPrice() {
-        return this.targetPrice;
-    }
+
     //=============================-Setters-==================================
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
-    }
-    public void setShares(double shares) {
-        this.shares = shares;
-    }
-    public void setSharesValueInDollars(double sharesValueInDollars) {
-        this.sharesValueInDollars = sharesValueInDollars;
-    }
-    public void setAssetWalletDollars(double assetWalletDollars) {
-        this.assetWalletDollars = assetWalletDollars;
-    }
-    public void setTotalValueInDollars(double totalValueInDollars) {
-        this.totalValueInDollars = totalValueInDollars;
-    }
-    public void setTargetPrice(double targetPrice) {
-        this.targetPrice = targetPrice;
-    }
+
 }
