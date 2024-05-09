@@ -1,15 +1,19 @@
-const CryptoJS = require('crypto-js');
+export const defaultCurrencyImage = '../static/images/default_currency_icon.png';
+//=============================-Client-Functions-=============================
+
+//------------------------Password-Contains-Artifacts-------------------------
 function passwordContainsArtifacts(password) {
-    // 0 long or has spaces
     if (password.length === 0 || password.includes(' ')) {
         return true;
     }
     return false;
 }
+//-------------------------------Hash-Password--------------------------------
 function hashPassword(password) {
     let hashedPassword = CryptoJS.SHA256(password);
     return hashedPassword.toString();
 }
+//------------------------Get-Currency-Logo-From-Name-------------------------
 function getCurrencyLogoFromName(currencyName) {
     let currencyLogoSrc = '';
     switch (currencyName) {
@@ -21,9 +25,17 @@ function getCurrencyLogoFromName(currencyName) {
             break;
         case 'Litecoin':
             currencyLogoSrc = '../static/images/logo/currency/litecoin_logo.png';
-            break;    
+            break;
+        default:
+            currencyLogoSrc = defaultCurrencyImage;
+            break;
     }
     return currencyLogoSrc;
 }
-export {hashPassword, getCurrencyLogoFromName, passwordContainsArtifacts};
-// module.exports = {hashPassword, getCurrencyLogoFromName, passwordContainsArtifacts};
+//------------------------------Sanitize-String-------------------------------
+function sanitizeString(input) {
+    return input.trim().replace("\n", "").replace("\r", "");
+}
+//=================================-Exports-==================================
+export {hashPassword, getCurrencyLogoFromName, passwordContainsArtifacts, sanitizeString};
+export {defaultCurrencyImage};
