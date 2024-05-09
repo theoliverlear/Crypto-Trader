@@ -1,10 +1,35 @@
+//================================-Variables-=================================
+
+//-----------------------------------Signup-----------------------------------
 let signupContentContainer = document.getElementById('signup-form-container');
-let loginContentContainer = document.getElementById('login-form-container');
 let signupTabSelector = document.getElementById('signup-tab-selector');
+let signupUsernameInput = document.getElementById('signup-username-input');
+let signupPasswordInput = document.getElementById('signup-password-input');
+let signupConfirmPasswordInput = document.getElementById('signup-confirm-password-input');
+//-----------------------------------Login------------------------------------
+let loginUsernameInput = document.getElementById('login-username-input');
+let loginPasswordInput = document.getElementById('login-password-input');
 let loginTabSelector = document.getElementById('login-tab-selector');
+let loginContentContainer = document.getElementById('login-form-container');
+//----------------------------------Buttons-----------------------------------
+let signupButton = document.getElementById('signup-button-container');
+let loginButton = document.getElementById('login-button-container');
+//---------------------------------Selectors----------------------------------
 let selectors = [signupTabSelector, loginTabSelector];
+//=============================-Server-Functions-=============================
+
+//---------------------------Send-Sign-Up-To-Server---------------------------
+function sendSignUpToServer() {
+
+}
+//----------------------------Send-Login-To-Server----------------------------
+function sendLoginToServer() {
+
+}
+//=============================-Client-Functions-=============================
+
+//-------------------------Toggle-User-Info-Container-------------------------
 function toggleUserInfoContainer() {
-    console.log('toggleUserInfoContainer');
     let isCurrentlySignUp = signupContentContainer.display === 'flex';
     let isCurrentlyLogIn = loginContentContainer.display === 'flex';
     let clickedId = this.id;
@@ -16,25 +41,8 @@ function toggleUserInfoContainer() {
         loginContentContainer.style.display = 'flex';
     }
 }
+
+//=============================-Event-Listeners-==============================
 selectors.forEach(selector => {
     selector.addEventListener('click', toggleUserInfoContainer)
 });
-
-
-
-let signupUsernameInput = document.getElementById('signup-username-input');
-let signupPasswordInput = document.getElementById('signup-password-input');
-let signupConfirmPasswordInput = document.getElementById('signup-confirm-password-input');
-
-let loginUsernameInput = document.getElementById('login-username-input');
-let loginPasswordInput = document.getElementById('login-password-input');
-
-
-let signupButton = document.getElementById('signup-button-container');
-let loginButton = document.getElementById('login-button-container');
-function sendSignUpToServer() {
-
-}
-function sendLoginToServer() {
-
-}
