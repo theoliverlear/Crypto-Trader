@@ -1,4 +1,4 @@
-export const defaultCurrencyImage = '../static/images/default_currency_icon.png';
+const defaultCurrencyImage = '../static/images/default_currency_icon.png';
 //=============================-Client-Functions-=============================
 
 //------------------------Password-Contains-Artifacts-------------------------
