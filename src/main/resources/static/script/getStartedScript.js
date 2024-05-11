@@ -33,7 +33,7 @@ function sendSignupDataToServer() {
         })
     }).then(response => {
         if (response.status === 200) {
-            window.location.href = '/portfolio/builder';
+            window.location.href = '/portfolio/';
         } else {
             popupDiv.style.display = 'block';
             popupText.textContent = 'Username already exists.';
@@ -83,7 +83,8 @@ function updateAllFields() {
 //------------------------------Has-Empty-Fields------------------------------
 function hasEmptyFields() {
     updateAllFields();
-    return userUsernameInputValue === '' || userPasswordInputValue === '' || userPasswordConfirmInputValue === '';
+    return userUsernameInputValue === '' || userPasswordInputValue === '' ||
+           userPasswordConfirmInputValue === '';
 }
 //-----------------------------Empty-Field-Popup------------------------------
 function emptyFieldPopup() {
