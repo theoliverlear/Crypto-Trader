@@ -1,6 +1,7 @@
 package org.theoliverlear.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.theoliverlear.entity.Currency;
@@ -19,6 +20,7 @@ public class CurrencyService {
         this.currencyRepository = currencyRepository;
         this.currencyHistoryRepository = currencyHistoryRepository;
     }
+    @Async("taskExecutor")
     @Scheduled(fixedRate = 5000)
     public void saveCurrencies() {
         for (Currency currency : SupportedCurrencies.SUPPORTED_CURRENCIES) {
