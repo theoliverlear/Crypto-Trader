@@ -1,4 +1,5 @@
 :root {
+    /*--------------------------Color-Palette-------------------------------*/
     --pure-white: #ffffff;
     --almost-white: #f8f9fa;
     --air-blue: #d6e6f3;
@@ -10,7 +11,11 @@
     --blue-grey: #2c4557;
     --midnight-navy: #152f41;
     --sunbeam-yellow: #ffe17b;
-
+    /*-------------------------Currency-Colors------------------------------*/
+    --bitcoin-color: #F7931A;
+    --ethereum-color: #6480EB;
+    --litecoin-color: #375F9E;
+    /*------------------------------Sizes-----------------------------------*/
     --thin-border: calc(((0.05vw + 0.05vh) / 2) + 0.05em);
     --small-border: calc(((0.1vw + 0.1vh) / 2) + 0.1em);
 }
