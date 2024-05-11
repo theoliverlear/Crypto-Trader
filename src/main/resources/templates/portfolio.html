@@ -9,11 +9,15 @@
           th:href="@{/style/global-style.css}">
     <link rel="stylesheet" href="../static/style/portfolio-style.css"
           th:href="@{/style/portfolio-style.css}">
+    <link rel="icon" href="../static/images/favicon/crypto_trader_logo_cropped.ico"
+          th:href="@{/images/favicon/crypto_trader_logo_cropped.ico}">
 </head>
 <body>
+<!----------------------------------Nav-Bar---------------------------------->
 <header>
     <nav>
         <div id="nav-div">
+            <!--------------------Nav-To-Home-------------------------------->
             <div class="nav-item">
                 <a href="/" class="link-no-style">
                     <div class="nav-bar-item-container">
@@ -21,18 +25,25 @@
                     </div>
                 </a>
             </div>
+            <!-----------------Nav-To-Portfolio------------------------------>
             <div class="nav-item">
-                <div class="nav-bar-item-container">
-                    <h5>Portfolio</h5>
-                </div>
+                <a href="/portfolio/" class="link-no-style">
+                    <div class="nav-bar-item-container">
+                        <h5>Portfolio</h5>
+                    </div>
+                </a>
             </div>
+            <!-------------------Nav-To-Trader------------------------------->
             <div class="nav-item">
-                <div class="nav-bar-item-container">
-                    <h5>Trader</h5>
-                </div>
+                <a href="/trader/" class="link-no-style">
+                    <div class="nav-bar-item-container">
+                        <h5>Trader</h5>
+                    </div>
+                </a>
             </div>
         </div>
         <div>
+            <!------------------Nav-To-Account------------------------------->
             <a href="/user/" class="link-no-style">
                 <div id="account-image-container">
                     <img id="default-avatar-image"
@@ -169,7 +180,7 @@
                                 </div>
                             </div>
                             <div id="popup-div">
-                                <p>
+                                <p id="popup-text">
                                     Please fill out either the shares or wallet field.
                                 </p>
                             </div>
@@ -185,7 +196,16 @@
                     </div>
                 </div>
             </div>
+            <section id="empty-portfolio-section">
+                <div id="empty-portfolio-title-div">
+                    <h4 id="empty-portfolio-title-text">Your portfolio is empty.</h4>
+                </div>
+            </section>
+            <section id="performance-section">
+
+            </section>
             <section id="your-currencies-list-section">
+                <!--
                 <div class="simple-space-inline-div">
                     <div class="simple-space-inline-div">
                         <div class="currency-image-name-code-div simple-space-inline-div your-currency-info-div">
@@ -210,14 +230,21 @@
                             </div>
                             <div>
                                 <h6 class="your-currency-info-text">
-                                    Wallet: $<span class="your-currency-info-wallet-text">0.0</span>
+                                    Wallet: $<span class="your-currency-info-wallet-text">0.00</span>
                                 </h6>
                             </div>
                         </div>
                         <div class="simple-space-inline-div your-currency-info-div">
                             <div>
                                 <h6 class="your-currency-info-text">
-                                    All Time Profit: $<span class="your-currency-info-profit-text">0.0</span>
+                                    Total Value: $<span class="your-currency-info-total-text">0.00</span>
+                                </h6>
+                            </div>
+                        </div>
+                        <div class="simple-space-inline-div your-currency-info-div">
+                            <div>
+                                <h6 class="your-currency-info-text">
+                                    All Time Profit: $<span class="your-currency-info-profit-text">0.00</span>
                                 </h6>
                             </div>
                             <div class="small-button">
@@ -227,15 +254,23 @@
                     </div>
                     <hr />
                 </div>
+                -->
             </section>
         </div>
     </section>
 </main>
+<footer>
+    <section id="footer-content">
+        <div>
+            <p>&copy; 2022 Sigwarth Software. All rights reserved.</p>
+        </div>
+    </section>
+</footer>
 <script src="../static/script/globalScript.js"
         type="module"
-        th:src="@{/scripts/globalScript.js}"></script>
+        th:src="@{/script/globalScript.js}"></script>
 <script src="../static/script/portfolioScript.js"
         type="module"
-        th:src="@{/scripts/portfolioScript.js}"></script>
+        th:src="@{/script/portfolioScript.js}"></script>
 </body>
 </html>
