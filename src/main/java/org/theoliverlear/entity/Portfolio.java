@@ -3,7 +3,6 @@ package org.theoliverlear.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.theoliverlear.convert.PortfolioAssetArrayListConverter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,7 +26,6 @@ public class Portfolio {
     @Column(name = "last_updated")
     LocalDateTime lastUpdated;
     @OneToMany(mappedBy = "portfolio")
-    @JoinColumn(name = "portfolio_assets")
     private ArrayList<PortfolioAsset> assets;
     //===========================-Constructors-===============================
     public Portfolio() {
@@ -64,6 +62,8 @@ public class Portfolio {
         this.updateValues();
     }
     //=============================-Methods-==================================
+
+    //---------------------------Update-Values--------------------------------
     public void updateValues() { // TODO: Make an Updatable interface
         this.dollarBalance = 0;
         this.shareBalance = 0;
@@ -74,16 +74,22 @@ public class Portfolio {
         this.totalWorth = this.dollarBalance + this.shareBalance;
         this.lastUpdated = LocalDateTime.now();
     }
+    //-----------------------------Add-Asset----------------------------------
     public void addAsset(PortfolioAsset asset) {
         this.assets.add(asset);
         this.updateValues();
     }
+    //----------------------------Remove-Asset--------------------------------
     public boolean removeAsset(PortfolioAsset asset) {
         boolean removed = this.assets.remove(asset);
         if (removed) {
             this.updateValues();
         }
         return removed;
+    }
+    //-------------------------Is-Empty-Portfolio-----------------------------
+    public boolean isEmpty() {
+        return this.assets.isEmpty();
     }
     //============================-Overrides-=================================
 
