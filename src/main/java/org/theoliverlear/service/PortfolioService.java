@@ -32,7 +32,7 @@ public class PortfolioService {
             }
         }
     }
-    @Async
+    @Async("taskExecutor")
     @Scheduled(fixedRate = 5000)
     public void trade() {
         if (!this.cryptoTrader.isEmpty()) {
@@ -67,7 +67,7 @@ public class PortfolioService {
 
     public void addAssetToPortfolio(Portfolio portfolio, PortfolioAssetRequest portfolioAssetRequest) {
         Currency requestCurrency = this.getCurrencyFromRequest(portfolioAssetRequest);
-        PortfolioAsset portfolioAsset = new PortfolioAsset(portfolio, requestCurrency, portfolioAssetRequest.getShares(), portfolioAssetRequest.getAssetWalletDollars());
+        PortfolioAsset portfolioAsset = new PortfolioAsset(portfolio, requestCurrency, portfolioAssetRequest.getShares(), portfolioAssetRequest.getWalletDollars());
         portfolio.addAsset(portfolioAsset);
         this.savePortfolio(portfolio);
     }
