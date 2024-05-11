@@ -9,12 +9,16 @@
           th:href="@{/style/global-style.css}">
     <link rel="stylesheet" href="../static/style/home-style.css"
           th:href="@{/style/home-style.css}">
+    <link rel="icon" href="../static/images/favicon/crypto_trader_logo_cropped.ico"
+          th:href="@{/images/favicon/crypto_trader_logo_cropped.ico}">
 </head>
 <!-- TODO: Turn the following nav bar into a Thymeleaf template. -->
 <body>
+<!----------------------------------Nav-Bar---------------------------------->
 <header>
     <nav>
         <div id="nav-div">
+            <!--------------------Nav-To-Home-------------------------------->
             <div class="nav-item">
                 <a href="/" class="link-no-style">
                     <div class="nav-bar-item-container">
@@ -22,18 +26,25 @@
                     </div>
                 </a>
             </div>
+            <!-----------------Nav-To-Portfolio------------------------------>
             <div class="nav-item">
-                <div class="nav-bar-item-container">
-                    <h5>Portfolio</h5>
-                </div>
+                <a href="/portfolio/" class="link-no-style">
+                    <div class="nav-bar-item-container">
+                        <h5>Portfolio</h5>
+                    </div>
+                </a>
             </div>
+            <!-------------------Nav-To-Trader------------------------------->
             <div class="nav-item">
-                <div class="nav-bar-item-container">
-                    <h5>Trader</h5>
-                </div>
+                <a href="/trader/" class="link-no-style">
+                    <div class="nav-bar-item-container">
+                        <h5>Trader</h5>
+                    </div>
+                </a>
             </div>
         </div>
         <div>
+            <!------------------Nav-To-Account------------------------------->
             <a href="/user/" class="link-no-style">
                 <div id="account-image-container">
                     <img id="default-avatar-image"
@@ -214,6 +225,7 @@
         </section>
     </section>
 </main>
+<!-- TODO: Make the footer a Thymeleaf template. -->
 <footer>
     <section id="footer-content">
         <div>
