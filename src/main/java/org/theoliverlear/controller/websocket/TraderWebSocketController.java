@@ -1,4 +1,4 @@
-package org.theoliverlear.controller;
+package org.theoliverlear.controller.websocket;
 
 import jakarta.websocket.Session;
 import jakarta.websocket.server.ServerEndpoint;
