@@ -3,14 +3,19 @@ import {
     defaultCurrencyImage,
     getCurrencyLogoFromName,
     sanitizeString
-} from "./globalScript";
+} from "./globalScript.js";
+import {PortfolioAsset} from "./PortfolioAsset.js";
 //================================-Variables-=================================
 
 //-----------------------------------Inputs-----------------------------------
 let sharesInput = document.getElementById('shares-input');
 let walletInput = document.getElementById('wallet-input');
+let inputs = [sharesInput, walletInput];
+let inputArray = Array.from(inputs);
 //---------------------------------Containers---------------------------------
 const addCurrencyDiv = document.getElementById('add-currency-div');
+const emptyPortfolioSection = document.getElementById('empty-portfolio-section');
+let yourCurrenciesListSection = document.getElementById('your-currencies-list-section');
 //-----------------------------Currency-Selection-----------------------------
 const currencySelectionText = document.getElementById('currency-selection-text');
 const currencySelectionOptions = document.getElementsByClassName('currency-dropdown-option');
@@ -26,6 +31,7 @@ const currencyDropdownCaret = document.getElementById('currency-dropdown-caret')
 const currencyDropdownCaretImage = document.getElementById('currency-dropdown-caret-image');
 //-----------------------------------Popup------------------------------------
 let popupDiv = document.getElementById('popup-div');
+let popupText = document.getElementById('popup-text');
 //----------------------------------Buttons-----------------------------------
 let addButton = document.getElementById('add-button');
 const cancelButton = document.getElementById('cancel-button');
@@ -65,19 +71,75 @@ function sendPortfolioAssetToServer() {
         })
     }
 }
+//---------------------Get-Is-Empty-Portfolio-From-Server---------------------
+async function getIsEmptyPortfolioFromServer() {
+    let response = await fetch('/portfolio/empty', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    let responseJson = await response.json();
+    return responseJson === 'true';
+}
 //=============================-Client-Functions-=============================
 
+//----------------------------Load-Empty-Container----------------------------
+function showCorrectContainer() {
+    getIsEmptyPortfolioFromServer().then(isEmpty => {
+        if (isEmpty) {
+            emptyPortfolioSection.style.display = 'flex';
+        } else {
+            emptyPortfolioSection.style.display = 'none';
+            loadCurrencies();
+        }
+    });
+}
+//------------------------------Load-Currencies-------------------------------
+function loadCurrencies() {
+    getPortfolioFromServer().then(portfolio => {
+        portfolio.forEach(asset => {
+            let currencyName = asset.currency.name;
+            let currencyCode = asset.currency.currencyCode;
+            let shares = asset.shares;
+            let walletDollars = asset.walletDollars;
+            let totalAssetValue = asset.totalValue;
+            addCurrencyToPage(currencyName, currencyCode, shares, walletDollars, totalAssetValue);
+        });
+    });
+}
+//----------------------------Add-Currency-To-Page----------------------------
+function addCurrencyToPage(currencyName, currencyCode, shares, walletDollars, totalAssetValue) {
+    let currencyImageSrc = getCurrencyLogoFromName(currencyName);
+    let currencyAsset = new PortfolioAsset(currencyName, currencyCode, shares, walletDollars, totalAssetValue, currencyImageSrc);
+    let currencyHtml = currencyAsset.buildHtml();
+    yourCurrenciesListSection.innerHTML += currencyHtml;
+}
 //-----------------------------Add-Item-Sequence------------------------------
 function addItemSequence() {
     if (sharesAndWalletAreEmpty()) {
-        showPopup();
+        showPopup('Please fill out either the shares or wallet field.');
+        return;
+    }
+    if (bothSharesAndWalletHaveInput()) {
+        showPopup('Both shares and wallet have input. Please only input one.');
         return;
     }
     sendPortfolioAssetToServer();
     clearInputs();
     hideCurrencyDropdown();
     hideAddCurrencyDiv();
-    updatePage();
+    loadCurrencies();
+}
+//--------------------------------Limit-Input---------------------------------
+function limitInput() {
+    if (this.value >= 10_000_000) {
+        this.value = 10_000_000;
+    }
+}
+//---------------------Both-Shares-And-Wallet-Have-Input----------------------
+function bothSharesAndWalletHaveInput() {
+    return hasSharesInput() && hasWalletInput();
 }
 //-------------------------Change-Caret-To-Highlight--------------------------
 function changeCaretToHighlight() {
@@ -114,6 +176,7 @@ function hideCurrencyDropdown() {
 function clearInputs() {
     sharesInput.value = '';
     walletInput.value = '';
+    hidePopup();
     setSelectionToNone();
 }
 //-----------------------Initialize-Empty-Wallet-Shares-----------------------
@@ -123,16 +186,13 @@ function initializeEmptyWalletShares(valueInput) {
     }
     return valueInput;
 }
-//--------------------------------Update-Page---------------------------------
-function updatePage() {
-    
-}
 //------------------------Shares-And-Wallet-Are-Empty-------------------------
 function sharesAndWalletAreEmpty() {
     return sharesInput.value === '' && walletInput.value === '';
 }
 //---------------------------------Show-Popup---------------------------------
-function showPopup() {
+function showPopup(message) {
+    popupText.textContent = message;
     popupDiv.style.display = 'flex';
 }
 //---------------------------------Hide-Popup---------------------------------
@@ -156,11 +216,11 @@ function hasSelectedCurrency() {
 }
 //------------------------------Has-Shares-Input------------------------------
 function hasSharesInput() {
-    return sharesInput.value !== '';
+    return sharesInput.value !== '' && sharesInput.value !== '0';
 }
 //------------------------------Has-Wallet-Input------------------------------
 function hasWalletInput() {
-    return walletInput.value !== '';
+    return walletInput.value !== '' && walletInput.value !== '0';
 }
 //---------------------------Get-Selected-Currency----------------------------
 function setSelectedCurrency() {
@@ -182,3 +242,8 @@ addButton.addEventListener('click', addItemSequence);
 currencyDropdownButton.addEventListener('click', toggleCurrencyDropdown);
 currencyDropdownCaret.addEventListener('mouseover', changeCaretToHighlight);
 currencyDropdownCaret.addEventListener('mouseout', changeCaretToBlack);
+inputArray.forEach(input => {
+    input.addEventListener('input', limitInput);
+});
+//================================-Init-Load-=================================
+showCorrectContainer();
