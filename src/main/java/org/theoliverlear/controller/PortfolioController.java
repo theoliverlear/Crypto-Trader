@@ -40,4 +40,12 @@ public class PortfolioController {
         this.portfolioService.addAssetToPortfolio(this.portfolio, portfolioAssetRequest);
         return ResponseEntity.ok("Asset added to portfolio");
     }
+    @RequestMapping("/empty")
+    public ResponseEntity<String> emptyPortfolio() {
+        if (this.portfolio.isEmpty()) {
+            return ResponseEntity.ok("true");
+        } else {
+            return ResponseEntity.ok("false");
+        }
+    }
 }
