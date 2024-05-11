@@ -47,6 +47,7 @@ public class PortfolioAsset {
         this.currency = currency;
         this.shares = shares;
         this.assetWalletDollars = assetWalletDollars;
+        this.targetPrice = 0;
         this.portfolio.addAsset(this);
         this.fetchTotalValueInDollars();
     }
@@ -80,9 +81,38 @@ public class PortfolioAsset {
     //============================-Overrides-=================================
 
     //------------------------------Equals------------------------------------
-
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj instanceof PortfolioAsset portfolioAsset) {
+            boolean samePortfolio = this.portfolio.equals(portfolioAsset.portfolio);
+            boolean sameCurrency = this.currency.equals(portfolioAsset.currency);
+            boolean sameShares = this.shares == portfolioAsset.shares;
+            boolean sameSharesValueInDollars = this.sharesValueInDollars == portfolioAsset.sharesValueInDollars;
+            boolean sameAssetWalletDollars = this.assetWalletDollars == portfolioAsset.assetWalletDollars;
+            boolean sameTotalValueInDollars = this.totalValueInDollars == portfolioAsset.totalValueInDollars;
+            boolean sameTargetPrice = this.targetPrice == portfolioAsset.targetPrice;
+            if (this.id != null) {
+                boolean sameId = this.id.equals(portfolioAsset.id);
+                return sameId && samePortfolio && sameCurrency && sameShares
+                        && sameSharesValueInDollars && sameAssetWalletDollars
+                        && sameTotalValueInDollars && sameTargetPrice;
+            }
+            return samePortfolio && sameCurrency && sameShares
+                    && sameSharesValueInDollars && sameAssetWalletDollars
+                    && sameTotalValueInDollars && sameTargetPrice;
+        }
+        return false;
+    }
     //------------------------------Hash-Code---------------------------------
-
+    @Override
+    public int hashCode() {
+        if (this.id != null) {
+            return this.id.hashCode();
+        } else {
+            return super.hashCode();
+        }
+    }
     //------------------------------To-String---------------------------------
 
     //=============================-Getters-==================================
