@@ -1,9 +1,12 @@
-:root {
-    --bitcoin-color: #F7931A;
-    --ethereum-color: #6480EB;
-    --litecoin-color: #375F9E;
-}
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
 
+}
 #portfolio-builder-section {
     display: flex;
     justify-content: space-around;
@@ -108,7 +111,7 @@
     margin: calc(((0.75vh + 0.75vw) / 2) + 0.75em) 0 0 0;
 }
 #your-currencies-list-section {
-    display: flex;
+    display: none;
     justify-content: space-around;
     align-items: center;
     width: 100%;
@@ -199,3 +202,22 @@
     align-items: center;
 }
 
+#empty-portfolio-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+#empty-portfolio-title-div {
+    padding: calc(((1vh + 1vw) / 2) + 1em);
+    margin: calc(((1vh + 1vw) / 2) + 1em) 0;
+    background-color: var(--muted-blue);
+    border-radius: calc(((0.5vh + 0.5vw) / 2) + 0.5em);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#empty-portfolio-title-text {
+    color: var(--pure-white);
+}
