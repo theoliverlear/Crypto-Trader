@@ -9,11 +9,15 @@
           th:href="@{/style/global-style.css}">
     <link rel="stylesheet" href="../static/style/user-style.css"
           th:href="@{/style/user-style.css}">
+    <link rel="icon" href="../static/images/favicon/crypto_trader_logo_cropped.ico"
+          th:href="@{/images/favicon/crypto_trader_logo_cropped.ico}">
 </head>
 <body>
+<!----------------------------------Nav-Bar---------------------------------->
 <header>
     <nav>
         <div id="nav-div">
+            <!--------------------Nav-To-Home-------------------------------->
             <div class="nav-item">
                 <a href="/" class="link-no-style">
                     <div class="nav-bar-item-container">
@@ -21,18 +25,25 @@
                     </div>
                 </a>
             </div>
+            <!-----------------Nav-To-Portfolio------------------------------>
             <div class="nav-item">
-                <div class="nav-bar-item-container">
-                    <h5>Portfolio</h5>
-                </div>
+                <a href="/portfolio/" class="link-no-style">
+                    <div class="nav-bar-item-container">
+                        <h5>Portfolio</h5>
+                    </div>
+                </a>
             </div>
+            <!-------------------Nav-To-Trader------------------------------->
             <div class="nav-item">
-                <div class="nav-bar-item-container">
-                    <h5>Trader</h5>
-                </div>
+                <a href="/trader/" class="link-no-style">
+                    <div class="nav-bar-item-container">
+                        <h5>Trader</h5>
+                    </div>
+                </a>
             </div>
         </div>
         <div>
+            <!------------------Nav-To-Account------------------------------->
             <a href="/user/" class="link-no-style">
                 <div id="account-image-container">
                     <img id="default-avatar-image"
@@ -107,6 +118,13 @@
         </div>
     </section>
 </main>
+<footer>
+    <section id="footer-content">
+        <div>
+            <p>&copy; 2024 Sigwarth Software. All rights reserved.</p>
+        </div>
+    </section>
+</footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
 <script src="../static/script/globalScript.js" type="module"
         th:src="@{/script/globalScript.js}"></script>
