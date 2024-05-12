@@ -19,9 +19,14 @@ public class UserService {
         return this.userRepository.getUserByUsername(username);
     }
     public boolean comparePassword(User user, String password) {
-        return user.getSafePassword().compareUnencodedPassword(password);
+        boolean passwordsMatch = user.getSafePassword().compareUnencodedPassword(password);
+        return passwordsMatch;
     }
     public void saveUser(User user) {
+        System.out.println("Saving user: " + user.getUsername());
         this.userRepository.save(user);
+    }
+    public User getUserById(Long id) {
+        return this.userRepository.getUserById(id);
     }
 }
