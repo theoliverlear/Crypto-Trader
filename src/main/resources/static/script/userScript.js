@@ -25,6 +25,9 @@ let selectors = [signupTabSelector, loginTabSelector];
 
 //---------------------------Send-Sign-Up-To-Server---------------------------
 function sendSignUpToServer() {
+    console.log('Sending sign up to server');
+    console.log(signupUsernameInput.value);
+    console.log(signupPasswordInput.value);
     fetch('/user/signup', {
         method: 'POST',
         headers: {
