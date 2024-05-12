@@ -21,7 +21,7 @@ public class CurrencyService {
         this.currencyHistoryRepository = currencyHistoryRepository;
     }
     @Async("taskExecutor")
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 500000)
     public void saveCurrencies() {
         for (Currency currency : SupportedCurrencies.SUPPORTED_CURRENCIES) {
             Currency previousCurrency = Currency.from(currency);
