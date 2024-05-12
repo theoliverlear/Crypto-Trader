@@ -105,6 +105,7 @@ function loadCurrencies() {
             let walletDollars = asset.walletDollars;
             let totalAssetValue = asset.totalValue;
             addCurrencyToPage(currencyName, currencyCode, shares, walletDollars, totalAssetValue);
+            console.log(asset);
         });
     });
 }
