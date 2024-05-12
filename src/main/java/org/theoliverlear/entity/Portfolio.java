@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -26,7 +28,7 @@ public class Portfolio {
     @Column(name = "last_updated")
     LocalDateTime lastUpdated;
     @OneToMany(mappedBy = "portfolio")
-    private ArrayList<PortfolioAsset> assets;
+    private List<PortfolioAsset> assets;
     //===========================-Constructors-===============================
     public Portfolio() {
         this.user = new User();
@@ -36,7 +38,7 @@ public class Portfolio {
         this.user = user;
         this.assets = new ArrayList<>();
     }
-    public Portfolio(User user, ArrayList<PortfolioAsset> assets) {
+    public Portfolio(User user, List<PortfolioAsset> assets) {
         this.user = user;
         this.assets = assets;
         this.updateValues();
@@ -47,6 +49,8 @@ public class Portfolio {
         this.dollarBalance = 0;
         this.shareBalance = 0;
         this.totalWorth = 0;
+        this.assets = new ArrayList<>();
+        this.lastUpdated = LocalDateTime.now();
     }
     public Portfolio(Long id, double dollarBalance, double shareBalance, double totalWorth) {
         this.user = new User();
@@ -54,11 +58,14 @@ public class Portfolio {
         this.dollarBalance = dollarBalance;
         this.shareBalance = shareBalance;
         this.totalWorth = totalWorth;
+        this.assets = new ArrayList<>();
+        this.lastUpdated = LocalDateTime.now();
     }
-    public Portfolio(Long id, ArrayList<PortfolioAsset> assets) {
+    public Portfolio(Long id, List<PortfolioAsset> assets) {
         this(id);
         this.user = new User();
         this.assets = assets;
+        this.lastUpdated = LocalDateTime.now();
         this.updateValues();
     }
     //=============================-Methods-==================================
