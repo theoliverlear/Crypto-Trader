@@ -1,5 +1,6 @@
 package org.theoliverlear.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Transient;
@@ -7,13 +8,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@Entity
 @Getter
 @Setter
 public class SafePassword {
     @Id
     String encodedPassword;
     @Transient
+    @JsonIgnore
     BCryptPasswordEncoder encoder;
     public SafePassword() {
         this.encoder = new BCryptPasswordEncoder();
