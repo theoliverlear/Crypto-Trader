@@ -1,4 +1,4 @@
-package org.theoliverlear.entity;
+package org.theoliverlear.entity.currency;
 //=================================-Imports-==================================
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -154,7 +154,7 @@ public class Currency {
     @Override
     public String toString() {
         String currencyString = """
-                %20s --- %5s - $%16s""".formatted(this.name, this.currencyCode,
+                %18s --- %5s - $%16s""".formatted(this.name, this.currencyCode,
                                           this.formattedValue);
         return currencyString;
     }
