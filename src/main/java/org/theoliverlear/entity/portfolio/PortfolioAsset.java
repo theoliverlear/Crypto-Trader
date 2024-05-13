@@ -1,11 +1,12 @@
-package org.theoliverlear.entity;
+package org.theoliverlear.entity.portfolio;
 //=================================-Imports-==================================
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.theoliverlear.update.SupportedCurrencies;
+import org.theoliverlear.entity.currency.Currency;
+import org.theoliverlear.entity.currency.SupportedCurrencies;
 
 @Getter
 @Setter
