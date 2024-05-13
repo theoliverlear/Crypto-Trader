@@ -1,9 +1,10 @@
 package org.theoliverlear.comm.request;
-
+//=================================-Imports-==================================
 import lombok.Data;
 
 @Data
 public class UserRequest {
+    //============================-Variables-=================================
     private String username;
     private String password;
     //============================-Constructors-==============================
