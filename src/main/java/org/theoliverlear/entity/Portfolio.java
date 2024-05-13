@@ -1,5 +1,8 @@
 package org.theoliverlear.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,11 +15,12 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "portfolios")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Portfolio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
+    @JsonBackReference
     @OneToOne(mappedBy = "portfolio")
     User user;
     @Column(name = "dollar_balance")
@@ -27,16 +31,18 @@ public class Portfolio {
     double totalWorth;
     @Column(name = "last_updated")
     LocalDateTime lastUpdated;
-    @OneToMany(mappedBy = "portfolio")
+    @OneToMany(mappedBy = "portfolio", fetch = FetchType.EAGER)
     private List<PortfolioAsset> assets;
     //===========================-Constructors-===============================
     public Portfolio() {
         this.user = new User();
         this.assets = new ArrayList<>();
+        this.lastUpdated = LocalDateTime.now();
     }
     public Portfolio(User user) {
         this.user = user;
         this.assets = new ArrayList<>();
+        this.lastUpdated = LocalDateTime.now();
     }
     public Portfolio(User user, List<PortfolioAsset> assets) {
         this.user = user;
@@ -107,15 +113,21 @@ public class Portfolio {
             boolean sameDollarBalance = this.dollarBalance == portfolio.dollarBalance;
             boolean sameShareBalance = this.shareBalance == portfolio.shareBalance;
             boolean sameTotalWorth = this.totalWorth == portfolio.totalWorth;
-            boolean sameLastUpdated = this.lastUpdated.equals(portfolio.lastUpdated);
+
             boolean sameAssets = this.assets.equals(portfolio.assets);
             if (this.id != null) {
-                boolean sameId = this.id.equals(portfolio.id);
-                return  sameId && sameDollarBalance && sameShareBalance &&
-                        sameTotalWorth && sameLastUpdated && sameAssets;
+                if (this.lastUpdated != null) {
+                    boolean sameLastUpdated = this.lastUpdated.equals(portfolio.lastUpdated);
+                    return sameDollarBalance && sameShareBalance &&
+                            sameTotalWorth && sameLastUpdated && sameAssets;
+                } else {
+                    boolean sameId = this.id.equals(portfolio.id);
+                    return sameId && sameDollarBalance && sameShareBalance &&
+                            sameTotalWorth && sameAssets;
+                }
             }
             return sameDollarBalance && sameShareBalance &&
-                    sameTotalWorth && sameLastUpdated && sameAssets;
+                    sameTotalWorth && sameAssets;
         }
         return false;
     }
