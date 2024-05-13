@@ -1,5 +1,5 @@
 package org.theoliverlear.controller;
-
+//=================================-Imports-==================================
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.theoliverlear.comm.request.UserRequest;
 import org.theoliverlear.comm.response.UserResponse;
-import org.theoliverlear.entity.Portfolio;
-import org.theoliverlear.entity.SafePassword;
-import org.theoliverlear.entity.User;
+import org.theoliverlear.entity.portfolio.Portfolio;
+import org.theoliverlear.entity.user.SafePassword;
+import org.theoliverlear.entity.user.User;
 import org.theoliverlear.service.PortfolioService;
 import org.theoliverlear.service.UserService;
 
@@ -20,14 +20,19 @@ import org.theoliverlear.service.UserService;
 @RequestMapping("/user")
 @Slf4j
 public class UserController {
+    //============================-Variables-=================================
     UserService userService;
     PortfolioService portfolioService;
     User currentUser;
+    //===========================-Constructors-===============================
     @Autowired
     public UserController(UserService userService, PortfolioService portfolioService) {
         this.userService = userService;
         this.portfolioService = portfolioService;
     }
+    //=============================-Methods-==================================
+
+    //--------------------------------User------------------------------------
     @RequestMapping("/")
     public String user(HttpSession session) {
         User user = (User) session.getAttribute("user");
@@ -38,10 +43,11 @@ public class UserController {
             return "redirect:/account/";
         }
     }
+    //-------------------------------Signup-----------------------------------
     @RequestMapping("/signup")
     public ResponseEntity<UserResponse> signup(@RequestBody UserRequest userRequest, HttpSession session) {
         String username = userRequest.getUsername();
-        boolean userExists = this.userService.userExists(username);
+        boolean userExists = this.userService.userExistsByUsername(username);
         log.info("User exists: {}", userExists);
         if (userExists) {
             return new ResponseEntity<>(new UserResponse("User already exists"), HttpStatus.CONFLICT);
@@ -59,6 +65,7 @@ public class UserController {
             return ResponseEntity.ok(new UserResponse("User created"));
         }
     }
+    //-------------------------------Login------------------------------------
     @RequestMapping("/login")
     public ResponseEntity<UserResponse> login(@RequestBody UserRequest userRequest, HttpSession session) {
         String username = userRequest.getUsername();
