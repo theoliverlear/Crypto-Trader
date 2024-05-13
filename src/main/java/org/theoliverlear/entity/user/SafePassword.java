@@ -1,7 +1,6 @@
-package org.theoliverlear.entity;
-
+package org.theoliverlear.entity.user;
+//=================================-Imports-==================================
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Transient;
 import lombok.Getter;
@@ -11,11 +10,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Getter
 @Setter
 public class SafePassword {
+    //============================-Variables-=================================
     @Id
     String encodedPassword;
     @Transient
     @JsonIgnore
     BCryptPasswordEncoder encoder;
+    //===========================-Constructors-===============================
     public SafePassword() {
         this.encoder = new BCryptPasswordEncoder();
         this.encodedPassword = null;
@@ -24,16 +25,23 @@ public class SafePassword {
         this.encoder = new BCryptPasswordEncoder();
         this.encodedPassword = this.encodePassword(unencodedPassword);
     }
+    //============================-Methods-===================================
+
+    //--------------------------Encode-Password-------------------------------
     public String encodePassword(String unencodedPassword) {
         return this.encoder.encode(unencodedPassword);
     }
+    //---------------------Compare-Unencoded-Password-------------------------
     public boolean compareUnencodedPassword(String unencodedPassword) {
         return this.encoder.matches(unencodedPassword, this.encodedPassword);
     }
+    //============================-Overrides-=================================
+
+    //------------------------------Equals------------------------------------
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj instanceof SafePassword comparedSafePassword) {
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object instanceof SafePassword comparedSafePassword) {
             return this.encodedPassword.equals(comparedSafePassword.encodedPassword);
         }
         return false;
