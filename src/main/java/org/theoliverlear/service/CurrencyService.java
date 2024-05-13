@@ -1,26 +1,30 @@
 package org.theoliverlear.service;
-
+//=================================-Imports-==================================
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.theoliverlear.comm.request.PortfolioAssetRequest;
-import org.theoliverlear.entity.Currency;
-import org.theoliverlear.entity.CurrencyHistory;
+import org.theoliverlear.entity.currency.Currency;
+import org.theoliverlear.entity.currency.CurrencyHistory;
 import org.theoliverlear.repository.CurrencyHistoryRepository;
 import org.theoliverlear.repository.CurrencyRepository;
-import org.theoliverlear.update.SupportedCurrencies;
+import org.theoliverlear.entity.currency.SupportedCurrencies;
 
 @Service
 public class CurrencyService {
+    //============================-Variables-=================================
     CurrencyRepository currencyRepository;
     CurrencyHistoryRepository currencyHistoryRepository;
+    //===========================-Constructors-===============================
     @Autowired
     public CurrencyService(CurrencyRepository currencyRepository,
                            CurrencyHistoryRepository currencyHistoryRepository) {
         this.currencyRepository = currencyRepository;
         this.currencyHistoryRepository = currencyHistoryRepository;
     }
+    //============================-Methods-===================================
+
+    //--------------------------Save-Currencies-------------------------------
     @Async("taskExecutor")
     @Scheduled(fixedRate = 500000)
     public void saveCurrencies() {
@@ -33,6 +37,7 @@ public class CurrencyService {
             }
         }
     }
+    //------------------------Get-Currency-By-Name----------------------------
     public Currency getCurrencyByName(String currencyName) {
         return this.currencyRepository.getCurrencyByName(currencyName);
     }
