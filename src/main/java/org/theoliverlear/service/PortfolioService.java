@@ -12,6 +12,7 @@ import org.theoliverlear.entity.Portfolio;
 import org.theoliverlear.entity.PortfolioAsset;
 import org.theoliverlear.entity.User;
 import org.theoliverlear.model.trade.Trader;
+import org.theoliverlear.repository.PortfolioAssetRepository;
 import org.theoliverlear.repository.PortfolioRepository;
 import org.theoliverlear.update.SupportedCurrencies;
 
@@ -22,14 +23,18 @@ import java.util.List;
 public class PortfolioService {
     List<Portfolio> allUsersPortfolios;
     PortfolioRepository portfolioRepository;
+    PortfolioAssetRepository portfolioAssetRepository;
     CryptoTrader cryptoTrader;
-    UserService userService;
+    private CurrencyService currencyService;
+
     @Autowired
     public PortfolioService(PortfolioRepository portfolioRepository,
-                            UserService userService) {
+                            PortfolioAssetRepository portfolioAssetRepository,
+                            CurrencyService currencyService) {
         this.cryptoTrader = new CryptoTrader();
-        this.userService = userService;
+        this.currencyService = currencyService;
         this.portfolioRepository = portfolioRepository;
+        this.portfolioAssetRepository = portfolioAssetRepository;
         this.allUsersPortfolios = new ArrayList<>();
         this.allUsersPortfolios = this.getPortfolios();
         if (this.allUsersPortfolios != null) {
@@ -51,36 +56,25 @@ public class PortfolioService {
             }
         }
     }
-    @Transactional
     public void savePortfolio(Portfolio portfolio) {
-        User user = portfolio.getUser();
-        if (user != null && (user.getId() == null || this.userService.getUserById(user.getId()) == null)) {
-            this.userService.saveUser(user);
-            portfolio.setUser(user);
-        }
         this.portfolioRepository.save(portfolio);
     }
-    public Currency getCurrencyFromRequest(PortfolioAssetRequest portfolioAssetRequest) {
-        Currency requestCurrency = null;
-        for (Currency currency : SupportedCurrencies.SUPPORTED_CURRENCIES) {
-            if (currency.getName().equals(portfolioAssetRequest.getCurrencyName())) {
-                requestCurrency = currency;
-                break;
-            }
-        }
-        return requestCurrency;
+    public void savePortfolioAsset(PortfolioAsset portfolioAsset) {
+        this.portfolioAssetRepository.save(portfolioAsset);
     }
+
     public Portfolio getPortfolio(Long userId) {
         return this.portfolioRepository.findPortfolioByUserId(userId);
     }
     public List<Portfolio> getPortfolios() {
-        return (List<Portfolio>) this.portfolioRepository.findAll();
+        return this.portfolioRepository.findAll();
     }
 
     public void addAssetToPortfolio(Portfolio portfolio, PortfolioAssetRequest portfolioAssetRequest) {
-        Currency requestCurrency = this.getCurrencyFromRequest(portfolioAssetRequest);
+        Currency requestCurrency = this.currencyService.getCurrencyByName(portfolioAssetRequest.getCurrencyName());
         PortfolioAsset portfolioAsset = new PortfolioAsset(portfolio, requestCurrency, portfolioAssetRequest.getShares(), portfolioAssetRequest.getWalletDollars());
         portfolio.getAssets().add(portfolioAsset);
         this.savePortfolio(portfolio);
+        this.savePortfolioAsset(portfolioAsset);
     }
 }
