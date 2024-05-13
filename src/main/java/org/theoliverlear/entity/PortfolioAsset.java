@@ -1,5 +1,7 @@
 package org.theoliverlear.entity;
 //=================================-Imports-==================================
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +11,7 @@ import org.theoliverlear.update.SupportedCurrencies;
 @Setter
 @Entity
 @Table(name = "portfolio_assets")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class PortfolioAsset {
     //============================-Variables-=================================
     @Id
@@ -18,7 +21,7 @@ public class PortfolioAsset {
     @ManyToOne
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "currency_code", nullable = false)
     private Currency currency;
     @Column(name = "shares")
