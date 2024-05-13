@@ -4,13 +4,12 @@ package org.theoliverlear.controller;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.theoliverlear.entity.User;
+import org.theoliverlear.entity.user.User;
 
 @Controller
 public class CryptoTraderController {
     //============================-Variables-=================================
     User currentUser;
-
     //=============================-Methods-==================================
 
     //--------------------------------Home------------------------------------
