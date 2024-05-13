@@ -1,5 +1,8 @@
 package org.theoliverlear.entity;
 //=================================-Imports-==================================
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "currencies")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "currencyCode")
 public class Currency {
     // TODO: Instead of enums, perhaps have static constants instantiated
     //       during runtime.
@@ -23,14 +27,14 @@ public class Currency {
     @Id
     @Column(name = "currency_code")
     private String currencyCode;
-    @Transient
     private String urlPath;
     @Column(name = "currency_value")
     private double value;
     @Column(name = "currency_value_formatted")
     private String formattedValue;
+    @JsonIgnore
     @Transient
-    private DecimalFormat decimalFormat = new DecimalFormat("##,#00.00000000");
+    private static final DecimalFormat decimalFormat = new DecimalFormat("##,#00.00000000");
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
     //===========================-Constructors-===============================
@@ -47,7 +51,7 @@ public class Currency {
         this.currencyCode = currencyCode;
         this.urlPath = urlPath;
         this.value = this.getApiValue();
-        this.formattedValue = this.decimalFormat.format(this.value);
+        this.formattedValue = decimalFormat.format(this.value);
         if (this.formattedValue == null) {
             this.formattedValue = "";
         }
@@ -69,7 +73,7 @@ public class Currency {
         this.currencyCode = currencyCode;
         this.urlPath = urlPath;
         this.value = value;
-        this.formattedValue = this.decimalFormat.format(value);
+        this.formattedValue = decimalFormat.format(value);
         if (this.formattedValue == null) {
             this.formattedValue = "";
         }
@@ -90,7 +94,7 @@ public class Currency {
     }
     //----------------------------Format-Value--------------------------------
     public String formatValue(double value) {
-        String reformattedValue = this.decimalFormat.format(value);
+        String reformattedValue = decimalFormat.format(value);
         if (reformattedValue == null) {
             reformattedValue = "";
         }
@@ -155,7 +159,9 @@ public class Currency {
         return currencyString;
     }
     //=============================-Getters-==================================
-
+    public DecimalFormat getDecimalFormat() {
+        return decimalFormat;
+    }
     //=============================-Setters-==================================
 
 }
