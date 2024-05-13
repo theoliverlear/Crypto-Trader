@@ -1,6 +1,6 @@
 package org.theoliverlear.model.trade;
 //=================================-Imports-==================================
-import org.theoliverlear.entity.PortfolioAsset;
+import org.theoliverlear.entity.portfolio.PortfolioAsset;
 
 public class AssetTrader {
     //============================-Variables-=================================
