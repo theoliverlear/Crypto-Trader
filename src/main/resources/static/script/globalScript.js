@@ -1,4 +1,4 @@
-const defaultCurrencyImage = '../static/images/default_currency_icon.png';
+const defaultCurrencyImage = '/images/default_currency_icon.png';
 //=============================-Client-Functions-=============================
 
 //------------------------Password-Contains-Artifacts-------------------------
@@ -7,6 +7,9 @@ function passwordContainsArtifacts(password) {
         return true;
     }
     return false;
+}
+function formatDollars(assetPrice) {
+    return assetPrice.toFixed(2);
 }
 //-------------------------------Hash-Password--------------------------------
 function hashPassword(password) {
@@ -18,13 +21,13 @@ function getCurrencyLogoFromName(currencyName) {
     let currencyLogoSrc = '';
     switch (currencyName) {
         case 'Bitcoin':
-            currencyLogoSrc = '../static/images/logo/currency/bitcoin_logo.png';
+            currencyLogoSrc = '/images/logo/currency/bitcoin_logo.png';
             break;
         case 'Ethereum':
-            currencyLogoSrc = '../static/images/logo/currency/ethereum_logo.png';
+            currencyLogoSrc = '/images/logo/currency/ethereum_logo.png';
             break;
         case 'Litecoin':
-            currencyLogoSrc = '../static/images/logo/currency/litecoin_logo.png';
+            currencyLogoSrc = '/images/logo/currency/litecoin_logo.png';
             break;
         default:
             currencyLogoSrc = defaultCurrencyImage;
@@ -37,5 +40,5 @@ function sanitizeString(input) {
     return input.trim().replace("\n", "").replace("\r", "");
 }
 //=================================-Exports-==================================
-export {hashPassword, getCurrencyLogoFromName, passwordContainsArtifacts, sanitizeString};
+export {hashPassword, getCurrencyLogoFromName, passwordContainsArtifacts, sanitizeString, formatDollars};
 export {defaultCurrencyImage};
