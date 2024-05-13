@@ -1,5 +1,8 @@
 package org.theoliverlear.entity;
 //=================================-Imports-==================================
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,19 +14,20 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 @Getter
 @Setter
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
     //============================-Variables-=================================
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
     @Column(name = "username")
     private String username;
     @Column(name = "password_hash")
     @Convert(converter = SafePasswordConverter.class)
     private SafePassword safePassword;
-    @OneToOne
-    @JoinColumn(name = "portfolio_id")
+    @JsonManagedReference
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "portfolio_id", referencedColumnName = "id")
     private Portfolio portfolio;
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
@@ -42,6 +46,7 @@ public class User {
     public User(String username, SafePassword encodedPassword) {
         this.username = username;
         this.safePassword = encodedPassword;
+        this.portfolio = new Portfolio(this);
         this.lastLogin = LocalDateTime.now();
     }
     public User(String username, String rawPassword, Portfolio portfolio) {
