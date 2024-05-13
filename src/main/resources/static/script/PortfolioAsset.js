@@ -13,8 +13,6 @@ export class PortfolioAsset {
     //-----------------------------Build-Html---------------------------------
     buildHtml() {
         return `
-        <div class="simple-space-inline-div">
-            <div class="simple-space-inline-div">
                 <div class="currency-image-name-code-div simple-space-inline-div your-currency-info-div">
                     <div class="your-currency-image-div">
                         <img class="your-currency-image"
@@ -37,7 +35,7 @@ export class PortfolioAsset {
                     </div>
                     <div>
                         <h6 class="your-currency-info-text">
-                            Wallet: $<span class="your-currency-info-wallet-text${this.walletDollars}</span>
+                            Wallet: $<span class="your-currency-info-wallet-text">${this.walletDollars}</span>
                         </h6>
                     </div>
                 </div>
@@ -54,13 +52,11 @@ export class PortfolioAsset {
                             All Time Profit: $<span class="your-currency-info-profit-text">0.00</span>
                         </h6>
                     </div>
-                    <div class="small-button">
-                        <h6 class="small-button-text">As Percent</h6>
-                    </div>
+<!--                    <div class="small-button as-percent-button">-->
+<!--                        <h6 class="small-button-text">As Percent</h6>-->
+<!--                    </div>-->
                 </div>
-            </div>
             <hr />
-        </div>
         `;
     }
 }
