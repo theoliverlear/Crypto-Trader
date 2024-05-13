@@ -1,6 +1,6 @@
 //=================================-Imports-==================================
 import {
-    defaultCurrencyImage,
+    defaultCurrencyImage, formatDollars,
     getCurrencyLogoFromName,
     sanitizeString
 } from "./globalScript.js";
@@ -79,7 +79,7 @@ async function getIsEmptyPortfolioFromServer() {
             'Content-Type': 'application/json'
         }
     });
-    let responseJson = await response.json();
+    let responseJson = await response.text();
     return responseJson === 'true';
 }
 //=============================-Client-Functions-=============================
@@ -89,8 +89,10 @@ function showCorrectContainer() {
     getIsEmptyPortfolioFromServer().then(isEmpty => {
         if (isEmpty) {
             emptyPortfolioSection.style.display = 'flex';
+            yourCurrenciesListSection.style.display = 'none';
         } else {
             emptyPortfolioSection.style.display = 'none';
+            yourCurrenciesListSection.style.display = 'flex';
             loadCurrencies();
         }
     });
@@ -98,23 +100,34 @@ function showCorrectContainer() {
 //------------------------------Load-Currencies-------------------------------
 function loadCurrencies() {
     getPortfolioFromServer().then(portfolio => {
-        portfolio.forEach(asset => {
-            let currencyName = asset.currency.name;
-            let currencyCode = asset.currency.currencyCode;
-            let shares = asset.shares;
-            let walletDollars = asset.walletDollars;
-            let totalAssetValue = asset.totalValue;
-            addCurrencyToPage(currencyName, currencyCode, shares, walletDollars, totalAssetValue);
-            console.log(asset);
-        });
+        console.log(portfolio);
+        if (Array.isArray(portfolio.assets)) {
+            portfolio.assets.forEach(asset => {
+                let currencyName = asset.currency.name;
+                let currencyCode = asset.currency.currencyCode;
+                let shares = asset.shares;
+                let walletDollars = formatDollars(asset.assetWalletDollars);
+                let totalAssetValue = formatDollars(asset.totalValueInDollars);
+                addCurrencyToPage(currencyName, currencyCode, shares, walletDollars, totalAssetValue);
+                console.log(asset);
+            });
+        } else {
+            console.log('No assets in portfolio.');
+        }
     });
 }
 //----------------------------Add-Currency-To-Page----------------------------
 function addCurrencyToPage(currencyName, currencyCode, shares, walletDollars, totalAssetValue) {
+    console.log(currencyName, currencyCode, shares, walletDollars, totalAssetValue);
     let currencyImageSrc = getCurrencyLogoFromName(currencyName);
     let currencyAsset = new PortfolioAsset(currencyName, currencyCode, shares, walletDollars, totalAssetValue, currencyImageSrc);
+    let currencyDiv = document.createElement('div');
+    currencyDiv.classList.add('simple-space-inline-div');
+    currencyDiv.classList.add('your-currency-item');
     let currencyHtml = currencyAsset.buildHtml();
-    yourCurrenciesListSection.innerHTML += currencyHtml;
+    console.log(currencyHtml);
+    currencyDiv.innerHTML = currencyHtml;
+    yourCurrenciesListSection.appendChild(currencyDiv);
 }
 //-----------------------------Add-Item-Sequence------------------------------
 function addItemSequence() {
