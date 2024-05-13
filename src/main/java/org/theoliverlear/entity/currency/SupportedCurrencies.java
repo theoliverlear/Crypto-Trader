@@ -1,10 +1,9 @@
-package org.theoliverlear.update;
-
-import org.theoliverlear.entity.Currency;
-
+package org.theoliverlear.entity.currency;
+//=================================-Imports-==================================
 import java.util.ArrayList;
 
 public class SupportedCurrencies {
+    //============================-Constants-=================================
     public static final Currency BITCOIN = new Currency("Bitcoin", "BTC","https://api.coinbase.com/v2/prices/BTC-USD/spot");
     public static final Currency ETHEREUM = new Currency("Ethereum", "ETH","https://api.coinbase.com/v2/prices/ETH-USD/spot");
     public static final Currency LITECOIN = new Currency("Litecoin", "LTC","https://api.coinbase.com/v2/prices/LTC-USD/spot");
@@ -26,6 +25,7 @@ public class SupportedCurrencies {
     public static final Currency STELLAR_LUMENS = new Currency("Stellar Lumens", "XLM","https://api.coinbase.com/v2/prices/XLM-USD/spot");
     public static final Currency SHIBA_INU = new Currency("Shiba Inu", "SHIB","https://api.coinbase.com/v2/prices/SHIB-USD/spot");
     public static final ArrayList<Currency> SUPPORTED_CURRENCIES = new ArrayList<>();
+    //==========================-Static-Actions-==============================
     static {
         SUPPORTED_CURRENCIES.add(BITCOIN);
         SUPPORTED_CURRENCIES.add(ETHEREUM);
