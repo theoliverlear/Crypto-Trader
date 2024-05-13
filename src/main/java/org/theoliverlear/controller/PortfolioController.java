@@ -22,7 +22,7 @@ public class PortfolioController {
         this.portfolioService = portfolioService;
     }
     @RequestMapping("/")
-    public String builder(HttpSession session) {
+    public String portfolio(HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return "redirect:/user/";
