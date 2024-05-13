@@ -22,6 +22,8 @@ public class ApiDataRetriever {
         this.fetchResponse();
     }
     //=============================-Methods-==================================
+
+    //---------------------------Fetch-Response-------------------------------
     public void fetchResponse() {
         StringBuilder responseJson = new StringBuilder();
         HttpsURLConnection urlConnection = null;
@@ -47,10 +49,11 @@ public class ApiDataRetriever {
             } else {
                 this.response = responseJson.toString();
             }
-            this.shutDownConnections(urlConnection, apiReader);
+            shutDownConnections(urlConnection, apiReader);
         }
     }
-    public void shutDownConnections(HttpsURLConnection urlConnection, BufferedReader apiReader) {
+    //-----------------------Shut-Down-Connections----------------------------
+    public static void shutDownConnections(HttpsURLConnection urlConnection, BufferedReader apiReader) {
         if (apiReader != null) {
             try {
                 apiReader.close();
