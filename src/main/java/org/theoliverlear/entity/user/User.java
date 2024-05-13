@@ -1,4 +1,4 @@
-package org.theoliverlear.entity;
+package org.theoliverlear.entity.user;
 //=================================-Imports-==================================
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.theoliverlear.convert.entity.SafePasswordConverter;
+import org.theoliverlear.entity.portfolio.Portfolio;
 
 import java.time.LocalDateTime;
 
@@ -63,7 +64,7 @@ public class User {
     }
     //=============================-Methods-==================================
 
-
+    //-------------------------Update-Login-Time------------------------------
     public void updateLoginTime() {
         this.lastLogin = LocalDateTime.now();
     }
