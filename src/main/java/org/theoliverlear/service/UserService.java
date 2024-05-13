@@ -1,11 +1,13 @@
 package org.theoliverlear.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.theoliverlear.entity.User;
 import org.theoliverlear.repository.UserRepository;
 
 @Service
+@Slf4j
 public class UserService {
     UserRepository userRepository;
     @Autowired
@@ -23,7 +25,7 @@ public class UserService {
         return passwordsMatch;
     }
     public void saveUser(User user) {
-        System.out.println("Saving user: " + user.getUsername());
+        log.info("Saving user: {}", user.getUsername());
         this.userRepository.save(user);
     }
     public User getUserById(Long id) {
