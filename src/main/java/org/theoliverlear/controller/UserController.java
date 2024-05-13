@@ -1,6 +1,7 @@
 package org.theoliverlear.controller;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,11 @@ import org.theoliverlear.service.UserService;
 
 @Controller
 @RequestMapping("/user")
+@Slf4j
 public class UserController {
     UserService userService;
     PortfolioService portfolioService;
+    User currentUser;
     @Autowired
     public UserController(UserService userService, PortfolioService portfolioService) {
         this.userService = userService;
@@ -31,6 +34,7 @@ public class UserController {
         if (user == null) {
             return "user";
         } else {
+            this.currentUser = user;
             return "redirect:/account/";
         }
     }
@@ -38,22 +42,20 @@ public class UserController {
     public ResponseEntity<UserResponse> signup(@RequestBody UserRequest userRequest, HttpSession session) {
         String username = userRequest.getUsername();
         boolean userExists = this.userService.userExists(username);
-        System.out.println("User exists: " + userExists);
+        log.info("User exists: {}", userExists);
         if (userExists) {
             return new ResponseEntity<>(new UserResponse("User already exists"), HttpStatus.CONFLICT);
         } else {
             String password = userRequest.getPassword();
             SafePassword safePassword = new SafePassword(password);
             User user = new User(username, safePassword);
+            Portfolio portfolio = new Portfolio(user);
+            user.setPortfolio(portfolio);
             this.userService.saveUser(user);
-            Portfolio newUserPortfolio = new Portfolio();
-            this.portfolioService.savePortfolio(newUserPortfolio);
-            User updatedUser = this.userService.getUserByUsername(username);
-            updatedUser.setPortfolio(newUserPortfolio);
-            this.userService.saveUser(updatedUser);
-            this.portfolioService.savePortfolio(newUserPortfolio);
-            User sessionUser = this.userService.getUserByUsername(username);
-            session.setAttribute("user", sessionUser);
+            this.portfolioService.savePortfolio(portfolio);
+            session.setAttribute("user", user);
+            this.currentUser = user;
+            log.info("User created: {}", user.getUsername());
             return ResponseEntity.ok(new UserResponse("User created"));
         }
     }
