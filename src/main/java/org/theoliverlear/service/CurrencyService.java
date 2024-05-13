@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.theoliverlear.comm.request.PortfolioAssetRequest;
 import org.theoliverlear.entity.Currency;
 import org.theoliverlear.entity.CurrencyHistory;
 import org.theoliverlear.repository.CurrencyHistoryRepository;
@@ -31,5 +32,8 @@ public class CurrencyService {
                 this.currencyHistoryRepository.save(new CurrencyHistory(currency, currency.getValue()));
             }
         }
+    }
+    public Currency getCurrencyByName(String currencyName) {
+        return this.currencyRepository.getCurrencyByName(currencyName);
     }
 }
