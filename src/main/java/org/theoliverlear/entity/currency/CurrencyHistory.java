@@ -1,5 +1,5 @@
-package org.theoliverlear.entity;
-
+package org.theoliverlear.entity.currency;
+//=================================-Imports-==================================
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "currency_history")
 public class CurrencyHistory {
+    //============================-Variables-=================================
     @Column(name = "currency_name")
     String name;
     @Id
@@ -25,6 +26,7 @@ public class CurrencyHistory {
     private String formattedValue;
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
+    //===========================-Constructors-===============================
     public CurrencyHistory() {
         this.currency = new Currency();
         this.name = "";
