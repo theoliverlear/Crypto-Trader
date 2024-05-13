@@ -21,7 +21,10 @@
             <level>TRACE</level>
         </filter>
     </appender>
-
+    <root level="DEBUG">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </root>
     <root level="INFO">
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
@@ -30,5 +33,8 @@
     <logger name="root" level="ERROR">
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
+    </logger>
+    <logger name="org.theoliverlear" level="DEBUG">
+        <appender-ref ref="CONSOLE"/>
     </logger>
 </configuration>
