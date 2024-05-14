@@ -26,7 +26,7 @@ public class CurrencyService {
 
     //--------------------------Save-Currencies-------------------------------
     @Async("taskExecutor")
-    @Scheduled(fixedRate = 500000)
+    @Scheduled(fixedRate = 5000)
     public void saveCurrencies() {
         for (Currency currency : SupportedCurrencies.SUPPORTED_CURRENCIES) {
             Currency previousCurrency = Currency.from(currency);
@@ -40,5 +40,9 @@ public class CurrencyService {
     //------------------------Get-Currency-By-Name----------------------------
     public Currency getCurrencyByName(String currencyName) {
         return this.currencyRepository.getCurrencyByName(currencyName);
+    }
+    //-------------------Get-Currency-By-Currency-Code------------------------
+    public Currency getCurrencyByCurrencyCode(String currencyCode) {
+        return this.currencyRepository.getCurrencyByCurrencyCode(currencyCode);
     }
 }
