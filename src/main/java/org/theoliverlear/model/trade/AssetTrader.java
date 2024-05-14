@@ -1,7 +1,11 @@
 package org.theoliverlear.model.trade;
 //=================================-Imports-==================================
+import lombok.Getter;
+import lombok.Setter;
 import org.theoliverlear.entity.portfolio.PortfolioAsset;
 
+@Getter
+@Setter
 public class AssetTrader {
     //============================-Variables-=================================
     PortfolioAsset asset;
