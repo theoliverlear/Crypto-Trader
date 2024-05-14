@@ -1,3 +1,5 @@
+//=================================-Imports-==================================
+import {hashPassword} from "./globalScript.js";
 //================================-Variables-=================================
 
 //-----------------------------------Signup-----------------------------------
@@ -6,6 +8,8 @@ let signupTabSelector = document.getElementById('signup-tab-selector');
 let signupUsernameInput = document.getElementById('signup-username-input');
 let signupPasswordInput = document.getElementById('signup-password-input');
 let signupConfirmPasswordInput = document.getElementById('signup-confirm-password-input');
+let signupPasswordInputs = [signupPasswordInput, signupConfirmPasswordInput];
+let termsAgreeCheckbox = document.getElementById('terms-agree-checkbox');
 //-----------------------------------Login------------------------------------
 let loginUsernameInput = document.getElementById('login-username-input');
 let loginPasswordInput = document.getElementById('login-password-input');
@@ -21,13 +25,13 @@ let popupDivLogin = document.getElementById('login-prompt-popup-div');
 let popupTextLogin = document.getElementById('login-prompt-popup-text');
 //---------------------------------Selectors----------------------------------
 let selectors = [signupTabSelector, loginTabSelector];
+//-----------------------------------Cache------------------------------------
+let currentUserInfo = "signup";
 //=============================-Server-Functions-=============================
 
 //---------------------------Send-Sign-Up-To-Server---------------------------
 function sendSignUpToServer() {
-    console.log('Sending sign up to server');
-    console.log(signupUsernameInput.value);
-    console.log(signupPasswordInput.value);
+    let hashedPassword = hashPassword(signupPasswordInput.value);
     fetch('/user/signup', {
         method: 'POST',
         headers: {
@@ -35,7 +39,7 @@ function sendSignUpToServer() {
         },
         body: JSON.stringify({
             username: signupUsernameInput.value,
-            password: signupPasswordInput.value,
+            password: hashedPassword,
         })
     }).then(response => {
         if (response.status === 200) {
@@ -48,6 +52,7 @@ function sendSignUpToServer() {
 }
 //----------------------------Send-Login-To-Server----------------------------
 function sendLoginToServer() {
+    let hashedPassword = hashPassword(loginPasswordInput.value);
     fetch('/user/login', {
         method: 'POST',
         headers: {
@@ -55,7 +60,7 @@ function sendLoginToServer() {
         },
         body: JSON.stringify({
             username: loginUsernameInput.value,
-            password: loginPasswordInput.value,
+            password: hashedPassword,
         })
     }).then(response => {
         if (response.status === 200) {
@@ -68,6 +73,71 @@ function sendLoginToServer() {
 }
 //=============================-Client-Functions-=============================
 
+//------------------------------Signup-Sequence-------------------------------
+function signupSequence() {
+    emptyFieldPopup();
+    termsAgreedPopup();
+    if (!hasEmptyFields() && passwordsMatch() && termsAgreed()) {
+        sendSignUpToServer();
+    }
+}
+//-------------------------------Login-Sequence-------------------------------
+function loginSequence() {
+    emptyFieldPopup();
+    if (!hasEmptyFields()) {
+        sendLoginToServer();
+    }
+}
+//------------------------------Passwords-Match-------------------------------
+function passwordsMatch() {
+    let passwordInputValue = signupPasswordInput.value;
+    let confirmPasswordInputValue = signupConfirmPasswordInput.value;
+    return passwordInputValue === confirmPasswordInputValue;
+}
+//---------------------------Passwords-Match-Popup----------------------------
+function passwordsMatchPopup() {
+    if (!passwordsMatch()) {
+        popupDivSignup.style.display = 'flex';
+        popupTextSignup.textContent = 'Passwords do not match.';
+    } else {
+        popupDivSignup.style.display = 'none';
+    }
+}
+//--------------------------------Terms-Agreed--------------------------------
+function termsAgreed() {
+    return termsAgreeCheckbox.checked;
+}
+//-----------------------------Terms-Agreed-Popup-----------------------------
+function termsAgreedPopup() {
+    console.log('termsAgreedPopup');
+    if (!termsAgreed()) {
+        popupDivSignup.style.display = 'flex';
+        popupTextSignup.textContent = 'Please agree to the terms and conditions.';
+    }
+}
+//------------------------------Has-Empty-Fields------------------------------
+function hasEmptyFields() {
+    if (currentUserInfo === 'signup') {
+        return signupUsernameInput.value === '' || 
+               signupPasswordInput.value === '' || 
+               signupConfirmPasswordInput.value === '';
+    } else {
+        return loginUsernameInput.value === '' ||
+               loginPasswordInput.value === '';
+    }
+}
+//-----------------------------Empty-Field-Popup------------------------------
+function emptyFieldPopup() {
+    if (hasEmptyFields()) {
+        if (currentUserInfo === 'signup') {
+            popupDivSignup.style.display = 'flex';
+            popupTextSignup.textContent = 'Please fill in all fields.';
+        } else {
+            popupDivLogin.style.display = 'flex';
+            popupTextLogin.textContent = 'Please fill in all fields.';
+        }
+    }
+}
 //-------------------------Toggle-User-Info-Container-------------------------
 function toggleUserInfoContainer() {
     let isCurrentlySignUp = signupContentContainer.display === 'flex';
@@ -76,15 +146,19 @@ function toggleUserInfoContainer() {
     if (clickedId === 'signup-tab-selector' && !isCurrentlySignUp) {
         signupContentContainer.style.display = 'flex';
         loginContentContainer.style.display = 'none';
+        currentUserInfo = 'signup';
     } else if (clickedId === 'login-tab-selector' && !isCurrentlyLogIn) {
         signupContentContainer.style.display = 'none';
         loginContentContainer.style.display = 'flex';
+        currentUserInfo = 'login';
     }
 }
-
 //=============================-Event-Listeners-==============================
 selectors.forEach(selector => {
     selector.addEventListener('click', toggleUserInfoContainer)
 });
-signupButton.addEventListener('click', sendSignUpToServer);
-loginButton.addEventListener('click', sendLoginToServer);
+signupButton.addEventListener('click', signupSequence);
+loginButton.addEventListener('click', loginSequence);
+signupPasswordInputs.forEach(signupPasswordInput => {
+    signupPasswordInput.addEventListener('input', passwordsMatchPopup);
+});
