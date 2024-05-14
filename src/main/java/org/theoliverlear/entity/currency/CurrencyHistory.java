@@ -20,7 +20,7 @@ public class CurrencyHistory {
     @ManyToOne
     @JoinColumn(name = "currency_code", nullable = false)
     private Currency currency;
-    @Column(name = "currency_value")
+    @Column(name = "currency_value", columnDefinition = "DECIMAL(26, 14)")
     private double value;
     @Column(name = "currency_value_formatted")
     private String formattedValue;
