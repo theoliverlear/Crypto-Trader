@@ -48,7 +48,6 @@ public class UserController {
     public ResponseEntity<UserResponse> signup(@RequestBody UserRequest userRequest, HttpSession session) {
         String username = userRequest.getUsername();
         boolean userExists = this.userService.userExistsByUsername(username);
-        log.info("User exists: {}", userExists);
         if (userExists) {
             return new ResponseEntity<>(new UserResponse("User already exists"), HttpStatus.CONFLICT);
         } else {
@@ -59,9 +58,9 @@ public class UserController {
             user.setPortfolio(portfolio);
             this.userService.saveUser(user);
             this.portfolioService.savePortfolio(portfolio);
+            this.portfolioService.addPortfolioToTraders(portfolio);
             session.setAttribute("user", user);
             this.currentUser = user;
-            log.info("User created: {}", user.getUsername());
             return ResponseEntity.ok(new UserResponse("User created"));
         }
     }
@@ -74,7 +73,8 @@ public class UserController {
             return ResponseEntity.ok(new UserResponse("User not found"));
         } else {
             String password = userRequest.getPassword();
-            if (this.userService.comparePassword(user, password)) {
+            boolean passwordsMatch = this.userService.comparePassword(user, password);
+            if (passwordsMatch) {
                 session.setAttribute("user", user);
                 return ResponseEntity.ok(new UserResponse("Login successful"));
             } else {
