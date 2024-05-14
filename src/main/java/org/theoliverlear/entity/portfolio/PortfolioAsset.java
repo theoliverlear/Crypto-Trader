@@ -13,7 +13,7 @@ import org.theoliverlear.entity.currency.SupportedCurrencies;
 @Entity
 @Table(name = "portfolio_assets")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class PortfolioAsset {
+public class PortfolioAsset implements UpdatableValues {
     //============================-Variables-=================================
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,15 +25,15 @@ public class PortfolioAsset {
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "currency_code", nullable = false)
     private Currency currency;
-    @Column(name = "shares")
+    @Column(name = "shares", columnDefinition = "DECIMAL(34, 18)")
     private double shares;
-    @Column(name = "shares_value_in_dollars")
+    @Column(name = "shares_value_in_dollars", columnDefinition = "DECIMAL(34, 18)")
     private double sharesValueInDollars;
-    @Column(name = "asset_wallet_dollars")
+    @Column(name = "asset_wallet_dollars", columnDefinition = "DECIMAL(34, 18)")
     private double assetWalletDollars;
-    @Column(name = "total_value_in_dollars")
+    @Column(name = "total_value_in_dollars", columnDefinition = "DECIMAL(34, 18)")
     private double totalValueInDollars;
-    @Column(name = "target_price")
+    @Column(name = "target_price", columnDefinition = "DECIMAL(34, 18)")
     private double targetPrice;
     // TODO: Add buying strategy which may sell the whole asset, only the
     //       profits, or a set amount or percentage of the asset.
@@ -43,47 +43,64 @@ public class PortfolioAsset {
         this.shares = 0;
         this.sharesValueInDollars = 0;
         this.assetWalletDollars = 0;
-        this.fetchTotalValueInDollars();
-        this.targetPrice = 0;
+        this.targetPrice = this.currency.getValue();
+        this.updateValues();
     }
     public PortfolioAsset(Portfolio portfolio, Currency currency, double shares, double assetWalletDollars) {
         this.portfolio = portfolio;
         this.currency = currency;
         this.shares = shares;
         this.assetWalletDollars = assetWalletDollars;
-        this.targetPrice = 0;
+        this.targetPrice = currency.getValue();
         this.portfolio.addAsset(this);
-        this.fetchTotalValueInDollars();
+        this.updateValues();
     }
     public PortfolioAsset(Currency currency, double shares, double assetWalletDollars) {
         this.currency = currency;
         this.shares = shares;
         this.assetWalletDollars = assetWalletDollars;
-        this.fetchTotalValueInDollars();
+        this.targetPrice = currency.getValue();
+        this.updateValues();
     }
     //=============================-Methods-==================================
 
-    //---------------------------Update-Values--------------------------------
-    public void updateValues() {
-        this.fetchSharesValueInDollars();
-        this.fetchTotalValueInDollars();
-    }
     //--------------------Fetch-Total-Value-In-Dollars------------------------
     public void fetchTotalValueInDollars() {
         double sharesValue = this.shares * this.currency.getValue();
         this.totalValueInDollars = sharesValue + this.assetWalletDollars;
     }
+    //-------------------Fetch-Shares-Value-In-Dollars------------------------
     public void fetchSharesValueInDollars() {
         this.sharesValueInDollars = this.shares * this.currency.getValue();
     }
+    //------------------------------Can-Sell----------------------------------
     public boolean canSell() {
         return this.shares > 0;
     }
+    //------------------------------Can-Buy-----------------------------------
     public boolean canBuy() {
         return this.assetWalletDollars > 0;
     }
+    //--------------------------------From------------------------------------
+    public static PortfolioAsset from(PortfolioAsset portfolioAsset) {
+        PortfolioAsset newPortfolioAsset = new PortfolioAsset();
+        newPortfolioAsset.setPortfolio(portfolioAsset.getPortfolio());
+        newPortfolioAsset.setCurrency(portfolioAsset.getCurrency());
+        newPortfolioAsset.setShares(portfolioAsset.getShares());
+        newPortfolioAsset.setSharesValueInDollars(portfolioAsset.getSharesValueInDollars());
+        newPortfolioAsset.setAssetWalletDollars(portfolioAsset.getAssetWalletDollars());
+        newPortfolioAsset.setTotalValueInDollars(portfolioAsset.getTotalValueInDollars());
+        newPortfolioAsset.setTargetPrice(portfolioAsset.getTargetPrice());
+        return newPortfolioAsset;
+    }
     //============================-Overrides-=================================
 
+    //---------------------------Update-Values--------------------------------
+    @Override
+    public void updateValues() {
+        this.fetchSharesValueInDollars();
+        this.fetchTotalValueInDollars();
+    }
     //------------------------------Equals------------------------------------
     @Override
     public boolean equals(Object obj) {
@@ -118,7 +135,12 @@ public class PortfolioAsset {
         }
     }
     //------------------------------To-String---------------------------------
-
+    @Override
+    public String toString() {
+        return "%s, %f shares, %f wallet dollars, %f total value in dollars"
+                .formatted(this.currency, this.shares,
+                           this.assetWalletDollars, this.totalValueInDollars);
+    }
     //=============================-Getters-==================================
 
     //=============================-Setters-==================================
