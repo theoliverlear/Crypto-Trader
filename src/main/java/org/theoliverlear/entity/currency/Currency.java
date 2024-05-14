@@ -28,7 +28,7 @@ public class Currency {
     @Column(name = "currency_code")
     private String currencyCode;
     private String urlPath;
-    @Column(name = "currency_value", columnDefinition = "DECIMAL(26, 14)")
+    @Column(name = "currency_value", columnDefinition = "DECIMAL(34, 18)")
     private double value;
     @Column(name = "currency_value_formatted")
     private String formattedValue;
