@@ -62,7 +62,7 @@ public class Currency {
         this.currencyCode = currencyCode;
         this.value = value;
         this.urlPath = urlPath;
-        this.formattedValue = this.decimalFormat.format(value);
+        this.formattedValue = decimalFormat.format(value);
         if (this.formattedValue == null) {
             this.formattedValue = "";
         }
