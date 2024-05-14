@@ -1,8 +1,7 @@
 //=================================-Imports-==================================
 import {
-    defaultCurrencyImage, formatDollars,
-    getCurrencyLogoFromName,
-    sanitizeString
+    defaultCurrencyImage, formatDollars, getCodeByCurrencyName,
+    getCurrencyLogoFromName, sanitizeString
 } from "./globalScript.js";
 import {PortfolioAsset} from "./PortfolioAsset.js";
 //================================-Variables-=================================
@@ -57,7 +56,6 @@ function sendPortfolioAssetToServer() {
         let currencyName = sanitizeString(selectedCurrencyText.textContent);
         let shares = initializeEmptyWalletShares(sharesInput.value);
         let wallet = initializeEmptyWalletShares(walletInput.value);
-
         fetch('/portfolio/add', {
             method: 'POST',
             headers: {
@@ -99,8 +97,8 @@ function showCorrectContainer() {
 }
 //------------------------------Load-Currencies-------------------------------
 function loadCurrencies() {
+    yourCurrenciesListSection.innerHTML = '';
     getPortfolioFromServer().then(portfolio => {
-        console.log(portfolio);
         if (Array.isArray(portfolio.assets)) {
             portfolio.assets.forEach(asset => {
                 let currencyName = asset.currency.name;
@@ -109,28 +107,23 @@ function loadCurrencies() {
                 let walletDollars = formatDollars(asset.assetWalletDollars);
                 let totalAssetValue = formatDollars(asset.totalValueInDollars);
                 addCurrencyToPage(currencyName, currencyCode, shares, walletDollars, totalAssetValue);
-                console.log(asset);
             });
-        } else {
-            console.log('No assets in portfolio.');
         }
     });
 }
 //----------------------------Add-Currency-To-Page----------------------------
 function addCurrencyToPage(currencyName, currencyCode, shares, walletDollars, totalAssetValue) {
-    console.log(currencyName, currencyCode, shares, walletDollars, totalAssetValue);
     let currencyImageSrc = getCurrencyLogoFromName(currencyName);
     let currencyAsset = new PortfolioAsset(currencyName, currencyCode, shares, walletDollars, totalAssetValue, currencyImageSrc);
     let currencyDiv = document.createElement('div');
     currencyDiv.classList.add('simple-space-inline-div');
     currencyDiv.classList.add('your-currency-item');
     let currencyHtml = currencyAsset.buildHtml();
-    console.log(currencyHtml);
     currencyDiv.innerHTML = currencyHtml;
     yourCurrenciesListSection.appendChild(currencyDiv);
 }
 //-----------------------------Add-Item-Sequence------------------------------
-function addItemSequence() {
+async function addItemSequence() {
     if (sharesAndWalletAreEmpty()) {
         showPopup('Please fill out either the shares or wallet field.');
         return;
@@ -140,10 +133,36 @@ function addItemSequence() {
         return;
     }
     sendPortfolioAssetToServer();
+    // let currencyName = sanitizeString(selectedCurrencyText.textContent);
+    // let currencyCode = getCodeByCurrencyName(currencyName);
+    // let shares = initializeEmptyWalletShares(sharesInput.value);
+    // let walletDollars = initializeEmptyWalletShares(walletInput.value);
+    // let assetValue = await initializeAssetValue(currencyCode, shares, walletDollars);
+    // addCurrencyToPage(currencyName, currencyCode, shares, walletDollars, assetValue);
     clearInputs();
     hideCurrencyDropdown();
     hideAddCurrencyDiv();
     loadCurrencies();
+}
+//---------------------------Initialize-Asset-Value---------------------------
+async function initializeAssetValue(currencyCode, shares, walletDollars) {
+    if (shares === 0) {
+        return walletDollars;
+    } else {
+        let response = await fetch('/portfolio/currency/value', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                currencyCode: currencyCode,
+                shares: shares,
+            })
+        }).then(response => {
+            return response.json();
+        });
+        return formatDollars(response.value);
+    }
 }
 //--------------------------------Limit-Input---------------------------------
 function limitInput() {
@@ -157,11 +176,11 @@ function bothSharesAndWalletHaveInput() {
 }
 //-------------------------Change-Caret-To-Highlight--------------------------
 function changeCaretToHighlight() {
-    currencyDropdownCaretImage.src = '../static/images/down_caret_highlight.svg';
+    currencyDropdownCaretImage.src = '/images/down_caret_highlight.svg';
 }
 //---------------------------Change-Caret-To-Black----------------------------
 function changeCaretToBlack() {
-    currencyDropdownCaretImage.src = '../static/images/down_caret.svg';
+    currencyDropdownCaretImage.src = '/images/down_caret.svg';
 }
 //---------------------------Set-Selection-To-None----------------------------
 function setSelectionToNone() {
