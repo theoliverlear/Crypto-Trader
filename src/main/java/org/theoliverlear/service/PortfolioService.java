@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.theoliverlear.model.trade.AssetTrader;
 import org.theoliverlear.model.trade.CryptoTrader;
 import org.theoliverlear.comm.request.PortfolioAssetRequest;
 import org.theoliverlear.entity.currency.Currency;
@@ -37,6 +38,7 @@ public class PortfolioService {
         this.allUsersPortfolios = this.getAllPortfolios();
         if (this.allUsersPortfolios != null) {
             for (Portfolio portfolio : this.allUsersPortfolios) {
+                System.out.println(portfolio);
                 this.cryptoTrader.addTrader(new Trader(portfolio));
             }
         }
@@ -45,18 +47,34 @@ public class PortfolioService {
 
     //--------------------------Trade-Portfolios------------------------------
     @Async("taskExecutor")
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 1000)
     public void tradePortfolios() {
         System.out.println("Trading");
+        this.cryptoTrader.getTraders().clear();
+        this.allUsersPortfolios = this.getAllPortfolios();
+        this.cryptoTrader.addAllPortfolios(this.allUsersPortfolios);
         if (!this.cryptoTrader.isEmpty()) {
             for (Trader trader : this.cryptoTrader.getTraders()) {
-                Portfolio previousPortfolio = trader.getPortfolio();
-                trader.tradeAllAssets();
-                if (!previousPortfolio.equals(trader.getPortfolio())) {
-                    this.savePortfolio(trader.getPortfolio());
+                Portfolio previousPortfolio = Portfolio.from(trader.getPortfolio());
+                System.out.println(previousPortfolio);
+                for (AssetTrader assetTrader : trader.getAssetTraders()) {
+                    PortfolioAsset previousAsset = PortfolioAsset.from(assetTrader.getAsset());
+                    assetTrader.trade();
+                    assetTrader.getAsset().updateValues();
+                    trader.getPortfolio().updateValues();
+                    if (!previousAsset.equals(assetTrader.getAsset())) {
+                        this.savePortfolioAsset(assetTrader.getAsset());
+                        this.savePortfolio(trader.getPortfolio());
+                    }
                 }
             }
+        } else {
+            System.out.println("No traders");
         }
+    }
+    //----------------------Add-Portfolio-To-Traders--------------------------
+    public void addPortfolioToTraders(Portfolio portfolio) {
+        this.cryptoTrader.addTrader(new Trader(portfolio));
     }
     //---------------------------Save-Portfolio-------------------------------
     public void savePortfolio(Portfolio portfolio) {
@@ -78,7 +96,6 @@ public class PortfolioService {
     public void addAssetToPortfolio(Portfolio portfolio, PortfolioAssetRequest portfolioAssetRequest) {
         Currency requestCurrency = this.currencyService.getCurrencyByName(portfolioAssetRequest.getCurrencyName());
         PortfolioAsset portfolioAsset = new PortfolioAsset(portfolio, requestCurrency, portfolioAssetRequest.getShares(), portfolioAssetRequest.getWalletDollars());
-        portfolio.getAssets().add(portfolioAsset);
         this.savePortfolio(portfolio);
         this.savePortfolioAsset(portfolioAsset);
     }
