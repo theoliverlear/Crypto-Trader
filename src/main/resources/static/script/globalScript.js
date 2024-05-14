@@ -8,8 +8,28 @@ function passwordContainsArtifacts(password) {
     }
     return false;
 }
+//-------------------------------Format-Dollars-------------------------------
 function formatDollars(assetPrice) {
     return assetPrice.toFixed(2);
+}
+//-------------------------Get-Code-By-Currency-Name--------------------------
+function getCodeByCurrencyName(currencyName) {
+    let code = '';
+    switch (currencyName) {
+        case 'Bitcoin':
+            code = 'BTC';
+            break;
+        case 'Ethereum':
+            code = 'ETH';
+            break;
+        case 'Litecoin':
+            code = 'LTC';
+            break;
+        default:
+            code = 'UNKNOWN';
+            break;
+    }
+    return code;
 }
 //-------------------------------Hash-Password--------------------------------
 function hashPassword(password) {
@@ -40,5 +60,6 @@ function sanitizeString(input) {
     return input.trim().replace("\n", "").replace("\r", "");
 }
 //=================================-Exports-==================================
-export {hashPassword, getCurrencyLogoFromName, passwordContainsArtifacts, sanitizeString, formatDollars};
+export {hashPassword, getCurrencyLogoFromName, passwordContainsArtifacts,
+        sanitizeString, formatDollars, getCodeByCurrencyName};
 export {defaultCurrencyImage};
