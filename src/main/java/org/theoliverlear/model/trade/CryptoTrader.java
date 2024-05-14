@@ -2,8 +2,10 @@ package org.theoliverlear.model.trade;
 //=================================-Imports-==================================
 import lombok.Getter;
 import lombok.Setter;
+import org.theoliverlear.entity.portfolio.Portfolio;
 
 import java.util.ArrayList;
+import java.util.List;
 
 // TODO: Make this a component or service within the Spring framework. This
 //       will allow for the JPA repository to be autowired and used to
@@ -12,12 +14,12 @@ import java.util.ArrayList;
 @Setter
 public class CryptoTrader {
     //============================-Variables-=================================
-    ArrayList<Trader> traders;
+    List<Trader> traders;
     //===========================-Constructors-===============================
     public CryptoTrader() {
         this.traders = new ArrayList<>();
     }
-    public CryptoTrader(ArrayList<Trader> traders) {
+    public CryptoTrader(List<Trader> traders) {
         this.traders = traders;
     }
     //=============================-Methods-==================================
@@ -35,6 +37,12 @@ public class CryptoTrader {
     //----------------------------Add-Traders---------------------------------
     public void addTraders(ArrayList<Trader> traders) {
         this.traders.addAll(traders);
+    }
+    //-------------------------Add-All-Portfolios-----------------------------
+    public void addAllPortfolios(List<Portfolio> portfolios) {
+        for (Portfolio portfolio : portfolios) {
+            this.addTrader(new Trader(portfolio));
+        }
     }
     //--------------------------------Size------------------------------------
     public int size() {
