@@ -39,6 +39,7 @@ public class PortfolioController {
     //---------------------------Get-Portfolio--------------------------------
     @RequestMapping("/get")
     public ResponseEntity<Portfolio> getPortfolio() {
+        this.portfolio = this.portfolioService.getPortfolioByUserId(this.currentUser.getId());
         return ResponseEntity.ok(this.portfolio);
     }
     //------------------------Add-Portfolio-Asset-----------------------------
