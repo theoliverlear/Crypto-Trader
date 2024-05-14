@@ -17,7 +17,7 @@ import java.util.List;
 @Entity
 @Table(name = "portfolios")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Portfolio {
+public class Portfolio implements UpdatableValues {
     //============================-Variables-=================================
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,11 +25,11 @@ public class Portfolio {
     @JsonBackReference
     @OneToOne(mappedBy = "portfolio")
     User user;
-    @Column(name = "dollar_balance")
+    @Column(name = "dollar_balance", columnDefinition = "DECIMAL(34, 18)")
     double dollarBalance;
-    @Column(name = "share_balance")
+    @Column(name = "share_balance", columnDefinition = "DECIMAL(34, 18)")
     double shareBalance;
-    @Column(name = "total_worth")
+    @Column(name = "total_worth", columnDefinition = "DECIMAL(34, 18)")
     double totalWorth;
     @Column(name = "last_updated")
     LocalDateTime lastUpdated;
@@ -37,6 +37,9 @@ public class Portfolio {
     private List<PortfolioAsset> assets;
     //===========================-Constructors-===============================
     public Portfolio() {
+        this.dollarBalance = 0;
+        this.shareBalance = 0;
+        this.totalWorth = 0;
         this.user = new User();
         this.assets = new ArrayList<>();
         this.lastUpdated = LocalDateTime.now();
@@ -51,26 +54,15 @@ public class Portfolio {
         this.assets = assets;
         this.updateValues();
     }
-    public Portfolio(Long id) {
+    public Portfolio(double dollarBalance, double shareBalance, double totalWorth) {
         this.user = new User();
-        this.id = id;
-        this.dollarBalance = 0;
-        this.shareBalance = 0;
-        this.totalWorth = 0;
-        this.assets = new ArrayList<>();
-        this.lastUpdated = LocalDateTime.now();
-    }
-    public Portfolio(Long id, double dollarBalance, double shareBalance, double totalWorth) {
-        this.user = new User();
-        this.id = id;
         this.dollarBalance = dollarBalance;
         this.shareBalance = shareBalance;
         this.totalWorth = totalWorth;
         this.assets = new ArrayList<>();
         this.lastUpdated = LocalDateTime.now();
     }
-    public Portfolio(Long id, List<PortfolioAsset> assets) {
-        this(id);
+    public Portfolio(List<PortfolioAsset> assets) {
         this.user = new User();
         this.assets = assets;
         this.lastUpdated = LocalDateTime.now();
@@ -78,17 +70,6 @@ public class Portfolio {
     }
     //=============================-Methods-==================================
 
-    //---------------------------Update-Values--------------------------------
-    public void updateValues() { // TODO: Make an Updatable interface
-        this.dollarBalance = 0;
-        this.shareBalance = 0;
-        for (PortfolioAsset asset : this.assets) {
-            this.dollarBalance += asset.getAssetWalletDollars();
-            this.shareBalance += asset.getSharesValueInDollars();
-        }
-        this.totalWorth = this.dollarBalance + this.shareBalance;
-        this.lastUpdated = LocalDateTime.now();
-    }
     //-----------------------------Add-Asset----------------------------------
     public void addAsset(PortfolioAsset asset) {
         this.assets.add(asset);
@@ -106,8 +87,32 @@ public class Portfolio {
     public boolean isEmpty() {
         return this.assets.isEmpty();
     }
+    //--------------------------------From------------------------------------
+    public static Portfolio from(Portfolio portfolio) {
+        Portfolio newPortfolio = new Portfolio();
+        newPortfolio.setId(portfolio.getId());
+        newPortfolio.setDollarBalance(portfolio.getDollarBalance());
+        newPortfolio.setShareBalance(portfolio.getShareBalance());
+        newPortfolio.setTotalWorth(portfolio.getTotalWorth());
+        newPortfolio.setLastUpdated(portfolio.getLastUpdated());
+        newPortfolio.setAssets(portfolio.getAssets());
+        return newPortfolio;
+    }
     //============================-Overrides-=================================
 
+    //---------------------------Update-Values--------------------------------
+    @Override
+    public void updateValues() {
+        this.dollarBalance = 0;
+        this.shareBalance = 0;
+        for (PortfolioAsset asset : this.assets) {
+            asset.updateValues();
+            this.dollarBalance += asset.getAssetWalletDollars();
+            this.shareBalance += asset.getSharesValueInDollars();
+        }
+        this.totalWorth = this.dollarBalance + this.shareBalance;
+        this.lastUpdated = LocalDateTime.now();
+    }
     //------------------------------Equals------------------------------------
     @Override
     public boolean equals(Object object) {
@@ -128,15 +133,33 @@ public class Portfolio {
                             sameTotalWorth && sameAssets;
                 }
             }
-            return sameDollarBalance && sameShareBalance &&
-                    sameTotalWorth && sameAssets;
+            return sameDollarBalance && sameShareBalance && sameTotalWorth &&
+                    sameAssets;
         }
         return false;
     }
     //------------------------------Hash-Code---------------------------------
 
     //------------------------------To-String---------------------------------
-
+    @Override
+    public String toString() {
+        StringBuilder portfolioString = new StringBuilder();
+        portfolioString.append("Portfolio ID: ").append(this.id).append("\n");
+        portfolioString.append("Dollar Balance: ").append(this.dollarBalance).append("\n");
+        portfolioString.append("Share Balance: ").append(this.shareBalance).append("\n");
+        portfolioString.append("Total Worth: ").append(this.totalWorth).append("\n");
+        portfolioString.append("Assets: ").append("\n");
+        List<PortfolioAsset> portfolioAssets = this.assets;
+        for (int i = 0; i < portfolioAssets.size(); i++) {
+            PortfolioAsset asset = portfolioAssets.get(i);
+            if (i == portfolioAssets.size() - 1) {
+                portfolioString.append(asset);
+            } else {
+                portfolioString.append(asset.toString()).append("\n");
+            }
+        }
+        return portfolioString.toString();
+    }
     //=============================-Getters-==================================
 
     //=============================-Setters-==================================
