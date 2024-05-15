@@ -118,7 +118,6 @@ nav {
     border-radius: calc(((1vh + 1vw) / 2) + 1em);
 }
 #account-image-container:hover #logout-button-div {
-    display: flex;
     cursor: pointer;
 }
 #logout-button-div:hover {
