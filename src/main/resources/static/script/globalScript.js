@@ -1,6 +1,7 @@
 const defaultCurrencyImage = '/images/default_currency_icon.png';
-let isLoggedIn = true; // Temporarily set to true while testing.
+let isLoggedIn = false;
 let logoutButton = document.getElementById('logout-button-div');
+let accountImageContainer = document.getElementById('account-image-container');
 //=============================-Server-Functions-=============================
 
 //---------------------------Send-Logout-To-Server----------------------------
@@ -42,6 +43,12 @@ async function getIsLoggedInFromServer() {
 function logoutSequence() {
     sendLogoutToServer();
     hideLogoutButton();
+}
+//-----------------------------Show-Logout-Button-----------------------------
+function showLogoutButton() {
+    if (isLoggedIn) {
+        logoutButton.style.display = 'flex';
+    }
 }
 //-----------------------------Hide-Logout-Button-----------------------------
 function hideLogoutButton() {
@@ -107,9 +114,10 @@ function sanitizeString(input) {
 }
 //=============================-Event-Listeners-==============================
 logoutButton.addEventListener('click', logoutSequence);
+accountImageContainer.addEventListener('mouseover', showLogoutButton);
 //================================-Init-Load-=================================
 setIsLoggedIn();
 //=================================-Exports-==================================
 export {hashPassword, getCurrencyLogoFromName, passwordContainsArtifacts,
-        sanitizeString, formatDollars, getCodeByCurrencyName};
+        sanitizeString, formatDollars, getCodeByCurrencyName, logoutSequence};
 export {defaultCurrencyImage, isLoggedIn};
