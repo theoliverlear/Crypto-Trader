@@ -112,8 +112,31 @@ nav {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    flex-direction: column;
+    position: relative;
     padding: calc(((0.15vh + 0.15vw) / 2) + 0.05em);
     border-radius: calc(((1vh + 1vw) / 2) + 1em);
+}
+#account-image-container:hover #logout-button-div {
+    display: flex;
+    cursor: pointer;
+}
+#logout-button-div:hover {
+    border: var(--thin-border) solid var(--sunbeam-yellow);
+}
+#logout-button-div {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: calc(((0.35vh + 0.35vw) / 2) + 0.15em) calc(((.5vh + 0.5vw) / 2) + 0.25em);
+    border-radius: calc(((1vh + 1vw) / 2) + 1em);
+    position: absolute;
+    margin-top: calc(((6vh + 6vw) / 2) + 2em);
+    margin-right: calc(((0.5vh + 0.5vw) / 2) + 0.25em);
+
+    transition: display, 0.3s;
+    background-color: var(--muted-blue);
+    color: var(--almost-white);
 }
 .nav-bar-item-container {
     display: flex;
