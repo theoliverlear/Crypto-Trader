@@ -1,6 +1,59 @@
 const defaultCurrencyImage = '/images/default_currency_icon.png';
+let isLoggedIn = false;
+let logoutButton = document.getElementById('logout-button-div');
+let accountImageContainer = document.getElementById('account-image-container');
+//=============================-Server-Functions-=============================
+
+//---------------------------Send-Logout-To-Server----------------------------
+function sendLogoutToServer() {
+    fetch('/user/logout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => {
+        if (response.ok) {
+            window.location.href = '/';
+        }
+    }).catch(error => {
+        console.error('Error: ', error);
+    });
+}
+//-----------------------------Set-Is-Logged-In-------------------------------
+function setIsLoggedIn() {
+    getIsLoggedInFromServer().then(response => {
+        isLoggedIn = response;
+    });
+}
+//------------------------Get-Is-Logged-In-From-Server------------------------
+async function getIsLoggedInFromServer() {
+    let response = await fetch('/user/loggedin', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).catch(error => {
+        console.error('Error: ', error);
+    });
+    return response.ok;
+}
 //=============================-Client-Functions-=============================
 
+//------------------------------Logout-Sequence-------------------------------
+function logoutSequence() {
+    sendLogoutToServer();
+    hideLogoutButton();
+}
+//-----------------------------Show-Logout-Button-----------------------------
+function showLogoutButton() {
+    if (isLoggedIn) {
+        logoutButton.style.display = 'flex';
+    }
+}
+//-----------------------------Hide-Logout-Button-----------------------------
+function hideLogoutButton() {
+    logoutButton.style.display = 'none';
+}
 //------------------------Password-Contains-Artifacts-------------------------
 function passwordContainsArtifacts(password) {
     if (password.length === 0 || password.includes(' ')) {
@@ -59,7 +112,12 @@ function getCurrencyLogoFromName(currencyName) {
 function sanitizeString(input) {
     return input.trim().replace("\n", "").replace("\r", "");
 }
+//=============================-Event-Listeners-==============================
+logoutButton.addEventListener('click', logoutSequence);
+accountImageContainer.addEventListener('mouseover', showLogoutButton);
+//================================-Init-Load-=================================
+setIsLoggedIn();
 //=================================-Exports-==================================
 export {hashPassword, getCurrencyLogoFromName, passwordContainsArtifacts,
-        sanitizeString, formatDollars, getCodeByCurrencyName};
-export {defaultCurrencyImage};
+        sanitizeString, formatDollars, getCodeByCurrencyName, logoutSequence};
+export {defaultCurrencyImage, isLoggedIn};

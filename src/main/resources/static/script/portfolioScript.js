@@ -37,6 +37,7 @@ const cancelButton = document.getElementById('cancel-button');
 const addCurrencyButton = document.getElementById('add-currency-button');
 const currencyDropdownButton = document.getElementById('currency-dropdown');
 //=============================-Server-Functions-=============================
+
 //-------------------------Get-Portfolio-From-Server--------------------------
 // TODO: Either have a WebSocket updating their portfolio in real-time or have
 //       a refresh button that updates the page.

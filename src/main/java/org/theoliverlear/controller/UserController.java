@@ -82,4 +82,26 @@ public class UserController {
             }
         }
     }
+    //-------------------------------Logout-----------------------------------
+    @RequestMapping("/logout")
+    public ResponseEntity<UserResponse> logout(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return new ResponseEntity<>(new UserResponse("No user logged in"), HttpStatus.UNAUTHORIZED);
+        } else {
+            this.currentUser = null;
+            session.removeAttribute("user");
+            return ResponseEntity.ok(new UserResponse("Logout successful"));
+        }
+    }
+    //-----------------------------Logged-In----------------------------------
+    @RequestMapping("/loggedin")
+    public ResponseEntity<UserResponse> loggedIn(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return new ResponseEntity<>(new UserResponse("false"), HttpStatus.UNAUTHORIZED);
+        } else {
+            return ResponseEntity.ok(new UserResponse("true"));
+        }
+    }
 }

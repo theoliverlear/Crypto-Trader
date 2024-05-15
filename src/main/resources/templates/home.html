@@ -45,13 +45,16 @@
         </div>
         <div>
             <!------------------Nav-To-Account------------------------------->
-            <a href="/user/" class="link-no-style">
-                <div id="account-image-container">
+            <div id="account-image-container">
+                <a href="/user/" class="link-no-style">
                     <img id="default-avatar-image"
                          src="../static/images/default_avatar.png"
                          th:src="@{/images/default_avatar.png}" alt="user avatar">
+                </a>
+                <div id="logout-button-div">
+                    <h5 id="logout-button-text">Logout</h5>
                 </div>
-            </a>
+            </div>
         </div>
     </nav>
 </header>
