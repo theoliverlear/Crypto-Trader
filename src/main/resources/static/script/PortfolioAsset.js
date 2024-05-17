@@ -13,20 +13,21 @@ export class PortfolioAsset {
     //-----------------------------Build-Html---------------------------------
     buildHtml() {
         return `
-                <div class="currency-image-name-code-div simple-space-inline-div your-currency-info-div">
+                <div class="currency-image-name-code-div your-currency-info-div">
                     <div class="your-currency-image-div">
                         <img class="your-currency-image"
                             src="${this.currencyLogoSrc}"
                             th:src="@{${this.currencyLogoSrc.replace('../static', '')}}"
                             alt="${this.currencyName} logo">
                     </div>
-                    <div>
+
+                </div>
+                    <div class="currency-name-and-code-div">
                         <h5 class="your-currency-info-text">
                             <span class="your-currency-info-name-text">${this.currencyName}</span> -
                             <span class="your-currency-info-code-text">${this.currencyCode}</span>
                         </h5>
                     </div>
-                </div>
                 <div class="simple-space-inline-div your-currency-info-div">
                     <div>
                         <h6 class="your-currency-info-text">
@@ -35,14 +36,14 @@ export class PortfolioAsset {
                     </div>
                     <div>
                         <h6 class="your-currency-info-text">
-                            Wallet: $<span class="your-currency-info-wallet-text">${this.walletDollars}</span>
+                            Wallet: <span class="your-currency-info-wallet-text">${this.walletDollars}</span>
                         </h6>
                     </div>
                 </div>
                 <div class="simple-space-inline-div your-currency-info-div">
                     <div>
                         <h6 class="your-currency-info-text">
-                            Total Value: $<span class="your-currency-info-total-text">${this.totalValue}</span>
+                            Total Value: <span class="your-currency-info-total-text">${this.totalValue}</span>
                         </h6>
                     </div>
                 </div>
