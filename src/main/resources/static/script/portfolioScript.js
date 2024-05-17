@@ -143,7 +143,7 @@ async function addItemSequence() {
     clearInputs();
     hideCurrencyDropdown();
     hideAddCurrencyDiv();
-    loadCurrencies();
+    showCorrectContainer();
 }
 //---------------------------Initialize-Asset-Value---------------------------
 async function initializeAssetValue(currencyCode, shares, walletDollars) {
