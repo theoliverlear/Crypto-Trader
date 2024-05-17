@@ -35,6 +35,8 @@ public class Portfolio implements UpdatableValues {
     LocalDateTime lastUpdated;
     @OneToMany(mappedBy = "portfolio", fetch = FetchType.EAGER)
     private List<PortfolioAsset> assets;
+    @OneToMany(mappedBy = "portfolio", fetch = FetchType.EAGER)
+    List<PortfolioHistory> portfolioHistory;
     //===========================-Constructors-===============================
     public Portfolio() {
         this.dollarBalance = 0;
@@ -42,16 +44,19 @@ public class Portfolio implements UpdatableValues {
         this.totalWorth = 0;
         this.user = new User();
         this.assets = new ArrayList<>();
+        this.portfolioHistory = new ArrayList<>();
         this.lastUpdated = LocalDateTime.now();
     }
     public Portfolio(User user) {
         this.user = user;
         this.assets = new ArrayList<>();
+        this.portfolioHistory = new ArrayList<>();
         this.lastUpdated = LocalDateTime.now();
     }
     public Portfolio(User user, List<PortfolioAsset> assets) {
         this.user = user;
         this.assets = assets;
+        this.portfolioHistory = new ArrayList<>();
         this.updateValues();
     }
     public Portfolio(double dollarBalance, double shareBalance, double totalWorth) {
@@ -60,16 +65,22 @@ public class Portfolio implements UpdatableValues {
         this.shareBalance = shareBalance;
         this.totalWorth = totalWorth;
         this.assets = new ArrayList<>();
+        this.portfolioHistory = new ArrayList<>();
         this.lastUpdated = LocalDateTime.now();
     }
     public Portfolio(List<PortfolioAsset> assets) {
         this.user = new User();
         this.assets = assets;
         this.lastUpdated = LocalDateTime.now();
+        this.portfolioHistory = new ArrayList<>();
         this.updateValues();
     }
     //=============================-Methods-==================================
 
+    //-----------------------Add-Portfolio-History----------------------------
+    public void addPortfolioHistory(PortfolioHistory portfolioHistory) {
+        this.portfolioHistory.add(portfolioHistory);
+    }
     //-----------------------------Add-Asset----------------------------------
     public void addAsset(PortfolioAsset asset) {
         this.assets.add(asset);
