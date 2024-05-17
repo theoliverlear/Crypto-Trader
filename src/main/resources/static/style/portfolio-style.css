@@ -136,11 +136,17 @@ main {
     width:  calc(((2vh + 2vw) / 2) + 2em);
     height: calc(((2vh + 2vw) / 2) + 2em);
     padding: 0;
-    margin: 0 calc(((0.25vh + 0.25vw) / 2) + 0.25em) 0 0;
+    margin: 0;
     border-radius: calc(((1vh + 1vw) / 2) + 1em);
     box-shadow: var(--blue-grey) calc(((0.25vh + 0.25vw) / 2) + 0.25em)
                                  calc(((0.25vh + 0.25vw) / 2) + 0.25em) 0 0;
     /*margin: 0 calc(((0.5vh + 0.5vw) / 2) + 0.5em) 0 0;*/
+}
+.currency-name-and-code-div {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0;
 }
 .your-currency-image-div {
     display: flex;
@@ -151,7 +157,10 @@ main {
 
 }
 .currency-image-name-code-div {
-
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 calc(((0.5vh + 0.5vw) / 2) + 0.5em);
 }
 .your-currency-info-div {
     display: flex;
