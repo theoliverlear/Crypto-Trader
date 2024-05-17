@@ -63,7 +63,8 @@ function passwordContainsArtifacts(password) {
 }
 //-------------------------------Format-Dollars-------------------------------
 function formatDollars(assetPrice) {
-    return assetPrice.toFixed(2);
+    let formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+    return formatter.format(assetPrice);
 }
 //-------------------------Get-Code-By-Currency-Name--------------------------
 function getCodeByCurrencyName(currencyName) {
