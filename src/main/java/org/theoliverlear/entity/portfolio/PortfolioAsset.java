@@ -8,6 +8,10 @@ import lombok.Setter;
 import org.theoliverlear.entity.currency.Currency;
 import org.theoliverlear.entity.currency.SupportedCurrencies;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -35,6 +39,10 @@ public class PortfolioAsset implements UpdatableValues {
     private double totalValueInDollars;
     @Column(name = "target_price", columnDefinition = "DECIMAL(34, 18)")
     private double targetPrice;
+    @Column(name = "last_updated")
+    private LocalDateTime lastUpdated;
+    @OneToMany(mappedBy = "portfolioAsset", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    List<PortfolioAssetHistory> assetHistory;
     // TODO: Add buying strategy which may sell the whole asset, only the
     //       profits, or a set amount or percentage of the asset.
     //===========================-Constructors-===============================
@@ -44,6 +52,8 @@ public class PortfolioAsset implements UpdatableValues {
         this.sharesValueInDollars = 0;
         this.assetWalletDollars = 0;
         this.targetPrice = this.currency.getValue();
+        this.assetHistory = new ArrayList<>();
+        this.lastUpdated = LocalDateTime.now();
         this.updateValues();
     }
     public PortfolioAsset(Portfolio portfolio, Currency currency, double shares, double assetWalletDollars) {
@@ -53,6 +63,8 @@ public class PortfolioAsset implements UpdatableValues {
         this.assetWalletDollars = assetWalletDollars;
         this.targetPrice = currency.getValue();
         this.portfolio.addAsset(this);
+        this.assetHistory = new ArrayList<>();
+        this.lastUpdated = LocalDateTime.now();
         this.updateValues();
     }
     public PortfolioAsset(Currency currency, double shares, double assetWalletDollars) {
@@ -60,10 +72,16 @@ public class PortfolioAsset implements UpdatableValues {
         this.shares = shares;
         this.assetWalletDollars = assetWalletDollars;
         this.targetPrice = currency.getValue();
+        this.assetHistory = new ArrayList<>();
+        this.lastUpdated = LocalDateTime.now();
         this.updateValues();
     }
     //=============================-Methods-==================================
 
+    //--------------------Add-Portfolio-Asset-History-------------------------
+    public void addPortfolioAssetHistory(PortfolioAssetHistory portfolioAssetHistory) {
+        this.assetHistory.add(portfolioAssetHistory);
+    }
     //--------------------Fetch-Total-Value-In-Dollars------------------------
     public void fetchTotalValueInDollars() {
         double sharesValue = this.shares * this.currency.getValue();
@@ -100,6 +118,7 @@ public class PortfolioAsset implements UpdatableValues {
     public void updateValues() {
         this.fetchSharesValueInDollars();
         this.fetchTotalValueInDollars();
+        this.lastUpdated = LocalDateTime.now();
     }
     //------------------------------Equals------------------------------------
     @Override
