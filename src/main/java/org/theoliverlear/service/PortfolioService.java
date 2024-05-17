@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.theoliverlear.entity.portfolio.PortfolioAssetHistory;
+import org.theoliverlear.entity.portfolio.PortfolioHistory;
 import org.theoliverlear.model.trade.AssetTrader;
 import org.theoliverlear.model.trade.CryptoTrader;
 import org.theoliverlear.comm.request.PortfolioAssetRequest;
@@ -11,7 +13,9 @@ import org.theoliverlear.entity.currency.Currency;
 import org.theoliverlear.entity.portfolio.Portfolio;
 import org.theoliverlear.entity.portfolio.PortfolioAsset;
 import org.theoliverlear.model.trade.Trader;
+import org.theoliverlear.repository.PortfolioAssetHistoryRepository;
 import org.theoliverlear.repository.PortfolioAssetRepository;
+import org.theoliverlear.repository.PortfolioHistoryRepository;
 import org.theoliverlear.repository.PortfolioRepository;
 
 import java.util.ArrayList;
@@ -23,17 +27,23 @@ public class PortfolioService {
     List<Portfolio> allUsersPortfolios;
     PortfolioRepository portfolioRepository;
     PortfolioAssetRepository portfolioAssetRepository;
+    PortfolioHistoryRepository portfolioHistoryRepository;
+    PortfolioAssetHistoryRepository portfolioAssetHistoryRepository;
     CryptoTrader cryptoTrader;
     private CurrencyService currencyService;
     //===========================-Constructors-===============================
     @Autowired
     public PortfolioService(PortfolioRepository portfolioRepository,
                             PortfolioAssetRepository portfolioAssetRepository,
+                            PortfolioHistoryRepository portfolioHistoryRepository,
+                            PortfolioAssetHistoryRepository portfolioAssetHistoryRepository,
                             CurrencyService currencyService) {
         this.cryptoTrader = new CryptoTrader();
         this.currencyService = currencyService;
         this.portfolioRepository = portfolioRepository;
         this.portfolioAssetRepository = portfolioAssetRepository;
+        this.portfolioHistoryRepository = portfolioHistoryRepository;
+        this.portfolioAssetHistoryRepository = portfolioAssetHistoryRepository;
         this.allUsersPortfolios = new ArrayList<>();
         this.allUsersPortfolios = this.getAllPortfolios();
         if (this.allUsersPortfolios != null) {
@@ -47,8 +57,8 @@ public class PortfolioService {
 
     //--------------------------Trade-Portfolios------------------------------
     @Async("taskExecutor")
-    @Scheduled(fixedRate = 1000)
-    public void tradePortfolios() {
+    @Scheduled(fixedRate = 2500)
+    public synchronized void tradePortfolios() {
         System.out.println("Trading");
         this.cryptoTrader.getTraders().clear();
         this.allUsersPortfolios = this.getAllPortfolios();
@@ -63,14 +73,28 @@ public class PortfolioService {
                     assetTrader.getAsset().updateValues();
                     trader.getPortfolio().updateValues();
                     if (!previousAsset.equals(assetTrader.getAsset())) {
+                        PortfolioAssetHistory portfolioAssetHistory = new PortfolioAssetHistory(assetTrader.getAsset());
+                        assetTrader.getAsset().addPortfolioAssetHistory(portfolioAssetHistory);
+                        PortfolioHistory portfolioHistory = new PortfolioHistory(trader.getPortfolio());
+                        trader.getPortfolio().addPortfolioHistory(portfolioHistory);
                         this.savePortfolioAsset(assetTrader.getAsset());
                         this.savePortfolio(trader.getPortfolio());
+                        this.savePortfolioAssetHistory(portfolioAssetHistory);
+                        this.savePortfolioHistory(portfolioHistory);
                     }
                 }
             }
         } else {
             System.out.println("No traders");
         }
+    }
+    //---------------------Save-Portfolio-Asset-History-----------------------
+    public void savePortfolioAssetHistory(PortfolioAssetHistory portfolioAssetHistory) {
+        this.portfolioAssetHistoryRepository.save(portfolioAssetHistory);
+    }
+    //----------------------Save-Portfolio-History----------------------------
+    public void savePortfolioHistory(PortfolioHistory portfolioHistory) {
+        this.portfolioHistoryRepository.save(portfolioHistory);
     }
     //----------------------Add-Portfolio-To-Traders--------------------------
     public void addPortfolioToTraders(Portfolio portfolio) {
