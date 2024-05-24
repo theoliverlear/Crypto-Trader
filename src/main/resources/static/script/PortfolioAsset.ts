@@ -1,6 +1,12 @@
 export class PortfolioAsset {
+    currencyName: string;
+    currencyCode: string;
+    shares: number;
+    walletDollars: string;
+    totalValue: string;
+    currencyLogoSrc: string;
     //===========================-Constructors-===============================
-    constructor(currencyName, currencyCode, shares, walletDollars, totalAssetValue, currencyLogoSrc) {
+    constructor(currencyName: string, currencyCode: string, shares: number, walletDollars: string, totalAssetValue: string, currencyLogoSrc: string) {
         this.currencyName = currencyName;
         this.currencyCode = currencyCode;
         this.shares = shares;
@@ -11,7 +17,7 @@ export class PortfolioAsset {
     //=============================-Methods-==================================
 
     //-----------------------------Build-Html---------------------------------
-    buildHtml() {
+    buildHtml(): string {
         return `
                 <div class="currency-image-name-code-div your-currency-info-div">
                     <div class="your-currency-image-div">

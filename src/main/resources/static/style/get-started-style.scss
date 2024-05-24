@@ -1,0 +1,92 @@
+@import "global-variables";
+@import "global-functions";
+@import "global-mixins";
+
+#user-info-section {
+    margin: simple-calc(5, 2) 0 0 0;
+    padding: 0;
+    height: auto;
+    @include flex(space-around, center, row);
+}
+#tab-selectors-div {
+    @include flex(start, center, row);
+    width: 50%;
+}
+.user-info-tab-selector-tab {
+    border-top: black $thin-border solid;
+    border-left: black $thin-border solid;
+    border-right: black $thin-border solid;
+    $top-border-radius: simplest-calc(1);
+    border-radius: $top-border-radius $top-border-radius 0 0;
+    padding: 0 simplest-calc(1);
+    margin: 0 simple-calc(1, 0.2) 0 0;
+    $box-shadow-size: simplest-calc(0.25);
+    box-shadow: $blue-grey $box-shadow-size calc($box-shadow-size * -1) 0 0;
+    z-index: 0;
+    background-color: $pure-white;
+    transition: box-shadow, margin-top, margin-left, padding-bottom, 0.3s;
+    width: simple-calc(5, 1.5);
+    text-align: center;
+    @include flex(center, center, row);
+    &:hover {
+        background-color: $almost-white;
+        cursor: pointer;
+        $box-shadow-size: simplest-calc(0.35);
+        box-shadow: $blue-grey $box-shadow-size calc($box-shadow-size * -1) 0 0;
+    }
+    &:active {
+        box-shadow: none;
+        margin-top: calc((((0.35vh + 0.35vw) / 2) + 0.35em) * -1);
+        margin-left: calc(((0.35vh + 0.35vw) / 2) + 0.35em);
+        padding-bottom: calc(((0.35vh + 0.35vw) / 2) + 0.35em);
+    }
+    h5 {
+        margin: simplest-calc(0.25) 0 0 0;
+        height: simple-calc(2, 0.7);
+    }
+}
+
+#login-tab-selector {
+    margin-left: simplest-calc(0.35);
+    &:active {
+        margin-left: simplest-calc(0.65);
+    }
+}
+#user-info-container {
+    width: 60%;
+    @include flex(space-around, center, column);
+    height: auto;
+    @include basic-margin-padding(0, 0);
+}
+.prompt-popup-div {
+    display: none;
+}
+#terms-agree-text {
+    text-decoration: underline;
+    margin: simplest-calc(0.25) 0;
+    height: simple-calc(2, 0.7);
+}
+#user-content-container {
+    border: $thin-border solid black;
+    width: 60%;
+    margin: calc((((0.05vh + 0.05vw) / 2) + 0.05em) * -1) 0 simple-calc(5, 2) 0;
+    padding: simple-calc(0.5, 0.25) 0 simple-calc(2, 1) 0;
+    border-radius: simplest-calc(1);
+    @include flex(space-around, center, column);
+    $box-shadow-size: simplest-calc(0.35);
+    box-shadow: $blue-grey $box-shadow-size calc($box-shadow-size * -1) 0 0;
+    transition: box-shadow, 0.3s;
+    &:hover {
+        $box-shadow-size: simplest-calc(0.45);
+        box-shadow: $blue-grey $box-shadow-size calc($box-shadow-size * -1) 0 0;
+    }
+}
+
+.input-with-title {
+    @include flex(space-between, center, row);
+    width: 80%;
+    margin: simple-calc(1.35, 0.35);
+}
+#signup-tab-selector {
+
+}

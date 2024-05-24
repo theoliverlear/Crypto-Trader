@@ -1,0 +1,353 @@
+@import "global-variables";
+@import "global-mixins";
+@import "global-functions";
+
+h1 {
+    font-size: $h1-font-size;
+    @include basic-margin-padding(0, 0);
+}
+h2 {
+    font-size: $h2-font-size;
+    @include basic-margin-padding(0, 0);
+}
+h3 {
+    font-size: $h3-font-size;
+    @include basic-margin-padding(0, 0);
+}
+h4 {
+    font-size: $h4-font-size;
+    @include basic-margin-padding(0, 0);
+}
+h5 {
+    font-size: $h5-font-size;
+    @include basic-margin-padding(0, 0);
+}
+h6 {
+    font-size: $h6-font-size;
+    @include basic-margin-padding(0, 0);
+}
+p {
+    font-size: $p-font-size;
+    @include basic-margin-padding(0, 0);
+}
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: $pure-white;
+    @include basic-margin-padding(0, 0);
+    min-height: 100vh;
+    @include flex(center, center, column)
+}
+header {
+    @include flex(center, center, row);
+    width: 100%;
+    nav {
+        @include flex(space-between, center, row);
+        background-color: $almost-white;
+        box-shadow: 0 0 simple-calc(1, 0.5) 0 $black-shadow;
+        width: 100%;
+        border-bottom: $very-thin-border solid $muted-blue-half-opacity;
+        height: $four-percent;
+    }
+    #nav-div {
+        @include flex(center, center, row);
+        width: 100%;
+        margin: 0 0 0 simple-calc(4.5, 2.5);
+    }
+}
+
+.nav-item {
+    @include flex(center, center, row);
+    padding: 0 simple-calc(1, 1);
+}
+#default-avatar-image {
+    $width-height: simple-calc(3, 1.75);
+    @include size($width-height, $width-height);
+    margin-right: simple-calc(0.5, 0.5);
+    border-radius: 50%;
+    border: $ivory-white $very-thin-border solid;
+    $box-shadow-size: simplest-calc(0.05);
+    box-shadow: $soft-gray $box-shadow-size $box-shadow-size;
+    transition: box-shadow, margin-left, margin-bottom, 0.3s;
+    &:hover {
+        $hover-box-shadow-size: simplest-calc(0.15);
+        box-shadow: $morning-frost-blue $hover-box-shadow-size $hover-box-shadow-size;
+        cursor: pointer;
+    }
+    &:active {
+        box-shadow: none;
+        margin-left: simplest-calc(0.05);
+        $bottom-and-right-margin: simplest-calc(0.15);
+        margin-bottom: calc($bottom-and-right-margin * -1);
+        margin-right: $bottom-and-right-margin;
+    }
+}
+#account-image-container {
+    @include flex(space-around, center, column);
+    position: relative;
+    padding: simple-calc(0.15, 0.05);
+    border-radius: simple-calc(1, 1);
+    &:hover #logout-button-div {
+        cursor: pointer;
+    }
+}
+#logout-button-div {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: calc(((0.35vh + 0.35vw) / 2) + 0.15em) calc(((.5vh + 0.5vw) / 2) + 0.25em);
+    border-radius: calc(((1vh + 1vw) / 2) + 1em);
+    position: absolute;
+    margin-top: calc(((6vh + 6vw) / 2) + 2em);
+    margin-right: calc(((0.5vh + 0.5vw) / 2) + 0.25em);
+
+    transition: display, 0.3s;
+    background-color: $muted-blue;
+    color: $almost-white;
+    &:hover {
+        border: $thin-border solid $sunbeam-yellow;
+    }
+}
+.nav-bar-item-container {
+    @include flex(center, center, row);
+    border-radius: simplest-calc(1);
+    transition: background-color, box-shadow, border, margin-top, margin-left, 0.3s;
+    padding: simplest-calc(0.25) simplest-calc(1);
+    h5 {
+        @include basic-margin-padding(0, 0);
+    }
+    &:hover {
+        background-color: $almost-white;
+        $box-shadow-size: simplest-calc(0.35);
+        box-shadow: $blue-grey $box-shadow-size $box-shadow-size 0 0;
+        cursor: pointer;
+        border: $muted-blue simple-calc(0.1, 0.05) solid;
+    }
+    &:active {
+        background-color: $almost-white;
+        box-shadow: none;
+        $top-and-right-margin: simplest-calc(0.35);
+        margin : {
+            top: $top-and-right-margin;
+            left: $top-and-right-margin;
+        }
+    }
+}
+input {
+    padding: simplest-calc(0.25);
+    border-radius: simplest-calc(0.25);
+    border: $muted-blue $thin-border solid;
+    box-shadow: $morning-frost-blue 0 0 simplest-calc(0.25);
+    transition: box-shadow, margin-left, margin-top, 0.3s;
+    &:hover {
+        $box-shadow-size: simplest-calc(0.35);
+        box-shadow: $morning-frost-blue $box-shadow-size $box-shadow-size;
+        cursor: pointer;
+    }
+    &:active {
+        transition: box-shadow, margin-left, margin-top, 0.15s;
+        /*box-shadow: var(--morning-frost-blue) 0 0 calc(((0.25vh + 0.25vw) / 2) + 0.25em);*/
+        box-shadow: none;
+        $margin-top-and-left: simplest-calc(0.25);
+        margin-left: $margin-top-and-left;
+        margin-top: $margin-top-and-left;
+    }
+    &[type="checkbox"] {
+        &:hover{
+            box-shadow: $morning-frost-blue simplest-calc(0.2) simplest-calc(0.2);
+        }
+        &:active {
+            box-shadow: $morning-frost-blue 0 0 simplest-calc(0.05);
+        }
+    }
+}
+.general-button {
+    background-color: $sunbeam-yellow;
+    padding: simple-calc(0.5, 0.25) 0;
+    border-radius: simple-calc(1, 1);
+    width: simple-calc(20, 1);
+    height: simple-calc(4, 2);
+    margin-left: 0;
+    margin-top: 0;
+    text-align: center;
+    @include flex(center, center, row);
+    $square-box-shadow: simple-calc(0.25, 0.25);
+    box-shadow: $blue-grey $square-box-shadow $square-box-shadow;
+    transition: box-shadow, margin-left, margin-top, 0.3s;
+    &:hover {
+        $square-box-shadow: simple-calc(0.35, 0.35);
+        box-shadow: $blue-grey $square-box-shadow $square-box-shadow;
+        cursor: pointer;
+    }
+    &:active {
+        transition: box-shadow, margin-left, margin-top, 0.15s;
+        $margins-and-box-shadow: simple-calc(0.25, 0.25);
+        box-shadow: $blue-grey 0 0 $margins-and-box-shadow;
+        margin : {
+            left: $margins-and-box-shadow;
+            top: $margins-and-box-shadow;
+        }
+    }
+}
+.general-button-inverted {
+    background-color: $sunbeam-yellow;
+    padding: simple-calc(0.5, 0.25) 0;
+    border-radius: simplest-calc(1);
+    width: simple-calc(20, 2);
+    height: simple-calc(4, 2);
+    margin : {
+        top: 0;
+        left: 0;
+    }
+    text-align: center;
+    @include flex(center, center, row);
+    $box-shadow-size: simplest-calc(0.25);
+    box-shadow: $blue-grey $box-shadow-size calc($box-shadow-size * -1);
+    transition: box-shadow, margin-left, margin-top, 0.3s;
+    &:hover {
+        $hover-box-shadow-size: simplest-calc(0.35);
+        box-shadow: $blue-grey $hover-box-shadow-size calc($hover-box-shadow-size * -1);
+        cursor: pointer;
+    }
+    &:active {
+        transition: box-shadow, margin-left, margin-top, margin-bottom, 0.15s;
+        box-shadow: $blue-grey 0 0 $box-shadow-size;
+        $margin-top-and-left: simplest-calc(0.25);
+        margin : {
+            top: calc($margin-top-and-left * -1);
+            left: $margin-top-and-left;
+        }
+    }
+}
+.link-no-style {
+    text-decoration: none;
+    color: black;
+}
+.small-button {
+    background-color: $sunbeam-yellow;
+    padding: simple-calc(0.5, 0.25);
+    border-radius: simplest-calc(0.5);
+    width: simple-calc(10, 1);
+    height: simple-calc(2, 1);
+    margin : {
+        top: 0;
+        left: 0;
+    }
+    text-align: center;
+    @include flex(center, center, row);
+    $box-shadow-size: simplest-calc(0.15);
+    box-shadow: $blue-grey $box-shadow-size $box-shadow-size;
+    transition: box-shadow, margin-left, margin-top, 0.3s;
+    &:hover {
+        $hover-box-shadow-size: simplest-calc(0.25);
+        box-shadow: $blue-grey $hover-box-shadow-size $hover-box-shadow-size;
+        cursor: pointer;
+    }
+    &:active {
+        transition: box-shadow, margin-left, margin-top, 0.15s;
+        $box-shadow-and-margin: simplest-calc(0.15);
+        box-shadow: $blue-grey 0 0 $box-shadow-and-margin;
+        margin : {
+            top: $box-shadow-and-margin;
+            left: $box-shadow-and-margin;
+        }
+    }
+    .small-button-text {
+        @include basic-margin-padding(0, 0);
+    }
+}
+.general-dropdown-list {
+    @include flex(space-around, center, column);
+    border-radius: simplest-calc(0.5);
+    $box-shadow-size: simplest-calc(0.25);
+    box-shadow: $blue-grey $box-shadow-size $box-shadow-size 0 0;
+}
+.dropdown-selection {
+    $border-radius-bottom: simplest-calc(0.5);
+    border-radius: 0 0 $border-radius-bottom $border-radius-bottom;
+    width: 100%;
+    /*border-left: var(--muted-blue) calc(((0.05vh + 0.05vw) / 2) + 0.05em) solid;*/
+    /*border-right: var(--muted-blue) calc(((0.05vh + 0.05vw) / 2) + 0.05em) solid;*/
+    /*border-bottom: var(--muted-blue) calc(((0.05vh + 0.05vw) / 2) + 0.05em) solid;*/
+    background-color: $sunbeam-yellow;
+}
+.dropdown-item {
+    background-color: $sunbeam-yellow;
+    padding: simple-calc(0.5, 0.25);
+    border-radius: simplest-calc(0.5);
+}
+.dropdown-option {
+    @include flex(space-between, center, row);
+    padding: simple-calc(0.5, 0.25);
+    transition: background-color, box-shadow, 0.3s;
+    &:hover img {
+        box-shadow: $blue-grey 0 0 simplest-calc(0.25);
+    }
+    img {
+        border-radius: 50%;
+        transition: box-shadow, 0.05s;
+    }
+}
+.dropdown-option-text {
+    @include basic-margin-padding(0, 0);
+}
+.dropdown-with-caret {
+    @include flex(space-between, center, row);
+}
+.dropdown-caret {
+    background-color: $sunbeam-yellow;
+    @include basic-margin-padding(0, 0);
+}
+.dropdown-caret img {
+    $dropdown-caret-size: simple-calc(2, 0.5);
+    @include size($dropdown-caret-size, $dropdown-caret-size);
+    @include basic-margin-padding(0, 0);
+}
+.subtitle-text {
+    color: #152f41;
+    font-style: italic;
+}
+.show {
+    display: block;
+}
+.hide {
+    display: none;
+}
+.round-bottom {
+    $border-bottom-radius: simplest-calc(0.5);
+    border-radius: 0 0 $border-bottom-radius $border-bottom-radius;
+}
+.square-bottom {
+    $border-radius-top: simplest-calc(0.5);
+    border-radius: $border-radius-top $border-radius-top 0 0;
+}
+.terms-agree-checkbox {
+    margin: 0 simplest-calc(0.5) 0 0;
+}
+.agree-terms-div {
+    @include flex(center, center, row);
+}
+.terms-agree-text {
+    text-decoration: underline;
+    margin: simplest-calc(0.55) simplest-calc(1) 0 0;
+    height: simple-calc(2, 0.7);
+}
+.popup-text {
+    color: maroon;
+}
+.italic-span {
+    font-style: italic;
+}
+.thin-text {
+    @include basic-margin-padding(0, 0);
+    font-weight: 300;
+}
+.simple-space-inline-div {
+    @include flex(space-around, center, row);
+}
+footer {
+    @include flex(space-around, center, row);
+    margin-top: auto;
+}
+.hidden {
+    display: none;
+}

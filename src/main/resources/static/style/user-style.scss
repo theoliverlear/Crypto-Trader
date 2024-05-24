@@ -1,0 +1,103 @@
+@import "global-variables";
+@import "global-mixins";
+@import "global-functions";
+$simplest-one-percent: simplest-calc(1);
+$simplest-quarter-percent: simplest-calc(0.25);
+
+main {
+    @include flex(center, center, column);
+    width: 100%;
+    @include basic-margin-padding(0, 0);
+}
+#user-info-section {
+    margin: simple-calc(3, 1) 0 0 0;
+    padding: 0;
+    @include flex(center, center, row);
+    @include size(simple-calc(70, 10), auto)
+}
+#user-info-container {
+    @include size(90%, auto);
+    @include flex(center, center, column);
+    @include basic-margin-padding(0, 0);
+}
+#tab-selectors-div {
+    @include flex(start, center, row);
+    width: 50%;
+}
+.user-info-tab-selector-tab {
+    border : {
+        top: black $very-thin-border solid;
+        left: black $very-thin-border solid;
+        right: black $very-thin-border solid;
+        radius: $simplest-one-percent $simplest-one-percent 0 0;
+    }
+    padding: 0 $simplest-one-percent;
+    margin: 0 simple-calc(1, 0.2) 0 0;
+    box-shadow: $blue-grey $simplest-quarter-percent calc($simplest-quarter-percent * -1) 0 0;
+    z-index: 0;
+    background-color: $almost-white;
+    transition: box-shadow, margin-top, margin-left, padding-bottom, 0.3s;
+    width: simple-calc(5, 1.5);
+    text-align: center;
+    @include flex(center, center, row);
+    $margin-padding-box-shadow: simplest-calc(0.35);
+    h5 {
+        margin: $simplest-quarter-percent 0 0 0;
+        height: simple-calc(2, 0.7);
+    }
+    &:hover {
+        background-color: $almost-white;
+        cursor: pointer;
+        box-shadow: $blue-grey $margin-padding-box-shadow calc($margin-padding-box-shadow * -1) 0 0;
+    }
+    &:active {
+        box-shadow: none;
+        margin : {
+            top: calc($margin-padding-box-shadow * -1);
+            left: $margin-padding-box-shadow;
+        }
+        padding-bottom: $margin-padding-box-shadow;
+    }
+}
+#login-tab-selector {
+    margin-left: simplest-calc(0.35);
+    &:active {
+        margin-left: simplest-calc(0.65);
+    }
+}
+.prompt-popup-div {
+    display: none;
+}
+#user-content-container {
+    $box-shadow-size: calc(((0.35vh + 0.35vw) / 2) + 0.35em);
+    border: $very-thin-border solid black;
+    width: 60%;
+    margin: calc((((0.05vh + 0.05vw) / 2) + 0.05em) * -1) 0 simple-calc(5, 2) 0;
+    padding: 0 0 simple-calc(2, 1) 0;
+    border-radius: $simplest-one-percent;
+    @include flex(space-around, center, column);
+    box-shadow: $blue-grey $box-shadow-size calc($box-shadow-size * -1) 0 0;
+    transition: box-shadow, 0.3s;
+    &:hover {
+        $hover-box-shadow-size: simplest-calc(0.45);
+        box-shadow: $blue-grey $hover-box-shadow-size calc($hover-box-shadow-size * -1) 0 0;
+    }
+}
+.input-with-title {
+    @include flex(space-between, center, row);
+    width: 80%;
+    margin: simple-calc(0.75, 0.5);
+    &:first-child {
+        margin-top: $two-percent;
+    }
+}
+#login-form-container {
+    display: none;
+}
+.user-content-form {
+    @include flex(center, center, column);
+    width: 100%;
+}
+.user-info-button {
+    margin-top: simple-calc(1, 0.5);
+}
