@@ -216,30 +216,18 @@
         </div>
     </section>
     <section>
-        <section>
-            <h4>Sign-up</h4>
-            <form action="/signup" method="post">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                <button type="submit">Sign-up</button>
-            </form>
-        </section>
+
     </section>
 </main>
 <!-- TODO: Make the footer a Thymeleaf template. -->
 <footer>
     <section id="footer-content">
         <div>
-            <p>&copy; 2022 Sigwarth Software. All rights reserved.</p>
+            <p>&copy; 2024 Sigwarth Software. All rights reserved.</p>
         </div>
     </section>
 </footer>
-<script src="../static/script/globalScript.js" type="module"
-        th:src="@{../static/script/globalScript.js}"></script>
-<script src="../static/script/homeScript.js" type="module"
-        th:src="@{../static/script/homeScript.js}"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="../static/script/bundle.js"
+        th:src="@{/script/bundle.js}"></script>
 </body>
 </html>
