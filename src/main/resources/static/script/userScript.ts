@@ -1,5 +1,6 @@
 //=================================-Imports-==================================
 import {hashPassword} from "./globalScript.js";
+
 //================================-Variables-=================================
 
 //-----------------------------------Signup-----------------------------------
@@ -31,14 +32,14 @@ let currentUserInfo = "signup";
 
 //---------------------------Send-Sign-Up-To-Server---------------------------
 function sendSignUpToServer() {
-    let hashedPassword = hashPassword(signupPasswordInput.value);
+    let hashedPassword = hashPassword((signupPasswordInput as HTMLInputElement).value);
     fetch('/user/signup', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            username: signupUsernameInput.value,
+            username: (signupUsernameInput as HTMLInputElement).value,
             password: hashedPassword,
         })
     }).then(response => {
@@ -52,14 +53,14 @@ function sendSignUpToServer() {
 }
 //----------------------------Send-Login-To-Server----------------------------
 function sendLoginToServer() {
-    let hashedPassword = hashPassword(loginPasswordInput.value);
+    let hashedPassword = hashPassword((loginPasswordInput as HTMLInputElement).value);
     fetch('/user/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            username: loginUsernameInput.value,
+            username: (loginUsernameInput as HTMLInputElement).value,
             password: hashedPassword,
         })
     }).then(response => {
@@ -90,8 +91,8 @@ function loginSequence() {
 }
 //------------------------------Passwords-Match-------------------------------
 function passwordsMatch() {
-    let passwordInputValue = signupPasswordInput.value;
-    let confirmPasswordInputValue = signupConfirmPasswordInput.value;
+    let passwordInputValue = (signupPasswordInput as HTMLInputElement).value;
+    let confirmPasswordInputValue = (signupConfirmPasswordInput as HTMLInputElement).value;
     return passwordInputValue === confirmPasswordInputValue;
 }
 //---------------------------Passwords-Match-Popup----------------------------
@@ -105,11 +106,12 @@ function passwordsMatchPopup() {
 }
 //--------------------------------Terms-Agreed--------------------------------
 function termsAgreed() {
-    return termsAgreeCheckbox.checked;
+    return (termsAgreeCheckbox as HTMLInputElement).checked;
 }
 //-----------------------------Terms-Agreed-Popup-----------------------------
 function termsAgreedPopup() {
     console.log('termsAgreedPopup');
+    console.log('test');
     if (!termsAgreed()) {
         popupDivSignup.style.display = 'flex';
         popupTextSignup.textContent = 'Please agree to the terms and conditions.';
@@ -118,12 +120,12 @@ function termsAgreedPopup() {
 //------------------------------Has-Empty-Fields------------------------------
 function hasEmptyFields() {
     if (currentUserInfo === 'signup') {
-        return signupUsernameInput.value === '' || 
-               signupPasswordInput.value === '' || 
-               signupConfirmPasswordInput.value === '';
+        return (signupUsernameInput as HTMLInputElement).value === '' ||
+            (signupPasswordInput as HTMLInputElement).value === '' ||
+            (signupConfirmPasswordInput as HTMLInputElement).value === '';
     } else {
-        return loginUsernameInput.value === '' ||
-               loginPasswordInput.value === '';
+        return (loginUsernameInput as HTMLInputElement).value === '' ||
+            (loginPasswordInput as HTMLInputElement).value === '';
     }
 }
 //-----------------------------Empty-Field-Popup------------------------------
@@ -140,8 +142,8 @@ function emptyFieldPopup() {
 }
 //-------------------------Toggle-User-Info-Container-------------------------
 function toggleUserInfoContainer() {
-    let isCurrentlySignUp = signupContentContainer.display === 'flex';
-    let isCurrentlyLogIn = loginContentContainer.display === 'flex';
+    let isCurrentlySignUp = signupContentContainer.style.display === 'flex';
+    let isCurrentlyLogIn = loginContentContainer.style.display === 'flex';
     let clickedId = this.id;
     if (clickedId === 'signup-tab-selector' && !isCurrentlySignUp) {
         signupContentContainer.style.display = 'flex';
@@ -162,3 +164,5 @@ loginButton.addEventListener('click', loginSequence);
 signupPasswordInputs.forEach(signupPasswordInput => {
     signupPasswordInput.addEventListener('input', passwordsMatchPopup);
 });
+console.log('User Script Loaded');
+console.log('User Script Loaded');
