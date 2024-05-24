@@ -8,10 +8,10 @@ let userPasswordInput = document.getElementById('signup-password-input');
 let userPasswordConfirmInput = document.getElementById('signup-confirm-password-input');
 let signupTermsCheckbox = document.getElementById('signup-terms-agree-checkbox');
 //--------------------------------Input-Values--------------------------------
-let userUsernameInputValue = userUsernameInput.value;
-let userPasswordInputValue = userPasswordInput.value;
-let userPasswordConfirmInputValue = userPasswordConfirmInput.value;
-let signupTermsCheckboxValue = signupTermsCheckbox.checked;
+let userUsernameInputValue = (userUsernameInput as HTMLInputElement).value;
+let userPasswordInputValue = (userPasswordInput as HTMLInputElement).value;
+let userPasswordConfirmInputValue = (userPasswordConfirmInput as HTMLInputElement).value;
+let signupTermsCheckboxValue = (signupTermsCheckbox as HTMLInputElement).checked;
 //-----------------------------------Popup------------------------------------
 let popupDiv = document.getElementById('signup-prompt-popup-div');
 let popupText = document.getElementById('signup-prompt-popup-text');
@@ -43,8 +43,9 @@ function sendSignupDataToServer() {
 //=============================-Client-Functions-=============================
 
 //----------------------------Password-Match-Popup----------------------------
-function passwordMatchPopup() {
+function passwordMatchPopup(): void {
     if (!passwordsMatch()) {
+        console.log('Passwords do not match.');
         popupDiv.style.display = 'block';
         popupText.textContent = 'Passwords do not match.';
     } else {
@@ -64,27 +65,27 @@ function signupTermsPopup() {
 }
 //------------------------------Passwords-Match-------------------------------
 function passwordsMatch() {
-    userPasswordInputValue = userPasswordInput.value;
-    userPasswordConfirmInputValue = userPasswordConfirmInput.value;
+    userPasswordInputValue = (userPasswordInput as HTMLInputElement).value;
+    userPasswordConfirmInputValue = (userPasswordConfirmInput as HTMLInputElement).value;
     return userPasswordInputValue === userPasswordConfirmInputValue;
 }
 //--------------------------------Terms-Agreed--------------------------------
 function termsAgreed() {
-    signupTermsCheckboxValue = signupTermsCheckbox.checked;
+    signupTermsCheckboxValue = (signupTermsCheckbox as HTMLInputElement).checked;
     return signupTermsCheckboxValue;
 }
 //-----------------------------Update-All-Fields------------------------------
 function updateAllFields() {
-    userUsernameInputValue = userUsernameInput.value;
-    userPasswordInputValue = userPasswordInput.value;
-    userPasswordConfirmInputValue = userPasswordConfirmInput.value;
-    signupTermsCheckboxValue = signupTermsCheckbox.checked;
+    userUsernameInputValue = (userUsernameInput as HTMLInputElement).value;
+    userPasswordInputValue = (userPasswordInput as HTMLInputElement).value;
+    userPasswordConfirmInputValue = (userPasswordConfirmInput as HTMLInputElement).value;
+    signupTermsCheckboxValue = (signupTermsCheckbox as HTMLInputElement).checked;
 }
 //------------------------------Has-Empty-Fields------------------------------
 function hasEmptyFields() {
     updateAllFields();
     return userUsernameInputValue === '' || userPasswordInputValue === '' ||
-           userPasswordConfirmInputValue === '';
+        userPasswordConfirmInputValue === '';
 }
 //-----------------------------Empty-Field-Popup------------------------------
 function emptyFieldPopup() {
@@ -107,3 +108,4 @@ signupButton.addEventListener('click', signupSequence);
 signupButton.addEventListener('click', emptyFieldPopup);
 userPasswordConfirmInput.addEventListener('input', passwordMatchPopup);
 signupButton.addEventListener('click', signupTermsPopup);
+console.log('Get Started Script Loaded');
