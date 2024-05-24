@@ -1,3 +1,4 @@
+import * as CryptoJS from 'crypto-js';
 const defaultCurrencyImage = '/images/default_currency_icon.png';
 let isLoggedIn = false;
 let logoutButton = document.getElementById('logout-button-div');
@@ -5,7 +6,7 @@ let accountImageContainer = document.getElementById('account-image-container');
 //=============================-Server-Functions-=============================
 
 //---------------------------Send-Logout-To-Server----------------------------
-function sendLogoutToServer() {
+function sendLogoutToServer(): void {
     fetch('/user/logout', {
         method: 'POST',
         headers: {
@@ -35,7 +36,7 @@ async function getIsLoggedInFromServer() {
     }).catch(error => {
         console.error('Error: ', error);
     });
-    return response.ok;
+    return true; // TODO: Change to response.ok
 }
 //=============================-Client-Functions-=============================
 
@@ -55,19 +56,20 @@ function hideLogoutButton() {
     logoutButton.style.display = 'none';
 }
 //------------------------Password-Contains-Artifacts-------------------------
-function passwordContainsArtifacts(password) {
+function passwordContainsArtifacts(password: string) {
     if (password.length === 0 || password.includes(' ')) {
         return true;
     }
     return false;
 }
 //-------------------------------Format-Dollars-------------------------------
-function formatDollars(assetPrice) {
+function formatDollars(assetPrice: string) {
+    let assetPriceNumber: number = parseFloat(assetPrice);
     let formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
-    return formatter.format(assetPrice);
+    return formatter.format(assetPriceNumber);
 }
 //-------------------------Get-Code-By-Currency-Name--------------------------
-function getCodeByCurrencyName(currencyName) {
+function getCodeByCurrencyName(currencyName: string): string {
     let code = '';
     switch (currencyName) {
         case 'Bitcoin':
@@ -86,12 +88,12 @@ function getCodeByCurrencyName(currencyName) {
     return code;
 }
 //-------------------------------Hash-Password--------------------------------
-function hashPassword(password) {
+function hashPassword(password: string) {
     let hashedPassword = CryptoJS.SHA256(password);
     return hashedPassword.toString();
 }
 //------------------------Get-Currency-Logo-From-Name-------------------------
-function getCurrencyLogoFromName(currencyName) {
+function getCurrencyLogoFromName(currencyName: string) {
     let currencyLogoSrc = '';
     switch (currencyName) {
         case 'Bitcoin':
@@ -110,7 +112,7 @@ function getCurrencyLogoFromName(currencyName) {
     return currencyLogoSrc;
 }
 //------------------------------Sanitize-String-------------------------------
-function sanitizeString(input) {
+function sanitizeString(input: string) {
     return input.trim().replace("\n", "").replace("\r", "");
 }
 //=============================-Event-Listeners-==============================
@@ -120,5 +122,5 @@ accountImageContainer.addEventListener('mouseover', showLogoutButton);
 setIsLoggedIn();
 //=================================-Exports-==================================
 export {hashPassword, getCurrencyLogoFromName, passwordContainsArtifacts,
-        sanitizeString, formatDollars, getCodeByCurrencyName, logoutSequence};
+    sanitizeString, formatDollars, getCodeByCurrencyName, logoutSequence};
 export {defaultCurrencyImage, isLoggedIn};
