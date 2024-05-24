@@ -55,8 +55,8 @@ async function getPortfolioFromServer() {
 function sendPortfolioAssetToServer() {
     if (hasSelectedCurrency() && sharesOrWalletHaveInput()) {
         let currencyName = sanitizeString(selectedCurrencyText.textContent);
-        let shares = initializeEmptyWalletShares(sharesInput.value);
-        let wallet = initializeEmptyWalletShares(walletInput.value);
+        let shares = initializeEmptyWalletShares((sharesInput as HTMLInputElement).value);
+        let wallet = initializeEmptyWalletShares((walletInput as HTMLInputElement).value);
         fetch('/portfolio/add', {
             method: 'POST',
             headers: {
@@ -101,7 +101,7 @@ function loadCurrencies() {
     yourCurrenciesListSection.innerHTML = '';
     getPortfolioFromServer().then(portfolio => {
         if (Array.isArray(portfolio.assets)) {
-            portfolio.assets.forEach(asset => {
+            portfolio.assets.forEach((asset: { currency: { name: any; currencyCode: any; }; shares: any; assetWalletDollars: string; totalValueInDollars: string; }) => {
                 let currencyName = asset.currency.name;
                 let currencyCode = asset.currency.currencyCode;
                 let shares = asset.shares;
@@ -113,7 +113,7 @@ function loadCurrencies() {
     });
 }
 //----------------------------Add-Currency-To-Page----------------------------
-function addCurrencyToPage(currencyName, currencyCode, shares, walletDollars, totalAssetValue) {
+function addCurrencyToPage(currencyName: string, currencyCode: string, shares: number, walletDollars: string, totalAssetValue: string) {
     let currencyImageSrc = getCurrencyLogoFromName(currencyName);
     let currencyAsset = new PortfolioAsset(currencyName, currencyCode, shares, walletDollars, totalAssetValue, currencyImageSrc);
     let currencyDiv = document.createElement('div');
@@ -146,7 +146,7 @@ async function addItemSequence() {
     showCorrectContainer();
 }
 //---------------------------Initialize-Asset-Value---------------------------
-async function initializeAssetValue(currencyCode, shares, walletDollars) {
+async function initializeAssetValue(currencyCode: any, shares: number, walletDollars: any) {
     if (shares === 0) {
         return walletDollars;
     } else {
@@ -177,16 +177,16 @@ function bothSharesAndWalletHaveInput() {
 }
 //-------------------------Change-Caret-To-Highlight--------------------------
 function changeCaretToHighlight() {
-    currencyDropdownCaretImage.src = '/images/down_caret_highlight.svg';
+    (currencyDropdownCaretImage as HTMLImageElement).src = '/images/down_caret_highlight.svg';
 }
 //---------------------------Change-Caret-To-Black----------------------------
 function changeCaretToBlack() {
-    currencyDropdownCaretImage.src = '/images/down_caret.svg';
+    (currencyDropdownCaretImage as HTMLImageElement).src = '/images/down_caret.svg';
 }
 //---------------------------Set-Selection-To-None----------------------------
 function setSelectionToNone() {
     currencySelectionText.textContent = 'Select Currency';
-    selectedCurrencyImage.src = defaultCurrencyImage;
+    (selectedCurrencyImage as HTMLImageElement).src = defaultCurrencyImage;
 }
 //---------------------------Show-Add-Currency-Div----------------------------
 function showAddCurrencyDiv() {
@@ -208,13 +208,13 @@ function hideCurrencyDropdown() {
 }
 //--------------------------------Clear-Inputs--------------------------------
 function clearInputs() {
-    sharesInput.value = '';
-    walletInput.value = '';
+    (sharesInput as HTMLInputElement).value = '';
+    (walletInput as HTMLInputElement).value = '';
     hidePopup();
     setSelectionToNone();
 }
 //-----------------------Initialize-Empty-Wallet-Shares-----------------------
-function initializeEmptyWalletShares(valueInput) {
+function initializeEmptyWalletShares(valueInput: string | number) {
     if (valueInput === '') {
         valueInput = 0;
     }
@@ -222,10 +222,10 @@ function initializeEmptyWalletShares(valueInput) {
 }
 //------------------------Shares-And-Wallet-Are-Empty-------------------------
 function sharesAndWalletAreEmpty() {
-    return sharesInput.value === '' && walletInput.value === '';
+    return (sharesInput as HTMLInputElement).value === '' && (walletInput as HTMLInputElement).value === '';
 }
 //---------------------------------Show-Popup---------------------------------
-function showPopup(message) {
+function showPopup(message: string) {
     popupText.textContent = message;
     popupDiv.style.display = 'flex';
 }
@@ -250,18 +250,18 @@ function hasSelectedCurrency() {
 }
 //------------------------------Has-Shares-Input------------------------------
 function hasSharesInput() {
-    return sharesInput.value !== '' && sharesInput.value !== '0';
+    return (sharesInput as HTMLInputElement).value !== '' && (sharesInput as HTMLInputElement).value !== '0';
 }
 //------------------------------Has-Wallet-Input------------------------------
 function hasWalletInput() {
-    return walletInput.value !== '' && walletInput.value !== '0';
+    return (walletInput as HTMLInputElement).value !== '' && (walletInput as HTMLInputElement).value !== '0';
 }
 //---------------------------Get-Selected-Currency----------------------------
 function setSelectedCurrency() {
     let currencyChoiceText = this.getElementsByClassName('currency-option-text')[0].innerText;
     currencyChoiceText = sanitizeString(currencyChoiceText);
     selectedCurrencyText.textContent = currencyChoiceText;
-    selectedCurrencyImage.src = getCurrencyLogoFromName(currencyChoiceText);
+    (selectedCurrencyImage as HTMLImageElement).src = getCurrencyLogoFromName(currencyChoiceText);
 }
 //=============================-Event-Listeners-==============================
 currencyOptionsArray.forEach(option => {
