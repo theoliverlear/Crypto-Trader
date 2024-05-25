@@ -3,6 +3,7 @@
     "lib": ["dom"],
     "outDir": "src/main/resources/static/script",
     "noImplicitAny": true,
+    "moduleResolution": "node",
     "module": "es6",
     "target": "es6",
     "allowJs": true,
