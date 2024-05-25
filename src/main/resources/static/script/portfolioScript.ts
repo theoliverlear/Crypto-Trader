@@ -1,7 +1,7 @@
 //=================================-Imports-==================================
 import {
     defaultCurrencyImage, formatDollars, getCodeByCurrencyName,
-    getCurrencyLogoFromName, sanitizeString
+    getCurrencyLogoFromName, loadPage, sanitizeString
 } from "./globalScript.js";
 import {PortfolioAsset} from "./PortfolioAsset.js";
 //================================-Variables-=================================
@@ -84,7 +84,7 @@ async function getIsEmptyPortfolioFromServer() {
 //=============================-Client-Functions-=============================
 
 //----------------------------Load-Empty-Container----------------------------
-function showCorrectContainer() {
+function showCorrectContainer(): void {
     getIsEmptyPortfolioFromServer().then(isEmpty => {
         if (isEmpty) {
             emptyPortfolioSection.style.display = 'flex';
@@ -108,7 +108,7 @@ function loadCurrencies() {
                 let walletDollars = formatDollars(asset.assetWalletDollars);
                 let totalAssetValue = formatDollars(asset.totalValueInDollars);
                 addCurrencyToPage(currencyName, currencyCode, shares, walletDollars, totalAssetValue);
-            });
+            })
         }
     });
 }
@@ -264,20 +264,25 @@ function setSelectedCurrency() {
     (selectedCurrencyImage as HTMLImageElement).src = getCurrencyLogoFromName(currencyChoiceText);
 }
 //=============================-Event-Listeners-==============================
-currencyOptionsArray.forEach(option => {
-    option.addEventListener('click', toggleCurrencyDropdown);
-    option.addEventListener('click', setSelectedCurrency);
-});
-addCurrencyButton.addEventListener('click', showAddCurrencyDiv);
-cancelButton.addEventListener('click', hideAddCurrencyDiv);
-cancelButton.addEventListener('click', hideCurrencyDropdown);
-cancelButton.addEventListener('click', clearInputs);
-addButton.addEventListener('click', addItemSequence);
-currencyDropdownButton.addEventListener('click', toggleCurrencyDropdown);
-currencyDropdownCaret.addEventListener('mouseover', changeCaretToHighlight);
-currencyDropdownCaret.addEventListener('mouseout', changeCaretToBlack);
-inputArray.forEach(input => {
-    input.addEventListener('input', limitInput);
-});
+let shouldLoadPage: boolean = loadPage(document.body, 'portfolio');
+if (shouldLoadPage) {
+    currencyOptionsArray.forEach(option => {
+        option.addEventListener('click', toggleCurrencyDropdown);
+        option.addEventListener('click', setSelectedCurrency);
+    });
+    addCurrencyButton.addEventListener('click', showAddCurrencyDiv);
+    cancelButton.addEventListener('click', hideAddCurrencyDiv);
+    cancelButton.addEventListener('click', hideCurrencyDropdown);
+    cancelButton.addEventListener('click', clearInputs);
+    addButton.addEventListener('click', addItemSequence);
+    currencyDropdownButton.addEventListener('click', toggleCurrencyDropdown);
+    currencyDropdownCaret.addEventListener('mouseover', changeCaretToHighlight);
+    currencyDropdownCaret.addEventListener('mouseout', changeCaretToBlack);
+    inputArray.forEach(input => {
+        input.addEventListener('input', limitInput);
+    });
+}
 //================================-Init-Load-=================================
-showCorrectContainer();
+if (shouldLoadPage) {
+    showCorrectContainer();
+}
