@@ -1,4 +1,16 @@
-import {Chart} from 'chart.js';
+import {
+    Chart,
+    BarController,
+    CategoryScale,
+    LinearScale,
+    BarElement // Add this import
+} from 'chart.js';
+import {loadPage} from "./globalScript";
+
+// Register the BarElement as well
+Chart.register(BarController, CategoryScale, LinearScale, BarElement);
+
+
 let myChart: HTMLElement = document.getElementById("chart-div");
 
 new Chart((myChart as HTMLCanvasElement), {
@@ -27,6 +39,6 @@ function shadowPerspective(): void {
     let scrollPosition = ((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * -1) + 0.8;
     featureTable.style.boxShadow = `#2c4557 calc(((0.5vh + 0.5vw) / 2) + 0.5em) calc((((1vh + 1vw) / 2) + 1em) * ${scrollPosition}) 0 0`;
 }
-window.addEventListener('scroll', shadowPerspective);
-console.log('Home Script Loaded');
-
+if (loadPage(document.body, 'home')) {
+    window.addEventListener('scroll', shadowPerspective);
+}
