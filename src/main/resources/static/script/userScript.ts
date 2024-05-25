@@ -1,5 +1,5 @@
 //=================================-Imports-==================================
-import {hashPassword} from "./globalScript.js";
+import {hashPassword, loadPage} from "./globalScript.js";
 
 //================================-Variables-=================================
 
@@ -156,13 +156,13 @@ function toggleUserInfoContainer() {
     }
 }
 //=============================-Event-Listeners-==============================
-selectors.forEach(selector => {
-    selector.addEventListener('click', toggleUserInfoContainer)
-});
-signupButton.addEventListener('click', signupSequence);
-loginButton.addEventListener('click', loginSequence);
-signupPasswordInputs.forEach(signupPasswordInput => {
-    signupPasswordInput.addEventListener('input', passwordsMatchPopup);
-});
-console.log('User Script Loaded');
-console.log('User Script Loaded');
+if (loadPage(document.body, 'user')) {
+    selectors.forEach(selector => {
+        selector.addEventListener('click', toggleUserInfoContainer)
+    });
+    signupButton.addEventListener('click', signupSequence);
+    loginButton.addEventListener('click', loginSequence);
+    signupPasswordInputs.forEach(signupPasswordInput => {
+        signupPasswordInput.addEventListener('input', passwordsMatchPopup);
+    });
+}
