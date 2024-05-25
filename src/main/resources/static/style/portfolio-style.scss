@@ -200,3 +200,22 @@ main {
 .small-button.as-percent-button {
     padding: 0;
 }
+#portfolio-view-selector-div {
+    @include flex(space-around, center, row);
+    width: 100%;
+    padding: $one-percent 0;
+    margin: $simplest-half-percent 0;
+    background-color: $air-blue;
+    box-shadow: $blue-grey 0 0 $simplest-half-percent;
+    border-radius: $simplest-half-percent;
+    .portfolio-selector-option {
+        padding: $one-percent;
+        border-radius: $simplest-half-percent;
+        .portfolio-option-text {
+            user-select: none;
+        }
+    }
+    .selected-portfolio-option {
+        background-color: $muted-blue;
+    }
+}
