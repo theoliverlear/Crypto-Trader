@@ -1,3 +1,5 @@
-import {logoutSequence} from "./globalScript";
+import {loadPage, logoutSequence} from "./globalScript";
 let accountLogoutButton = document.getElementById('logout-button-div');
-accountLogoutButton.addEventListener('click', logoutSequence);
+if (loadPage(document.body, 'account')) {
+    accountLogoutButton.addEventListener('click', logoutSequence);
+}
