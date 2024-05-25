@@ -115,6 +115,10 @@ function getCurrencyLogoFromName(currencyName: string) {
 function sanitizeString(input: string) {
     return input.trim().replace("\n", "").replace("\r", "");
 }
+//-------------------------------Load-Page------------------------------------
+function loadPage(bodyElement: HTMLElement, page: string): boolean {
+    return bodyElement.getAttribute('data-page') === page;
+}
 //=============================-Event-Listeners-==============================
 logoutButton.addEventListener('click', logoutSequence);
 accountImageContainer.addEventListener('mouseover', showLogoutButton);
@@ -122,5 +126,6 @@ accountImageContainer.addEventListener('mouseover', showLogoutButton);
 setIsLoggedIn();
 //=================================-Exports-==================================
 export {hashPassword, getCurrencyLogoFromName, passwordContainsArtifacts,
-    sanitizeString, formatDollars, getCodeByCurrencyName, logoutSequence};
+    sanitizeString, formatDollars, getCodeByCurrencyName, logoutSequence,
+    loadPage};
 export {defaultCurrencyImage, isLoggedIn};
