@@ -58,25 +58,25 @@
     </nav>
 </header>
 <main>
-    <section id="portfolio-builder-section">
-        <div id="portfolio-builder-header" class="stripe-div-partition">
-            <div>
-                <h2>Portfolio Builder</h2>
-            </div>
-            <div>
-                <h5 class="subtitle-text">
-                    Select the currencies you would like to have traded.
-                </h5>
-            </div>
+    <div id="portfolio-builder-header" class="stripe-div-partition">
+        <div>
+            <h2>Portfolio Builder</h2>
         </div>
-        <div id="portfolio-view-selector-div">
-            <div id="portfolio-option" class="portfolio-selector-option selected-portfolio-option">
-                <h3 class="portfolio-option-text">Portfolio</h3>
-            </div>
-            <div id="performance-option" class="portfolio-selector-option">
-                <h3 class="portfolio-option-text">Performance</h3>
-            </div>
+        <div>
+            <h5 class="subtitle-text">
+                Select the currencies you would like to have traded.
+            </h5>
         </div>
+    </div>
+    <div id="portfolio-view-selector-div">
+        <div id="portfolio-option" class="portfolio-selector-option selected-portfolio-option">
+            <h3 class="portfolio-option-text">Portfolio</h3>
+        </div>
+        <div id="performance-option" class="portfolio-selector-option">
+            <h3 class="portfolio-option-text">Performance</h3>
+        </div>
+    </div>
+    <section id="portfolio-section">
         <div id="portfolio-builder-div">
             <div>
                 <div id="your-currencies-div">
@@ -213,9 +213,9 @@
                     <h4 id="empty-portfolio-title-text">Your portfolio is empty.</h4>
                 </div>
             </section>
-            <section id="performance-section">
+            <div id="performance-statistics">
 
-            </section>
+            </div>
             <section id="your-currencies-list-section">
                 <!--
                 <div class="simple-space-inline-div">
@@ -270,6 +270,17 @@
             </section>
         </div>
     </section>
+    <section id="performance-section">
+        <div id="performance-controls">
+
+        </div>
+        <div id="statistics-div">
+            <div>
+                <canvas id="performance-chart"></canvas>
+            </div>
+        </div>
+    </section>
+    <!-- TODO: Add currency market compare section -->
 </main>
 <footer>
     <section id="footer-content">
