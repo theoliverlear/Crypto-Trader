@@ -1,8 +1,10 @@
+//=================================-Imports-==================================
 import * as CryptoJS from 'crypto-js';
+//================================-Variables-=================================
 const defaultCurrencyImage = '/images/default_currency_icon.png';
-let isLoggedIn = false;
-let logoutButton = document.getElementById('logout-button-div');
-let accountImageContainer = document.getElementById('account-image-container');
+let isLoggedIn: boolean = false;
+let logoutButton: HTMLElement = document.getElementById('logout-button-div');
+let accountImageContainer: HTMLElement = document.getElementById('account-image-container');
 //=============================-Server-Functions-=============================
 
 //---------------------------Send-Logout-To-Server----------------------------
@@ -21,13 +23,13 @@ function sendLogoutToServer(): void {
     });
 }
 //-----------------------------Set-Is-Logged-In-------------------------------
-function setIsLoggedIn() {
+function setIsLoggedIn(): void {
     getIsLoggedInFromServer().then(response => {
         isLoggedIn = response;
     });
 }
 //------------------------Get-Is-Logged-In-From-Server------------------------
-async function getIsLoggedInFromServer() {
+async function getIsLoggedInFromServer(): Promise<boolean> {
     let response = await fetch('/user/loggedin', {
         method: 'GET',
         headers: {
@@ -36,36 +38,40 @@ async function getIsLoggedInFromServer() {
     }).catch(error => {
         console.error('Error: ', error);
     });
-    return true; // TODO: Change to response.ok
+    if (response) {
+        return response.ok;
+    } else {
+        return false;
+    }
 }
 //=============================-Client-Functions-=============================
 
 //------------------------------Logout-Sequence-------------------------------
-function logoutSequence() {
+function logoutSequence(): void {
     sendLogoutToServer();
     hideLogoutButton();
 }
 //-----------------------------Show-Logout-Button-----------------------------
-function showLogoutButton() {
+function showLogoutButton(): void {
     if (isLoggedIn) {
         logoutButton.style.display = 'flex';
     }
 }
 //-----------------------------Hide-Logout-Button-----------------------------
-function hideLogoutButton() {
+function hideLogoutButton(): void {
     logoutButton.style.display = 'none';
 }
 //------------------------Password-Contains-Artifacts-------------------------
-function passwordContainsArtifacts(password: string) {
+function passwordContainsArtifacts(password: string): boolean {
     if (password.length === 0 || password.includes(' ')) {
         return true;
     }
     return false;
 }
 //-------------------------------Format-Dollars-------------------------------
-function formatDollars(assetPrice: string) {
+function formatDollars(assetPrice: string): string {
     let assetPriceNumber: number = parseFloat(assetPrice);
-    let formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+    let formatter: Intl.NumberFormat = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
     return formatter.format(assetPriceNumber);
 }
 //-------------------------Get-Code-By-Currency-Name--------------------------
@@ -88,13 +94,13 @@ function getCodeByCurrencyName(currencyName: string): string {
     return code;
 }
 //-------------------------------Hash-Password--------------------------------
-function hashPassword(password: string) {
+function hashPassword(password: string): string {
     let hashedPassword = CryptoJS.SHA256(password);
     return hashedPassword.toString();
 }
 //------------------------Get-Currency-Logo-From-Name-------------------------
-function getCurrencyLogoFromName(currencyName: string) {
-    let currencyLogoSrc = '';
+function getCurrencyLogoFromName(currencyName: string): string {
+    let currencyLogoSrc: string = '';
     switch (currencyName) {
         case 'Bitcoin':
             currencyLogoSrc = '/images/logo/currency/bitcoin_logo.png';
@@ -112,7 +118,7 @@ function getCurrencyLogoFromName(currencyName: string) {
     return currencyLogoSrc;
 }
 //------------------------------Sanitize-String-------------------------------
-function sanitizeString(input: string) {
+function sanitizeString(input: string): string {
     return input.trim().replace("\n", "").replace("\r", "");
 }
 //-------------------------------Load-Page------------------------------------
