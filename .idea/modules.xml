@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ProjectModuleManager">
-    <modules>
-      <module fileurl="file://$PROJECT_DIR$/CryptoTraderAnalysis/CryptoTraderAnalysis.iml" filepath="$PROJECT_DIR$/CryptoTraderAnalysis/CryptoTraderAnalysis.iml" />
-      <module fileurl="file://$PROJECT_DIR$/cypto-trader.iml" filepath="$PROJECT_DIR$/cypto-trader.iml" />
-    </modules>
-  </component>
-</project>
