@@ -123,4 +123,24 @@ public class PortfolioService {
         this.savePortfolio(portfolio);
         this.savePortfolioAsset(portfolioAsset);
     }
+    //-----------------------Get-Portfolio-History----------------------------
+    public List<PortfolioHistory> getPortfolioHistory(Portfolio portfolio) {
+        return this.portfolioHistoryRepository.findAllByPortfolioId(portfolio.getId());
+    }
+    //------------------------Get-Portfolio-Profit----------------------------
+    public double getPortfolioProfit(Portfolio portfolio) {
+        PortfolioHistory initialPortfolioHistory = this.portfolioHistoryRepository.getFirstByPortfolioId(portfolio.getId());
+        double profit = portfolio.getTotalWorth() - initialPortfolioHistory.getTotalWorth();
+        return profit;
+    }
+    //---------------------Get-Portfolio-Asset-Profit-------------------------
+    public double getPortfolioAssetProfit(PortfolioAsset portfolioAsset) {
+        PortfolioAssetHistory initialPortfolioAssetHistory = this.portfolioAssetHistoryRepository.getFirstByPortfolioAssetId(portfolioAsset.getId());
+        double profit = portfolioAsset.getTotalValueInDollars() - initialPortfolioAssetHistory.getTotalValueInDollars();
+        return profit;
+    }
+    //----------------Get-Portfolio-Asset-By-Currency-Name--------------------
+    public PortfolioAsset getPortfolioAssetByCurrencyName(Portfolio portfolio, String currencyName) {
+        return this.portfolioAssetRepository.getPortfolioAssetByPortfolioIdAndCurrencyName(portfolio.getId(), currencyName);
+    }
 }
