@@ -49,4 +49,18 @@ public class PortfolioHistory {
         this.totalWorth = portfolio.getTotalWorth();
         this.lastUpdated = lastUpdated;
     }
+    //============================-Overrides-=================================
+
+    //------------------------------To-String---------------------------------
+    @Override
+    public String toString() {
+        return "PortfolioHistory{" +
+                "id=" + this.id +
+                ", portfolio=" + this.portfolio +
+                ", dollarBalance=" + this.dollarBalance +
+                ", shareBalance=" + this.shareBalance +
+                ", totalWorth=" + this.totalWorth +
+                ", lastUpdated=" + this.lastUpdated +
+                '}';
+    }
 }
