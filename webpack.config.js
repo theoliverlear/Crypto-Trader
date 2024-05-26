@@ -11,7 +11,9 @@ module.exports = {
         './src/main/resources/static/script/portfolioScript.ts',
         './src/main/resources/static/script/traderScript.ts',
         './src/main/resources/static/script/userScript.ts',
-        './src/main/resources/static/script/PortfolioView.ts'
+        './src/main/resources/static/script/PortfolioView.ts',
+        './src/main/resources/static/script/graphScript.ts',
+        './src/main/resources/static/script/PortfolioHistories.ts'
     ],
     module: {
         rules: [
