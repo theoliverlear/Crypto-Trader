@@ -1,17 +1,20 @@
 export class PortfolioAsset {
+    //============================-Variables-=================================
     currencyName: string;
     currencyCode: string;
     shares: number;
     walletDollars: string;
     totalValue: string;
+    allTimeProfit: string;
     currencyLogoSrc: string;
     //===========================-Constructors-===============================
-    constructor(currencyName: string, currencyCode: string, shares: number, walletDollars: string, totalAssetValue: string, currencyLogoSrc: string) {
+    constructor(currencyName: string, currencyCode: string, shares: number, walletDollars: string, totalAssetValue: string, allTimeProfit: string, currencyLogoSrc: string) {
         this.currencyName = currencyName;
         this.currencyCode = currencyCode;
         this.shares = shares;
         this.walletDollars = walletDollars;
         this.totalValue = totalAssetValue;
+        this.allTimeProfit = allTimeProfit;
         this.currencyLogoSrc = currencyLogoSrc;
     }
     //=============================-Methods-==================================
@@ -56,7 +59,7 @@ export class PortfolioAsset {
                 <div class="simple-space-inline-div your-currency-info-div">
                     <div>
                         <h6 class="your-currency-info-text">
-                            All Time Profit: $<span class="your-currency-info-profit-text">0.00</span>
+                            All Time Profit: <span class="your-currency-info-profit-text">${this.allTimeProfit}</span>
                         </h6>
                     </div>
 <!--                    <div class="small-button as-percent-button">-->
