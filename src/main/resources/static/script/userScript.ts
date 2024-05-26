@@ -1,38 +1,37 @@
 //=================================-Imports-==================================
 import {hashPassword, loadPage} from "./globalScript.js";
-
 //================================-Variables-=================================
 
 //-----------------------------------Signup-----------------------------------
-let signupContentContainer = document.getElementById('signup-form-container');
-let signupTabSelector = document.getElementById('signup-tab-selector');
-let signupUsernameInput = document.getElementById('signup-username-input');
-let signupPasswordInput = document.getElementById('signup-password-input');
-let signupConfirmPasswordInput = document.getElementById('signup-confirm-password-input');
-let signupPasswordInputs = [signupPasswordInput, signupConfirmPasswordInput];
-let termsAgreeCheckbox = document.getElementById('terms-agree-checkbox');
+let signupContentContainer: HTMLElement = document.getElementById('signup-form-container');
+let signupTabSelector: HTMLElement = document.getElementById('signup-tab-selector');
+let signupUsernameInput: HTMLElement = document.getElementById('signup-username-input');
+let signupPasswordInput: HTMLElement = document.getElementById('signup-password-input');
+let signupConfirmPasswordInput: HTMLElement = document.getElementById('signup-confirm-password-input');
+let signupPasswordInputs: HTMLElement[] = [signupPasswordInput, signupConfirmPasswordInput];
+let termsAgreeCheckbox: HTMLElement = document.getElementById('terms-agree-checkbox');
 //-----------------------------------Login------------------------------------
-let loginUsernameInput = document.getElementById('login-username-input');
-let loginPasswordInput = document.getElementById('login-password-input');
-let loginTabSelector = document.getElementById('login-tab-selector');
-let loginContentContainer = document.getElementById('login-form-container');
+let loginUsernameInput: HTMLElement = document.getElementById('login-username-input');
+let loginPasswordInput: HTMLElement = document.getElementById('login-password-input');
+let loginTabSelector: HTMLElement = document.getElementById('login-tab-selector');
+let loginContentContainer: HTMLElement = document.getElementById('login-form-container');
 //----------------------------------Buttons-----------------------------------
-let signupButton = document.getElementById('signup-button-container');
-let loginButton = document.getElementById('login-button-container');
+let signupButton: HTMLElement = document.getElementById('signup-button-container');
+let loginButton: HTMLElement = document.getElementById('login-button-container');
 //-----------------------------------Popup------------------------------------
-let popupDivSignup = document.getElementById('signup-prompt-popup-div');
-let popupTextSignup = document.getElementById('signup-prompt-popup-text');
-let popupDivLogin = document.getElementById('login-prompt-popup-div');
-let popupTextLogin = document.getElementById('login-prompt-popup-text');
+let popupDivSignup: HTMLElement = document.getElementById('signup-prompt-popup-div');
+let popupTextSignup: HTMLElement = document.getElementById('signup-prompt-popup-text');
+let popupDivLogin: HTMLElement = document.getElementById('login-prompt-popup-div');
+let popupTextLogin: HTMLElement = document.getElementById('login-prompt-popup-text');
 //---------------------------------Selectors----------------------------------
-let selectors = [signupTabSelector, loginTabSelector];
+let selectors: HTMLElement[] = [signupTabSelector, loginTabSelector];
 //-----------------------------------Cache------------------------------------
-let currentUserInfo = "signup";
+let currentUserInfo: string = "signup"; // TODO: Refactor to enum. That is more readable.
 //=============================-Server-Functions-=============================
 
 //---------------------------Send-Sign-Up-To-Server---------------------------
-function sendSignUpToServer() {
-    let hashedPassword = hashPassword((signupPasswordInput as HTMLInputElement).value);
+function sendSignUpToServer(): void {
+    let hashedPassword: string = hashPassword((signupPasswordInput as HTMLInputElement).value);
     fetch('/user/signup', {
         method: 'POST',
         headers: {
@@ -52,8 +51,8 @@ function sendSignUpToServer() {
     })
 }
 //----------------------------Send-Login-To-Server----------------------------
-function sendLoginToServer() {
-    let hashedPassword = hashPassword((loginPasswordInput as HTMLInputElement).value);
+function sendLoginToServer(): void {
+    let hashedPassword: string = hashPassword((loginPasswordInput as HTMLInputElement).value);
     fetch('/user/login', {
         method: 'POST',
         headers: {
@@ -75,7 +74,7 @@ function sendLoginToServer() {
 //=============================-Client-Functions-=============================
 
 //------------------------------Signup-Sequence-------------------------------
-function signupSequence() {
+function signupSequence(): void {
     emptyFieldPopup();
     termsAgreedPopup();
     if (!hasEmptyFields() && passwordsMatch() && termsAgreed()) {
@@ -83,20 +82,20 @@ function signupSequence() {
     }
 }
 //-------------------------------Login-Sequence-------------------------------
-function loginSequence() {
+function loginSequence(): void {
     emptyFieldPopup();
     if (!hasEmptyFields()) {
         sendLoginToServer();
     }
 }
 //------------------------------Passwords-Match-------------------------------
-function passwordsMatch() {
-    let passwordInputValue = (signupPasswordInput as HTMLInputElement).value;
-    let confirmPasswordInputValue = (signupConfirmPasswordInput as HTMLInputElement).value;
+function passwordsMatch(): boolean {
+    let passwordInputValue: string = (signupPasswordInput as HTMLInputElement).value;
+    let confirmPasswordInputValue: string = (signupConfirmPasswordInput as HTMLInputElement).value;
     return passwordInputValue === confirmPasswordInputValue;
 }
 //---------------------------Passwords-Match-Popup----------------------------
-function passwordsMatchPopup() {
+function passwordsMatchPopup(): void {
     if (!passwordsMatch()) {
         popupDivSignup.style.display = 'flex';
         popupTextSignup.textContent = 'Passwords do not match.';
@@ -105,20 +104,19 @@ function passwordsMatchPopup() {
     }
 }
 //--------------------------------Terms-Agreed--------------------------------
-function termsAgreed() {
+function termsAgreed(): boolean {
     return (termsAgreeCheckbox as HTMLInputElement).checked;
 }
 //-----------------------------Terms-Agreed-Popup-----------------------------
-function termsAgreedPopup() {
-    console.log('termsAgreedPopup');
-    console.log('test');
+function termsAgreedPopup(): void {
     if (!termsAgreed()) {
         popupDivSignup.style.display = 'flex';
         popupTextSignup.textContent = 'Please agree to the terms and conditions.';
     }
 }
 //------------------------------Has-Empty-Fields------------------------------
-function hasEmptyFields() {
+function hasEmptyFields(): boolean {
+    // TODO: Refactor so empty input checks are functions.
     if (currentUserInfo === 'signup') {
         return (signupUsernameInput as HTMLInputElement).value === '' ||
             (signupPasswordInput as HTMLInputElement).value === '' ||
@@ -129,7 +127,7 @@ function hasEmptyFields() {
     }
 }
 //-----------------------------Empty-Field-Popup------------------------------
-function emptyFieldPopup() {
+function emptyFieldPopup(): void {
     if (hasEmptyFields()) {
         if (currentUserInfo === 'signup') {
             popupDivSignup.style.display = 'flex';
@@ -141,9 +139,9 @@ function emptyFieldPopup() {
     }
 }
 //-------------------------Toggle-User-Info-Container-------------------------
-function toggleUserInfoContainer() {
-    let isCurrentlySignUp = signupContentContainer.style.display === 'flex';
-    let isCurrentlyLogIn = loginContentContainer.style.display === 'flex';
+function toggleUserInfoContainer(): void {
+    let isCurrentlySignUp: boolean = signupContentContainer.style.display === 'flex';
+    let isCurrentlyLogIn: boolean = loginContentContainer.style.display === 'flex';
     let clickedId = this.id;
     if (clickedId === 'signup-tab-selector' && !isCurrentlySignUp) {
         signupContentContainer.style.display = 'flex';
@@ -157,12 +155,12 @@ function toggleUserInfoContainer() {
 }
 //=============================-Event-Listeners-==============================
 if (loadPage(document.body, 'user')) {
-    selectors.forEach(selector => {
+    selectors.forEach((selector: HTMLElement): void => {
         selector.addEventListener('click', toggleUserInfoContainer)
     });
     signupButton.addEventListener('click', signupSequence);
     loginButton.addEventListener('click', loginSequence);
-    signupPasswordInputs.forEach(signupPasswordInput => {
+    signupPasswordInputs.forEach((signupPasswordInput: HTMLElement): void => {
         signupPasswordInput.addEventListener('input', passwordsMatchPopup);
     });
 }
