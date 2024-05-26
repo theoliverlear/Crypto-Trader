@@ -5,6 +5,11 @@ import {
 } from "./globalScript.js";
 import {PortfolioAsset} from "./PortfolioAsset.js";
 import {PortfolioView} from "./PortfolioView";
+import {
+    buildPortfolioPieChart,
+    buildPortfolioTotalValueHistoryChart
+} from "./graphScript";
+import {PortfolioHistories} from "./PortfolioHistories";
 //================================-Variables-=================================
 
 //-----------------------------------Inputs-----------------------------------
@@ -27,8 +32,8 @@ let currencyOptionsDropdown = document.getElementsByClassName('currency-dropdown
 let currencyOptionsArray = Array.from(currencyOptionsDropdown);
 const currencyDropdownSelection: HTMLElement = document.getElementById('currency-dropdown-selection');
 //-------------------------------Dropdown-Caret-------------------------------
-const currencyDropdownCaret: HTMLElement = document.getElementById('currency-dropdown-caret');
-const currencyDropdownCaretImage: HTMLElement = document.getElementById('currency-dropdown-caret-image');
+const currencyDropdownCaret: JQuery<HTMLElement> = $('#currency-dropdown-caret');
+const currencyDropdownCaretImage: JQuery<HTMLElement> = $('#currency-dropdown-caret-image');
 //-----------------------------------Popup------------------------------------
 let popupDiv: HTMLElement = document.getElementById('popup-div');
 let popupText: HTMLElement = document.getElementById('popup-text');
@@ -40,6 +45,24 @@ const currencyDropdownButton: HTMLElement = document.getElementById('currency-dr
 //-------------------------------Portfolio-View-------------------------------
 let portfolioSelectorOption: JQuery<HTMLElement> = $('.portfolio-selector-option');
 let currentView: PortfolioView = PortfolioView.PORTFOLIO_VIEW;
+//------------------------------Performance-View------------------------------
+let portfolioSection: JQuery<HTMLElement> = $('#portfolio-section');
+let performanceSection: JQuery<HTMLElement> = $('#performance-section');
+let performanceChart: HTMLElement = $('#performance-chart')[0];
+//==================================-Types-===================================
+
+//------------------------------Simple-Currency-------------------------------
+type SimpleCurrency = {
+    name: string,
+    currencyCode: string
+}
+//---------------------------Simple-Portfolio-Asset---------------------------
+type SimplePortfolioAsset = {
+    currency: SimpleCurrency,
+    shares: number,
+    assetWalletDollars: string,
+    totalValueInDollars: string
+}
 //=============================-Server-Functions-=============================
 
 //-------------------------Get-Portfolio-From-Server--------------------------
@@ -85,24 +108,63 @@ async function getIsEmptyPortfolioFromServer(): Promise<boolean> {
     let responseJson: string = await response.text();
     return responseJson === 'true';
 }
+//-------------------Get-Portfolio-Asset-Profit-From-Server-------------------
+async function getPortfolioAssetProfitFromServer(currencyName: string): Promise<any> {
+    let response = await fetch(`/portfolio/history/profit/${currencyName}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    let profit = await response.json();
+    return profit.value;
+}
+//---------------------Get-Portfolio-History-From-Server----------------------
+async function getPortfolioHistoryFromServer(): Promise<any> {
+    let response = await fetch('/portfolio/history/get', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    let portfolioHistory = await response.json();
+    return portfolioHistory;
+}
 //=============================-Client-Functions-=============================
-
 
 //---------------------------Select-Portfolio-View----------------------------
 function selectPortfolioView(): void {
-    setPortfolioView(this);
     portfolioSelectorOption.not(this).removeClass('selected-portfolio-option').fadeTo(200, 1);
     $(this).fadeTo(200, 0, function(): void {
         $(this).addClass('selected-portfolio-option').fadeTo(200, 1);
     });
+    setPortfolioView(this);
 }
 //----------------------------Set-Portfolio-View------------------------------
 function setPortfolioView(element: HTMLElement): void {
     if (element.id === PortfolioView.PORTFOLIO_VIEW) {
         currentView = PortfolioView.PORTFOLIO_VIEW;
+        portfolioSection.fadeIn(200);
+        performanceSection.fadeOut(200);
     } else {
         currentView = PortfolioView.PERFORMANCE_VIEW;
+        portfolioSection.fadeOut(200);
+        performanceSection.fadeIn(200, function(): void {
+            performanceSection.css('display', 'flex');
+        });
+        displayDefaultGraph();
     }
+}
+//----------------------------Display-Default-Graph---------------------------
+async function displayDefaultGraph(): Promise<void> {
+    let portfolioHistories: PortfolioHistories = new PortfolioHistories();
+    const portfolioHistory = await getPortfolioHistoryFromServer();
+    if (Array.isArray(portfolioHistory)) {
+        portfolioHistory.forEach((history: any): void => {
+            portfolioHistories.addTotalValueEntry(history.totalWorth, history.lastUpdated);
+        });
+    }
+    buildPortfolioTotalValueHistoryChart((performanceChart as HTMLCanvasElement), portfolioHistories);
 }
 //----------------------------Load-Empty-Container----------------------------
 function showCorrectContainer(): void {
@@ -118,18 +180,20 @@ function showCorrectContainer(): void {
     });
 }
 //------------------------------Load-Currencies-------------------------------
-function loadCurrencies(): void {
+async function loadCurrencies(): Promise<void> {
     yourCurrenciesListSection.innerHTML = '';
-    getPortfolioFromServer().then(portfolio => {
+    getPortfolioFromServer().then(async portfolio => {
         if (Array.isArray(portfolio.assets)) {
-            portfolio.assets.forEach((asset: { currency: { name: any; currencyCode: any; }; shares: any; assetWalletDollars: string; totalValueInDollars: string; }) => {
-                let currencyName = asset.currency.name;
-                let currencyCode = asset.currency.currencyCode;
+            for (const asset of portfolio.assets) {
+                let currencyName: string = asset.currency.name;
+                let currencyCode: string = asset.currency.currencyCode;
                 let shares = asset.shares;
                 let walletDollars: string = formatDollars(asset.assetWalletDollars);
                 let totalAssetValue: string = formatDollars(asset.totalValueInDollars);
-                addCurrencyToPage(currencyName, currencyCode, shares, walletDollars, totalAssetValue);
-            })
+                let allTimeProfit: number = await getPortfolioAssetProfitFromServer(currencyName);
+                let allTimeProfitString: string = formatDollars(String(allTimeProfit));
+                addCurrencyToPage(currencyName, currencyCode, shares, walletDollars, totalAssetValue, allTimeProfitString);
+            }
         }
     });
 }
@@ -138,9 +202,16 @@ function addCurrencyToPage(currencyName: string,
                            currencyCode: string,
                            shares: number,
                            walletDollars: string,
-                           totalAssetValue: string): void {
+                           totalAssetValue: string,
+                           allTimeProfit: string): void {
     let currencyImageSrc: string = getCurrencyLogoFromName(currencyName);
-    let currencyAsset: PortfolioAsset = new PortfolioAsset(currencyName, currencyCode, shares, walletDollars, totalAssetValue, currencyImageSrc);
+    let currencyAsset: PortfolioAsset = new PortfolioAsset(currencyName,
+                                                           currencyCode,
+                                                           shares,
+                                                           walletDollars,
+                                                           totalAssetValue,
+                                                           allTimeProfit,
+                                                           currencyImageSrc);
     let currencyDiv: HTMLDivElement = document.createElement('div');
     currencyDiv.classList.add('simple-space-inline-div');
     currencyDiv.classList.add('your-currency-item');
@@ -164,26 +235,6 @@ async function addItemSequence(): Promise<void> {
     hideAddCurrencyDiv();
     showCorrectContainer();
 }
-//---------------------------Initialize-Asset-Value---------------------------
-async function initializeAssetValue(currencyCode: any, shares: number, walletDollars: any): Promise<any> {
-    if (shares === 0) {
-        return walletDollars;
-    } else {
-        let response = await fetch('/portfolio/currency/value', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                currencyCode: currencyCode,
-                shares: shares,
-            })
-        }).then((response: Response) => {
-            return response.json();
-        });
-        return formatDollars(response.value);
-    }
-}
 //--------------------------------Limit-Input---------------------------------
 function limitInput(): void {
     if (this.value >= 10_000_000) {
@@ -192,15 +243,17 @@ function limitInput(): void {
 }
 //---------------------Both-Shares-And-Wallet-Have-Input----------------------
 function bothSharesAndWalletHaveInput(): boolean {
-    return hasSharesInput() && hasWalletInput();
+    return !isSharesInputEmpty() && !isWalletInputEmpty();
 }
 //-------------------------Change-Caret-To-Highlight--------------------------
 function changeCaretToHighlight(): void {
-    (currencyDropdownCaretImage as HTMLImageElement).src = '/images/down_caret_highlight.svg';
+    // TODO: Fix the fade functionality and make the caret src a global constant.
+    currencyDropdownCaretImage.attr('src', '../static/images/down_caret_highlight.svg').fadeIn(200);
 }
 //---------------------------Change-Caret-To-Black----------------------------
 function changeCaretToBlack(): void {
-    (currencyDropdownCaretImage as HTMLImageElement).src = '/images/down_caret.svg';
+    // TODO: Fix the fade functionality and make the caret src a global constant.
+    currencyDropdownCaretImage.attr('src', '../static/images/down_caret.svg').fadeIn(200);
 }
 //---------------------------Set-Selection-To-None----------------------------
 function setSelectionToNone(): void {
@@ -222,6 +275,7 @@ function toggleCurrencyDropdown(): void {
 }
 //---------------------------Hide-Currency-Dropdown---------------------------
 function hideCurrencyDropdown(): void {
+    // TODO: Make this a jQuery faded toggle.
     currencyDropdownSelection.classList.add('hide');
     currencyDropdownButton.classList.remove('square-bottom');
 }
@@ -239,9 +293,17 @@ function initializeEmptyWalletShares(valueInput: string | number): string | numb
     }
     return valueInput;
 }
+//---------------------------Is-Shares-Input-Empty----------------------------
+function isSharesInputEmpty(): boolean {
+    return (sharesInput as HTMLInputElement).value === '' || (sharesInput as HTMLInputElement).value === '0';
+}
+//---------------------------Is-Wallet-Input-Empty----------------------------
+function isWalletInputEmpty(): boolean {
+    return (walletInput as HTMLInputElement).value === '' || (walletInput as HTMLInputElement).value === '0';
+}
 //------------------------Shares-And-Wallet-Are-Empty-------------------------
 function sharesAndWalletAreEmpty(): boolean {
-    return (sharesInput as HTMLInputElement).value === '' && (walletInput as HTMLInputElement).value === '';
+    return isSharesInputEmpty() && isWalletInputEmpty();
 }
 //---------------------------------Show-Popup---------------------------------
 function showPopup(message: string): void {
@@ -255,9 +317,9 @@ function hidePopup(): void {
 //------------------------Shares-Or-Wallet-Have-Input-------------------------
 // XOR check
 function sharesOrWalletHaveInput(): boolean {
-    if (hasSharesInput() && hasWalletInput()) {
+    if (isSharesInputEmpty() && isWalletInputEmpty()) {
         return false;
-    } else if (!hasSharesInput() && !hasWalletInput()) {
+    } else if (!isSharesInputEmpty() && !isWalletInputEmpty()) {
         return false;
     } else {
         return true;
@@ -266,14 +328,6 @@ function sharesOrWalletHaveInput(): boolean {
 //---------------------------Has-Selected-Currency----------------------------
 function hasSelectedCurrency(): boolean {
     return currencySelectionText.textContent !== 'Select Currency';
-}
-//------------------------------Has-Shares-Input------------------------------
-function hasSharesInput(): boolean {
-    return (sharesInput as HTMLInputElement).value !== '' && (sharesInput as HTMLInputElement).value !== '0';
-}
-//------------------------------Has-Wallet-Input------------------------------
-function hasWalletInput(): boolean {
-    return (walletInput as HTMLInputElement).value !== '' && (walletInput as HTMLInputElement).value !== '0';
 }
 //---------------------------Get-Selected-Currency----------------------------
 function setSelectedCurrency(): void {
@@ -295,8 +349,8 @@ if (shouldLoadPage) {
     cancelButton.addEventListener('click', clearInputs);
     addButton.addEventListener('click', addItemSequence);
     currencyDropdownButton.addEventListener('click', toggleCurrencyDropdown);
-    currencyDropdownCaret.addEventListener('mouseover', changeCaretToHighlight);
-    currencyDropdownCaret.addEventListener('mouseout', changeCaretToBlack);
+    currencyDropdownCaret.on('mouseover', changeCaretToHighlight);
+    currencyDropdownCaret.on('mouseout', changeCaretToBlack);
     inputArray.forEach((input: HTMLElement): void => {
         input.addEventListener('input', limitInput);
     });
