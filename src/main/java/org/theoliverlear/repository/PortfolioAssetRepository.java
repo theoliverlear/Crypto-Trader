@@ -3,6 +3,7 @@ package org.theoliverlear.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.theoliverlear.entity.portfolio.PortfolioAsset;
 
+
 public interface PortfolioAssetRepository extends JpaRepository<PortfolioAsset, Long> {
     //============================-Methods-===================================
 
@@ -12,4 +13,6 @@ public interface PortfolioAssetRepository extends JpaRepository<PortfolioAsset, 
     PortfolioAsset getPortfolioAssetByCurrencyName(String currencyName);
     //----------------------Exists-By-Currency-Name---------------------------
     boolean existsByCurrencyName(String currencyName);
+    //-----------Get-Portfolio-Asset-By-Portfolio-And-Currency----------------
+    PortfolioAsset getPortfolioAssetByPortfolioIdAndCurrencyName(Long portfolioId, String currencyName);
 }
