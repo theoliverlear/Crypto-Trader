@@ -4,12 +4,18 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.theoliverlear.comm.request.PortfolioAssetRequest;
+import org.theoliverlear.comm.response.AssetValueResponse;
 import org.theoliverlear.entity.portfolio.Portfolio;
+import org.theoliverlear.entity.portfolio.PortfolioAsset;
+import org.theoliverlear.entity.portfolio.PortfolioHistory;
 import org.theoliverlear.entity.user.User;
 import org.theoliverlear.service.PortfolioService;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/portfolio")
@@ -56,5 +62,29 @@ public class PortfolioController {
         } else {
             return ResponseEntity.ok("false");
         }
+    }
+    //------------------------Get-Portfolio-History---------------------------
+    @RequestMapping("/history/get")
+    public ResponseEntity<List<PortfolioHistory>> getPortfolioHistory() {
+        this.portfolio = this.portfolioService.getPortfolioByUserId(this.currentUser.getId());
+        List<PortfolioHistory> portfolioHistory = this.portfolioService.getPortfolioHistory(this.portfolio);
+        return ResponseEntity.ok(portfolioHistory);
+    }
+    //------------------------Get-Portfolio-Profit----------------------------
+    @RequestMapping("/history/profit")
+    public ResponseEntity<AssetValueResponse> getPortfolioProfit() {
+        this.portfolio = this.portfolioService.getPortfolioByUserId(this.currentUser.getId());
+        double profit = this.portfolioService.getPortfolioProfit(this.portfolio);
+        AssetValueResponse profitResponse = new AssetValueResponse(profit);
+        return ResponseEntity.ok(profitResponse);
+    }
+    //------------------Get-Portfolio-Profit-By-Currency----------------------
+    @RequestMapping("/history/profit/{currencyName}")
+    public ResponseEntity<AssetValueResponse> getPortfolioProfitByCurrency(@PathVariable String currencyName) {
+        this.portfolio = this.portfolioService.getPortfolioByUserId(this.currentUser.getId());
+        PortfolioAsset portfolioAsset = this.portfolioService.getPortfolioAssetByCurrencyName(this.portfolio, currencyName);
+        double profit = this.portfolioService.getPortfolioAssetProfit(portfolioAsset);
+        AssetValueResponse profitResponse = new AssetValueResponse(profit);
+        return ResponseEntity.ok(profitResponse);
     }
 }
