@@ -10,7 +10,7 @@ main {
     @include flex(center, center, column);
     @include size(100%, auto);
 }
-#portfolio-builder-section {
+#portfolio-section {
     @include flex(space-around, center, column);
     width: 100%;
 }
@@ -217,5 +217,15 @@ main {
     }
     .selected-portfolio-option {
         background-color: $muted-blue;
+    }
+}
+#performance-section {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    #performance-chart {
+        @include size($fifty-percent, $fifty-percent);
     }
 }
