@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @Table(name = "portfolio_history")
 @Entity
-public class PortfolioHistory {
+public class PortfolioHistory implements SequentiallyValuable<PortfolioHistory> {
     //============================-Variables-=================================
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +26,8 @@ public class PortfolioHistory {
     double shareBalance;
     @Column(name = "total_worth", columnDefinition = "DECIMAL(34, 18)")
     double totalWorth;
+    @Column(name = "value_change", columnDefinition = "DECIMAL(34, 18)")
+    double valueChange;
     @Column(name = "last_updated")
     LocalDateTime lastUpdated;
     //===========================-Constructors-===============================
@@ -51,6 +53,13 @@ public class PortfolioHistory {
     }
     //============================-Overrides-=================================
 
+    public void calculateValueChange(PortfolioHistory previous) {
+        if (previous == null) {
+            this.valueChange = 0;
+        } else {
+            this.valueChange = this.totalWorth - previous.getTotalWorth();
+        }
+    }
     //------------------------------To-String---------------------------------
     @Override
     public String toString() {
