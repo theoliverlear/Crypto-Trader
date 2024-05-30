@@ -79,7 +79,7 @@ async function getPortfolioFromServer(): Promise<any> {
     return portfolio;
 }
 //-----------------------Send-Portfolio-Asset-To-Server-----------------------
-function sendPortfolioAssetToServer(): void {
+async function sendPortfolioAssetToServer(): Promise<void> {
     if (hasSelectedCurrency() && sharesOrWalletHaveInput()) {
         let currencyName: string = sanitizeString(selectedCurrencyText.textContent);
         let shares: string | number = initializeEmptyWalletShares((sharesInput as HTMLInputElement).value);
@@ -173,9 +173,10 @@ function showCorrectContainer(): void {
             emptyPortfolioSection.style.display = 'flex';
             yourCurrenciesListSection.style.display = 'none';
         } else {
-            emptyPortfolioSection.style.display = 'none';
-            yourCurrenciesListSection.style.display = 'flex';
-            loadCurrencies();
+            loadCurrencies().then((): void => {
+                emptyPortfolioSection.style.display = 'none';
+                yourCurrenciesListSection.style.display = 'flex';
+            });
         }
     });
 }
@@ -229,11 +230,12 @@ async function addItemSequence(): Promise<void> {
         showPopup('Both shares and wallet have input. Please only input one.');
         return;
     }
-    sendPortfolioAssetToServer();
-    clearInputs();
-    hideCurrencyDropdown();
-    hideAddCurrencyDiv();
-    showCorrectContainer();
+    sendPortfolioAssetToServer().then(() => {
+        clearInputs();
+        hideCurrencyDropdown();
+        hideAddCurrencyDiv();
+        showCorrectContainer();
+    });
 }
 //--------------------------------Limit-Input---------------------------------
 function limitInput(): void {
