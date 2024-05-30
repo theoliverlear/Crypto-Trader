@@ -260,6 +260,7 @@ input {
     }
 }
 .general-dropdown-list {
+    width: simple-calc(15, 1);
     @include flex(space-around, center, column);
     border-radius: simplest-calc(0.5);
     $box-shadow-size: simplest-calc(0.25);
@@ -295,7 +296,7 @@ input {
     @include basic-margin-padding(0, 0);
 }
 .dropdown-with-caret {
-    @include flex(space-between, center, row);
+    @include flex(center, center, row);
 }
 .dropdown-caret {
     background-color: $sunbeam-yellow;
