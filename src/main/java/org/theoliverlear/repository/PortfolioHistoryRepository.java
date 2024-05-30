@@ -12,4 +12,5 @@ public interface PortfolioHistoryRepository extends JpaRepository<PortfolioHisto
     List<PortfolioHistory> findAllByPortfolioId(Long portfolioId);
     //---------------------Get-First-By-Portfolio-Id--------------------------
     PortfolioHistory getFirstByPortfolioId(Long portfolioId);
+    PortfolioHistory findFirstByPortfolioIdOrderByLastUpdatedDesc(Long portfolioId);
 }
