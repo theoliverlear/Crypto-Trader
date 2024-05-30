@@ -15,9 +15,15 @@ main {
     width: 100%;
 }
 #currency-dropdown {
+    width: simple-calc(15, 1);
+    margin: 0;
+    padding: $half-percent $zero;
     h5 {
         @include basic-margin-padding(0, 0);
     }
+}
+#currency-dropdown-selection {
+    width: 100%;
 }
 #portfolio-builder-header {
     background-color: $muted-blue;
@@ -36,6 +42,7 @@ main {
 }
 #currency-dropdown-list {
     width: simple-calc(15, 1);
+    margin: 0;
 }
 
 #bitcoin-option:hover {
@@ -55,6 +62,9 @@ main {
     background-color: $almost-white;
     box-shadow: $blue-grey 0 0 $simplest-half-percent;
     border-radius: $simplest-half-percent;
+}
+.dropdown-selection {
+    width: 100%;
 }
 #shares-div, #wallet-div {
     @include flex(space-around, center, column);
