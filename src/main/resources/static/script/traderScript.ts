@@ -11,7 +11,7 @@ import {
     loadPage
 } from "./globalScript";
 
-let tradesDiv = $('#trades-div');
+let tradesDiv: JQuery<HTMLElement> = $('#trades-div');
 
 async function getPortfolioAssetHistoryFromServer(): Promise<any> {
     let response = await fetch('/portfolio/history/get/asset', {
@@ -27,21 +27,29 @@ async function getPortfolioAssetHistoryFromServer(): Promise<any> {
 }
 
 function serverResponseToTrades(serverResponse: any): void {
-    serverResponse.forEach((portfolioAssetHistory: any) => {
-        let shares = portfolioAssetHistory.shares;
-        let dollars = formatDollars(portfolioAssetHistory.assetWalletDollars);
-        let valueIncrease = portfolioAssetHistory.valueChange;
-        let currencyName: string = getNameByCurrencyCode(portfolioAssetHistory.currency);
-        let timeOccurred: string = formatDate(portfolioAssetHistory.lastUpdated);
-        let tradeType: TradeType = determineTradeType(shares);
-        let trade: Trade;
-        if (tradeType === TradeType.BUY) {
-            trade = new BuyTrade(valueIncrease, currencyName, timeOccurred, dollars, shares);
-        } else {
-            trade = new SellTrade(valueIncrease, currencyName, timeOccurred, dollars, shares);
+    for (let i: number = serverResponse.length - 1; i >= 0; i--){
+        const portfolioAssetHistory: any = serverResponse[i];
+        let tradeOccurred: boolean = Boolean(portfolioAssetHistory.tradeOccurred);
+        console.log(tradeOccurred);
+        if (tradeOccurred) {
+            console.log('showing trade');
+            let shares = portfolioAssetHistory.shares;
+            let dollars: string = formatDollars(portfolioAssetHistory.assetWalletDollars);
+            let totalValue: string = formatDollars(String(portfolioAssetHistory.totalValueInDollars), 8);
+            let shareChange: string = String(Math.abs(portfolioAssetHistory.sharesChange));
+            let valueIncrease: string = formatDollars(portfolioAssetHistory.valueChange, 8);
+            let currencyName: string = getNameByCurrencyCode(portfolioAssetHistory.currency);
+            let timeOccurred: string = formatDate(portfolioAssetHistory.lastUpdated);
+            let tradeType: TradeType = determineTradeType(shares);
+            let trade: Trade;
+            if (tradeType === TradeType.BUY) {
+                trade = new BuyTrade(valueIncrease, totalValue, currencyName, timeOccurred, dollars, shares);
+            } else {
+                trade = new SellTrade(valueIncrease, shareChange, currencyName, timeOccurred, dollars, shares);
+            }
+            addTradeToPage(trade, tradeType);
         }
-        addTradeToPage(trade, tradeType);
-    });
+    }
 }
 
 function determineTradeType(shareValue: number): TradeType {
@@ -52,9 +60,9 @@ function determineTradeType(shareValue: number): TradeType {
     }
 }
 
-function addTradeToPage(trade: Trade, tradeType: TradeType) {
-    let tradeDiv = document.createElement('div');
-    let tradeClass = tradeType === TradeType.BUY ? 'buy-item' : 'sell-item';
+function addTradeToPage(trade: Trade, tradeType: TradeType): void {
+    let tradeDiv: HTMLDivElement = document.createElement('div');
+    let tradeClass: string = tradeType === TradeType.BUY ? 'buy-item' : 'sell-item';
     tradeDiv.classList.add('trade-item');
     tradeDiv.classList.add(tradeClass);
     tradeDiv.innerHTML = trade.getTradeHtml();
