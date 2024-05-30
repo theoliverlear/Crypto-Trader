@@ -28,6 +28,8 @@ public class PortfolioHistory implements SequentiallyValuable<PortfolioHistory> 
     double totalWorth;
     @Column(name = "value_change", columnDefinition = "DECIMAL(34, 18)")
     double valueChange;
+    @Column(name = "trade_occurred")
+    boolean tradeOccurred;
     @Column(name = "last_updated")
     LocalDateTime lastUpdated;
     //===========================-Constructors-===============================
@@ -37,11 +39,12 @@ public class PortfolioHistory implements SequentiallyValuable<PortfolioHistory> 
         this.totalWorth = 0;
         this.lastUpdated = LocalDateTime.now();
     }
-    public PortfolioHistory(Portfolio portfolio) {
+    public PortfolioHistory(Portfolio portfolio, boolean tradeOccurred) {
         this.portfolio = portfolio;
         this.dollarBalance = portfolio.getDollarBalance();
         this.shareBalance = portfolio.getShareBalance();
         this.totalWorth = portfolio.getTotalWorth();
+        this.tradeOccurred = tradeOccurred;
         this.lastUpdated = LocalDateTime.now();
     }
     public PortfolioHistory(Portfolio portfolio, LocalDateTime lastUpdated) {
