@@ -13,7 +13,11 @@ module.exports = {
         './src/main/resources/static/script/userScript.ts',
         './src/main/resources/static/script/PortfolioView.ts',
         './src/main/resources/static/script/graphScript.ts',
-        './src/main/resources/static/script/PortfolioHistories.ts'
+        './src/main/resources/static/script/PortfolioHistories.ts',
+        './src/main/resources/static/script/BuyTrade.ts',
+        './src/main/resources/static/script/SellTrade.ts',
+        './src/main/resources/static/script/Trade.ts',
+        './src/main/resources/static/script/TradeType.ts'
     ],
     module: {
         rules: [
