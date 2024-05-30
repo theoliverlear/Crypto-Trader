@@ -35,7 +35,7 @@ main {
     margin: 0 simple-calc(1, 0.2) 0 0;
     box-shadow: $blue-grey $simplest-quarter-percent calc($simplest-quarter-percent * -1) 0 0;
     z-index: 0;
-    background-color: $almost-white;
+    background-color: $pure-white;
     transition: box-shadow, margin-top, margin-left, padding-bottom, 0.3s;
     width: simple-calc(5, 1.5);
     text-align: center;
