@@ -1,9 +1,11 @@
 export abstract class Trade {
-    valueIncrease: number;
+    valueIncrease: string;
+    shareOrWalletChange: string;
     currencyName: string;
     timeOccurred: string;
-    constructor(valueIncrease: number, currencyName: string, timeOccurred: string) {
+    constructor(valueIncrease: string, shareOrWalletChange: string, currencyName: string, timeOccurred: string) {
         this.valueIncrease = valueIncrease;
+        this.shareOrWalletChange = shareOrWalletChange;
         this.currencyName = currencyName;
         this.timeOccurred = timeOccurred;
     }
