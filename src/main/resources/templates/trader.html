@@ -3,8 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="../static/style/global-style.css"
+          th:href="@{/style/global-style.css}">
+    <link rel="stylesheet" href="../static/style/trader-style.css"
+          th:href="@{/style/trader-style.css}">
+    <link rel="icon" href="../static/images/favicon/crypto_trader_logo_cropped.ico"
+          th:href="@{/images/favicon/crypto_trader_logo_cropped.ico}">
 </head>
 <body data-page="trader">
+<!----------------------------------Nav-Bar---------------------------------->
+<header>
+    <nav>
+        <div id="nav-div">
+            <!--------------------Nav-To-Home-------------------------------->
+            <div class="nav-item">
+                <a href="/" class="link-no-style">
+                    <div class="nav-bar-item-container">
+                        <h5>Home</h5>
+                    </div>
+                </a>
+            </div>
+            <!-----------------Nav-To-Portfolio------------------------------>
+            <div class="nav-item">
+                <a href="/portfolio/" class="link-no-style">
+                    <div class="nav-bar-item-container">
+                        <h5>Portfolio</h5>
+                    </div>
+                </a>
+            </div>
+            <!-------------------Nav-To-Trader------------------------------->
+            <div class="nav-item">
+                <a href="/trader/" class="link-no-style">
+                    <div class="nav-bar-item-container">
+                        <h5>Trader</h5>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div>
+            <!------------------Nav-To-Account------------------------------->
+            <div id="account-image-container">
+                <a href="/user/" class="link-no-style">
+                    <img id="default-avatar-image"
+                         src="../static/images/default_avatar.png"
+                         th:src="@{/images/default_avatar.png}" alt="user avatar">
+                </a>
+                <div id="logout-button-div">
+                    <h5 id="logout-button-text">Logout</h5>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+<main>
+    <div id="trade-history-title">
+        <h3>Trade History</h3>
+    </div>
+    <hr />
+    <section id="settings-section">
+        <select>
+            <option value="USD">ALL</option>
+            <option value="BTC">BTC</option>
+            <option value="ETH">ETH</option>
+            <option value="LTC">LTC</option>
+        </select>
+    </section>
+    <section id="trade-history-section">
 
+        <!-- All trades automatically have the initial investment of when
+             entered into Crypto Trader. -->
+        <div id="trades-div">
+<!--            <div class="trade-item buy-item">-->
+<!--                <h4>Value increased <span class="value-increase-text">$0.000254</span></h4>-->
+<!--                <h6>Buy <span class="buy-value-text">$10990.93</span> of <span class="trader-item-currency">LTC</span> for <span class="share-buy-text">105.233225</span> shares.</h6>-->
+<!--                <h6>at <span class="trade-time-text">March, 1st, 5:00 PM</span></h6>-->
+<!--            </div>-->
+<!--            <hr />-->
+<!--            <div class="trade-item sell-item">-->
+<!--                <h4>Value increased <span class="value-increase-text">$0.000254</span></h4>-->
+<!--                <h6>Sell <span class="sell-shares-text">550.565</span> shares of <span class="trader-item-currency">BTC</span> for <span class="sell-value-text">$10990.93</span>.</h6>-->
+<!--                <h6>at <span class="trade-time-text">March, 1st, 5:00 PM</span></h6>-->
+<!--            </div>-->
+<!--            <hr />-->
+        </div>
+    </section>
+</main>
+<footer>
+    <section id="footer-content">
+        <div class="footer-item">
+            <h6 class="footer-item-text">&copy; 2024 Sigwarth Software. All rights reserved.</h6>
+        </div>
+        <div class="footer-item">
+            <h6 class="footer-item-text">Terms of Service</h6>
+        </div>
+    </section>
+</footer>
+<script src="../static/script/bundle.js"
+        th:src="@{/script/bundle.js}"></script>
 </body>
 </html>
