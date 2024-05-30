@@ -11,6 +11,7 @@ import org.theoliverlear.comm.request.PortfolioAssetRequest;
 import org.theoliverlear.comm.response.AssetValueResponse;
 import org.theoliverlear.entity.portfolio.Portfolio;
 import org.theoliverlear.entity.portfolio.PortfolioAsset;
+import org.theoliverlear.entity.portfolio.PortfolioAssetHistory;
 import org.theoliverlear.entity.portfolio.PortfolioHistory;
 import org.theoliverlear.entity.user.User;
 import org.theoliverlear.service.PortfolioService;
@@ -65,10 +66,24 @@ public class PortfolioController {
     }
     //------------------------Get-Portfolio-History---------------------------
     @RequestMapping("/history/get")
-    public ResponseEntity<List<PortfolioHistory>> getPortfolioHistory() {
+    public ResponseEntity<List<PortfolioHistory>> getPortfolioHistory(HttpSession session) {
+        User sessionUser = (User) session.getAttribute("user");
+        this.currentUser = sessionUser;
         this.portfolio = this.portfolioService.getPortfolioByUserId(this.currentUser.getId());
         List<PortfolioHistory> portfolioHistory = this.portfolioService.getPortfolioHistory(this.portfolio);
         return ResponseEntity.ok(portfolioHistory);
+    }
+    @RequestMapping("/history/get/asset")
+    public ResponseEntity<List<PortfolioAssetHistory>> getPortfolioAssetHistory(HttpSession session) {
+        User sessionUser = (User) session.getAttribute("user");
+        this.currentUser = sessionUser;
+        this.portfolio = this.portfolioService.getPortfolioByUserId(this.currentUser.getId());
+        List<PortfolioAssetHistory> portfolioAssetHistory = this.portfolioService.getPortfolioAssetHistory(this.portfolio);
+        return ResponseEntity.ok(portfolioAssetHistory);
+    }
+    @RequestMapping("/history/get/asset/{currencyName}")
+    public ResponseEntity<List<PortfolioAssetHistory>> getPortfolioAssetHistoryByCurrency(@PathVariable String currencyName) {
+        return null;
     }
     //------------------------Get-Portfolio-Profit----------------------------
     @RequestMapping("/history/profit")
