@@ -46,6 +46,7 @@ $simplest-one-percent: simplest-calc(1);
     padding: 0 $simplest-one-percent;
     border-radius: $simplest-one-percent;
     color: $almost-white;
+    display: none;
 }
 #chart-explain-div {
     @include flex(space-around, center, row);
