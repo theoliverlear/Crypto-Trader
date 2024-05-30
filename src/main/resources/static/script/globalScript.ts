@@ -69,14 +69,19 @@ function passwordContainsArtifacts(password: string): boolean {
     return false;
 }
 //-------------------------------Format-Dollars-------------------------------
-function formatDollars(assetPrice: string): string {
+function formatDollars(assetPrice: string, decimalPlaces: number = 2): string {
     let assetPriceNumber: number = parseFloat(assetPrice);
-    let formatter: Intl.NumberFormat = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+    let formatter: Intl.NumberFormat = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: decimalPlaces,
+        maximumFractionDigits: decimalPlaces
+    });
     return formatter.format(assetPriceNumber);
 }
 //-------------------------Get-Code-By-Currency-Name--------------------------
 function getCodeByCurrencyName(currencyName: string): string {
-    let code = '';
+    let code: string = '';
     switch (currencyName) {
         case 'Bitcoin':
             code = 'BTC';
@@ -92,6 +97,24 @@ function getCodeByCurrencyName(currencyName: string): string {
             break;
     }
     return code;
+}
+function getNameByCurrencyCode(currencyCode: string): string {
+    let currencyName: string = '';
+    switch (currencyCode) {
+        case 'BTC':
+            currencyName = 'Bitcoin';
+            break;
+        case 'ETH':
+            currencyName = 'Ethereum';
+            break;
+        case 'LTC':
+            currencyName = 'Litecoin';
+            break;
+        default:
+            currencyName = 'UNKNOWN';
+            break;
+    }
+    return currencyName;
 }
 //-------------------------------Hash-Password--------------------------------
 function hashPassword(password: string): string {
@@ -117,13 +140,19 @@ function getCurrencyLogoFromName(currencyName: string): string {
     }
     return currencyLogoSrc;
 }
+function formatDate(dateString: string): string {
+    let date = new Date(dateString);
+    let formattedDate = date.toLocaleDateString();
+    let formattedTime = date.toLocaleTimeString();
+    return `${formattedDate}, ${formattedTime}`;
+}
 //------------------------------Sanitize-String-------------------------------
 function sanitizeString(input: string): string {
     return input.trim().replace("\n", "").replace("\r", "");
 }
 //-------------------------------Load-Page------------------------------------
-function loadPage(bodyElement: HTMLElement, page: string): boolean {
-    return bodyElement.getAttribute('data-page') === page;
+function loadPage(bodyElement: HTMLElement, pageName: string): boolean {
+    return bodyElement.getAttribute('data-page') === pageName;
 }
 //=============================-Event-Listeners-==============================
 logoutButton.addEventListener('click', logoutSequence);
@@ -133,5 +162,5 @@ setIsLoggedIn();
 //=================================-Exports-==================================
 export {hashPassword, getCurrencyLogoFromName, passwordContainsArtifacts,
     sanitizeString, formatDollars, getCodeByCurrencyName, logoutSequence,
-    loadPage};
+    loadPage, formatDate, getNameByCurrencyCode};
 export {defaultCurrencyImage, isLoggedIn};
