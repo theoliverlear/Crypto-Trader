@@ -4,14 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.theoliverlear.entity.portfolio.PortfolioAssetHistory;
-import org.theoliverlear.entity.portfolio.PortfolioHistory;
+import org.theoliverlear.entity.portfolio.*;
 import org.theoliverlear.model.trade.AssetTrader;
 import org.theoliverlear.model.trade.CryptoTrader;
 import org.theoliverlear.comm.request.PortfolioAssetRequest;
 import org.theoliverlear.entity.currency.Currency;
-import org.theoliverlear.entity.portfolio.Portfolio;
-import org.theoliverlear.entity.portfolio.PortfolioAsset;
 import org.theoliverlear.model.trade.Trader;
 import org.theoliverlear.repository.PortfolioAssetHistoryRepository;
 import org.theoliverlear.repository.PortfolioAssetRepository;
@@ -74,8 +71,22 @@ public class PortfolioService {
                     trader.getPortfolio().updateValues();
                     if (!previousAsset.equals(assetTrader.getAsset())) {
                         PortfolioAssetHistory portfolioAssetHistory = new PortfolioAssetHistory(assetTrader.getAsset());
+                        PortfolioAssetHistory previousPortfolioAssetHistory = this.getLatestPortfolioAssetHistory(assetTrader.getAsset());
+                        // FIXME: Keeps returning null or 0
+                        System.out.println("Previous portfolio is null: " + previousPortfolioAssetHistory);
+                        if (previousPortfolioAssetHistory != null) {
+                            portfolioAssetHistory.calculateValueChange(previousPortfolioAssetHistory);
+                        } else {
+                            portfolioAssetHistory.setValueChange(0);
+                        }
                         assetTrader.getAsset().addPortfolioAssetHistory(portfolioAssetHistory);
+                        PortfolioHistory previousPortfolioHistory = this.getLatestPortfolioHistory(trader.getPortfolio());
                         PortfolioHistory portfolioHistory = new PortfolioHistory(trader.getPortfolio());
+                        if (previousPortfolioHistory != null) {
+                            portfolioHistory.calculateValueChange(previousPortfolioHistory);
+                        } else {
+                            portfolioHistory.setValueChange(0);
+                        }
                         trader.getPortfolio().addPortfolioHistory(portfolioHistory);
                         this.savePortfolioAsset(assetTrader.getAsset());
                         this.savePortfolio(trader.getPortfolio());
@@ -87,6 +98,15 @@ public class PortfolioService {
         } else {
             System.out.println("No traders");
         }
+    }
+    public List<PortfolioAssetHistory> getPortfolioAssetHistory(Portfolio portfolio) {
+        return this.portfolioAssetHistoryRepository.findAllByPortfolioId(portfolio.getId());
+    }
+    public PortfolioAssetHistory getLatestPortfolioAssetHistory(PortfolioAsset portfolioAsset) {
+        return this.portfolioAssetHistoryRepository.findFirstByPortfolioAssetIdOrderByLastUpdatedDesc(portfolioAsset.getId());
+    }
+    public PortfolioHistory getLatestPortfolioHistory(Portfolio portfolio) {
+        return this.portfolioHistoryRepository.findFirstByPortfolioIdOrderByLastUpdatedDesc(portfolio.getId());
     }
     //---------------------Save-Portfolio-Asset-History-----------------------
     public void savePortfolioAssetHistory(PortfolioAssetHistory portfolioAssetHistory) {
@@ -130,12 +150,18 @@ public class PortfolioService {
     //------------------------Get-Portfolio-Profit----------------------------
     public double getPortfolioProfit(Portfolio portfolio) {
         PortfolioHistory initialPortfolioHistory = this.portfolioHistoryRepository.getFirstByPortfolioId(portfolio.getId());
+        if (initialPortfolioHistory == null) {
+            return 0;
+        }
         double profit = portfolio.getTotalWorth() - initialPortfolioHistory.getTotalWorth();
         return profit;
     }
     //---------------------Get-Portfolio-Asset-Profit-------------------------
     public double getPortfolioAssetProfit(PortfolioAsset portfolioAsset) {
         PortfolioAssetHistory initialPortfolioAssetHistory = this.portfolioAssetHistoryRepository.getFirstByPortfolioAssetId(portfolioAsset.getId());
+        if (initialPortfolioAssetHistory == null) {
+            return 0;
+        }
         double profit = portfolioAsset.getTotalValueInDollars() - initialPortfolioAssetHistory.getTotalValueInDollars();
         return profit;
     }
