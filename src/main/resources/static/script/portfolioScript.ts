@@ -69,7 +69,7 @@ type SimplePortfolioAsset = {
 // TODO: Either have a WebSocket updating their portfolio in real-time or have
 //       a refresh button that updates the page.
 async function getPortfolioFromServer(): Promise<any> {
-    let response = await fetch('/portfolio/get', {
+    let response: Response = await fetch('/portfolio/get', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -110,7 +110,7 @@ async function getIsEmptyPortfolioFromServer(): Promise<boolean> {
 }
 //-------------------Get-Portfolio-Asset-Profit-From-Server-------------------
 async function getPortfolioAssetProfitFromServer(currencyName: string): Promise<any> {
-    let response = await fetch(`/portfolio/history/profit/${currencyName}`, {
+    let response: Response = await fetch(`/portfolio/history/profit/${currencyName}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -121,7 +121,7 @@ async function getPortfolioAssetProfitFromServer(currencyName: string): Promise<
 }
 //---------------------Get-Portfolio-History-From-Server----------------------
 async function getPortfolioHistoryFromServer(): Promise<any> {
-    let response = await fetch('/portfolio/history/get', {
+    let response: Response = await fetch('/portfolio/history/get', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -250,12 +250,12 @@ function bothSharesAndWalletHaveInput(): boolean {
 //-------------------------Change-Caret-To-Highlight--------------------------
 function changeCaretToHighlight(): void {
     // TODO: Fix the fade functionality and make the caret src a global constant.
-    currencyDropdownCaretImage.attr('src', '../static/images/down_caret_highlight.svg').fadeIn(200);
+    currencyDropdownCaretImage.attr('src', '../images/down_caret_highlight.svg').fadeIn(200);
 }
 //---------------------------Change-Caret-To-Black----------------------------
 function changeCaretToBlack(): void {
     // TODO: Fix the fade functionality and make the caret src a global constant.
-    currencyDropdownCaretImage.attr('src', '../static/images/down_caret.svg').fadeIn(200);
+    currencyDropdownCaretImage.attr('src', '../images/down_caret.svg').fadeIn(200);
 }
 //---------------------------Set-Selection-To-None----------------------------
 function setSelectionToNone(): void {
