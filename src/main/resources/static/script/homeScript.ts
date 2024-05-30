@@ -4,10 +4,9 @@ import {
     registerables,
 } from 'chart.js';
 import {loadPage} from "./globalScript";
-//================================-Init-Load-=================================
-Chart.register(...registerables);
-//================================-Variables-=================================
 
+//================================-Variables-=================================
+let body = $('body');
 //-----------------------------------Chart------------------------------------
 let myChart: HTMLElement = document.getElementById("chart-div");
 //------------------------------Feature-Section-------------------------------
@@ -19,11 +18,28 @@ function shadowPerspective(): void {
     let scrollPosition = ((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * -1) + 0.8;
     featureTable.style.boxShadow = `#2c4557 calc(((0.5vh + 0.5vw) / 2) + 0.5em) calc((((1vh + 1vw) / 2) + 1em) * ${scrollPosition}) 0 0`;
 }
+let functionalitiesDiv: JQuery<HTMLElement> = $('#functionalities-div');
+let functionalityTextContainer: JQuery<HTMLElement> = $('.functionality-text-container');
+function enterFunctionalityItems(): void {
+    body.css('overflow-x', 'hidden');
+    functionalityTextContainer.each(function (index): void {
+        let functionalityTextItem = $(this);
+        let right: number = $(window).width() - (functionalityTextItem.offset().left + functionalityTextItem.outerWidth());
+        functionalityTextItem.css({position: 'relative', right: -right});
+        functionalityTextItem.css('display', 'flex');
+        functionalityTextItem.animate({right: '0px'}, 1000 * (index + 1));
+    }).promise().done(function () {
+        body.css('overflow-x', 'auto');
+    });
+
+}
 //=============================-Event-Listeners-==============================
 let shouldLoadPage: boolean = loadPage(document.body, 'home');
 window.addEventListener('scroll', shadowPerspective);
 //================================-Init-Load-=================================
 if (shouldLoadPage) {
+    enterFunctionalityItems();
+    Chart.register(...registerables);
     new Chart((myChart as HTMLCanvasElement), {
         type: 'bar',
         data: {
