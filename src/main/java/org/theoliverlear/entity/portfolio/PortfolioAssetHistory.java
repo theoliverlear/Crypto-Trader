@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @Table(name = "portfolio_asset_history")
 @Entity
-public class PortfolioAssetHistory {
+public class PortfolioAssetHistory implements SequentiallyValuable<PortfolioAssetHistory> {
     //============================-Variables-=================================
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +35,8 @@ public class PortfolioAssetHistory {
     private double totalValueInDollars;
     @Column(name = "target_price", columnDefinition = "DECIMAL(34, 18)")
     private double targetPrice;
+    @Column(name = "value_change", columnDefinition = "DECIMAL(34, 18)")
+    private double valueChange;
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
     //===========================-Constructors-===============================
@@ -67,5 +69,12 @@ public class PortfolioAssetHistory {
         this.totalValueInDollars = portfolioAsset.getTotalValueInDollars();
         this.targetPrice = portfolioAsset.getTargetPrice();
         this.lastUpdated = lastUpdated;
+    }
+    public void calculateValueChange(PortfolioAssetHistory previousHistory) {
+        if (previousHistory == null) {
+            this.valueChange = 0;
+        } else {
+            this.valueChange = this.totalValueInDollars - previousHistory.getTotalValueInDollars();
+        }
     }
 }
