@@ -54,7 +54,7 @@ public class PortfolioService {
 
     //--------------------------Trade-Portfolios------------------------------
     @Async("taskExecutor")
-    @Scheduled(fixedRate = 2500)
+    @Scheduled(fixedRate = 2000)
     public synchronized void tradePortfolios() {
         System.out.println("Trading");
         this.cryptoTrader.getTraders().clear();
@@ -66,11 +66,11 @@ public class PortfolioService {
                 System.out.println(previousPortfolio);
                 for (AssetTrader assetTrader : trader.getAssetTraders()) {
                     PortfolioAsset previousAsset = PortfolioAsset.from(assetTrader.getAsset());
-                    assetTrader.trade();
+                    boolean tradeOccurred = assetTrader.trade();
                     assetTrader.getAsset().updateValues();
                     trader.getPortfolio().updateValues();
                     if (!previousAsset.equals(assetTrader.getAsset())) {
-                        PortfolioAssetHistory portfolioAssetHistory = new PortfolioAssetHistory(assetTrader.getAsset());
+                        PortfolioAssetHistory portfolioAssetHistory = new PortfolioAssetHistory(assetTrader.getAsset(), tradeOccurred);
                         PortfolioAssetHistory previousPortfolioAssetHistory = this.getLatestPortfolioAssetHistory(assetTrader.getAsset());
                         // FIXME: Keeps returning null or 0
                         System.out.println("Previous portfolio is null: " + previousPortfolioAssetHistory);
@@ -81,7 +81,7 @@ public class PortfolioService {
                         }
                         assetTrader.getAsset().addPortfolioAssetHistory(portfolioAssetHistory);
                         PortfolioHistory previousPortfolioHistory = this.getLatestPortfolioHistory(trader.getPortfolio());
-                        PortfolioHistory portfolioHistory = new PortfolioHistory(trader.getPortfolio());
+                        PortfolioHistory portfolioHistory = new PortfolioHistory(trader.getPortfolio(), tradeOccurred);
                         if (previousPortfolioHistory != null) {
                             portfolioHistory.calculateValueChange(previousPortfolioHistory);
                         } else {
