@@ -35,7 +35,11 @@ body {
     background-color: $pure-white;
     @include basic-margin-padding(0, 0);
     min-height: 100vh;
-    @include flex(center, center, column)
+    @include flex(center, center, column);
+    main {
+        width: 100%;
+        @include flex(center, center, column);
+    }
 }
 header {
     @include flex(center, center, row);
@@ -66,7 +70,7 @@ header {
     border-radius: 50%;
     border: $ivory-white $very-thin-border solid;
     $box-shadow-size: simplest-calc(0.05);
-    box-shadow: $soft-gray $box-shadow-size $box-shadow-size;
+    box-shadow: $soft-grey $box-shadow-size $box-shadow-size;
     transition: box-shadow, margin-left, margin-bottom, 0.3s;
     &:hover {
         $hover-box-shadow-size: simplest-calc(0.15);
@@ -345,8 +349,27 @@ input {
     @include flex(space-around, center, row);
 }
 footer {
-    @include flex(space-around, center, row);
+    @include flex(center, center, row);
+    width: 100%;
     margin-top: auto;
+    background-color: $midnight-navy;
+    padding: $quarter-percent $zero;
+    #footer-content {
+        @include size(100%, 100%);
+        @include flex(center, center, row);
+        .footer-item {
+            @include flex(center, center, row);
+            @include size(100%, 100%);
+            flex: 1;
+            padding: $zero $three-percent;
+            .footer-item-text {
+                color: $pure-white;
+            }
+            &:last-child {
+                border-left: $thin-border solid $pure-white;
+            }
+        }
+    }
 }
 .hidden {
     display: none;
