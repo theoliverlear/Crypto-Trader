@@ -37,6 +37,10 @@ public class PortfolioAssetHistory implements SequentiallyValuable<PortfolioAsse
     private double targetPrice;
     @Column(name = "value_change", columnDefinition = "DECIMAL(34, 18)")
     private double valueChange;
+    @Column(name = "share_change", columnDefinition = "DECIMAL(34, 18)")
+    private double sharesChange;
+    @Column(name = "trade_occurred")
+    boolean tradeOccurred;
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
     //===========================-Constructors-===============================
@@ -48,7 +52,7 @@ public class PortfolioAssetHistory implements SequentiallyValuable<PortfolioAsse
         this.targetPrice = this.currency.getValue();
         this.lastUpdated = LocalDateTime.now();
     }
-    public PortfolioAssetHistory(PortfolioAsset portfolioAsset) {
+    public PortfolioAssetHistory(PortfolioAsset portfolioAsset, boolean tradeOccurred) {
         this.portfolioAsset = portfolioAsset;
         this.portfolio = portfolioAsset.getPortfolio();
         this.currency = portfolioAsset.getCurrency();
@@ -57,6 +61,7 @@ public class PortfolioAssetHistory implements SequentiallyValuable<PortfolioAsse
         this.assetWalletDollars = portfolioAsset.getAssetWalletDollars();
         this.totalValueInDollars = portfolioAsset.getTotalValueInDollars();
         this.targetPrice = portfolioAsset.getTargetPrice();
+        this.tradeOccurred = tradeOccurred;
         this.lastUpdated = LocalDateTime.now();
     }
     public PortfolioAssetHistory(PortfolioAsset portfolioAsset, LocalDateTime lastUpdated) {
@@ -74,6 +79,7 @@ public class PortfolioAssetHistory implements SequentiallyValuable<PortfolioAsse
         if (previousHistory == null) {
             this.valueChange = 0;
         } else {
+            this.sharesChange = this.shares - previousHistory.getShares();
             this.valueChange = this.totalValueInDollars - previousHistory.getTotalValueInDollars();
         }
     }
