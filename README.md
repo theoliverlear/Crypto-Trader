@@ -1,26 +1,33 @@
-This document highlights the capabilities of CryptoTrader v0.71, a 
-cryptocurrency trading software. In this explanation, I will discuss its diverse functionalities.
+# Crypto Trader
 
-The program continuously monitors the current values of cryptocurrencies and logs them 
-at both change-dependent and independent intervals. The crucial feature of the software, 
-portfolio management, is reliant on this data.
+<img src="src/main/resources/static/images/crypto_trader_logos/crypto_trader_logo.png">
 
-In trading, the essential strategy is to follow the time-honored principle of 
-"buy low, sell high". This principle is implemented within the software through
-the .poll() method. Whenever the current price, as fetched from the CryptoTraderDatabase,
-is higher than the purchase price, the software is prompted to sell. Conversely, if the 
-current price is lower, the software will initiate a buy.
+## Description
 
-It's important to clarify that the primary focus of the current version of this program
-is not to conduct an in-depth analysis of the crypto market. Rather, it is designed to
-execute trades in a strictly profitable manner.
+A Java program that buys and sells cryptocurrencies from API data sources. Its
+quick trading and other features allow users to leverage computer power to
+outperform the market.
 
-By version 2.0 or possibly earlier, the aim is to introduce functionalities that would
-allow for high-frequency and marginal trading, compatible with platforms such as Binance
-or Coinbase. My goal is to make this tool accessible to a broad audience that may wish 
-to leverage computer processing for day trading. Please feel free to ask any questions
-about CryptoTrader v0.71 in the comments section!
+## Features
+- **High-Frequency Trading:** Accessible to all users.
+- **Web Interface:** User-friendly platform for managing trades.
+- **Premium Features:** Advanced trading algorithms for premium users.
 
-Please note that this project is protected under a BSD-2 license. This means that you
-are free to use and modify the code, but you must credit the original author. For more
-information, please refer to the LICENSE.md file in the repository.
+## Usage
+1. **Create an Account:** Sign up on our website to get started.
+2. **Connect Your Wallet:** Link your cryptocurrency wallet or managing service like Binance or Coinbase.
+3. **Configure Trading Strategies:** Set up your preferred trading strategies and start trading.
+
+## Contributing
+We welcome contributions to Crypto Trader. If you are interested in 
+contributing, please contact Oliver Lear Sigwarth (@theoliverlear) at 
+[sigwarthsoftware@gmail.com](mailto:sigwarthsoftware@gmail.com) to discuss
+how you can get involved.
+
+## License
+This project is licensed under the terms outlined in the `LICENSE.md` 
+file. Please see `LICENSE.md` for more details.
+
+## Contact
+For support or questions, please contact Oliver Lear Sigwarth (@theoliverlear)
+at [sigwarthsoftware@gmail.com](mailto:sigwarthsoftware@gmail.com).
