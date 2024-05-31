@@ -1,6 +1,6 @@
 # Crypto Trader
 
-<img src="src/main/resources/static/images/crypto_trader_logos/crypto_trader_logo.png">
+<img src="src/main/resources/static/images/crypto_trader_logos/crypto_trader_logo_cropped.png">
 
 ## Description
 
