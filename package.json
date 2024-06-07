@@ -12,6 +12,7 @@
   "devDependencies": {
     "@babel/core": "^7.24.5",
     "@babel/preset-env": "^7.24.5",
+    "@babel/preset-typescript": "^7.24.6",
     "@types/chai": "^4.3.16",
     "@types/jest": "^29.2.5",
     "@types/mocha": "^10.0.6",
@@ -51,6 +52,11 @@
     "jquery": "^3.7.1",
     "jquery-touchswipe": "^1.6.19",
     "jquery-ui": "^1.13.3",
+    "@uppy/core": "^3.11.3",
+    "@uppy/dashboard": "^3.8.3",
+    "@uppy/image-editor": "^2.4.6",
+    "@uppy/xhr-upload": "^3.6.7",
+    "uppy": "^3.25.5",
     "mocha": "^10.3.0"
   }
 }
