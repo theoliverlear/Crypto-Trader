@@ -30,6 +30,9 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "portfolio_id", referencedColumnName = "id")
     private Portfolio portfolio;
+    @OneToOne
+    @JoinColumn(name = "profile_picture_id")
+    private ProfilePicture profilePicture;
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
     //===========================-Constructors-===============================
