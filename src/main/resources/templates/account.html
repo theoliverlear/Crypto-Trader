@@ -57,7 +57,32 @@
 </header>
 <main>
     <section id="user-info-section">
+        <div id="image-and-name-container">
+            <div id="user-avatar-div">
+                <img id="user-avatar-img"
+                     src="../static/images/default_avatar.png"
+                     th:src="@{/images/default_avatar.png}" alt="user avatar">
+            </div>
+        </div>
+        <div id="profile-picture-edit-div">
+            <div id="profile-picture-input-div">
+                <label for="profile-picture-input" class="small-button" id="profile-picture-input-label">
+                    Change Picture
+                </label>
+                <input id="profile-picture-input" type="file" accept="image/*">
+            </div>
+            <div id="profile-picture-edit-dashboard">
 
+            </div>
+        </div>
+        <div id="user-info-div">
+            <div id="user-name-div">
+                <h3 id="user-name-text">User Name</h3>
+            </div>
+            <div id="user-email-div">
+                <h5 id="user-email-text">user@emailservice.com</h5>
+            </div>
+        </div>
     </section>
     <section id="buttons-section">
         <div class="small-button" id="account-logout-button">
@@ -67,8 +92,11 @@
 </main>
 <footer>
     <section id="footer-content">
-        <div>
-            <p>&copy; 2024 Sigwarth Software. All rights reserved.</p>
+        <div class="footer-item">
+            <h6 class="footer-item-text">&copy; 2024 Sigwarth Software. All rights reserved.</h6>
+        </div>
+        <div class="footer-item">
+            <h6 class="footer-item-text">Terms of Service</h6>
         </div>
     </section>
 </footer>
