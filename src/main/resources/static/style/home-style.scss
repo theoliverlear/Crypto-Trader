@@ -36,18 +36,18 @@ $simplest-one-percent: simplest-calc(1);
 #functionalities-div {
     @include flex(space-around, center, row);
     padding: $simplest-one-percent 0;
-    margin: $simplest-one-percent 0;
+    margin:  0;
     background-color: black;
     box-shadow: $blue-grey 0 0 $simplest-one-percent;
+    .functionality-text-container {
+        background-color: $midnight-navy;
+        padding: $simplest-one-percent;
+        border-radius: $simplest-one-percent;
+        color: $almost-white;
+        display: none;
+    }
+}
 
-}
-.functionality-text-container {
-    background-color: $midnight-navy;
-    padding: 0 $simplest-one-percent;
-    border-radius: $simplest-one-percent;
-    color: $almost-white;
-    display: none;
-}
 #chart-explain-div {
     @include flex(space-around, center, row);
     padding: $simplest-one-percent 0;
@@ -75,7 +75,7 @@ $simplest-one-percent: simplest-calc(1);
 #features-section {
     @include flex(space-around, center, row);
     padding: $simplest-one-percent;
-    margin: $simplest-one-percent 0;
+    //margin: $simplest-one-percent 0;
     background-color: $almost-white;
     border : {
         top: $very-thin-border solid $blue-grey;
