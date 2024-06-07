@@ -17,7 +17,8 @@ module.exports = {
         './src/main/resources/static/script/BuyTrade.ts',
         './src/main/resources/static/script/SellTrade.ts',
         './src/main/resources/static/script/Trade.ts',
-        './src/main/resources/static/script/TradeType.ts'
+        './src/main/resources/static/script/TradeType.ts',
+        './src/main/resources/static/script/imageUploadScript.ts'
     ],
     module: {
         rules: [
@@ -26,15 +27,20 @@ module.exports = {
                 exclude: /node_modules/,
                 use: [
                     {
-                        loader: 'babel-loader', // Add Babel Loader
+                        loader: 'babel-loader',
                         options: {
                             presets: [
-                                '@babel/preset-env' // Use preset-env for all necessary transformations
+                                '@babel/preset-env',
+                                '@babel/preset-typescript'
                             ]
                         }
                     },
-                    'ts-loader' // Keep using ts-loader for TypeScript transpilation
+                    'ts-loader'
                 ]
+            },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader'],
             },
         ],
     },
