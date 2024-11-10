@@ -1,5 +1,9 @@
 package org.theoliverlear.model.http;
 //=================================-Imports-==================================
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,6 +12,9 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+@Getter
+@Setter
+@Slf4j
 public class ApiDataRetriever {
     //============================-Variables-=================================
     String url;
@@ -58,7 +65,7 @@ public class ApiDataRetriever {
             try {
                 apiReader.close();
             } catch (IOException ex) {
-                ex.printStackTrace();
+                log.error("Error closing API reader: {}", ex.getMessage());
             }
         }
         if (urlConnection != null) {
