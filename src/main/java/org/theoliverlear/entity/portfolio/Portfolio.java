@@ -24,19 +24,19 @@ public class Portfolio implements UpdatableValues {
     private Long id;
     @JsonBackReference
     @OneToOne(mappedBy = "portfolio")
-    User user;
+    private User user;
     @Column(name = "dollar_balance", columnDefinition = "DECIMAL(34, 18)")
-    double dollarBalance;
+    private double dollarBalance;
     @Column(name = "share_balance", columnDefinition = "DECIMAL(34, 18)")
-    double shareBalance;
+    private double shareBalance;
     @Column(name = "total_worth", columnDefinition = "DECIMAL(34, 18)")
-    double totalWorth;
+    private double totalWorth;
     @Column(name = "last_updated")
-    LocalDateTime lastUpdated;
+    private LocalDateTime lastUpdated;
     @OneToMany(mappedBy = "portfolio", fetch = FetchType.EAGER)
     private List<PortfolioAsset> assets;
     @OneToMany(mappedBy = "portfolio", fetch = FetchType.EAGER)
-    List<PortfolioHistory> portfolioHistory;
+    private List<PortfolioHistory> portfolioHistory;
     //===========================-Constructors-===============================
     public Portfolio() {
         this.dollarBalance = 0;
@@ -171,8 +171,4 @@ public class Portfolio implements UpdatableValues {
         }
         return portfolioString.toString();
     }
-    //=============================-Getters-==================================
-
-    //=============================-Setters-==================================
-
 }
