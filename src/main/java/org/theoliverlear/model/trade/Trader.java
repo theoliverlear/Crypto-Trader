@@ -6,14 +6,15 @@ import org.theoliverlear.entity.portfolio.Portfolio;
 import org.theoliverlear.entity.portfolio.PortfolioAsset;
 
 import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 public class Trader {
     //============================-Variables-=================================
-    // TODO: A trader may take a full portfolio or a single asset. It will
-    //       trade based on target prices and a strategy.
-    Portfolio portfolio;
-    ArrayList<AssetTrader> assetTraders;
+    // TODO: Allow for trades based on target prices and a strategy.
+    private Portfolio portfolio;
+    private List<AssetTrader> assetTraders;
     //===========================-Constructors-===============================
     public Trader(Portfolio portfolio) {
         this.portfolio = portfolio;
