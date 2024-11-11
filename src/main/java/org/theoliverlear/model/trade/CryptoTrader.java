@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 public class CryptoTrader {
     //============================-Variables-=================================
-    List<Trader> traders;
+    private List<Trader> traders;
     //===========================-Constructors-===============================
     public CryptoTrader() {
         this.traders = new ArrayList<>();
