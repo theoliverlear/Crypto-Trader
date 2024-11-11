@@ -21,12 +21,12 @@ import java.util.List;
 @Service
 public class PortfolioService {
     //============================-Variables-=================================
-    List<Portfolio> allUsersPortfolios;
-    PortfolioRepository portfolioRepository;
-    PortfolioAssetRepository portfolioAssetRepository;
-    PortfolioHistoryRepository portfolioHistoryRepository;
-    PortfolioAssetHistoryRepository portfolioAssetHistoryRepository;
-    CryptoTrader cryptoTrader;
+    private List<Portfolio> allUsersPortfolios;
+    private PortfolioRepository portfolioRepository;
+    private PortfolioAssetRepository portfolioAssetRepository;
+    private PortfolioHistoryRepository portfolioHistoryRepository;
+    private PortfolioAssetHistoryRepository portfolioAssetHistoryRepository;
+    private CryptoTrader cryptoTrader;
     private CurrencyService currencyService;
     //===========================-Constructors-===============================
     @Autowired
