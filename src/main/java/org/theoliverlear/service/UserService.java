@@ -10,7 +10,7 @@ import org.theoliverlear.repository.UserRepository;
 @Slf4j
 public class UserService {
     //============================-Variables-=================================
-    UserRepository userRepository;
+    private UserRepository userRepository;
     //===========================-Constructors-===============================
     @Autowired
     public UserService(UserRepository userRepository) {
