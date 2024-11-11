@@ -17,8 +17,8 @@ import java.net.URISyntaxException;
 @Slf4j
 public class ApiDataRetriever {
     //============================-Variables-=================================
-    String url;
-    String response;
+    private String url;
+    private String response;
     //============================-Constants-=================================
     static final String NO_DATA_ERROR_MESSAGE = "Error: No data received " +
                                                 "from API";
@@ -48,7 +48,7 @@ public class ApiDataRetriever {
                 responseJson.append(jsonLine);
             }
         } catch (URISyntaxException | IOException ex) {
-            ex.printStackTrace();
+            log.error("Error fetching API data: {}", ex.getMessage());
         } finally {
             if (responseJson.isEmpty()) {
                 this.response = NO_DATA_ERROR_MESSAGE;
@@ -80,9 +80,4 @@ public class ApiDataRetriever {
 
     //------------------------------To-String---------------------------------
 
-    //=============================-Getters-==================================
-    public String getResponse() {
-        return this.response;
-    }
-    //=============================-Setters-==================================
 }
