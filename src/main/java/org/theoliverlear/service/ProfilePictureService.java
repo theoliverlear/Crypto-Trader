@@ -9,15 +9,13 @@ import org.theoliverlear.repository.ProfilePictureRepository;
 @Service
 public class ProfilePictureService {
     //============================-Variables-=================================
-
+    private ProfilePictureRepository profilePictureRepository;
     //===========================-Constructors-===============================
-
-    //============================-Methods-===================================
-    ProfilePictureRepository profilePictureRepository;
     @Autowired
     public ProfilePictureService(ProfilePictureRepository profilePictureRepository) {
         this.profilePictureRepository = profilePictureRepository;
     }
+    //============================-Methods-===================================
     public void saveProfilePicture(ProfilePicture profilePicture) {
         this.profilePictureRepository.save(profilePicture);
     }
