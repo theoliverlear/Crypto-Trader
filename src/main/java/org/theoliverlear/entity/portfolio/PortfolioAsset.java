@@ -42,7 +42,7 @@ public class PortfolioAsset implements UpdatableValues {
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
     @OneToMany(mappedBy = "portfolioAsset", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    List<PortfolioAssetHistory> assetHistory;
+    private List<PortfolioAssetHistory> assetHistory;
     // TODO: Add buying strategy which may sell the whole asset, only the
     //       profits, or a set amount or percentage of the asset.
     //===========================-Constructors-===============================
@@ -160,8 +160,4 @@ public class PortfolioAsset implements UpdatableValues {
                 .formatted(this.currency, this.shares,
                            this.assetWalletDollars, this.totalValueInDollars);
     }
-    //=============================-Getters-==================================
-
-    //=============================-Setters-==================================
-
 }
