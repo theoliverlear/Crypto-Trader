@@ -1,30 +1,31 @@
 package org.theoliverlear.entity.currency;
 //=================================-Imports-==================================
 import java.util.ArrayList;
+import java.util.List;
 
 public class SupportedCurrencies {
     //============================-Constants-=================================
-    public static final Currency BITCOIN = new Currency("Bitcoin", "BTC","https://api.coinbase.com/v2/prices/BTC-USD/spot");
-    public static final Currency ETHEREUM = new Currency("Ethereum", "ETH","https://api.coinbase.com/v2/prices/ETH-USD/spot");
-    public static final Currency LITECOIN = new Currency("Litecoin", "LTC","https://api.coinbase.com/v2/prices/LTC-USD/spot");
-    public static final Currency DOGECOIN = new Currency("Dogecoin", "DOGE","https://api.coinbase.com/v2/prices/DOGE-USD/spot");
-    public static final Currency CARDANO = new Currency("Cardano", "ADA","https://api.coinbase.com/v2/prices/ADA-USD/spot");
-    public static final Currency RIPPLE = new Currency("Ripple", "XRP","https://api.coinbase.com/v2/prices/XRP-USD/spot");
-    public static final Currency POLKADOT = new Currency("Polkadot", "DOT","https://api.coinbase.com/v2/prices/DOT-USD/spot");
-    public static final Currency BITCOIN_CASH = new Currency("Bitcoin Cash", "BCH","https://api.coinbase.com/v2/prices/BCH-USD/spot");
-    public static final Currency CHAINLINK = new Currency("Chainlink", "LINK","https://api.coinbase.com/v2/prices/LINK-USD/spot");
-    public static final Currency STELLAR = new Currency("Stellar", "XLM","https://api.coinbase.com/v2/prices/XLM-USD/spot");
-    public static final Currency UNISWAP = new Currency("Uniswap", "UNI","https://api.coinbase.com/v2/prices/UNI-USD/spot");
-    public static final Currency LITECOIN_CASH = new Currency("Litecoin Cash", "LCC","https://api.coinbase.com/v2/prices/LCC-USD/spot");
-    public static final Currency BINANCE_COIN = new Currency("Binance Coin", "BNB","https://api.coinbase.com/v2/prices/BNB-USD/spot");
-    public static final Currency TETHER = new Currency("Tether", "USDT","https://api.coinbase.com/v2/prices/USDT-USD/spot");
-    public static final Currency EOS = new Currency("EOS", "EOS","https://api.coinbase.com/v2/prices/EOS-USD/spot");
-    public static final Currency MONERO = new Currency("Monero", "XMR","https://api.coinbase.com/v2/prices/XMR-USD/spot");
-    public static final Currency TRON = new Currency("Tron", "TRX","https://api.coinbase.com/v2/prices/TRX-USD/spot");
-    public static final Currency TEZOS = new Currency("Tezos", "XTZ","https://api.coinbase.com/v2/prices/XTZ-USD/spot");
-    public static final Currency STELLAR_LUMENS = new Currency("Stellar Lumens", "XLM","https://api.coinbase.com/v2/prices/XLM-USD/spot");
-    public static final Currency SHIBA_INU = new Currency("Shiba Inu", "SHIB","https://api.coinbase.com/v2/prices/SHIB-USD/spot");
-    public static final ArrayList<Currency> SUPPORTED_CURRENCIES = new ArrayList<>();
+    public static final Currency BITCOIN = new Currency("Bitcoin", "BTC");
+    public static final Currency ETHEREUM = new Currency("Ethereum", "ETH");
+    public static final Currency LITECOIN = new Currency("Litecoin", "LTC");
+    public static final Currency DOGECOIN = new Currency("Dogecoin", "DOGE");
+    public static final Currency CARDANO = new Currency("Cardano", "ADA");
+    public static final Currency RIPPLE = new Currency("Ripple", "XRP");
+    public static final Currency POLKADOT = new Currency("Polkadot", "DOT");
+    public static final Currency BITCOIN_CASH = new Currency("Bitcoin Cash", "BCH");
+    public static final Currency CHAINLINK = new Currency("Chainlink", "LINK");
+    public static final Currency STELLAR = new Currency("Stellar", "XLM");
+    public static final Currency UNISWAP = new Currency("Uniswap", "UNI");
+    public static final Currency LITECOIN_CASH = new Currency("Litecoin Cash", "LCC");
+    public static final Currency BINANCE_COIN = new Currency("Binance Coin", "BNB");
+    public static final Currency TETHER = new Currency("Tether", "USDT");
+    public static final Currency EOS = new Currency("EOS", "EOS");
+    public static final Currency MONERO = new Currency("Monero", "XMR");
+    public static final Currency TRON = new Currency("Tron", "TRX");
+    public static final Currency TEZOS = new Currency("Tezos", "XTZ");
+    public static final Currency STELLAR_LUMENS = new Currency("Stellar Lumens", "XLM");
+    public static final Currency SHIBA_INU = new Currency("Shiba Inu", "SHIB");
+    public static final List<Currency> SUPPORTED_CURRENCIES = new ArrayList<>();
     //==========================-Static-Actions-==============================
     static {
         SUPPORTED_CURRENCIES.add(BITCOIN);
