@@ -8,7 +8,7 @@ import org.theoliverlear.entity.portfolio.PortfolioAsset;
 @Setter
 public class AssetTrader {
     //============================-Variables-=================================
-    PortfolioAsset asset;
+    private PortfolioAsset asset;
     //===========================-Constructors-===============================
     public AssetTrader(PortfolioAsset asset) {
         this.asset = asset;
