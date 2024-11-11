@@ -12,10 +12,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SafePassword {
     //============================-Variables-=================================
     @Id
-    String encodedPassword;
+    private String encodedPassword;
     @Transient
     @JsonIgnore
-    BCryptPasswordEncoder encoder;
+    private BCryptPasswordEncoder encoder;
     //===========================-Constructors-===============================
     public SafePassword() {
         this.encoder = new BCryptPasswordEncoder();
