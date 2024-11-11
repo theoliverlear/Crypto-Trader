@@ -13,8 +13,8 @@ import org.theoliverlear.entity.currency.SupportedCurrencies;
 @Service
 public class CurrencyService {
     //============================-Variables-=================================
-    CurrencyRepository currencyRepository;
-    CurrencyHistoryRepository currencyHistoryRepository;
+    private CurrencyRepository currencyRepository;
+    private CurrencyHistoryRepository currencyHistoryRepository;
     //===========================-Constructors-===============================
     @Autowired
     public CurrencyService(CurrencyRepository currencyRepository,
