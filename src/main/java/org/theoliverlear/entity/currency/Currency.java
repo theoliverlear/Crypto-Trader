@@ -46,6 +46,17 @@ public class Currency {
         this.formattedValue = "";
         this.lastUpdated = LocalDateTime.now();
     }
+    public Currency(String name, String currencyCode) {
+        this.name = name;
+        this.currencyCode = currencyCode;
+        this.urlPath = this.getCoinbaseUrl();
+        this.value = this.getApiValue();
+        this.formattedValue = decimalFormat.format(this.value);
+        if (this.formattedValue == null) {
+            this.formattedValue = "";
+        }
+        this.lastUpdated = LocalDateTime.now();
+    }
     public Currency(String name, String currencyCode, String urlPath) {
         this.name = name;
         this.currencyCode = currencyCode;
@@ -81,6 +92,9 @@ public class Currency {
     }
     //=============================-Methods-==================================
 
+    public String getCoinbaseUrl() {
+        return "https://api.coinbase.com/v2/prices/%s-USD/spot".formatted(this.currencyCode);
+    }
     //----------------------------Update-Value--------------------------------
     public void updateValue() {
         this.lastUpdated = LocalDateTime.now();
