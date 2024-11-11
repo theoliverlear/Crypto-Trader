@@ -21,17 +21,17 @@ public class PortfolioHistory implements SequentiallyValuable<PortfolioHistory> 
     @JoinColumn(name = "portfolio_id", nullable = false)
     private Portfolio portfolio;
     @Column(name = "dollar_balance", columnDefinition = "DECIMAL(34, 18)")
-    double dollarBalance;
+    private double dollarBalance;
     @Column(name = "share_balance", columnDefinition = "DECIMAL(34, 18)")
-    double shareBalance;
+    private double shareBalance;
     @Column(name = "total_worth", columnDefinition = "DECIMAL(34, 18)")
-    double totalWorth;
+    private double totalWorth;
     @Column(name = "value_change", columnDefinition = "DECIMAL(34, 18)")
-    double valueChange;
+    private double valueChange;
     @Column(name = "trade_occurred")
-    boolean tradeOccurred;
+    private boolean tradeOccurred;
     @Column(name = "last_updated")
-    LocalDateTime lastUpdated;
+    private LocalDateTime lastUpdated;
     //===========================-Constructors-===============================
     public PortfolioHistory() {
         this.dollarBalance = 0;
