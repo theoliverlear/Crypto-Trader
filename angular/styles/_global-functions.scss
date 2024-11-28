@@ -1,0 +1,18 @@
+//================================-Functions-=================================
+
+//-------------------------------Calculate-Size-------------------------------
+@function calc-size($width, $height, $rem) {
+    @return calc(((#{$width}vw + #{$height}vh) / 2) + #{$rem}rem);
+}
+//---------------------------Simple-Calculate-Size----------------------------
+@function simple-calc($width-height, $rem) {
+    @return calc-size(#{$width-height}, #{$width-height}, #{$rem});
+}
+//--------------------------Simplest-Calculate-Size---------------------------
+@function simplest-calc($width-height-rem) {
+    @return simple-calc(#{$width-height-rem}, #{$width-height-rem});
+}
+//---------------------------Simple-Pixel-Calculate---------------------------
+@function simple-pixel-calc($width-height, $px) {
+    @return calc(((#{$width-height}vw + #{$width-height}vh) / 2) + #{$px}px);
+}
