@@ -1,0 +1,29 @@
+@import "../../../styles/global-variables";
+@import "../../../styles/global-mixins";
+@import "../../../styles/global-functions";
+@import "../../../styles/global-placeholders";
+
+ss-footer {
+    width: 100%;
+    margin-top: auto;
+    background-color: $midnight-navy;
+    padding: $quarter-percent $zero;
+    box-sizing: border-box;
+    footer {
+        @include flex(center, center, row);
+        width: 100%;
+        color: $pure-white;
+        .footer-item {
+            @include flex(center, center, row);
+            @include size(100%, 100%);
+            flex: 1;
+            //padding: $zero $half-percent;
+            .footer-item-text {
+                color: $pure-white;
+            }
+            &:last-child {
+                border-left: $thin-border solid $pure-white;
+            }
+        }
+    }
+}
