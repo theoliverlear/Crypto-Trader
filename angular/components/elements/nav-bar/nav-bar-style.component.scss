@@ -1,0 +1,116 @@
+//=================================-Imports-==================================
+@import "../../../styles/global-variables";
+@import "../../../styles/global-mixins";
+@import "../../../styles/global-functions";
+@import "../../../styles/global-placeholders";
+@import "../../app/app-style.component";
+
+nav-bar {
+    @include flex(center, center, column);
+    width: 100%;
+    box-sizing: border-box;
+    background-color: $almost-white;
+    box-shadow: 0 0 simple-calc(1, 0.5) 0 $black-shadow;
+    border-bottom: $very-thin-border solid $muted-blue-half-opacity;
+    height: $four-percent;
+    nav {
+        @include flex(space-between, center, row);
+        //display: none;
+        width: 30%;
+
+
+        //#nav-div {
+        //    @include flex(center, center, row);
+        //    width: 100%;
+        //    margin: 0 0 0 simple-calc(4.5, 2.5);
+        //}
+
+
+        .nav-item {
+            @include flex(center, center, row);
+            padding: 0 simple-calc(1, 1);
+        }
+
+        #default-avatar-image {
+            $width-height: simple-calc(3, 1.75);
+            @include size($width-height, $width-height);
+            //margin-right: simple-calc(0.5, 0.5);
+            border-radius: 50%;
+            border: $ivory-white $very-thin-border solid;
+            $box-shadow-size: simplest-calc(0.05);
+            box-shadow: $soft-grey $box-shadow-size $box-shadow-size;
+            transition: box-shadow, margin-left, margin-bottom, 0.3s;
+
+            &:hover {
+                $hover-box-shadow-size: simplest-calc(0.15);
+                box-shadow: $morning-frost-blue $hover-box-shadow-size $hover-box-shadow-size;
+                cursor: pointer;
+            }
+
+            &:active {
+                box-shadow: none;
+                margin-left: simplest-calc(0.05);
+                $bottom-and-right-margin: simplest-calc(0.15);
+                margin-bottom: calc($bottom-and-right-margin * -1);
+                margin-right: $bottom-and-right-margin;
+            }
+        }
+
+        .nav-bar-item-container {
+            @include flex(center, center, row);
+            border-radius: simplest-calc(1);
+            transition: background-color, box-shadow, border, margin-top, margin-left, 0.3s;
+            padding: simplest-calc(0.25) simplest-calc(1);
+
+            h5 {
+                @include basic-margin-padding(0, 0);
+            }
+
+            &:hover {
+                background-color: $almost-white;
+                $box-shadow-size: simplest-calc(0.35);
+                box-shadow: $blue-grey $box-shadow-size $box-shadow-size 0 0;
+                cursor: pointer;
+                border: $muted-blue simple-calc(0.1, 0.05) solid;
+            }
+
+            &:active {
+                background-color: $almost-white;
+                box-shadow: none;
+                $top-and-right-margin: simplest-calc(0.35);
+                margin: {
+                    top: $top-and-right-margin;
+                    left: $top-and-right-margin;
+                }
+            }
+        }
+    }
+}
+#account-image-container {
+    @include flex(space-around, center, column);
+    position: relative;
+    box-sizing: border-box;
+    display: none;
+    padding: simple-calc(0.15, 0.05);
+    border-radius: simple-calc(1, 1);
+    &:hover #logout-button-div {
+        cursor: pointer;
+    }
+}
+#logout-button-div {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: calc(((0.35vh + 0.35vw) / 2) + 0.15em) calc(((.5vh + 0.5vw) / 2) + 0.25em);
+    border-radius: calc(((1vh + 1vw) / 2) + 1em);
+    position: absolute;
+    margin-top: calc(((6vh + 6vw) / 2) + 2em);
+    margin-right: calc(((0.5vh + 0.5vw) / 2) + 0.25em);
+
+    transition: display, 0.3s;
+    background-color: $muted-blue;
+    color: $almost-white;
+    &:hover {
+        border: $thin-border solid $sunbeam-yellow;
+    }
+}
