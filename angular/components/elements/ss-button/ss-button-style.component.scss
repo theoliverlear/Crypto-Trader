@@ -1,0 +1,99 @@
+@import "../../../styles/global-variables";
+@import "../../../styles/global-mixins";
+@import "../../../styles/global-functions";
+@import "../../../styles/global-placeholders";
+
+ss-button {
+    .general-button {
+        background-color: $sunbeam-yellow;
+        padding: simple-calc(0.5, 0.25) 0;
+        border-radius: simple-calc(1, 1);
+        width: simple-calc(20, 1);
+        height: simple-calc(4, 2);
+        margin-left: 0;
+        margin-top: 0;
+        text-align: center;
+        @include flex(center, center, row);
+        $square-box-shadow: simple-calc(0.25, 0.25);
+        box-shadow: $blue-grey $square-box-shadow $square-box-shadow;
+        transition: box-shadow, margin-left, margin-top, 0.3s;
+        &:hover {
+            $square-box-shadow: simple-calc(0.35, 0.35);
+            box-shadow: $blue-grey $square-box-shadow $square-box-shadow;
+            cursor: pointer;
+        }
+        &:active {
+            transition: box-shadow, margin-left, margin-top, 0.15s;
+            $margins-and-box-shadow: simple-calc(0.25, 0.25);
+            box-shadow: $blue-grey 0 0 $margins-and-box-shadow;
+            margin : {
+                left: $margins-and-box-shadow;
+                top: $margins-and-box-shadow;
+            }
+        }
+    }
+    .general-button-inverted {
+        background-color: $sunbeam-yellow;
+        padding: simple-calc(0.5, 0.25) 0;
+        border-radius: simplest-calc(1);
+        width: simple-calc(20, 2);
+        height: simple-calc(4, 2);
+        margin : {
+            top: 0;
+            left: 0;
+        }
+        text-align: center;
+        @include flex(center, center, row);
+        $box-shadow-size: simplest-calc(0.25);
+        box-shadow: $blue-grey $box-shadow-size calc($box-shadow-size * -1);
+        transition: box-shadow, margin-left, margin-top, 0.3s;
+        &:hover {
+            $hover-box-shadow-size: simplest-calc(0.35);
+            box-shadow: $blue-grey $hover-box-shadow-size calc($hover-box-shadow-size * -1);
+            cursor: pointer;
+        }
+        &:active {
+            transition: box-shadow, margin-left, margin-top, margin-bottom, 0.15s;
+            box-shadow: $blue-grey 0 0 $box-shadow-size;
+            $margin-top-and-left: simplest-calc(0.25);
+            margin : {
+                top: calc($margin-top-and-left * -1);
+                left: $margin-top-and-left;
+            }
+        }
+    }
+
+    .small-button {
+        background-color: $sunbeam-yellow;
+        padding: simple-calc(0.5, 0.25);
+        border-radius: simplest-calc(0.5);
+        width: simple-calc(10, 1);
+        height: simple-calc(2, 1);
+        margin : {
+            top: 0;
+            left: 0;
+        }
+        text-align: center;
+        @include flex(center, center, row);
+        $box-shadow-size: simplest-calc(0.15);
+        box-shadow: $blue-grey $box-shadow-size $box-shadow-size;
+        transition: box-shadow, margin-left, margin-top, 0.3s;
+        &:hover {
+            $hover-box-shadow-size: simplest-calc(0.25);
+            box-shadow: $blue-grey $hover-box-shadow-size $hover-box-shadow-size;
+            cursor: pointer;
+        }
+        &:active {
+            transition: box-shadow, margin-left, margin-top, 0.15s;
+            $box-shadow-and-margin: simplest-calc(0.15);
+            box-shadow: $blue-grey 0 0 $box-shadow-and-margin;
+            margin : {
+                top: $box-shadow-and-margin;
+                left: $box-shadow-and-margin;
+            }
+        }
+        .small-button-text {
+            @include basic-margin-padding(0, 0);
+        }
+    }
+}
