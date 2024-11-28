@@ -1,0 +1,39 @@
+<!--===============================-Nav-Bar-===============================-->
+
+    <nav>
+        <!--------------------Nav-To-Home-------------------------------->
+        <div class="nav-item">
+            <a href="/" class="link-no-style">
+                <div class="nav-bar-item-container">
+                    <h5>Home</h5>
+                </div>
+            </a>
+        </div>
+        <!-----------------Nav-To-Portfolio------------------------------>
+        <div class="nav-item">
+            <a href="/portfolio/" class="link-no-style">
+                <div class="nav-bar-item-container">
+                    <h5>Portfolio</h5>
+                </div>
+            </a>
+        </div>
+        <!-------------------Nav-To-Trader------------------------------->
+        <div class="nav-item">
+            <a href="/trader/" class="link-no-style">
+                <div class="nav-bar-item-container">
+                    <h5>Trader</h5>
+                </div>
+            </a>
+        </div>
+        <!------------------Nav-To-Account------------------------------->
+        <div id="account-image-container">
+            <a href="/user/" class="link-no-style">
+                <img id="default-avatar-image"
+                     src="../static/images/default_avatar.png"
+                     th:src="@{/images/default_avatar.png}" alt="user avatar">
+            </a>
+            <div id="logout-button-div">
+                <h5 id="logout-button-text">Logout</h5>
+            </div>
+        </div>
+    </nav>
