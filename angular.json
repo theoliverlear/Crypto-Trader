@@ -1,0 +1,150 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "crypto-trader": {
+      "root": "",
+      "sourceRoot": "",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "src/main/resources/templates/angular_build",
+            "index": "angular/index.html",
+            "main": "angular/main.ts",
+            "polyfills": "angular/polyfills.ts",
+            "tsConfig": "tsconfig.json",
+            "aot": false,
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "angular/assets",
+                "output": "/assets/"
+              }
+            ],
+            "styles": [
+              "angular/components/app/app-style.component.css",
+              "angular/components/elements/nav-bar/nav-bar-style.component.css",
+              "angular/components/elements/ss-anchor/ss-anchor-style.component.css",
+              "angular/components/elements/ss-button/ss-button-style.component.css",
+              "angular/components/elements/ss-footer/ss-footer-style.component.css",
+              "angular/components/elements/ss-img/ss-img-style.component.css",
+              "angular/components/pages/home/home-style.component.css"
+            ],
+            "scripts": [],
+            "fileReplacements": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "angular/environments/environment.ts",
+                  "with": "angular/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "none",
+              "optimization": true,
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            },
+            "development": {
+              "fileReplacements": [
+                {
+                  "replace": "angular/environments/environment.ts",
+                  "with": "angular/environments/environment.dev.ts"
+                }
+              ],
+              "optimization": false,
+              "outputHashing": "none",
+              "sourceMap": true,
+              "namedChunks": true,
+              "aot": false,
+              "extractLicenses": true,
+              "vendorChunk": true,
+              "buildOptimizer": false
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "buildTarget": "crypto-trader:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "crypto-trader:build:production"
+            },
+            "development": {
+              "buildTarget": "crypto-trader:build:development"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "crypto-trader:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "angular/test.ts",
+            "polyfills": "angular/polyfills.ts",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "assets": [
+              "angular/assets"
+            ],
+            "styles": [
+              "angular/styles/styles.css"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "tsconfig.app.json",
+              "tsconfig.spec.json",
+              "e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "crypto-trader:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "crypto-trader:serve:production"
+            },
+            "development": {
+              "devServerTarget": "crypto-trader:serve:development"
+            }
+          }
+        }
+      }
+    }
+  }
+}
