@@ -1,0 +1,13 @@
+@import "../../../styles/global-variables";
+@import "../../../styles/global-mixins";
+@import "../../../styles/global-functions";
+@import "../../../styles/global-placeholders";
+
+ss-img {
+    @include flex(row, center, center);
+    border-radius: inherit;
+    img {
+        border-radius: inherit;
+        @include size(100%, 100%);
+    }
+}
