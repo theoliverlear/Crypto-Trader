@@ -27,9 +27,9 @@ const logoImageAssetPath: string = imageAssetPath + 'logo/';
 const cryptoTraderLogoImageAssetPath: string = logoImageAssetPath + 'crypto_trader/';
 const brandLogoImageAssetPath: string = logoImageAssetPath + 'brand/';
 const currencyLogoImageAssetPath: string = logoImageAssetPath + 'currency/';
-const iconImageAssetPath: string = imageAssetPath + 'icon/';
+const iconImageAssetPath: string = imageAssetPath + 'icons/';
 
 export const defaultAvatar: ImageAsset = {
-    src: getIconImagePath('default-avatar.png'),
+    src: getIconImagePath('default_avatar.png'),
     alt: 'Default Avatar'
 };
