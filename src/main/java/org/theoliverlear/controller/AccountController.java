@@ -5,27 +5,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.theoliverlear.comm.response.HasProfilePictureResponse;
 import org.theoliverlear.comm.response.OperationSuccessfulResponse;
 import org.theoliverlear.entity.user.ProfilePicture;
 import org.theoliverlear.entity.user.User;
-import org.springframework.util.StringUtils;
 import org.theoliverlear.service.ProfilePictureService;
 import org.theoliverlear.service.UserService;
 
 import java.io.IOException;
 
-@Controller
-@RequestMapping("/account")
+@RestController
+@RequestMapping("/api/account")
 public class AccountController {
     //============================-Variables-=================================
-    User currentUser;
+    private User currentUser;
     private ProfilePictureService profilePictureService;
     private UserService userService;
     //===========================-Constructors-===============================
@@ -36,17 +35,6 @@ public class AccountController {
     }
     //=============================-Methods-==================================
 
-    //------------------------------Account-----------------------------------
-    @RequestMapping("/")
-    public String account(HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user != null) {
-            this.currentUser = user;
-            return "account";
-        } else {
-            return "redirect:/user/";
-        }
-    }
     //----------------------------Upload-Image--------------------------------
     @RequestMapping("/image/upload")
     public ResponseEntity<OperationSuccessfulResponse> uploadProfilePicture(@RequestParam("file") MultipartFile file, HttpSession session) {
@@ -85,3 +73,4 @@ public class AccountController {
         }
     }
 }
+
