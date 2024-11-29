@@ -1,0 +1,19 @@
+@import "../../../styles/global-variables";
+@import "../../../styles/global-mixins";
+@import "../../../styles/global-functions";
+@import "../../../styles/global-placeholders";
+
+profile-picture {
+    //@include flex(center, center, column);
+    //border-radius: $one-half-percent;
+    //border: $thin-border solid $sandstone;
+    //ss-img {
+    //    @extend %fill-container;
+    //    border-radius: inherit;
+    //    //background-color: $absolute-black;
+    //    background-image: radial-gradient(at center left, $light-charcoal 40%, $charcoal);
+    //}
+    //.headline-profile-picture {
+    //    @include size($twelve-percent, $twelve-percent);
+    //}
+}
