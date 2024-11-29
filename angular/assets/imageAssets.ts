@@ -28,3 +28,8 @@ const cryptoTraderLogoImageAssetPath: string = logoImageAssetPath + 'crypto_trad
 const brandLogoImageAssetPath: string = logoImageAssetPath + 'brand/';
 const currencyLogoImageAssetPath: string = logoImageAssetPath + 'currency/';
 const iconImageAssetPath: string = imageAssetPath + 'icon/';
+
+export const defaultAvatar: ImageAsset = {
+    src: getIconImagePath('default-avatar.png'),
+    alt: 'Default Avatar'
+};
