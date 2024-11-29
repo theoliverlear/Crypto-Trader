@@ -11,6 +11,7 @@ import {RouterOutlet} from "@angular/router";
 import {NgOptimizedImage} from "@angular/common";
 import {HttpClientModule, provideHttpClient, withFetch} from "@angular/common/http";
 import {services} from "../services/services";
+import {BaseChartDirective} from "ng2-charts";
 
 @NgModule({
     declarations: [
@@ -26,7 +27,9 @@ import {services} from "../services/services";
         AppRouting,
         RouterOutlet,
         NgOptimizedImage,
-        HttpClientModule],
+        HttpClientModule,
+        BaseChartDirective
+    ],
     providers: [
         ...services,
         provideHttpClient(withFetch()),
