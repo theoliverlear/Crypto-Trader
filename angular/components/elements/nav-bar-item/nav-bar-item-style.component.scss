@@ -1,0 +1,36 @@
+//=================================-Imports-==================================
+@import "../../../styles/global-variables";
+@import "../../../styles/global-mixins";
+@import "../../../styles/global-functions";
+@import "../../../styles/global-placeholders";
+
+nav-bar-item {
+    @include flex(center, center, row);
+    box-sizing: border-box;
+    ss-anchor {
+        a {
+            @include flex(center, center, row);
+            border-radius: simplest-calc(1);
+            transition: background-color, box-shadow, border, margin-top, margin-left, 0.3s;
+            padding: simplest-calc(0.25) simplest-calc(1);
+            box-sizing: border-box;
+            &:hover {
+                background-color: $almost-white;
+                $box-shadow-size: simplest-calc(0.35);
+                box-shadow: $blue-grey $box-shadow-size $box-shadow-size 0 0;
+                cursor: pointer;
+                border: $muted-blue simple-calc(0.1, 0.05) solid;
+            }
+
+            &:active {
+                background-color: $almost-white;
+                box-shadow: none;
+                $top-and-right-margin: simplest-calc(0.35);
+                margin: {
+                    top: $top-and-right-margin;
+                    left: $top-and-right-margin;
+                }
+            }
+        }
+    }
+}
