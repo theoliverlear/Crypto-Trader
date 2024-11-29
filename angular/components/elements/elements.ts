@@ -12,8 +12,12 @@ import {LiveChartComponent} from "./live-chart/live-chart.component";
 import {
     NavBarProfilePictureComponent
 } from "./nav-bar-profile-picture/nav-bar-profile-picture.component";
+import {
+    ContentStripeComponent
+} from "./content-stripe/content-stripe.component";
 
 export const elements = [
+    ContentStripeComponent,
     LiveChartComponent,
     NavBarComponent,
     NavBarItemComponent,
