@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class UserResponse {
     //============================-Variables-=================================
-    String message;
+    private String message;
     //===========================-Constructors-===============================
     public UserResponse(String message) {
         this.message = message;
