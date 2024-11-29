@@ -15,10 +15,14 @@ ss-footer {
         @include flex(center, center, row);
         width: 100%;
         color: $pure-white;
+        padding: $eighth-percent 0;
         .footer-item {
             @include flex(center, center, row);
             @include size(100%, 100%);
             flex: 1;
+            h6 {
+                font-size: calc($h6-font-size * 0.85);
+            }
             //padding: $zero $half-percent;
             .footer-item-text {
                 color: $pure-white;
