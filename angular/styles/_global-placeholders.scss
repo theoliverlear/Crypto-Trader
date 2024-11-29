@@ -21,3 +21,6 @@
 %nav-bar-padding-top {
     padding-top: $four-percent;
 }
+%fill-container {
+    @include square-size(100%);
+}
