@@ -28,6 +28,7 @@
             ],
             "styles": [
               "angular/components/app/app-style.component.css",
+              "angular/components/elements/content-stripe/content-stripe-style.component.css",
               "angular/components/elements/live-chart/live-chart-style.component.css",
               "angular/components/elements/nav-bar/nav-bar-style.component.css",
               "angular/components/elements/nav-bar-item/nav-bar-item-style.component.css",
