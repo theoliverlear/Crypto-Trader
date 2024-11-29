@@ -53,7 +53,7 @@ body {
         }
         .scroll-container {
             @include flex(flex-start, flex-start, column);
-            @extend %nav-bar-padding-top;
+            //@extend %nav-bar-padding-top;
             width: 100%;
             overflow-x: auto;
             overflow-y: scroll;
