@@ -8,10 +8,16 @@ import {NavBarItemComponent} from "./nav-bar-item/nav-bar-item.component";
 import {
     ProfilePictureComponent
 } from "./profile-picture/profile-picture.component";
+import {LiveChartComponent} from "./live-chart/live-chart.component";
+import {
+    NavBarProfilePictureComponent
+} from "./nav-bar-profile-picture/nav-bar-profile-picture.component";
 
 export const elements = [
+    LiveChartComponent,
     NavBarComponent,
     NavBarItemComponent,
+    NavBarProfilePictureComponent,
     ProfilePictureComponent,
     SsAnchorComponent,
     SsButtonComponent,
