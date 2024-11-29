@@ -3,16 +3,16 @@ package org.theoliverlear.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.theoliverlear.comm.request.AssetValueRequest;
 import org.theoliverlear.comm.response.AssetValueResponse;
 import org.theoliverlear.entity.currency.Currency;
 import org.theoliverlear.service.CurrencyService;
 
-@Controller
-@RequestMapping("/currency")
+@RestController
+@RequestMapping("/api/currency")
 public class CurrencyController {
     private CurrencyService currencyService;
     @Autowired
