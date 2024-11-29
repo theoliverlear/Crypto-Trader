@@ -28,14 +28,17 @@
             ],
             "styles": [
               "angular/components/app/app-style.component.css",
+              "angular/components/elements/live-chart/live-chart-style.component.css",
               "angular/components/elements/nav-bar/nav-bar-style.component.css",
               "angular/components/elements/nav-bar-item/nav-bar-item-style.component.css",
+              "angular/components/elements/nav-bar-profile-picture/nav-bar-profile-picture-style.component.css",
               "angular/components/elements/profile-picture/profile-picture-style.component.css",
               "angular/components/elements/ss-anchor/ss-anchor-style.component.css",
               "angular/components/elements/ss-button/ss-button-style.component.css",
               "angular/components/elements/ss-footer/ss-footer-style.component.css",
               "angular/components/elements/ss-img/ss-img-style.component.css",
-              "angular/components/pages/home/home-style.component.css"
+              "angular/components/pages/home/home-style.component.css",
+              "angular/components/pages/portfolio/portfolio-style.component.css"
             ],
             "scripts": [],
             "fileReplacements": []
