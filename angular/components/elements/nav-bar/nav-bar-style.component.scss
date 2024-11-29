@@ -7,6 +7,7 @@
 
 nav-bar {
     @include flex(center, center, column);
+    position: relative;
     width: 100%;
     box-sizing: border-box;
     background-color: $almost-white;
@@ -15,8 +16,8 @@ nav-bar {
     height: $four-percent;
     nav {
         @include flex(space-between, center, row);
-        //display: none;
         width: 30%;
+        //display: none;
 
 
         //#nav-div {
@@ -25,11 +26,6 @@ nav-bar {
         //    margin: 0 0 0 simple-calc(4.5, 2.5);
         //}
 
-
-        .nav-item {
-            @include flex(center, center, row);
-            padding: 0 simple-calc(1, 1);
-        }
 
         #default-avatar-image {
             $width-height: simple-calc(3, 1.75);
@@ -55,42 +51,13 @@ nav-bar {
                 margin-right: $bottom-and-right-margin;
             }
         }
-
-        .nav-bar-item-container {
-            @include flex(center, center, row);
-            border-radius: simplest-calc(1);
-            transition: background-color, box-shadow, border, margin-top, margin-left, 0.3s;
-            padding: simplest-calc(0.25) simplest-calc(1);
-
-            h5 {
-                @include basic-margin-padding(0, 0);
-            }
-
-            &:hover {
-                background-color: $almost-white;
-                $box-shadow-size: simplest-calc(0.35);
-                box-shadow: $blue-grey $box-shadow-size $box-shadow-size 0 0;
-                cursor: pointer;
-                border: $muted-blue simple-calc(0.1, 0.05) solid;
-            }
-
-            &:active {
-                background-color: $almost-white;
-                box-shadow: none;
-                $top-and-right-margin: simplest-calc(0.35);
-                margin: {
-                    top: $top-and-right-margin;
-                    left: $top-and-right-margin;
-                }
-            }
-        }
     }
 }
 #account-image-container {
     @include flex(space-around, center, column);
     position: relative;
     box-sizing: border-box;
-    display: none;
+    //display: none;
     padding: simple-calc(0.15, 0.05);
     border-radius: simple-calc(1, 1);
     &:hover #logout-button-div {
@@ -112,5 +79,21 @@ nav-bar {
     color: $almost-white;
     &:hover {
         border: $thin-border solid $sunbeam-yellow;
+    }
+}
+
+nav-bar {
+    @include flex(center, center, column);
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: $almost-white;
+    box-shadow: 0 0 simple-calc(1, 0.5) 0 $black-shadow;
+    border-bottom: $very-thin-border solid $muted-blue-half-opacity;
+    height: $four-percent;
+    nav {
+        @include flex(space-between, center, row);
+        width: 30%;
+
     }
 }
