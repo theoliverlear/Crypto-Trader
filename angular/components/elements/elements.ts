@@ -15,17 +15,49 @@ import {
 import {
     ContentStripeComponent
 } from "./content-stripe/content-stripe.component";
+import {AuthConsoleComponent} from "./auth-console/auth-console.component";
+import {SsInputComponent} from "./ss-input/ss-input.component";
+import {ChartComponent} from "./chart/chart.component";
+import {TraderEventBubbleComponent} from "./trader-event-bubble/trader-event-bubble.component";
+import {PortfolioSectionComponent} from "./portfolio-section/portfolio-section.component";
+import {PerformanceSectionComponent} from "./performance-section/performance-section.component";
+import {CurrencyWalletComponent} from "./currency-wallet/currency-wallet.component";
+import {PortfolioInputComponent} from "./portfolio-input/portfolio-input.component";
+import {PerformanceChartComponent} from "./performance-chart/performance-chart.component";
+import {PerformanceChartSettingsComponent} from "./performance-chart-settings/performance-chart-settings.component";
+import {PortfolioSectionSelectorComponent} from "./portfolio-section-selector/portfolio-section-selector.component";
+import {PortfolioSectionSelectorBubbleComponent} from "./portfolio-section-selector-bubble/portfolio-section-selector-bubble.component";
+import {
+    AuthConsoleLoginSectionComponent
+} from "./auth-console-login-section/auth-console-login-section.component";
+import {
+    AuthConsoleSignupSectionComponent
+} from "./auth-console-signup-section/auth-console-signup-section.component";
 
 export const elements = [
+    AuthConsoleComponent,
+    AuthConsoleLoginSectionComponent,
+    AuthConsoleSignupSectionComponent,
+    ChartComponent,
     ContentStripeComponent,
+    CurrencyWalletComponent,
     LiveChartComponent,
     NavBarComponent,
     NavBarItemComponent,
     NavBarProfilePictureComponent,
+    PerformanceChartComponent,
+    PerformanceChartSettingsComponent,
+    PerformanceSectionComponent,
+    PortfolioInputComponent,
+    PortfolioSectionComponent,
+    PortfolioSectionSelectorBubbleComponent,
+    PortfolioSectionSelectorComponent,
     ProfilePictureComponent,
     SsAnchorComponent,
     SsButtonComponent,
     SsFooterComponent,
     SsHeadComponent,
-    SsImgComponent
+    SsImgComponent,
+    SsInputComponent,
+    TraderEventBubbleComponent,
 ]
