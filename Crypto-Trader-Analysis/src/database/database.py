@@ -13,10 +13,10 @@ class Database:
     port: str = "5432"
     host: str = "localhost"
     def __init__(self):
-        self.engine = self.build_database_engine()
+        self.engine = self.create_engine()
 
     def create_engine(self):
-        self.engine = create_engine(self.get_engine_url())
+        return create_engine(self.get_engine_url())
 
     def query_database(self, query: Query):
         try:
@@ -31,6 +31,9 @@ class Database:
             df = pd.DataFrame(df, columns=["currency_code", "last_updated", "currency_value"])
         df["last_updated"] = pd.to_datetime(df["last_updated"])
         return df
+
+    def disconnect(self):
+        self.engine.dispose()
 
     @staticmethod
     def get_engine_url():
