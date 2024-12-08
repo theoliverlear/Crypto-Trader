@@ -4,35 +4,30 @@
 @import "../../../styles/global-placeholders";
 
 ss-button {
-    .general-button {
-        background-color: $sunbeam-yellow;
-        padding: simple-calc(0.5, 0.25) 0;
-        border-radius: simple-calc(1, 1);
-        width: simple-calc(20, 1);
-        height: simple-calc(4, 2);
-        margin-left: 0;
-        margin-top: 0;
-        text-align: center;
-        @include flex(center, center, row);
-        $square-box-shadow: simple-calc(0.25, 0.25);
+    background-color: $sunbeam-yellow;
+    padding: simple-calc(0.5, 0.25) 0;
+    border-radius: simple-calc(1, 1);
+    width: simple-calc(15, 4);
+    height: simple-calc(3, 2);
+    margin-left: 0;
+    margin-top: 0;
+    text-align: center;
+    @include flex(center, center, row);
+    $square-box-shadow: simple-calc(0.25, 0.25);
+    box-shadow: $blue-grey $square-box-shadow $square-box-shadow;
+    transition: box-shadow, transform 0.3s;
+    &:hover {
+        $square-box-shadow: simple-calc(0.35, 0.35);
         box-shadow: $blue-grey $square-box-shadow $square-box-shadow;
-        transition: box-shadow, margin-left, margin-top, 0.3s;
-        &:hover {
-            $square-box-shadow: simple-calc(0.35, 0.35);
-            box-shadow: $blue-grey $square-box-shadow $square-box-shadow;
-            cursor: pointer;
-        }
-        &:active {
-            transition: box-shadow, margin-left, margin-top, 0.15s;
-            $margins-and-box-shadow: simple-calc(0.25, 0.25);
-            box-shadow: $blue-grey 0 0 $margins-and-box-shadow;
-            margin : {
-                left: $margins-and-box-shadow;
-                top: $margins-and-box-shadow;
-            }
-        }
+        cursor: pointer;
     }
-    .general-button-inverted {
+    &:active {
+        transition: box-shadow, margin-left, margin-top, 0.15s;
+        $margins-and-box-shadow: simple-calc(0.25, 0.25);
+        box-shadow: $blue-grey 0 0 $margins-and-box-shadow;
+        transform: translate($margins-and-box-shadow, $margins-and-box-shadow);
+    }
+    .inverted {
         background-color: $sunbeam-yellow;
         padding: simple-calc(0.5, 0.25) 0;
         border-radius: simplest-calc(1);
@@ -63,7 +58,7 @@ ss-button {
         }
     }
 
-    .small-button {
+    &.small {
         background-color: $sunbeam-yellow;
         padding: simple-calc(0.5, 0.25);
         border-radius: simplest-calc(0.5);
