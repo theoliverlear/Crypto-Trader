@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.theoliverlear</groupId>
-    <artifactId>cypto-trader</artifactId>
+    <artifactId>crypto-trader</artifactId>
     <version>1.0-SNAPSHOT</version>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.5</version>
+        <version>3.3.2</version>
         <relativePath/>
     </parent>
     <properties>
@@ -21,9 +21,9 @@
     <dependencies>
         <!-- Junit is a unit testing framework for Java -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.8.1</version>
             <scope>test</scope>
         </dependency>
         <!--
@@ -31,9 +31,14 @@
         applications
         -->
         <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>3.2.1</version>
+            <version>3.3.2</version>
         </dependency>
         <!--
         Spring boot test-starter is Starter for testing Spring Boot
@@ -105,13 +110,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web-services</artifactId>
-        </dependency>
-        <!-- H2 is an open-source lightweight Java database -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>2.1.214</version>
-            <scope>runtime</scope>
         </dependency>
 
         <!-- JDBC Starter tools for connecting to databases -->

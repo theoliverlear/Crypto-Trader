@@ -1,0 +1,31 @@
+@import "../../../styles/global-variables";
+@import "../../../styles/global-mixins";
+@import "../../../styles/global-functions";
+@import "../../../styles/global-placeholders";
+
+nav-bar-profile-picture {
+    @include flex(space-around, center, column);
+    position: absolute;
+    box-sizing: border-box;
+    top: $quarter-percent;
+    right: $one-percent;
+    @include square-size(calc($three-half-percent * .95));
+    padding: simple-calc(0.15, 0.05);
+    border-radius: simple-calc(1, 1);
+    transition: box-shadow, transform, 0.3s;
+    profile-picture {
+        @include square-size(calc($three-half-percent * .95));
+    }
+    &:hover {
+        $hover-box-shadow-size: simplest-calc(0.15);
+        box-shadow: $morning-frost-blue $hover-box-shadow-size $hover-box-shadow-size;
+        cursor: pointer;
+    }
+
+    &:active {
+        box-shadow: none;
+        $hover-box-shadow-size: simplest-calc(0.15);
+        transform: translate($hover-box-shadow-size, $hover-box-shadow-size);
+    }
+
+}

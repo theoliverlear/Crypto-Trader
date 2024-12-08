@@ -1,0 +1,179 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "crypto-trader": {
+      "root": "",
+      "sourceRoot": "",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "src/main/resources/templates/angular_build",
+            "index": "angular/index.html",
+            "main": "angular/main.ts",
+            "polyfills": "angular/polyfills.ts",
+            "tsConfig": "tsconfig.json",
+            "aot": false,
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "angular/assets",
+                "output": "/assets/"
+              }
+            ],
+            "styles": [
+              "angular/components/app/app-style.component.css",
+              "angular/components/elements/auth-console-login-section/auth-console-login-section-style.component.css",
+              "angular/components/elements/auth-console-signup-section/auth-console-signup-section-style.component.css",
+              "angular/components/elements/auth-console-tab-section/auth-console-tab-section-style.component.css",
+              "angular/components/elements/auth-console-tab/auth-console-tab-style.component.css",
+              "angular/components/elements/auth-console/auth-console-style.component.css",
+              "angular/components/elements/auth-input/auth-input-style.component.css",
+              "angular/components/elements/chart/chart-style.component.css",
+              "angular/components/elements/content-stripe/content-stripe-style.component.css",
+              "angular/components/elements/currency-wallet/currency-wallet-style.component.css",
+              "angular/components/elements/live-chart/live-chart-style.component.css",
+              "angular/components/elements/nav-bar-item/nav-bar-item-style.component.css",
+              "angular/components/elements/nav-bar-profile-picture/nav-bar-profile-picture-style.component.css",
+              "angular/components/elements/nav-bar/nav-bar-style.component.css",
+              "angular/components/elements/performance-chart-settings/performance-chart-settings-style.component.css",
+              "angular/components/elements/performance-chart/performance-chart-style.component.css",
+              "angular/components/elements/performance-section/performance-section-style.component.css",
+              "angular/components/elements/portfolio-input/portfolio-input-style.component.css",
+              "angular/components/elements/portfolio-section-selector-bubble/portfolio-section-selector-bubble-style.component.css",
+              "angular/components/elements/portfolio-section-selector/portfolio-section-selector-style.component.css",
+              "angular/components/elements/portfolio-section/portfolio-section-style.component.css",
+              "angular/components/elements/profile-picture/profile-picture-style.component.css",
+              "angular/components/elements/ss-anchor/ss-anchor-style.component.css",
+              "angular/components/elements/ss-button/ss-button-style.component.css",
+              "angular/components/elements/ss-footer/ss-footer-style.component.css",
+              "angular/components/elements/ss-img/ss-img-style.component.css",
+              "angular/components/elements/ss-input/ss-input-style.component.css",
+              "angular/components/elements/trader-event-bubble/trader-event-bubble-style.component.css",
+              "angular/components/pages/account/account-style.component.css",
+              "angular/components/pages/authorize/authorize-style.component.css",
+              "angular/components/pages/currencies/currencies-style.component.css",
+              "angular/components/pages/home/home-style.component.css",
+              "angular/components/pages/not-found/not-found-style.component.css",
+              "angular/components/pages/portfolio/portfolio-style.component.css",
+              "angular/components/pages/terms-of-service/terms-of-service-style.component.css",
+              "angular/components/pages/trader/trader-style.component.css"
+            ],
+            "scripts": [],
+            "fileReplacements": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "angular/environments/environment.ts",
+                  "with": "angular/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "none",
+              "optimization": true,
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            },
+            "development": {
+              "fileReplacements": [
+                {
+                  "replace": "angular/environments/environment.ts",
+                  "with": "angular/environments/environment.dev.ts"
+                }
+              ],
+              "optimization": false,
+              "outputHashing": "none",
+              "sourceMap": true,
+              "namedChunks": true,
+              "aot": false,
+              "extractLicenses": true,
+              "vendorChunk": true,
+              "buildOptimizer": false
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "buildTarget": "crypto-trader:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "crypto-trader:build:production"
+            },
+            "development": {
+              "buildTarget": "crypto-trader:build:development"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "crypto-trader:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "angular/test.ts",
+            "polyfills": "angular/polyfills.ts",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "assets": [
+              "angular/assets"
+            ],
+            "styles": [
+              "angular/styles/styles.css"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "tsconfig.app.json",
+              "tsconfig.spec.json",
+              "e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "crypto-trader:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "crypto-trader:serve:production"
+            },
+            "development": {
+              "devServerTarget": "crypto-trader:serve:development"
+            }
+          }
+        }
+      }
+    }
+  }
+}

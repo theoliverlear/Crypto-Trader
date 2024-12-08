@@ -3,10 +3,10 @@ package org.theoliverlear.controller;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.theoliverlear.comm.request.PortfolioAssetRequest;
 import org.theoliverlear.comm.response.AssetValueResponse;
 import org.theoliverlear.entity.portfolio.Portfolio;
@@ -18,13 +18,13 @@ import org.theoliverlear.service.PortfolioService;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/portfolio")
+@RestController
+@RequestMapping("/api/portfolio")
 public class PortfolioController {
     //============================-Variables-=================================
-    User currentUser;
-    Portfolio portfolio = new Portfolio();
-    PortfolioService portfolioService;
+    private User currentUser;
+    private Portfolio portfolio = new Portfolio();
+    private PortfolioService portfolioService;
     //===========================-Constructors-===============================
     @Autowired
     public PortfolioController(PortfolioService portfolioService) {
@@ -32,17 +32,6 @@ public class PortfolioController {
     }
     //=============================-Methods-==================================
 
-    //-----------------------------Portfolio----------------------------------
-    @RequestMapping("/")
-    public String portfolio(HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return "redirect:/user/";
-        }
-        this.currentUser = user;
-        this.portfolio = this.portfolioService.getPortfolioByUserId(user.getId());
-        return "portfolio";
-    }
     //---------------------------Get-Portfolio--------------------------------
     @RequestMapping("/get")
     public ResponseEntity<Portfolio> getPortfolio() {

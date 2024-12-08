@@ -7,6 +7,4 @@
 /crpto-trader.iml
 /CryptoTraderAnalysis/.idea/
 
-*.json
-*.xml
 /src/main/resources/ssl/keystore.p12

@@ -1,0 +1,11 @@
+@import "../../../styles/global-variables";
+@import "../../../styles/global-mixins";
+@import "../../../styles/global-functions";
+@import "../../../styles/global-placeholders";
+
+ss-anchor {
+    //@extend %fill-container;
+    a {
+        @extend %fill-container;
+    }
+}

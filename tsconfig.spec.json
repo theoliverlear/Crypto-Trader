@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./",
+    "types": [
+      "jasmine",
+      "node"
+    ]
+  },
+  "files": [
+    "angular/test/test.ts",
+  ],
+  "include": [
+    "./**/*.spec.ts",
+    "./**/*.d.ts"
+  ]
+}

@@ -1,0 +1,20 @@
+<a [target]="elementLink.targetType" class="link-no-style">
+    <ng-container *ngIf="!hasText">
+        <ng-content></ng-content>
+    </ng-container>
+    <ng-container *ngIf="hasText">
+        <ng-container [ngSwitch]="elementLink.tagType">
+            <h1   *ngSwitchCase="TagType.H1">{{ elementLink.text }}</h1>
+            <h2   *ngSwitchCase="TagType.H2">{{ elementLink.text }}</h2>
+            <h3   *ngSwitchCase="TagType.H3">{{ elementLink.text }}</h3>
+            <h4   *ngSwitchCase="TagType.H4">{{ elementLink.text }}</h4>
+            <h5   *ngSwitchCase="TagType.H5">{{ elementLink.text }}</h5>
+            <h6   *ngSwitchCase="TagType.H6">{{ elementLink.text }}</h6>
+            <p    *ngSwitchCase="TagType.P">{{ elementLink.text }}</p>
+            <span *ngSwitchCase="TagType.SPAN">{{ elementLink.text }}</span>
+            <div  *ngSwitchCase="TagType.DIV">{{ elementLink.text }}</div>
+            <code *ngSwitchCase="TagType.CODE">{{ elementLink.text }}</code>
+            <span *ngSwitchDefault> {{ elementLink.text }}</span>
+        </ng-container>
+    </ng-container>
+</a>

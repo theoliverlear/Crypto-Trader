@@ -1,0 +1,26 @@
+//=================================-Imports-==================================
+@import "global-variables";
+@import "global-mixins";
+@import "global-functions";
+//===============================-Placeholders-===============================
+
+
+//-------------------------------Indented-Text--------------------------------
+%indented-text {
+    text-indent: $two-percent;
+}
+%circle-border-radius {
+    border-radius: 50%;
+}
+%soft-border-radius {
+    border-radius: $one-percent;
+}
+%no-margin-padding {
+    @include basic-margin-padding(0, 0);
+}
+%nav-bar-padding-top {
+    padding-top: $four-percent;
+}
+%fill-container {
+    @include square-size(100%);
+}
