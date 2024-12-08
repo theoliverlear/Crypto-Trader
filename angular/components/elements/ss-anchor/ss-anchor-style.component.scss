@@ -4,5 +4,8 @@
 @import "../../../styles/global-placeholders";
 
 ss-anchor {
-
+    //@extend %fill-container;
+    a {
+        @extend %fill-container;
+    }
 }
