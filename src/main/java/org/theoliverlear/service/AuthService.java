@@ -24,13 +24,14 @@ public class AuthService {
     }
     public PayloadStatusResponse<AuthResponse> signup(UserRequest userRequest) {
         String username = userRequest.getUsername();
+        String email = userRequest.getEmail();
         String password = userRequest.getPassword();
         boolean userExists = this.userService.userExistsByUsername(username);
         if (userExists) {
             return new PayloadStatusResponse<>(new AuthResponse(AuthStatus.UNAUTHORIZED), HttpStatus.CONFLICT);
         } else {
             SafePassword safePassword = new SafePassword(password);
-            User user = new User(username, safePassword);
+            User user = new User(username, email, safePassword);
             Portfolio portfolio = new Portfolio(user);
             user.setPortfolio(portfolio);
             this.userService.saveUser(user);
