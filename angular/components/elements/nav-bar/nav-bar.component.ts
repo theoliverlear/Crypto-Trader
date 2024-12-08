@@ -2,8 +2,9 @@ import {
   Component
 } from '@angular/core';
 import {
-  navBarHomeLink,
-  navBarPortfolioLink, navBarTraderLink
+    navBarHomeLink,
+    navBarPortfolioLink,
+    navBarTraderLink
 } from "../../../assets/elementLinkAssets";
 
 
