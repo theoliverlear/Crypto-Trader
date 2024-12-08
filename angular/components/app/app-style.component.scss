@@ -60,7 +60,14 @@ body {
             height: auto;
             flex: 1;
         }
-        authorize, currencies, home, not-found, portfolio, terms-of-service, trader  {
+        account,
+        authorize,
+        currencies,
+        home,
+        not-found,
+        portfolio,
+        terms-of-service,
+        trader  {
             width: 100%;
             box-sizing: border-box;
             flex: 1;
