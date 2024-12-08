@@ -1,5 +1,6 @@
-import {Component, Input} from "@angular/core";
+import {Component, HostListener, Input, ViewChild} from "@angular/core";
 import {TextElementLink} from "../../../models/link/TextElementLink";
+import {SsAnchorComponent} from "../ss-anchor/ss-anchor.component";
 
 @Component({
     selector: 'nav-bar-item',
@@ -8,7 +9,12 @@ import {TextElementLink} from "../../../models/link/TextElementLink";
 })
 export class NavBarItemComponent {
     @Input() elementLink: TextElementLink;
+    @ViewChild(SsAnchorComponent) anchorComponent: SsAnchorComponent;
     constructor() {
 
+    }
+    @HostListener('click')
+    onClick() {
+        this.anchorComponent.onClick();
     }
 }
