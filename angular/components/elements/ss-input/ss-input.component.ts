@@ -1,5 +1,11 @@
 // ss-input.component.ts 
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {
+    Component,
+    EventEmitter,
+    HostListener,
+    Input,
+    Output
+} from "@angular/core";
 import {InputType} from "./models/InputType";
 
 @Component({
@@ -12,5 +18,12 @@ export class SsInputComponent {
     @Output() inputEvent: EventEmitter<string> = new EventEmitter<string>();
     constructor() {
 
+    }
+    @HostListener('input', ['$event.target.value'])
+    onInput(value: string) {
+        this.inputEvent.emit(value);
+    }
+    isCheckbox(): boolean {
+        return this.inputType === InputType.CHECKBOX;
     }
 }
