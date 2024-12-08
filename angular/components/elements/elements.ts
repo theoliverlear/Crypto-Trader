@@ -64,6 +64,7 @@ import {
     AuthConsoleTabSectionComponent
 } from "./auth-console-tab-section/auth-console-tab-section.component";
 import {AuthInputComponent} from "./auth-input/auth-input.component";
+import {PopupComponent} from "./popup/popup.component";
 
 export const elements = [
     AuthConsoleComponent,
@@ -82,6 +83,7 @@ export const elements = [
     PerformanceChartComponent,
     PerformanceChartSettingsComponent,
     PerformanceSectionComponent,
+    PopupComponent,
     PortfolioInputComponent,
     PortfolioSectionComponent,
     PortfolioSectionSelectorBubbleComponent,
