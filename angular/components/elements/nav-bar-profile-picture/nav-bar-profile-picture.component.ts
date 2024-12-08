@@ -1,4 +1,5 @@
 import {Component} from "@angular/core";
+import {navBarAccountLink} from "../../../assets/elementLinkAssets";
 
 @Component({
     selector: 'nav-bar-profile-picture',
@@ -9,4 +10,6 @@ export class NavBarProfilePictureComponent {
     constructor() {
         console.log('NavBarProfilePictureComponent loaded');
     }
+
+    protected readonly navBarAccountLink = navBarAccountLink;
 }
