@@ -1,4 +1,11 @@
-import {Component, HostBinding, Input, OnInit} from "@angular/core";
+import {
+    Component,
+    EventEmitter,
+    HostBinding, HostListener,
+    Input,
+    OnInit,
+    Output
+} from "@angular/core";
 import {ElementSize} from "../../../models/ElementSize";
 import {ButtonText} from "./models/ButtonText";
 import {ButtonPosition} from "./models/ButtonPosition";
@@ -13,6 +20,7 @@ export class SsButtonComponent implements OnInit{
     @Input() size: ElementSize;
     @Input() buttonPosition: ButtonPosition;
     @HostBinding('style.align-self') alignSelf: string;
+    @Output() buttonClick: EventEmitter<void> = new EventEmitter<void>();
     constructor() {
         console.log('SsButtonComponent loaded');
     }
@@ -20,6 +28,13 @@ export class SsButtonComponent implements OnInit{
         this.setAlignSelf();
     }
 
+    emitButtonClick(): void {
+        this.buttonClick.emit();
+    }
+    @HostListener('click')
+    onClick(): void {
+        this.emitButtonClick();
+    }
     private setAlignSelf(): void {
         switch (this.buttonPosition) {
             case ButtonPosition.START:
