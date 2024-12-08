@@ -3,5 +3,6 @@ export const enum InputType {
     TEXT = 'text',
     PASSWORD = 'password',
     EMAIL = 'email',
-    TELEPHONE_PAD = 'tel'
+    TELEPHONE_PAD = 'tel',
+    CHECKBOX = 'checkbox',
 }
