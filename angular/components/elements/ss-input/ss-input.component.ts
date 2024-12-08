@@ -1,5 +1,6 @@
 // ss-input.component.ts 
-import {Component, EventEmitter, Output} from "@angular/core";
+import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {InputType} from "./models/InputType";
 
 @Component({
     selector: 'ss-input',
@@ -7,6 +8,7 @@ import {Component, EventEmitter, Output} from "@angular/core";
     styleUrls: ['./ss-input-style.component.css']
 })
 export class SsInputComponent {
+    @Input() inputType: InputType;
     @Output() inputEvent: EventEmitter<string> = new EventEmitter<string>();
     constructor() {
 
