@@ -74,34 +74,6 @@ body {
         }
     }
 }
-input {
-    padding: simplest-calc(0.25);
-    border-radius: simplest-calc(0.25);
-    border: $muted-blue $thin-border solid;
-    box-shadow: $morning-frost-blue 0 0 simplest-calc(0.25);
-    transition: box-shadow, margin-left, margin-top, 0.3s;
-    &:hover {
-        $box-shadow-size: simplest-calc(0.35);
-        box-shadow: $morning-frost-blue $box-shadow-size $box-shadow-size;
-        cursor: pointer;
-    }
-    &:active {
-        transition: box-shadow, margin-left, margin-top, 0.15s;
-        /*box-shadow: var(--morning-frost-blue) 0 0 calc(((0.25vh + 0.25vw) / 2) + 0.25em);*/
-        box-shadow: none;
-        $margin-top-and-left: simplest-calc(0.25);
-        margin-left: $margin-top-and-left;
-        margin-top: $margin-top-and-left;
-    }
-    &[type="checkbox"] {
-        &:hover{
-            box-shadow: $morning-frost-blue simplest-calc(0.2) simplest-calc(0.2);
-        }
-        &:active {
-            box-shadow: $morning-frost-blue 0 0 simplest-calc(0.05);
-        }
-    }
-}
 .link-no-style {
     text-decoration: none;
     color: black;
