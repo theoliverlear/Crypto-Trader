@@ -1,5 +1,6 @@
 export enum ButtonText {
-    CONFIRM = 'CONFIRM',
-    BACK = 'BACK',
-    POST = 'POST',
+    CONFIRM = 'Confirm',
+    BACK = 'Back',
+    LOGIN = 'Login',
+    SIGN_UP = 'Sign Up',
 }
