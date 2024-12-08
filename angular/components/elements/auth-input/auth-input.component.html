@@ -1,10 +1,11 @@
 <!-- auth-input.component.html -->
 <ng-container>
-    <div>
+    <div class="auth-input-title-div">
         <h5>
-            {{ authInputType}}
+            {{ authTypeString }}
         </h5>
     </div>
     <ss-input
-        [inputType]="getInputType()"/>
+            (inputEvent)="updateInputText($event)"
+            [inputType]="getInputType()"/>
 </ng-container>
