@@ -1,5 +1,11 @@
 // auth-console-tab.component.ts 
-import {Component, Input} from "@angular/core";
+import {
+    Component,
+    EventEmitter,
+    HostListener,
+    Input,
+    Output
+} from "@angular/core";
 import {AuthType} from "../../../models/auth/AuthType";
 
 @Component({
@@ -9,7 +15,15 @@ import {AuthType} from "../../../models/auth/AuthType";
 })
 export class AuthConsoleTabComponent {
     @Input() authType: AuthType;
+    @Output() authTabClicked: EventEmitter<AuthType> = new EventEmitter<AuthType>();
     constructor() {
         
+    }
+    emitAuthTabClicked(): void {
+        this.authTabClicked.emit(this.authType);
+    }
+    @HostListener('click')
+    onClick(): void {
+        this.emitAuthTabClicked();
     }
 }
