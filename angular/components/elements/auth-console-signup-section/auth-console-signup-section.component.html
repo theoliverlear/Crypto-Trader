@@ -1,4 +1,9 @@
 <!-- auth-console-signup-section.component.html -->
 <ng-container>
-
+    <auth-input [authInputType]="AuthInputType.USERNAME"/>
+    <auth-input [authInputType]="AuthInputType.EMAIL"/>
+    <auth-input [authInputType]="AuthInputType.PASSWORD"/>
+    <auth-input [authInputType]="AuthInputType.CONFIRM_PASSWORD"/>
+    <auth-input [authInputType]="AuthInputType.AGREED_TERMS"/>
+    <ss-button (buttonClick)="emitFields()" [size]="ElementSize.MEDIUM" [text]="ButtonText.SIGN_UP"/>
 </ng-container>
