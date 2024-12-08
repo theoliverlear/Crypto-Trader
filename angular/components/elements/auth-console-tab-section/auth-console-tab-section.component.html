@@ -1,5 +1,5 @@
 <!-- auth-console-tab-section.component.html -->
 <ng-container>
-    <auth-console-tab [authType]="AuthType.SIGNUP"/>
-    <auth-console-tab [authType]="AuthType.LOGIN"/>
+    <auth-console-tab (authTabClicked)="setAuthType($event)" [authType]="AuthType.SIGN_UP"/>
+    <auth-console-tab (authTabClicked)="setAuthType($event)" [authType]="AuthType.LOGIN"/>
 </ng-container>
