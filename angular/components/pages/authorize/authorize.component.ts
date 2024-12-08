@@ -1,4 +1,5 @@
 import {Component} from "@angular/core";
+import {AuthPopup} from "../../../models/auth/AuthPopup";
 
 @Component({
     selector: 'authorize',
@@ -9,4 +10,6 @@ export class AuthorizeComponent {
     constructor() {
 
     }
+
+    protected readonly AuthPopup = AuthPopup;
 }
