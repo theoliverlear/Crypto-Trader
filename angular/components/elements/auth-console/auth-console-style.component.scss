@@ -6,6 +6,7 @@
 auth-console {
     margin: simple-calc(3, 1) 0 0 0;
     padding: 0;
-    @include flex(center, center, row);
-    @include size(simple-calc(70, 10), auto)
+    @include flex(center, center, column);
+    width: $thirty-percent;
+    z-index: 0;
 }
