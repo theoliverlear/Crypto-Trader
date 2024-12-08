@@ -1,6 +1,7 @@
 import {TextElementLink} from "../models/link/TextElementLink";
 import {TargetType} from "../models/html/TargetType";
 import {TagType} from "../models/html/TagType";
+import {ElementLink} from "../models/link/ElementLink";
 
 export const navBarHomeLink = new TextElementLink('',
     TargetType.SELF,
@@ -19,4 +20,8 @@ export const navBarTraderLink = new TextElementLink('/trader',
     false,
     'Trader',
     TagType.H5
+);
+export const navBarAccountLink = new ElementLink('/account',
+    TargetType.SELF,
+    false
 );
