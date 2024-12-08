@@ -1,8 +1,8 @@
-<a [href]="elementLink.hrefLink" [target]="elementLink.targetType" class="link-no-style">
-    <ng-container *ngIf="hasContent">
+<a [target]="elementLink.targetType" class="link-no-style">
+    <ng-container *ngIf="!hasText">
         <ng-content></ng-content>
     </ng-container>
-    <ng-container *ngIf="!hasContent">
+    <ng-container *ngIf="hasText">
         <ng-container [ngSwitch]="elementLink.tagType">
             <h1   *ngSwitchCase="TagType.H1">{{ elementLink.text }}</h1>
             <h2   *ngSwitchCase="TagType.H2">{{ elementLink.text }}</h2>
