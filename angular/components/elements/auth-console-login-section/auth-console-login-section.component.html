@@ -1,1 +1,6 @@
 <!-- auth-console-login-section.component.html -->
+<ng-container>
+    <auth-input [authInputType]="AuthInputType.USERNAME"/>
+    <auth-input [authInputType]="AuthInputType.PASSWORD"/>
+    <ss-button (buttonClick)="emitFields()" [size]="ElementSize.MEDIUM" [text]="ButtonText.LOGIN"/>
+</ng-container>
