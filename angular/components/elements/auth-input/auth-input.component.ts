@@ -1,5 +1,5 @@
 // auth-input.component.ts 
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {AuthInputType} from "./models/AuthInputType";
 import {InputType} from "../ss-input/models/InputType";
 
@@ -11,12 +11,17 @@ import {InputType} from "../ss-input/models/InputType";
 export class AuthInputComponent implements OnInit {
     @Input() authInputType: AuthInputType;
     @Input() authTypeString: string = "";
+    @Output() inputChange: EventEmitter<string> = new EventEmitter<string>();
     inputText: string = "";
     constructor() {
         
     }
+    emitInputText(): void {
+        this.inputChange.emit(this.inputText);
+    }
     updateInputText(text: string): void {
         this.inputText = text;
+        this.emitInputText();
     }
     ngOnInit() {
         if (this.authInputType !== AuthInputType.AGREED_TERMS) {
