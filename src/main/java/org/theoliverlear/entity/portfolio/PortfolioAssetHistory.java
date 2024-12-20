@@ -1,8 +1,10 @@
 package org.theoliverlear.entity.portfolio;
 //=================================-Imports-==================================
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.theoliverlear.entity.Identifiable;
 import org.theoliverlear.entity.currency.Currency;
 
 import java.time.LocalDateTime;
@@ -10,12 +12,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "portfolio_asset_history")
+@Builder
 @Entity
-public class PortfolioAssetHistory implements SequentiallyValuable<PortfolioAssetHistory> {
+public class PortfolioAssetHistory extends Identifiable implements SequentiallyValuable<PortfolioAssetHistory> {
     //============================-Variables-=================================
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @ManyToOne
     @JoinColumn(name = "portfolio_asset_id", nullable = false)
     private PortfolioAsset portfolioAsset;
@@ -45,6 +45,7 @@ public class PortfolioAssetHistory implements SequentiallyValuable<PortfolioAsse
     private LocalDateTime lastUpdated;
     //===========================-Constructors-===============================
     public PortfolioAssetHistory() {
+        super();
         this.currency = new Currency();
         this.shares = 0;
         this.sharesValueInDollars = 0;
@@ -53,6 +54,7 @@ public class PortfolioAssetHistory implements SequentiallyValuable<PortfolioAsse
         this.lastUpdated = LocalDateTime.now();
     }
     public PortfolioAssetHistory(PortfolioAsset portfolioAsset, boolean tradeOccurred) {
+        super();
         this.portfolioAsset = portfolioAsset;
         this.portfolio = portfolioAsset.getPortfolio();
         this.currency = portfolioAsset.getCurrency();
@@ -65,6 +67,7 @@ public class PortfolioAssetHistory implements SequentiallyValuable<PortfolioAsse
         this.lastUpdated = LocalDateTime.now();
     }
     public PortfolioAssetHistory(PortfolioAsset portfolioAsset, LocalDateTime lastUpdated) {
+        super();
         this.portfolioAsset = portfolioAsset;
         this.portfolio = portfolioAsset.getPortfolio();
         this.currency = portfolioAsset.getCurrency();
@@ -75,6 +78,7 @@ public class PortfolioAssetHistory implements SequentiallyValuable<PortfolioAsse
         this.targetPrice = portfolioAsset.getTargetPrice();
         this.lastUpdated = lastUpdated;
     }
+    @Override
     public void calculateValueChange(PortfolioAssetHistory previousHistory) {
         if (previousHistory == null) {
             this.valueChange = 0;
