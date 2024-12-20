@@ -31,7 +31,11 @@ public class AuthService {
             return new PayloadStatusResponse<>(new AuthResponse(AuthStatus.UNAUTHORIZED), HttpStatus.CONFLICT);
         } else {
             SafePassword safePassword = new SafePassword(password);
-            User user = new User(username, email, safePassword);
+            User user = User.builder()
+                            .username(username)
+                            .email(email)
+                            .safePassword(safePassword)
+                            .build();
             Portfolio portfolio = new Portfolio(user);
             user.setPortfolio(portfolio);
             this.userService.saveUser(user);
