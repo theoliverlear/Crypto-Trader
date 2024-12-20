@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.theoliverlear.convert.entity.SafePasswordConverter;
+import org.theoliverlear.entity.Identifiable;
 import org.theoliverlear.entity.portfolio.Portfolio;
 
 import java.time.LocalDateTime;
@@ -15,18 +17,16 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 @Getter
 @Setter
+@Builder
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class User {
+public class User extends Identifiable {
     //============================-Variables-=================================
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @Column(name = "username")
     private String username;
     @Column(name = "email")
     private String email;
     @Column(name = "password_hash")
-    @Convert(converter = SafePasswordConverter.class)
+    @Embedded
     private SafePassword safePassword;
     @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL)
@@ -39,6 +39,7 @@ public class User {
     private LocalDateTime lastLogin;
     //===========================-Constructors-===============================
     public User() {
+        super();
         this.username = null;
         this.email = null;
         this.safePassword = null;
@@ -46,18 +47,21 @@ public class User {
         this.lastLogin = null;
     }
     public User(String username, String rawPassword) {
+        super();
         this.username = username;
         this.email = null;
         this.safePassword = new SafePassword(rawPassword);
         this.lastLogin = LocalDateTime.now();
     }
     public User(String username, String rawPassword, String email) {
+        super();
         this.username = username;
         this.email = email;
         this.safePassword = new SafePassword(rawPassword);
         this.lastLogin = LocalDateTime.now();
     }
     public User(String username, SafePassword encodedPassword) {
+        super();
         this.username = username;
         this.email = null;
         this.safePassword = encodedPassword;
@@ -65,6 +69,7 @@ public class User {
         this.lastLogin = LocalDateTime.now();
     }
     public User(String username, String email, SafePassword encodedPassword) {
+        super();
         this.username = username;
         this.email = email;
         this.safePassword = encodedPassword;
@@ -72,6 +77,7 @@ public class User {
         this.lastLogin = LocalDateTime.now();
     }
     public User(String username, String rawPassword, Portfolio portfolio) {
+        super();
         this.username = username;
         this.email = null;
         this.safePassword = new SafePassword(rawPassword);
@@ -79,6 +85,7 @@ public class User {
         this.lastLogin = LocalDateTime.now();
     }
     public User(String username, String rawPassword, Portfolio portfolio, LocalDateTime lastLogin) {
+        super();
         this.username = username;
         this.email = null;
         this.safePassword = new SafePassword(rawPassword);
