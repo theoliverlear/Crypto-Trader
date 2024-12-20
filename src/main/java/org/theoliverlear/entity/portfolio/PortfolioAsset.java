@@ -2,11 +2,13 @@ package org.theoliverlear.entity.portfolio;
 //=================================-Imports-==================================
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.theoliverlear.entity.Identifiable;
 import org.theoliverlear.entity.currency.Currency;
 import org.theoliverlear.entity.currency.SupportedCurrencies;
+import org.theoliverlear.model.PostConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,14 +17,12 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
 @Table(name = "portfolio_assets")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class PortfolioAsset implements UpdatableValues {
+public class PortfolioAsset extends Identifiable implements UpdatableValues {
     //============================-Variables-=================================
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
     @ManyToOne
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
@@ -47,6 +47,7 @@ public class PortfolioAsset implements UpdatableValues {
     //       profits, or a set amount or percentage of the asset.
     //===========================-Constructors-===============================
     public PortfolioAsset() {
+        super();
         this.currency = SupportedCurrencies.BITCOIN;
         this.shares = 0;
         this.sharesValueInDollars = 0;
@@ -54,9 +55,9 @@ public class PortfolioAsset implements UpdatableValues {
         this.targetPrice = this.currency.getValue();
         this.assetHistory = new ArrayList<>();
         this.lastUpdated = LocalDateTime.now();
-        this.updateValues();
     }
     public PortfolioAsset(Portfolio portfolio, Currency currency, double shares, double assetWalletDollars) {
+        super();
         this.portfolio = portfolio;
         this.currency = currency;
         this.shares = shares;
@@ -65,16 +66,15 @@ public class PortfolioAsset implements UpdatableValues {
         this.portfolio.addAsset(this);
         this.assetHistory = new ArrayList<>();
         this.lastUpdated = LocalDateTime.now();
-        this.updateValues();
     }
     public PortfolioAsset(Currency currency, double shares, double assetWalletDollars) {
+        super();
         this.currency = currency;
         this.shares = shares;
         this.assetWalletDollars = assetWalletDollars;
         this.targetPrice = currency.getValue();
         this.assetHistory = new ArrayList<>();
         this.lastUpdated = LocalDateTime.now();
-        this.updateValues();
     }
     //=============================-Methods-==================================
 
@@ -101,14 +101,15 @@ public class PortfolioAsset implements UpdatableValues {
     }
     //--------------------------------From------------------------------------
     public static PortfolioAsset from(PortfolioAsset portfolioAsset) {
-        PortfolioAsset newPortfolioAsset = new PortfolioAsset();
-        newPortfolioAsset.setPortfolio(portfolioAsset.getPortfolio());
-        newPortfolioAsset.setCurrency(portfolioAsset.getCurrency());
-        newPortfolioAsset.setShares(portfolioAsset.getShares());
-        newPortfolioAsset.setSharesValueInDollars(portfolioAsset.getSharesValueInDollars());
-        newPortfolioAsset.setAssetWalletDollars(portfolioAsset.getAssetWalletDollars());
-        newPortfolioAsset.setTotalValueInDollars(portfolioAsset.getTotalValueInDollars());
-        newPortfolioAsset.setTargetPrice(portfolioAsset.getTargetPrice());
+        PortfolioAsset newPortfolioAsset = PortfolioAsset.builder()
+                                                         .portfolio(portfolioAsset.getPortfolio())
+                                                         .currency(portfolioAsset.getCurrency())
+                                                         .shares(portfolioAsset.getShares())
+                                                         .sharesValueInDollars(portfolioAsset.getSharesValueInDollars())
+                                                         .assetWalletDollars(portfolioAsset.getAssetWalletDollars())
+                                                         .totalValueInDollars(portfolioAsset.getTotalValueInDollars())
+                                                         .targetPrice(portfolioAsset.getTargetPrice())
+                                                         .build();
         return newPortfolioAsset;
     }
     //============================-Overrides-=================================
