@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.theoliverlear.entity.user.ProfilePicture;
 import org.theoliverlear.repository.ProfilePictureRepository;
 
+import java.util.Optional;
+
 @Service
 public class ProfilePictureService {
     //============================-Variables-=================================
@@ -20,8 +22,13 @@ public class ProfilePictureService {
         this.profilePictureRepository.save(profilePicture);
     }
     @Transactional
-    public ProfilePicture findByUserId(Long userId) {
-        return this.profilePictureRepository.findByUserId(userId);
+    public Optional<ProfilePicture> findByUserId(Long userId) {
+        ProfilePicture profilePicture = this.profilePictureRepository.findByUserId(userId);
+        if (profilePicture == null) {
+            return Optional.empty();
+        } else {
+            return Optional.of(profilePicture);
+        }
     }
     public boolean existsByUserId(Long userId) {
         return this.profilePictureRepository.existsByUserId(userId);
