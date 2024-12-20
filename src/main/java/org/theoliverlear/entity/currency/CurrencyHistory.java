@@ -1,22 +1,22 @@
 package org.theoliverlear.entity.currency;
 //=================================-Imports-==================================
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.theoliverlear.entity.Identifiable;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "currency_history")
-public class CurrencyHistory {
+public class CurrencyHistory extends Identifiable {
     //============================-Variables-=================================
     @Column(name = "currency_name")
     String name;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @ManyToOne
     @JoinColumn(name = "currency_code", nullable = false)
     private Currency currency;
@@ -28,6 +28,7 @@ public class CurrencyHistory {
     private LocalDateTime lastUpdated;
     //===========================-Constructors-===============================
     public CurrencyHistory() {
+        super();
         this.currency = new Currency();
         this.name = "";
         this.value = 0;
@@ -35,6 +36,7 @@ public class CurrencyHistory {
         this.lastUpdated = LocalDateTime.now();
     }
     public CurrencyHistory(Currency currency, double value) {
+        super();
         this.currency = currency;
         this.name = currency.getName();
         this.value = value;
@@ -42,6 +44,7 @@ public class CurrencyHistory {
         this.lastUpdated = LocalDateTime.now();
     }
     public CurrencyHistory(Currency currency, double value, LocalDateTime lastUpdated) {
+        super();
         this.currency = currency;
         this.name = currency.getName();
         this.value = value;
