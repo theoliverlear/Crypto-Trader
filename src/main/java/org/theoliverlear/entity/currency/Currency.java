@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.theoliverlear.model.http.ApiDataRetriever;
@@ -13,11 +14,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "currencies")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "currencyCode")
 public class Currency {
-    // TODO: Instead of enums, perhaps have static constants instantiated
-    //       during runtime.
     // TODO: Make a change calculator, static or nay, that takes two
     //       currencies, or passes one with this keyword, and returns the
     //       difference price and percentage change.
@@ -177,5 +177,4 @@ public class Currency {
         return decimalFormat;
     }
     //=============================-Setters-==================================
-
 }
