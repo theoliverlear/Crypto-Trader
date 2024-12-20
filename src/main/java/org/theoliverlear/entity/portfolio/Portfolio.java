@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.theoliverlear.entity.Identifiable;
 import org.theoliverlear.entity.user.User;
 
 import java.time.LocalDateTime;
@@ -15,13 +17,11 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "portfolios")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Portfolio implements UpdatableValues {
+public class Portfolio extends Identifiable implements UpdatableValues {
     //============================-Variables-=================================
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @JsonBackReference
     @OneToOne(mappedBy = "portfolio")
     private User user;
@@ -39,6 +39,7 @@ public class Portfolio implements UpdatableValues {
     private List<PortfolioHistory> portfolioHistory;
     //===========================-Constructors-===============================
     public Portfolio() {
+        super();
         this.dollarBalance = 0;
         this.shareBalance = 0;
         this.totalWorth = 0;
@@ -48,18 +49,21 @@ public class Portfolio implements UpdatableValues {
         this.lastUpdated = LocalDateTime.now();
     }
     public Portfolio(User user) {
+        super();
         this.user = user;
         this.assets = new ArrayList<>();
         this.portfolioHistory = new ArrayList<>();
         this.lastUpdated = LocalDateTime.now();
     }
     public Portfolio(User user, List<PortfolioAsset> assets) {
+        super();
         this.user = user;
         this.assets = assets;
         this.portfolioHistory = new ArrayList<>();
         this.updateValues();
     }
     public Portfolio(double dollarBalance, double shareBalance, double totalWorth) {
+        super();
         this.user = new User();
         this.dollarBalance = dollarBalance;
         this.shareBalance = shareBalance;
@@ -69,6 +73,7 @@ public class Portfolio implements UpdatableValues {
         this.lastUpdated = LocalDateTime.now();
     }
     public Portfolio(List<PortfolioAsset> assets) {
+        super();
         this.user = new User();
         this.assets = assets;
         this.lastUpdated = LocalDateTime.now();
