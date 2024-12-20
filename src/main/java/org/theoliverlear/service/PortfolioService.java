@@ -61,44 +61,49 @@ public class PortfolioService {
         this.allUsersPortfolios = this.getAllPortfolios();
         this.cryptoTrader.addAllPortfolios(this.allUsersPortfolios);
         if (!this.cryptoTrader.isEmpty()) {
-            for (Trader trader : this.cryptoTrader.getTraders()) {
-                Portfolio previousPortfolio = Portfolio.from(trader.getPortfolio());
-                System.out.println(previousPortfolio);
-                for (AssetTrader assetTrader : trader.getAssetTraders()) {
-                    PortfolioAsset previousAsset = PortfolioAsset.from(assetTrader.getAsset());
-                    boolean tradeOccurred = assetTrader.trade();
-                    assetTrader.getAsset().updateValues();
-                    trader.getPortfolio().updateValues();
-                    if (!previousAsset.equals(assetTrader.getAsset())) {
-                        PortfolioAssetHistory portfolioAssetHistory = new PortfolioAssetHistory(assetTrader.getAsset(), tradeOccurred);
-                        PortfolioAssetHistory previousPortfolioAssetHistory = this.getLatestPortfolioAssetHistory(assetTrader.getAsset());
-                        // FIXME: Keeps returning null or 0
-                        System.out.println("Previous portfolio is null: " + previousPortfolioAssetHistory);
-                        if (previousPortfolioAssetHistory != null) {
-                            portfolioAssetHistory.calculateValueChange(previousPortfolioAssetHistory);
-                        } else {
-                            portfolioAssetHistory.setValueChange(0);
-                        }
-                        assetTrader.getAsset().addPortfolioAssetHistory(portfolioAssetHistory);
-                        PortfolioHistory previousPortfolioHistory = this.getLatestPortfolioHistory(trader.getPortfolio());
-                        PortfolioHistory portfolioHistory = new PortfolioHistory(trader.getPortfolio(), tradeOccurred);
-                        if (previousPortfolioHistory != null) {
-                            portfolioHistory.calculateValueChange(previousPortfolioHistory);
-                        } else {
-                            portfolioHistory.setValueChange(0);
-                        }
-                        trader.getPortfolio().addPortfolioHistory(portfolioHistory);
-                        this.savePortfolioAsset(assetTrader.getAsset());
-                        this.savePortfolio(trader.getPortfolio());
-                        this.savePortfolioAssetHistory(portfolioAssetHistory);
-                        this.savePortfolioHistory(portfolioHistory);
-                    }
-                }
-            }
+            this.triggerAllTraders();
         } else {
             System.out.println("No traders");
         }
     }
+    public void triggerAllTraders() {
+        for (Trader trader : this.cryptoTrader.getTraders()) {
+            Portfolio previousPortfolio = Portfolio.from(trader.getPortfolio());
+            System.out.println(previousPortfolio);
+            for (AssetTrader assetTrader : trader.getAssetTraders()) {
+                PortfolioAsset previousAsset = PortfolioAsset.from(assetTrader.getAsset());
+                boolean tradeOccurred = assetTrader.trade();
+                assetTrader.getAsset().updateValues();
+                trader.getPortfolio().updateValues();
+                if (!previousAsset.equals(assetTrader.getAsset())) {
+                    PortfolioAssetHistory portfolioAssetHistory = new PortfolioAssetHistory(assetTrader.getAsset(), tradeOccurred);
+                    PortfolioAssetHistory previousPortfolioAssetHistory = this.getLatestPortfolioAssetHistory(assetTrader.getAsset());
+                    this.setPortfolioValueChange(previousPortfolioAssetHistory, portfolioAssetHistory);
+                    assetTrader.getAsset().addPortfolioAssetHistory(portfolioAssetHistory);
+                    PortfolioHistory previousPortfolioHistory = this.getLatestPortfolioHistory(trader.getPortfolio());
+                    PortfolioHistory portfolioHistory = new PortfolioHistory(trader.getPortfolio(), tradeOccurred);
+                    if (previousPortfolioHistory != null) {
+                        portfolioHistory.calculateValueChange(previousPortfolioHistory);
+                    } else {
+                        portfolioHistory.setValueChange(0);
+                    }
+                    trader.getPortfolio().addPortfolioHistory(portfolioHistory);
+                    this.savePortfolioAsset(assetTrader.getAsset());
+                    this.savePortfolio(trader.getPortfolio());
+                    this.savePortfolioAssetHistory(portfolioAssetHistory);
+                    this.savePortfolioHistory(portfolioHistory);
+                }
+            }
+        }
+    }
+    private void setPortfolioValueChange(PortfolioAssetHistory previousPortfolioAssetHistory, PortfolioAssetHistory portfolioAssetHistory) {
+        if (previousPortfolioAssetHistory != null) {
+            portfolioAssetHistory.calculateValueChange(previousPortfolioAssetHistory);
+        } else {
+            portfolioAssetHistory.setValueChange(0);
+        }
+    }
+
     public List<PortfolioAssetHistory> getPortfolioAssetHistory(Portfolio portfolio) {
         return this.portfolioAssetHistoryRepository.findAllByPortfolioId(portfolio.getId());
     }
