@@ -1,17 +1,17 @@
 package org.theoliverlear.entity.user;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.theoliverlear.entity.Identifiable;
 
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "profile_pictures")
-public class ProfilePicture {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class ProfilePicture extends Identifiable {
     @Column(name = "file_name")
     private String fileName;
     @Column(name = "file_type")
@@ -23,17 +23,20 @@ public class ProfilePicture {
     @JoinColumn(name = "user_id")
     private User user;
     public ProfilePicture() {
+        super();
         this.fileName = "";
         this.fileData = new byte[0];
         this.user = null;
     }
     public ProfilePicture(String fileName, byte[] fileData) {
+        super();
         this.fileName = fileName;
         this.fileData = fileData;
         this.fetchFileType();
         this.user = null;
     }
     public ProfilePicture(String fileName, byte[] fileData, User user) {
+        super();
         this.fileName = fileName;
         this.fileData = fileData;
         this.fetchFileType();
