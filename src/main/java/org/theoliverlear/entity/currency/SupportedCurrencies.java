@@ -20,7 +20,6 @@ public class SupportedCurrencies {
     public static final Currency BINANCE_COIN = new Currency("Binance Coin", "BNB");
     public static final Currency TETHER = new Currency("Tether", "USDT");
     public static final Currency EOS = new Currency("EOS", "EOS");
-//    public static final Currency MONERO = new Currency("Monero", "XMR");
     public static final Currency TRON = new Currency("Tron", "TRX");
     public static final Currency TEZOS = new Currency("Tezos", "XTZ");
     public static final Currency STELLAR_LUMENS = new Currency("Stellar Lumens", "XLM");
@@ -43,7 +42,6 @@ public class SupportedCurrencies {
         SUPPORTED_CURRENCIES.add(BINANCE_COIN);
         SUPPORTED_CURRENCIES.add(TETHER);
         SUPPORTED_CURRENCIES.add(EOS);
-//        SUPPORTED_CURRENCIES.add(MONERO);
         SUPPORTED_CURRENCIES.add(TRON);
         SUPPORTED_CURRENCIES.add(TEZOS);
         SUPPORTED_CURRENCIES.add(STELLAR_LUMENS);
