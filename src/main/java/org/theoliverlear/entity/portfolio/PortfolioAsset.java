@@ -2,13 +2,11 @@ package org.theoliverlear.entity.portfolio;
 //=================================-Imports-==================================
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import lombok.*;
 import org.theoliverlear.entity.Identifiable;
 import org.theoliverlear.entity.currency.Currency;
 import org.theoliverlear.entity.currency.SupportedCurrencies;
-import org.theoliverlear.model.PostConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
