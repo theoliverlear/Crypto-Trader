@@ -2,8 +2,10 @@ package org.theoliverlear.entity.portfolio;
 //=================================-Imports-==================================
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.theoliverlear.entity.Identifiable;
 import org.theoliverlear.entity.user.User;
 
 import java.time.LocalDateTime;
@@ -11,12 +13,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "portfolio_history")
+@Builder
 @Entity
-public class PortfolioHistory implements SequentiallyValuable<PortfolioHistory> {
+public class PortfolioHistory extends Identifiable implements SequentiallyValuable<PortfolioHistory> {
     //============================-Variables-=================================
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @ManyToOne
     @JoinColumn(name = "portfolio_id", nullable = false)
     private Portfolio portfolio;
@@ -34,12 +34,14 @@ public class PortfolioHistory implements SequentiallyValuable<PortfolioHistory> 
     private LocalDateTime lastUpdated;
     //===========================-Constructors-===============================
     public PortfolioHistory() {
+        super();
         this.dollarBalance = 0;
         this.shareBalance = 0;
         this.totalWorth = 0;
         this.lastUpdated = LocalDateTime.now();
     }
     public PortfolioHistory(Portfolio portfolio, boolean tradeOccurred) {
+        super();
         this.portfolio = portfolio;
         this.dollarBalance = portfolio.getDollarBalance();
         this.shareBalance = portfolio.getShareBalance();
@@ -48,6 +50,7 @@ public class PortfolioHistory implements SequentiallyValuable<PortfolioHistory> 
         this.lastUpdated = LocalDateTime.now();
     }
     public PortfolioHistory(Portfolio portfolio, LocalDateTime lastUpdated) {
+        super();
         this.portfolio = portfolio;
         this.dollarBalance = portfolio.getDollarBalance();
         this.shareBalance = portfolio.getShareBalance();
