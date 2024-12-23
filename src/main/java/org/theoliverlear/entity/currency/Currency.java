@@ -4,9 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.theoliverlear.entity.currency.builder.CurrencyBuilder;
 import org.theoliverlear.model.http.ApiDataRetriever;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
@@ -14,9 +15,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Builder
 @Table(name = "currencies")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "currencyCode")
+@AllArgsConstructor
 public class Currency {
     // TODO: Make a change calculator, static or nay, that takes two
     //       currencies, or passes one with this keyword, and returns the
@@ -148,11 +149,11 @@ public class Currency {
 
     //------------------------------Equals------------------------------------
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
+    public boolean equals(Object object) {
+        if (this == object) {
             return true;
         }
-        if (obj instanceof Currency comparedCurrency) {
+        if (object instanceof Currency comparedCurrency) {
             boolean sameName = this.name.equals(comparedCurrency.name);
             boolean sameCode = this.currencyCode.equals(comparedCurrency.currencyCode);
             boolean sameValue = this.value == comparedCurrency.value;
@@ -171,6 +172,9 @@ public class Currency {
                 %18s --- %5s - $%16s""".formatted(this.name, this.currencyCode,
                                           this.formattedValue);
         return currencyString;
+    }
+    public static CurrencyBuilder builder() {
+        return new CurrencyBuilder();
     }
     //=============================-Getters-==================================
     public DecimalFormat getDecimalFormat() {
