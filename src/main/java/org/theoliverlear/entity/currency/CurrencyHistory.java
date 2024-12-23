@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class CurrencyHistory extends Identifiable {
     //============================-Variables-=================================
     @Column(name = "currency_name")
-    String name;
+    private String name;
     @ManyToOne
     @JoinColumn(name = "currency_code", nullable = false)
     private Currency currency;
