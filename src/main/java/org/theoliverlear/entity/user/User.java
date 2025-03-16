@@ -4,12 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.theoliverlear.convert.entity.SafePasswordConverter;
 import org.theoliverlear.entity.Identifiable;
 import org.theoliverlear.entity.portfolio.Portfolio;
+import org.theoliverlear.entity.user.builder.UserBuilder;
 
 import java.time.LocalDateTime;
 
@@ -17,7 +16,6 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 @Getter
 @Setter
-@Builder
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User extends Identifiable {
     //============================-Variables-=================================
@@ -76,6 +74,18 @@ public class User extends Identifiable {
         this.portfolio = new Portfolio(this);
         this.lastLogin = LocalDateTime.now();
     }
+    public User(String username,
+                String email,
+                SafePassword encodedPassword,
+                Portfolio portfolio,
+                LocalDateTime lastLogin) {
+        super();
+        this.username = username;
+        this.email = email;
+        this.safePassword = encodedPassword;
+        this.portfolio = portfolio;
+        this.lastLogin = lastLogin;
+    }
     public User(String username, String rawPassword, Portfolio portfolio) {
         super();
         this.username = username;
@@ -92,6 +102,11 @@ public class User extends Identifiable {
         this.portfolio = portfolio;
         this.lastLogin = lastLogin;
     }
+
+    public static UserBuilder builder() {
+        return new UserBuilder();
+    }
+
     //=============================-Methods-==================================
 
     //-------------------------Update-Login-Time------------------------------
