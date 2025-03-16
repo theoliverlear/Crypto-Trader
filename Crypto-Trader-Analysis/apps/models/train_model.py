@@ -109,6 +109,8 @@ def train_all_models(training_type: TrainingType = TrainingType.BALANCED_MEDIUM_
         train_model(currency_code, training_type)
         logging.debug(f"Model for {currency_code} trained successfully.")
 
+# TODO: Add a loop through various training types to create a well-rounded
+#       model.
 
 def main():
     setup_logging()
