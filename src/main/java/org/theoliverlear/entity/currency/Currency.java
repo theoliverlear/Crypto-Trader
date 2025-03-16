@@ -181,4 +181,9 @@ public class Currency {
         return decimalFormat;
     }
     //=============================-Setters-==================================
+    public void setValue(double value) {
+        this.value = value;
+        this.formattedValue = decimalFormat.format(value);
+        this.lastUpdated = LocalDateTime.now();
+    }
 }
