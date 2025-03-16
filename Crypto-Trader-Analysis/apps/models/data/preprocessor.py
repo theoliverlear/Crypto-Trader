@@ -8,6 +8,12 @@ from datetime import datetime
 
 @define
 class Preprocessor:
+    # TODO: Replace with Enum for sequence lengths with goals.
+    #       - 5-10 Steps: Ultra short-term
+    #       - 10-30 Steps: Short-term
+    #       - 30-60 Steps: Hourly-to-daily
+    #       - 60-120 Steps: Multi-daily-to-weekly
+    #       - 120-300 Steps: Extended historical
     sequence_length: int = attr(default=10)
     future_steps: int = attr(default=1)
     input_scaler: MinMaxScaler = attr(default=MinMaxScaler(feature_range=(0, 1)))
