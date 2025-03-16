@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "portfolio_asset_history")
-@Builder
 @Entity
 public class PortfolioAssetHistory extends Identifiable implements SequentiallyValuable<PortfolioAssetHistory> {
     //============================-Variables-=================================
