@@ -78,12 +78,14 @@ public class User extends Identifiable {
                 String email,
                 SafePassword encodedPassword,
                 Portfolio portfolio,
+                ProfilePicture profilePicture,
                 LocalDateTime lastLogin) {
         super();
         this.username = username;
         this.email = email;
         this.safePassword = encodedPassword;
         this.portfolio = portfolio;
+        this.profilePicture = profilePicture;
         this.lastLogin = lastLogin;
     }
     public User(String username, String rawPassword, Portfolio portfolio) {
