@@ -1,7 +1,6 @@
 package org.theoliverlear.entity.currency;
 //=================================-Imports-==================================
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.theoliverlear.entity.Identifiable;
@@ -11,7 +10,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Builder
 @Table(name = "currency_history")
 public class CurrencyHistory extends Identifiable {
     //============================-Variables-=================================
