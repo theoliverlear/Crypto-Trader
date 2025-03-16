@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.theoliverlear.entity.Identifiable;
+import org.theoliverlear.entity.portfolio.builder.PortfolioBuilder;
 import org.theoliverlear.entity.user.User;
 
 import java.time.LocalDateTime;
@@ -17,7 +18,6 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Builder
 @Table(name = "portfolios")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Portfolio extends Identifiable implements UpdatableValues {
@@ -72,6 +72,7 @@ public class Portfolio extends Identifiable implements UpdatableValues {
         this.portfolioHistory = new ArrayList<>();
         this.lastUpdated = LocalDateTime.now();
     }
+
     public Portfolio(List<PortfolioAsset> assets) {
         super();
         this.user = new User();
@@ -80,6 +81,25 @@ public class Portfolio extends Identifiable implements UpdatableValues {
         this.portfolioHistory = new ArrayList<>();
         this.updateValues();
     }
+
+    public Portfolio(User user,
+                     double dollarBalance,
+                     double shareBalance,
+                     double totalWorth,
+                     LocalDateTime lastUpdated,
+                     List<PortfolioAsset> assets,
+                     List<PortfolioHistory> portfolioHistory) {
+        super();
+        this.user = user;
+        this.dollarBalance = dollarBalance;
+        this.shareBalance = shareBalance;
+        this.totalWorth = totalWorth;
+        this.lastUpdated = lastUpdated;
+        this.assets = assets;
+        this.portfolioHistory = portfolioHistory;
+        this.updateValues();
+    }
+    
     //=============================-Methods-==================================
 
     //-----------------------Add-Portfolio-History----------------------------
@@ -114,6 +134,40 @@ public class Portfolio extends Identifiable implements UpdatableValues {
         newPortfolio.setAssets(portfolio.getAssets());
         return newPortfolio;
     }
+
+    public static double getTotalPortfolioValue(List<PortfolioAsset> assets) {
+        double dollarBalance = getTotalDollarValue(assets);
+        double shareBalance = getTotalShareValue(assets);
+//        for (PortfolioAsset asset : assets) {
+//            asset.updateValues();
+//            dollarBalance += asset.getAssetWalletDollars();
+//            shareBalance += asset.getSharesValueInDollars();
+//        }
+        return dollarBalance + shareBalance;
+    }
+
+    public static double getTotalDollarValue(List<PortfolioAsset> assets) {
+        double dollarBalance = 0;
+        for (PortfolioAsset asset : assets) {
+            asset.updateValues();
+            dollarBalance += asset.getAssetWalletDollars();
+        }
+        return dollarBalance;
+    }
+
+    public static double getTotalShareValue(List<PortfolioAsset> assets) {
+        double shareBalance = 0;
+        for (PortfolioAsset asset : assets) {
+            asset.updateValues();
+            shareBalance += asset.getSharesValueInDollars();
+        }
+        return shareBalance;
+    }
+
+    public static PortfolioBuilder builder() {
+        return new PortfolioBuilder();
+    }
+
     //============================-Overrides-=================================
 
     //---------------------------Update-Values--------------------------------
