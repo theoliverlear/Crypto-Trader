@@ -10,4 +10,6 @@ public interface CurrencyRepository extends JpaRepository<Currency, Long> {
     Currency getCurrencyByCurrencyCode(String currencyCode);
     //------------------------Get-Currency-By-Name----------------------------
     Currency getCurrencyByName(String currencyName);
+
+    boolean existsByCurrencyCode(String currencyCode);
 }
