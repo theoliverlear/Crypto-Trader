@@ -1,50 +1,54 @@
 package org.theoliverlear.entity.currency;
 //=================================-Imports-==================================
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SupportedCurrencies {
     //============================-Constants-=================================
-    public static final Currency BITCOIN = new Currency("Bitcoin", "BTC");
-    public static final Currency ETHEREUM = new Currency("Ethereum", "ETH");
-    public static final Currency LITECOIN = new Currency("Litecoin", "LTC");
-    public static final Currency DOGECOIN = new Currency("Dogecoin", "DOGE");
-    public static final Currency CARDANO = new Currency("Cardano", "ADA");
-    public static final Currency RIPPLE = new Currency("Ripple", "XRP");
-    public static final Currency POLKADOT = new Currency("Polkadot", "DOT");
-    public static final Currency BITCOIN_CASH = new Currency("Bitcoin Cash", "BCH");
-    public static final Currency CHAINLINK = new Currency("Chainlink", "LINK");
-    public static final Currency STELLAR = new Currency("Stellar", "XLM");
-    public static final Currency UNISWAP = new Currency("Uniswap", "UNI");
-    public static final Currency LITECOIN_CASH = new Currency("Litecoin Cash", "LCC");
-    public static final Currency BINANCE_COIN = new Currency("Binance Coin", "BNB");
-    public static final Currency TETHER = new Currency("Tether", "USDT");
-    public static final Currency EOS = new Currency("EOS", "EOS");
-    public static final Currency TRON = new Currency("Tron", "TRX");
-    public static final Currency TEZOS = new Currency("Tezos", "XTZ");
-    public static final Currency STELLAR_LUMENS = new Currency("Stellar Lumens", "XLM");
-    public static final Currency SHIBA_INU = new Currency("Shiba Inu", "SHIB");
     public static final List<Currency> SUPPORTED_CURRENCIES = new ArrayList<>();
+    private static final Map<String, Currency> CURRENCY_MAP = new HashMap<>();
+    private static final String JSON_FILE_PATH = "src/main/resources/static/currencies.json";
+    public static final Currency BITCOIN = new Currency("Bitcoin", "BTC");
     //==========================-Static-Actions-==============================
     static {
-        SUPPORTED_CURRENCIES.add(BITCOIN);
-        SUPPORTED_CURRENCIES.add(ETHEREUM);
-        SUPPORTED_CURRENCIES.add(LITECOIN);
-        SUPPORTED_CURRENCIES.add(DOGECOIN);
-        SUPPORTED_CURRENCIES.add(CARDANO);
-        SUPPORTED_CURRENCIES.add(RIPPLE);
-        SUPPORTED_CURRENCIES.add(POLKADOT);
-        SUPPORTED_CURRENCIES.add(BITCOIN_CASH);
-        SUPPORTED_CURRENCIES.add(CHAINLINK);
-        SUPPORTED_CURRENCIES.add(STELLAR);
-        SUPPORTED_CURRENCIES.add(UNISWAP);
-        SUPPORTED_CURRENCIES.add(LITECOIN_CASH);
-        SUPPORTED_CURRENCIES.add(BINANCE_COIN);
-        SUPPORTED_CURRENCIES.add(TETHER);
-        SUPPORTED_CURRENCIES.add(EOS);
-        SUPPORTED_CURRENCIES.add(TRON);
-        SUPPORTED_CURRENCIES.add(TEZOS);
-        SUPPORTED_CURRENCIES.add(STELLAR_LUMENS);
-        SUPPORTED_CURRENCIES.add(SHIBA_INU);
+        loadCurrenciesFromJson();
+    }
+    private static void loadCurrenciesFromJson() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            File jsonFile = new File(JSON_FILE_PATH);
+            if (!jsonFile.exists()) {
+                System.err.println("Warning: Currency JSON file not found. Using empty list.");
+                return;
+            }
+            loadCurrenciesFromJson(objectMapper, jsonFile);
+        } catch (IOException exception) {
+            throw new RuntimeException("Failed to load currencies from JSON", exception);
+        }
+    }
+
+    private static void loadCurrenciesFromJson(ObjectMapper objectMapper, File jsonFile) throws IOException {
+        List<Map<String, String>> currencyData = objectMapper.readValue(jsonFile, new TypeReference<>() {});
+        for (Map<String, String> entry : currencyData) {
+            String name = entry.get("name");
+            String code = entry.get("code");
+            Currency currency = new Currency(name, code);
+            if (name.equals("Bitcoin")) {
+                SUPPORTED_CURRENCIES.add(BITCOIN);
+                CURRENCY_MAP.put(code, BITCOIN);
+            } else {
+                SUPPORTED_CURRENCIES.add(currency);
+                CURRENCY_MAP.put(code, currency);
+            }
+            System.out.println("Loaded currency: " + name + " (" + code + ")");
+        }
+        System.out.println("Loaded " + SUPPORTED_CURRENCIES.size() + " currencies from JSON.");
     }
 }
