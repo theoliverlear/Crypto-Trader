@@ -2,18 +2,16 @@ package org.theoliverlear.entity.portfolio;
 //=================================-Imports-==================================
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.theoliverlear.entity.Identifiable;
-import org.theoliverlear.entity.user.User;
+import org.theoliverlear.entity.portfolio.builder.PortfolioHistoryBuilder;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Table(name = "portfolio_history")
-@Builder
 @Entity
 public class PortfolioHistory extends Identifiable implements SequentiallyValuable<PortfolioHistory> {
     //============================-Variables-=================================
@@ -32,6 +30,7 @@ public class PortfolioHistory extends Identifiable implements SequentiallyValuab
     private boolean tradeOccurred;
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
+
     //===========================-Constructors-===============================
     public PortfolioHistory() {
         super();
@@ -40,6 +39,7 @@ public class PortfolioHistory extends Identifiable implements SequentiallyValuab
         this.totalWorth = 0;
         this.lastUpdated = LocalDateTime.now();
     }
+
     public PortfolioHistory(Portfolio portfolio, boolean tradeOccurred) {
         super();
         this.portfolio = portfolio;
@@ -49,6 +49,7 @@ public class PortfolioHistory extends Identifiable implements SequentiallyValuab
         this.tradeOccurred = tradeOccurred;
         this.lastUpdated = LocalDateTime.now();
     }
+
     public PortfolioHistory(Portfolio portfolio, LocalDateTime lastUpdated) {
         super();
         this.portfolio = portfolio;
@@ -57,6 +58,34 @@ public class PortfolioHistory extends Identifiable implements SequentiallyValuab
         this.totalWorth = portfolio.getTotalWorth();
         this.lastUpdated = lastUpdated;
     }
+
+    public PortfolioHistory(Portfolio portfolio,
+                            double dollarBalance,
+                            double shareBalance,
+                            double totalWorth,
+                            double valueChange,
+                            boolean tradeOccurred,
+                            LocalDateTime lastUpdated) {
+        super();
+        this.portfolio = portfolio;
+        if (portfolio == null) {
+            this.dollarBalance = dollarBalance;
+            this.shareBalance = shareBalance;
+            this.totalWorth = totalWorth;
+        } else {
+            this.dollarBalance = portfolio.getDollarBalance();
+            this.shareBalance = portfolio.getShareBalance();
+            this.totalWorth = portfolio.getTotalWorth();
+        }
+        this.valueChange = valueChange;
+        this.tradeOccurred = tradeOccurred;
+        this.lastUpdated = lastUpdated;
+    }
+
+    public static PortfolioHistoryBuilder builder() {
+        return new PortfolioHistoryBuilder();
+    }
+
     //============================-Overrides-=================================
 
     public void calculateValueChange(PortfolioHistory previous) {
