@@ -1,15 +1,14 @@
 package org.theoliverlear.entity.user;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.theoliverlear.entity.Identifiable;
+import org.theoliverlear.entity.user.builder.ProfilePictureBuilder;
 
 @Getter
 @Setter
 @Entity
-@Builder
 @Table(name = "profile_pictures")
 public class ProfilePicture extends Identifiable {
     @Column(name = "file_name")
@@ -43,19 +42,25 @@ public class ProfilePicture extends Identifiable {
         this.user = user;
     }
     public void fetchFileType() {
-        String fileExtension = this.fileName.substring(this.fileName.lastIndexOf(".") + 1);
-        switch (fileExtension) {
-            case "jpg", "jpeg" -> this.fileType = "image/jpeg";
-            case "png" -> this.fileType = "image/png";
-            case "gif" -> this.fileType = "image/gif";
-            case "bmp" -> this.fileType = "image/bmp";
-            case "webp" -> this.fileType = "image/webp";
-            case "svg" -> this.fileType = "image/svg+xml";
-            default -> throw new IllegalArgumentException("Invalid file type");
-        }
+        this.fileType = getFileType(this.fileName);
     }
-    public String setFileName(String fileName) {
+    public static String getFileType(String fileName) {
+        String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
+        return switch (fileExtension) {
+            case "jpg", "jpeg" -> "image/jpeg";
+            case "png" -> "image/png";
+            case "gif" -> "image/gif";
+            case "bmp" -> "image/bmp";
+            case "webp" -> "image/webp";
+            case "svg" -> "image/svg+xml";
+            default -> throw new IllegalArgumentException("Invalid file type");
+        };
+    }
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
         this.fetchFileType();
-        return this.fileName = fileName;
+    }
+    public static ProfilePictureBuilder builder() {
+        return new ProfilePictureBuilder();
     }
 }
