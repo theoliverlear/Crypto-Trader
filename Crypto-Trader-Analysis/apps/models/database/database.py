@@ -25,8 +25,8 @@ class Database:
         self.engine = create_engine(
             f"postgresql+psycopg2://{self.user}:{self.password}@{self.host}:{self.port}/{self.name}",
             poolclass=QueuePool,
-            pool_size=10,
-            max_overflow=20,
+            pool_size=20,
+            max_overflow=40,
             echo=False
         )
 
