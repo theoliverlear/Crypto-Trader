@@ -1,8 +1,11 @@
 # train_model.py
 import logging
 import os
+
+import keras
 import numpy as np
 import pandas as pd
+import torch
 from pandas import DataFrame
 from sklearn.preprocessing import MinMaxScaler
 
@@ -11,7 +14,12 @@ from apps.models.data.preprocessor import Preprocessor
 from apps.models.database.query_type import QueryType
 from apps.models.training.training_type import TrainingType
 from currency_json_generator import get_all_currency_codes
+import tensorflow as tf
 
+gpu_devices = tf.config.experimental.list_physical_devices('GPU')
+if gpu_devices:
+    for gpu in gpu_devices:
+        tf.config.experimental.set_memory_growth(gpu, True)
 
 def setup_logging():
     logging.basicConfig(
@@ -28,6 +36,37 @@ def configure_concurrency():
     os.environ["TF_NUM_INTEROP_THREADS"] = num_cores
     os.environ["TF_XLA_FLAGS"] = "--tf_xla_auto_jit=2"
     os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+    os.environ["TF_ENABLE_ONEDNN_OPTS"] = "1"
+
+
+def optimize_cpu_threads():
+    """Optimize TensorFlow to use all available CPU cores efficiently."""
+    num_cores = os.cpu_count()  # Get total CPU cores
+
+    # Set TensorFlow threading configuration
+    tf.config.threading.set_inter_op_parallelism_threads(num_cores)  # Controls how operations are executed in parallel
+    tf.config.threading.set_intra_op_parallelism_threads(num_cores)  # Controls intra-op parallelism (e.g., within matrix ops)
+
+    # Enable mixed precision (if applicable)
+    keras.mixed_precision.set_global_policy('float32')  # Or 'mixed_float16' if on a high-end GPU
+    tf.config.optimizer.set_jit(True)
+    torch.set_num_threads(num_cores)
+    # Enable GPU memory optimization
+    gpus = tf.config.list_physical_devices('GPU')
+    if gpus:
+        print(f"{len(gpus)} GPU(s) detected.")
+        for pc_gpu in gpus:
+            # tf.config.experimental.set_virtual_device_configuration(
+                # pc_gpu,
+                # [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=4096)])  # Set memory limit to 4GB
+
+            tf.config.experimental.set_memory_growth(pc_gpu, True)
+
+
+    print(f"🔹 TensorFlow Configured for {num_cores} CPU Cores")
+
+optimize_cpu_threads()
+
 
 def get_data_frame(target_currency: str = 'BTC', limit: int = 2000, query_type=QueryType.HISTORICAL_PRICE) -> DataFrame:
     from apps.models.database.database import Database
@@ -109,14 +148,81 @@ def train_all_models(training_type: TrainingType = TrainingType.BALANCED_MEDIUM_
         train_model(currency_code, training_type)
         logging.debug(f"Model for {currency_code} trained successfully.")
 
+def full_train_model(target_currency: str = 'BTC'):
+    for training_type in TrainingType:
+        logging.debug(f"Training model for {target_currency} with training type {training_type}...")
+        train_model(target_currency, training_type)
+        logging.debug(f"Model for {target_currency} trained successfully with training type {training_type}.")
+    train_model(target_currency, TrainingType.LARGE_DATA_DETAILED_TRAINING)
+
+
+def full_train_all_models():
+    currency_codes: list[str] = get_all_currency_codes(True)
+    # only use currencies after the index of 'HONEY'
+    split_code = 'ICP'
+    if split_code in currency_codes:
+        start_index = currency_codes.index(split_code) + 1
+        currency_codes = currency_codes[start_index:]
+
+    for currency_code in currency_codes:
+        logging.debug(f"Training model for {currency_code}...")
+        full_train_model(currency_code)
+        logging.debug(f"Model for {currency_code} trained successfully.")
+
+
+def full_train_all_models_concurrently(max_threads: int = 4):
+    import concurrent.futures
+    from concurrent.futures import ThreadPoolExecutor
+    max_threads: int = min(max_threads, os.cpu_count() or 1)
+    currency_codes: list[str] = get_all_currency_codes(True)
+    with ThreadPoolExecutor(max_workers=max_threads) as executor:
+        futures = []
+        for currency_code in currency_codes:
+            logging.debug(f"Training model for {currency_code}...")
+            future = executor.submit(full_train_model, currency_code)
+            futures.append(future)
+
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                future.result()
+                logging.debug(f"Model trained successfully.")
+            except Exception as e:
+                logging.error(f"Error training model: {e}")
+
+def train_all_models_concurrently(training_type: TrainingType = TrainingType.LARGE_DATA_DETAILED_TRAINING, max_threads: int = 4):
+    import concurrent.futures
+    from concurrent.futures import ThreadPoolExecutor
+    max_threads: int = min(max_threads, os.cpu_count() or 1)
+    currency_codes: list[str] = get_all_currency_codes(True)
+    with ThreadPoolExecutor(max_workers=max_threads) as executor:
+        futures = []
+        for currency_code in currency_codes:
+            logging.debug(f"Training model for {currency_code}...")
+            future = executor.submit(train_model, currency_code, training_type)
+            futures.append(future)
+
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                future.result()
+                logging.debug(f"Model trained successfully.")
+            except Exception as e:
+                logging.error(f"Error training model: {e}")
+
+
 # TODO: Add a loop through various training types to create a well-rounded
 #       model.
 
 def main():
     setup_logging()
+    optimize_cpu_threads()
     continuous: bool = True
+    # full_train_model('BTC')
     while continuous:
-        train_all_models()
+        # train_all_models()
+        # train_all_models_concurrently()
+        # full_train_model('BTC')
+        full_train_all_models()
+
 
 
 if __name__ == "__main__":
