@@ -5,6 +5,7 @@ from apps.models.training.training_model import TrainingModel
 
 
 class TrainingType(Enum):
+    # TODO: Add prediction type model with number of rows as field.
     # Detailed Types
     LARGE_DATA_DETAILED_TRAINING: TrainingModel = TrainingModel(
         max_rows=40000, epochs=100, batch_size=16, skip_small_samples=True, sequence_length=10
