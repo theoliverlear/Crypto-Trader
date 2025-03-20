@@ -159,7 +159,7 @@ def full_train_model(target_currency: str = 'BTC'):
 def full_train_all_models():
     currency_codes: list[str] = get_all_currency_codes(True)
     # only use currencies after the index of 'HONEY'
-    split_code = 'ICP'
+    split_code = 'KSM'
     if split_code in currency_codes:
         start_index = currency_codes.index(split_code) + 1
         currency_codes = currency_codes[start_index:]
