@@ -8,7 +8,7 @@ from apps.models.ai.lstm_model import LstmModel
 from apps.models.data.preprocessor import Preprocessor
 from apps.models.database.query_type import QueryType
 from apps.models.train_model import get_data_frame, get_last_historical_price, \
-    get_model, setup_logging, configure_concurrency, optimize_cpu_threads
+    get_lstm_model, setup_logging, configure_concurrency, setup_tensorflow_env
 from apps.models.training.training_type import TrainingType
 import tensorflow as tf
 
@@ -39,7 +39,7 @@ def predict(target_currency: str = 'BTC', training_type: TrainingType = Training
     )
     logging.info("Getting model...")
     model_path = f"models/{target_currency}_model.keras"
-    model: LstmModel = get_model(target_currency, model_path, historical_prices, training_type)
+    model: LstmModel = get_lstm_model(target_currency, model_path, historical_prices, training_type)
     logging.info("Getting last sequence...")
     last_sequence = get_last_historical_price(historical_prices)
     logging.info("Predicting currency price...")
@@ -68,10 +68,21 @@ def actual_vs_predicted(target_currency: str = 'BTC') -> tuple:
     """)
     return predicted_price, current_price, difference, percentage_difference
 
+def log_actual_vs_printed(target_currency: str = 'BTC', predicted_price: float = 0.0):
+    current_price = get_current_price(target_currency)
+    difference = predicted_price - current_price
+    percentage_difference = (difference / current_price) * 100
+    logging.debug(f"""
+        Predicted Price: {predicted_price}
+        Current Price: {current_price}
+        Difference: {difference}
+        Percentage Difference: {percentage_difference}%
+    """)
+
 def main():
     setup_logging()
     configure_concurrency()
-    optimize_cpu_threads()
+    setup_tensorflow_env()
     gpus = tf.config.experimental.list_physical_devices('GPU')
     if gpus:
         print(gpus)

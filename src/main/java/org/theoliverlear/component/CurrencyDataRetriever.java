@@ -30,17 +30,12 @@ public class CurrencyDataRetriever extends ApiDataRetriever {
         }
         List<String> currencyMapKeys = new ArrayList<>(updatedCurrencyMap.keySet());
         List<String> supportedCurrenciesKeys = SupportedCurrencies.SUPPORTED_CURRENCIES.stream().map(Currency::getCurrencyCode).toList();
-        System.out.printf("""
-                The number of supported currencies is: %d
-                The number of currencies in the map is: %d%n""", currencyMapKeys.size(), supportedCurrenciesKeys.size());
         Map<String, Currency> filteredCurrencyMap = new HashMap<>();
         for (String currencyCode : supportedCurrenciesKeys) {
             if (currencyMapKeys.contains(currencyCode)) {
                 filteredCurrencyMap.put(currencyCode, updatedCurrencyMap.get(currencyCode));
             }
         }
-        System.out.println("Number of currencies found: " + updatedCurrencyMap.size());
-        System.out.println("Number of currencies updated: " + filteredCurrencyMap.size());
         return filteredCurrencyMap;
     }
     public Map<String, Double> getCurrencyMap() {

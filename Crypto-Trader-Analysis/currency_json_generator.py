@@ -10,8 +10,8 @@ def fetch_json(url):
     return response.json()
 
 def get_currencies():
-    currencies = fetch_json("https://api.exchange.coinbase.com/currencies")  # jsonOne
-    exchange_rates = fetch_json("https://api.coinbase.com/v2/exchange-rates?currency=USD")  # jsonTwo
+    currencies = fetch_json("https://api.exchange.coinbase.com/currencies")
+    exchange_rates = fetch_json("https://api.coinbase.com/v2/exchange-rates?currency=USD")
     rates = exchange_rates.get("data", {}).get("rates", {})
     matched_cryptos: list[dict[str, Any]] = []
     for currency in currencies:
