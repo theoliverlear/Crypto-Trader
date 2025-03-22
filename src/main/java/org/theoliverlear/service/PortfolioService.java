@@ -1,5 +1,6 @@
 package org.theoliverlear.service;
 //=================================-Imports-==================================
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class PortfolioService {
     //============================-Variables-=================================
     private List<Portfolio> allUsersPortfolios;
@@ -56,14 +58,14 @@ public class PortfolioService {
     @Async("taskExecutor")
     @Scheduled(fixedRate = 2000)
     public synchronized void tradePortfolios() {
-        System.out.println("Trading");
         this.cryptoTrader.getTraders().clear();
         this.allUsersPortfolios = this.getAllPortfolios();
         this.cryptoTrader.addAllPortfolios(this.allUsersPortfolios);
         if (!this.cryptoTrader.isEmpty()) {
             this.triggerAllTraders();
+            log.info("Traders found. Trades are being be made.");
         } else {
-            System.out.println("No traders");
+            log.info("No traders found. No trades will be made.");
         }
     }
     public void triggerAllTraders() {
