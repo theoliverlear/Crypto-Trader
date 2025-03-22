@@ -1,6 +1,11 @@
 # training_model.py
+from typing import TYPE_CHECKING
+
 from attr import attr
 from attrs import define
+if TYPE_CHECKING:
+    from apps.models.training.training_model_builder import TrainingModelBuilder
+from apps.models.database.query_type import QueryType
 
 
 @define
@@ -10,3 +15,9 @@ class TrainingModel:
     batch_size: int = attr(default=32)
     skip_small_samples: bool = attr(default=True)
     sequence_length: int = attr(default=10)
+    query_type: QueryType = attr(default=QueryType.HISTORICAL_PRICE)
+
+    @staticmethod
+    def builder() -> 'TrainingModelBuilder':
+        from apps.models.training.training_model_builder import TrainingModelBuilder
+        return TrainingModelBuilder()
