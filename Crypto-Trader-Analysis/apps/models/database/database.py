@@ -77,6 +77,46 @@ class Database:
         query += "ORDER BY btc.last_updated DESC LIMIT %(limit)s;"
         return query
 
+    def get_spaced_history_query(self, total_rows: int = 10000) -> str:
+        currencies = list(filter(lambda currency_code: currency_code != "BTC",
+                                 get_all_currency_codes(True)))
+
+        query = f"""
+        WITH ordered_btc_data AS (
+            SELECT
+                last_updated,
+                currency_value AS target_price,
+                NTILE({total_rows}) OVER (ORDER BY last_updated) AS bucket
+            FROM currency_history
+            WHERE currency_code = %(target_currency)s
+        ),
+        btc_data AS (
+            SELECT DISTINCT ON (bucket) last_updated, target_price
+            FROM ordered_btc_data
+            ORDER BY bucket, last_updated DESC
+        )
+        SELECT 
+            btc.last_updated,
+            btc.target_price,\n"""
+
+        for i, currency in enumerate(currencies):
+            line = f"COALESCE({currency.lower()}.currency_value, NULL) AS {currency.lower()}_price"
+            query += line + (",\n" if i < len(currencies) - 1 else "\n")
+
+        query += "FROM btc_data btc\n"
+        for currency in currencies:
+            lower = currency.lower()
+            upper = currency.upper()
+            query += f"""LEFT JOIN LATERAL (
+        SELECT currency_value FROM currency_history 
+        WHERE currency_code = '{upper}' 
+          AND last_updated BETWEEN btc.last_updated - INTERVAL '2.5 seconds' AND btc.last_updated + INTERVAL '2.5 seconds'
+        ORDER BY last_updated DESC LIMIT 1
+    ) {lower} ON true\n"""
+
+        query += "ORDER BY btc.last_updated DESC;"
+        return query
+
     def fetch_data(self,
                    target_currency: str = 'BTC',
                    limit=20000,
@@ -92,6 +132,10 @@ class Database:
             query = self.get_full_history_query()
             logging.info("Fetched history query.")
             params = {"target_currency": target_currency, "limit": limit}
+        elif query_type == QueryType.HISTORICAL_PRICE_SPACED:
+            logging.info("Fetching spaced historical price...")
+            query = self.get_spaced_history_query(limit)
+            params = {"target_currency": target_currency}
         try:
             logging.debug(f"Executing query...")
             df = pd.read_sql_query(query, self.engine, params=params)
