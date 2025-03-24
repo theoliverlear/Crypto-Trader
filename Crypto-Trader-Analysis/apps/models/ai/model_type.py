@@ -9,7 +9,7 @@ from apps.models.ai.multi_layer_lstm_model import MultiLayerLstmModel
 
 
 class ModelType(Enum):
-    SIMPLE: BaseModel = LstmModel
-    COMPLEX: BaseModel = ComplexLstmModel
+    LSTM: BaseModel = LstmModel
+    COMPLEX_LSTM: BaseModel = ComplexLstmModel
     MULTI_LAYER: BaseModel = MultiLayerLstmModel
     COMPLEX_MULTI_LAYER: BaseModel = ComplexMultiLayerLstmModel
