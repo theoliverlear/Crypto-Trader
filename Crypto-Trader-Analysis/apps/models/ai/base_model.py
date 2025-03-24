@@ -14,10 +14,10 @@ class BaseModel(ABC):
     scaler: MinMaxScaler = attr(factory=MinMaxScaler)
     sequence_length: int = attr(default=10)
     target_currency: str = attr(default='BTC')
+
     @abstractmethod
     def train(self,
-              training_data,
-              target_values,
+              dataset,
               epochs: int = 20,
               batch_size: int = 32):
         pass
@@ -41,6 +41,11 @@ class BaseModel(ABC):
     @staticmethod
     @abstractmethod
     def get_model_path(target_currency: str) -> str:
+        pass
+
+    @abstractmethod
+    @staticmethod
+    def get_tensorboard_callback(self):
         pass
 
     def log_model_summary(self):
