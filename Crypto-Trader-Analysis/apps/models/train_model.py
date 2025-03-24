@@ -1,6 +1,14 @@
 # train_model.py
 import logging
 import os
+
+os.environ["TF_XLA_FLAGS"] = "--tf_xla_auto_jit=2"
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "1"
+
+import tensorflow as tf
+tf.config.optimizer.set_jit(True)
+
 from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
@@ -17,14 +25,14 @@ from apps.models.model_retriever import get_model, get_lstm_model, \
 from apps.models.training.training_type import TrainingType
 from currency_json_generator import get_all_currency_codes
 
-num_cores = str(os.cpu_count())
-os.environ["OMP_NUM_THREADS"] = num_cores
-os.environ["TF_NUM_INTRAOP_THREADS"] = num_cores
-os.environ["TF_NUM_INTEROP_THREADS"] = num_cores
-os.environ["TF_XLA_FLAGS"] = "--tf_xla_auto_jit=2"
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
-os.environ["TF_ENABLE_ONEDNN_OPTS"] = "1"
+# num_cores = str(os.cpu_count())
+# os.environ["OMP_NUM_THREADS"] = num_cores
+# os.environ["TF_NUM_INTRAOP_THREADS"] = num_cores
+# os.environ["TF_NUM_INTEROP_THREADS"] = num_cores
+
 import tensorflow as tf
+tf.config.optimizer.set_jit(True)
+tf.function(jit_compile=True)
 
 def setup_logging():
     logging.basicConfig(
@@ -35,31 +43,82 @@ def setup_logging():
     logging.debug("Logging setup complete: Debug mode is enabled.")
 
 def configure_concurrency():
-    num_cores = str(os.cpu_count())
-    os.environ["OMP_NUM_THREADS"] = num_cores
-    os.environ["TF_NUM_INTRAOP_THREADS"] = num_cores
-    os.environ["TF_NUM_INTEROP_THREADS"] = num_cores
+    # num_cores = str(os.cpu_count())
+    # os.environ["OMP_NUM_THREADS"] = num_cores
+    # os.environ["TF_NUM_INTRAOP_THREADS"] = num_cores
+    # os.environ["TF_NUM_INTEROP_THREADS"] = num_cores
     os.environ["TF_XLA_FLAGS"] = "--tf_xla_auto_jit=2"
     os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
     os.environ["TF_ENABLE_ONEDNN_OPTS"] = "1"
 
 def setup_tensorflow_env():
-    num_cores: int = os.cpu_count()
-    tf.config.threading.set_inter_op_parallelism_threads(num_cores)
-    tf.config.threading.set_intra_op_parallelism_threads(num_cores)
-    tf.config.optimizer.set_jit(True)
+    from tensorflow.python.compiler.xla import xla
+
+    if tf.config.optimizer.get_jit():
+        print("XLA JIT is enabled")
+    else:
+        print("XLA JIT is NOT enabled")
+
+
+    # num_cores: int = os.cpu_count()
+    # tf.config.threading.set_inter_op_parallelism_threads(num_cores)
+    # tf.config.threading.set_intra_op_parallelism_threads(num_cores)
+    # tf.config.optimizer.set_jit(True)
+    # tf.function(jit_compile=True)
     gpus = tf.config.list_physical_devices('GPU')
+    dmls = tf.config.list_physical_devices('DML')
     if gpus:
         logging.info(f"{len(gpus)} GPU(s) detected.")
         for index, pc_gpu in enumerate(gpus):
-            logging.info(f"Configuring GPU {pc_gpu} for memory growth.")
-            # tf.config.experimental.set_memory_growth(pc_gpu, True)
-            memory: int = 7500 if index == 0 else 11500
-            tf.config.experimental.set_virtual_device_configuration(
-                pc_gpu,
-                [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=memory)]
-            )
-    logging.info(f"TensorFlow Configured for {num_cores} CPU Cores and {len(gpus)} GPU(s).")
+            # logging.info(f"Configuring GPU {pc_gpu} for memory growth.")
+            # memory: int = 10000 if index == 1 else 14000
+            # tf.config.experimental.set_virtual_device_configuration(
+            #     pc_gpu,
+            #     [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=memory)]
+            # )
+            tf.config.experimental.set_memory_growth(pc_gpu, True)
+    if dmls:
+        logging.info(f"{len(dmls)} DML(s) detected.")
+        for index, pc_dml in enumerate(dmls):
+            details = tf.config.experimental.get_device_details(pc_dml)
+            logging.info(f"Configuring DML {pc_dml} with details: {details}")
+            tf.config.experimental.set_memory_growth(pc_dml, True)
+    else:
+        logging.info("No DML devices detected.")
+    if not gpus and not dmls:
+        logging.warning("No GPU or DML devices detected. Running on CPU.")
+    logging.info(f"TensorFlow Configured for CPU Cores and {len(gpus)} GPU(s).")
+
+
+def train_new_models(currency_codes: list[str] = None,
+                     training_type: TrainingType = TrainingType.BALANCED_MEDIUM_TRAINING,
+                     model_type: ModelType = ModelType.LSTM,
+                     gpu_id: int = 0):
+    from apps.models.prediction.predictions import model_exists
+    for currency in currency_codes:
+        if not model_exists(currency):
+            logging.info(f"No model found for {currency}. Training model now...")
+            train_model(currency, training_type, model_type=model_type, gpu_id=gpu_id, use_previous_model=False)
+            logging.info(f"Training completed for {currency}.")
+        else:
+            logging.debug(f"Model already exists for {currency}. Skipping.")
+
+
+def train_inaccurate_models(training_type: TrainingType = TrainingType.BALANCED_MEDIUM_TRAINING,
+                            model_type: ModelType = ModelType.LSTM,
+                            gpu_id: int = 0):
+    from apps.models.database.database import Database
+    db: Database = Database()
+    inaccurate_models: list[str] = db.get_inaccurate_models(5)
+    logging.info(f"Found {len(inaccurate_models)} inaccurate models.")
+
+    for currency in inaccurate_models:
+        logging.info(f"Retraining model for {currency}...")
+        train_model(target_currency=currency,
+                    training_type=training_type,
+                    model_type=model_type,
+                    gpu_id=gpu_id)
+        logging.info(f"Model for {currency} retrained and saved.")
 
 def get_data_frame(target_currency: str = 'BTC', limit: int = 2000, query_type=QueryType.HISTORICAL_PRICE) -> DataFrame:
     from apps.models.database.database import Database
@@ -79,9 +138,10 @@ def get_last_currency_price(dataframe: DataFrame, target_currency: str):
 
 def train_model(target_currency: str = 'BTC',
                 training_type: TrainingType=TrainingType.BALANCED_MEDIUM_TRAINING,
-                model_type: ModelType=ModelType.SIMPLE,
-                gpu_id: int = 0):
-    from apps.models.predictions import log_actual_vs_printed
+                model_type: ModelType=ModelType.LSTM,
+                gpu_id: int = 0,
+                use_previous_model: bool = True):
+    from apps.models.prediction.predictions import log_actual_vs_printed
     configure_concurrency()
     logging.info("Getting data frame...")
     dataframe = get_data_frame(target_currency, limit=training_type.value.max_rows, query_type=QueryType.HISTORICAL_PRICE)
@@ -103,27 +163,36 @@ def train_model(target_currency: str = 'BTC',
     target_scaler.fit(raw_target_vals)
     logging.info("Scaling future prices...")
     future_prices_scaled = target_scaler.transform(rescale_future_prices(future_prices_unscaled)).ravel()
+
+
+    dataset = tf.data.Dataset.from_tensor_slices(
+        (historical_prices, future_prices_scaled))
+    dataset = dataset.cache().shuffle(5120).batch(
+        training_type.value.batch_size).prefetch(tf.data.AUTOTUNE)
+
+
     logging.info(
         f"Preprocessing Completed! historical_prices shape: {historical_prices.shape}, "
         f"future_prices shape: {future_prices_unscaled.shape}"
     )
-    if model_type == ModelType.SIMPLE:
+    if model_type == ModelType.LSTM:
         model_path: str = LstmModel.get_model_path(target_currency)
-    elif model_type == ModelType.COMPLEX:
+    elif model_type == ModelType.COMPLEX_LSTM:
         model_path: str = ComplexLstmModel.get_model_path(target_currency)
     else:
         raise ValueError(f"Incompatible model type: {model_type}")
     logging.info(f"Getting model for {target_currency} at {model_path}...")
-    if model_type == ModelType.SIMPLE:
-        model: LstmModel = get_lstm_model(target_currency, model_path, historical_prices, training_type)
-    elif model_type == ModelType.COMPLEX:
-        model: ComplexLstmModel = get_complex_lstm_model(target_currency, model_path, historical_prices, training_type)
+    if model_type == ModelType.LSTM:
+        model: LstmModel = get_lstm_model(target_currency, model_path, historical_prices, training_type, use_previous_model)
+    elif model_type == ModelType.COMPLEX_LSTM:
+        model: ComplexLstmModel = get_complex_lstm_model(target_currency, model_path, historical_prices, training_type, use_previous_model)
     else:
         raise ValueError(f"Incompatible model type: {model_type}")
     logging.info(f"Training model for {target_currency}...")
     with tf.device(f'/GPU:{gpu_id}'):
         logging.info(f"Training on GPU...")
-        model.train(historical_prices, future_prices_scaled, epochs=training_type.value.epochs, batch_size=training_type.value.epochs)
+        # model.train(historical_prices, future_prices_scaled, epochs=training_type.value.epochs, batch_size=training_type.value.epochs)
+        model.train(dataset, epochs=training_type.value.epochs, batch_size=training_type.value.epochs)
     logging.info(f"Training completed for {target_currency}.")
     logging.info(f"Saving model for {target_currency}...")
     model.save_model(model_path)
@@ -142,11 +211,11 @@ def rescale_future_prices(future_prices_unscaled):
 
 def train_all_models(training_type: TrainingType = TrainingType.BALANCED_MEDIUM_TRAINING,
                      currency_codes: list[str] = None,
-                     model_type: ModelType = ModelType.SIMPLE,
+                     model_type: ModelType = ModelType.LSTM,
                      gpu_id: int = 0):
     for currency_code in currency_codes:
         logging.debug(f"Training model for {currency_code}...")
-        if model_type == ModelType.SIMPLE or model_type == ModelType.COMPLEX:
+        if model_type == ModelType.LSTM or model_type == ModelType.COMPLEX_LSTM:
             train_model(currency_code, training_type, gpu_id=gpu_id, model_type=model_type)
         elif model_type == ModelType.MULTI_LAYER or model_type == ModelType.COMPLEX_MULTI_LAYER:
             train_multi_layer_model(currency_code,
@@ -158,7 +227,7 @@ def train_all_models(training_type: TrainingType = TrainingType.BALANCED_MEDIUM_
                                     gpu_id)
         logging.debug(f"Model for {currency_code} trained successfully.")
 
-def full_train_model(target_currency: str = 'BTC', gpu_id: int = 0, model_type: ModelType = ModelType.SIMPLE):
+def full_train_model(target_currency: str = 'BTC', gpu_id: int = 0, model_type: ModelType = ModelType.LSTM):
     for training_type in TrainingType:
         logging.debug(f"Training model for {target_currency} with training type {training_type}...")
         train_model(target_currency, training_type, gpu_id=gpu_id, model_type=model_type)
@@ -185,9 +254,9 @@ def full_train_layered_model(target_currency: str = 'BTC',
 
 def full_train_all_models(currency_codes: list[str] = None,
                           gpu_id: int = 0,
-                          model_type: ModelType = ModelType.SIMPLE):
+                          model_type: ModelType = ModelType.LSTM):
     for currency_code in currency_codes:
-        if model_type == ModelType.SIMPLE or model_type == ModelType.COMPLEX:
+        if model_type == ModelType.LSTM or model_type == ModelType.COMPLEX_LSTM:
             logging.debug(f"Training model for {currency_code}...")
             full_train_model(currency_code, gpu_id=gpu_id, model_type=model_type)
             logging.debug(f"Model for {currency_code} trained successfully.")
@@ -203,14 +272,14 @@ def train_multi_layer_model(target_currency: str = 'BTC',
                             training_type: TrainingType = TrainingType.BALANCED_MEDIUM_TRAINING,
                             model_type: ModelType = ModelType.MULTI_LAYER,
                             gpu_id: int = 0):
-    from apps.models.predictions import log_actual_vs_printed
+    from apps.models.prediction.predictions import log_actual_vs_printed
     from apps.models.ai.multi_layer_lstm_model import MultiLayerLstmModel
     from apps.models.ai.complex_multi_layer_lstm_model import ComplexMultiLayerLstmModel
 
     logging.info(f"Fetching data frame for {target_currency}")
     dataframe = get_data_frame(target_currency,
                                limit=training_type.value.max_rows,
-                               query_type=QueryType.HISTORICAL_PRICE)
+                               query_type=QueryType.HISTORICAL_PRICE_SPACED)
     if dataframe.empty:
         logging.warning(f"No data for {target_currency}. Cannot train multi-layer model.")
         return
@@ -238,6 +307,15 @@ def train_multi_layer_model(target_currency: str = 'BTC',
         model_class = ComplexMultiLayerLstmModel
     else:
         raise ValueError(f"Incompatible model type: {model_type}")
+
+    dataset = tf.data.Dataset.from_tensor_slices((
+        (short_data, med_data, long_data),
+        future_prices_scaled
+    ))
+    dataset = dataset.cache().shuffle(5120) \
+        .batch(training_type.value.batch_size) \
+        .prefetch(tf.data.AUTOTUNE)
+
     model = get_model(model_class,
                       target_currency,
                       model_path,
@@ -247,12 +325,18 @@ def train_multi_layer_model(target_currency: str = 'BTC',
     logging.info(f"Training Multi-Layer Model for {target_currency}...")
     with tf.device(f'/GPU:{gpu_id}'):
         logging.info(f"Training on GPU...")
+        # model.train(
+        #     [short_data, med_data, long_data],
+        #     future_prices_scaled,
+        #     epochs=training_type.value.epochs,
+        #     batch_size=training_type.value.batch_size
+        # )
         model.train(
-            [short_data, med_data, long_data],
-            future_prices_scaled,
+            dataset,
             epochs=training_type.value.epochs,
             batch_size=training_type.value.batch_size
         )
+
     logging.info(f"Saving Multi-Layer Model to {model_path}")
     model.save_model(model_path)
     last_long, last_medium, last_short = get_last_multi_layer_elements(long_data, med_data, short_data)
@@ -266,7 +350,7 @@ def get_last_multi_layer_elements(long_data, med_data, short_data):
     last_long = np.array([long_data[-1]])
     return last_long, last_medium, last_short
 
-def train_all_models_dual_gpu(model_type: ModelType = ModelType.SIMPLE):
+def train_all_models_dual_gpu(model_type: ModelType = ModelType.LSTM):
     gpu_zero_currencies, gpu_one_currencies = get_split_currency_list()
     def train_on_gpu(currencies, gpu_id):
         full_train_all_models(currencies, gpu_id=gpu_id, model_type=model_type)
