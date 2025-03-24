@@ -5,7 +5,7 @@ from os import getenv
 import pandas as pd
 from attr import attr
 from attrs import define
-from sqlalchemy import create_engine, QueuePool
+from sqlalchemy import create_engine, QueuePool, text
 
 from apps.models.database.query_type import QueryType
 from currency_json_generator import get_all_currency_codes
@@ -29,6 +29,19 @@ class Database:
             max_overflow=40,
             echo=False
         )
+
+    def get_inaccurate_models(self, error_threshold) -> list[str]:
+        query = text("SELECT DISTINCT currency_code FROM predictions WHERE ABS(percent_difference) > :error_threshold;")
+        try:
+            with self.engine.connect() as connection:
+                result = connection.execute(query,{"error_threshold": error_threshold})
+                currencies = [row[0] for row in result]
+            logging.info(f"Fetched {len(currencies)} currencies with error > {error_threshold}")
+            return currencies
+        except Exception as e:
+            logging.error(f"Failed to query inaccurate predictions: {e}")
+            return []
+
 
     def _get_default_history_query(self) -> str:
         return """WITH btc_data AS (
