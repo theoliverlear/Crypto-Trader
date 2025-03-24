@@ -1,0 +1,1 @@
+SELECT DISTINCT currency_code FROM predictions WHERE percent_difference > 5;
