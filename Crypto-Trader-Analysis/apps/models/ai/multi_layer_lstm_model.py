@@ -1,9 +1,10 @@
 # multi_layer_lstm_model.py
 import logging
 from abc import ABC
+from datetime import datetime
+
 from typing_extensions import override
 
-from attr import attr
 from attrs import define
 
 from keras import Input, Model
@@ -12,7 +13,8 @@ from keras.saving.save import load_model
 from sklearn.preprocessing import MinMaxScaler
 
 from apps.models.ai.multi_layer_base_model import MultiLayerBaseModel
-
+import os
+from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 
 
 @define
@@ -48,16 +50,46 @@ class MultiLayerLstmModel(MultiLayerBaseModel, ABC):
             name="MultiLayerLstmModel"
         )
         self.model.compile(optimizer="adam", loss="mean_squared_error")
-        self.model.summary(print_fn=lambda x: logging.info(x))
+        self.log_model_summary()
 
-    def train(self, training_data_list, target_values,
+
+    @override
+    @staticmethod
+    def get_tensorboard_callback(target_currency: str):
+        import tensorflow as tf
+        timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+        log_dir = os.path.join("logs", "MULTI_LAYER_LSTM", target_currency, timestamp)
+
+        return tf.keras.callbacks.TensorBoard(
+            log_dir=log_dir,
+            profile_batch=10,
+            histogram_freq=1
+        )
+
+    def train(self, dataset,
               epochs=20, batch_size=32):
+        from apps.models.model_retriever import MULTI_LAYER_MODEL_DIRECTORY
+        checkpoint_dir = os.path.join(MULTI_LAYER_MODEL_DIRECTORY,
+                                      "checkpoints")
+        os.makedirs(checkpoint_dir, exist_ok=True)
+        checkpoint_path = os.path.join(checkpoint_dir,
+                                       f"{self.target_currency}_checkpoint.keras")
+
+        callbacks = [
+            EarlyStopping(monitor="loss", patience=5,
+                          restore_best_weights=True),
+            ModelCheckpoint(filepath=checkpoint_path, monitor="loss",
+                            save_best_only=True),
+            ReduceLROnPlateau(monitor='loss', factor=0.5, patience=3,
+                              min_lr=1e-6),
+            MultiLayerLstmModel.get_tensorboard_callback(self.target_currency)
+        ]
         self.model.fit(
-            training_data_list,
-            target_values,
+            dataset,
             epochs=epochs,
             batch_size=batch_size,
-            verbose=1
+            verbose=1,
+            callbacks=callbacks
         )
 
     def predict(self, input_data_list, target_scaler: MinMaxScaler):
