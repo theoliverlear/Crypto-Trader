@@ -23,8 +23,9 @@ def get_model(model_type: T,
               model_target_currency: str,
               currency_model_path: str,
               historical_prices,
-              training_model: TrainingType) -> T:
-    if os.path.exists(currency_model_path):
+              training_model: TrainingType,
+              use_previous_model: bool = True) -> T:
+    if os.path.exists(currency_model_path) and use_previous_model:
         logging.info(f"Found existing model: {currency_model_path}. Loading and continuing training...")
         model = model_type(dimension=historical_prices.shape[2],
                            target_currency=model_target_currency,
@@ -40,8 +41,9 @@ def get_model(model_type: T,
 def get_lstm_model(model_target_currency: str,
                    currency_model_path: str,
                    historical_prices,
-                   training_model: TrainingType) -> LstmModel:
-    if os.path.exists(currency_model_path):
+                   training_model: TrainingType,
+                   use_previous_model: bool = True) -> LstmModel:
+    if os.path.exists(currency_model_path) and use_previous_model:
         logging.info(f"Found existing model: {currency_model_path}. Loading and continuing training...")
         lstm_model = LstmModel(dimension=historical_prices.shape[2],
                                target_currency=model_target_currency,
@@ -56,8 +58,9 @@ def get_lstm_model(model_target_currency: str,
 def get_complex_lstm_model(model_target_currency: str,
                            currency_model_path: str,
                            historical_prices,
-                           training_model: TrainingType) -> ComplexLstmModel:
-    if os.path.exists(currency_model_path):
+                           training_model: TrainingType,
+                           use_previous_model: bool = True) -> ComplexLstmModel:
+    if os.path.exists(currency_model_path) and use_previous_model:
         logging.info(f"Found existing model: {currency_model_path}. Loading and continuing training...")
         complex_lstm_model = ComplexLstmModel(dimension=historical_prices.shape[2],
                                               target_currency=model_target_currency,
@@ -72,8 +75,9 @@ def get_complex_lstm_model(model_target_currency: str,
 def get_multi_layer_lstm_model(model_target_currency: str,
                                currency_model_path: str,
                                historical_prices,
-                               training_model: TrainingType) -> MultiLayerLstmModel:
-    if os.path.exists(currency_model_path):
+                               training_model: TrainingType,
+                               use_previous_model: bool = True) -> MultiLayerLstmModel:
+    if os.path.exists(currency_model_path) and use_previous_model:
         logging.info(f"Found existing model: {currency_model_path}. Loading and continuing training...")
         complex_lstm_model = MultiLayerLstmModel(dimension=historical_prices.shape[2],
                                                  target_currency=model_target_currency,
@@ -89,10 +93,11 @@ def get_multi_layer_lstm_model(model_target_currency: str,
 def get_complex_multi_layer_lstm_model(model_target_currency: str,
                                        currency_model_path: str,
                                        historical_prices,
-                                       training_model: TrainingType) -> ComplexMultiLayerLstmModel:
-    if os.path.exists(currency_model_path):
+                                       training_model: TrainingType,
+                                       use_previous_model: bool = True) -> ComplexMultiLayerLstmModel:
+    if os.path.exists(currency_model_path) and use_previous_model:
         logging.info(f"Found existing model: {currency_model_path}. Loading and continuing training...")
-        complex_lstm_model = ComplexLstmModel(dimension=historical_prices.shape[2],
+        complex_lstm_model = ComplexMultiLayerLstmModel(dimension=historical_prices.shape[2],
                                               target_currency=model_target_currency,
                                               sequence_length=training_model.value.sequence_length)
         complex_lstm_model.load_model(currency_model_path)
