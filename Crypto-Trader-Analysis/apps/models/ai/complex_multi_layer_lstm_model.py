@@ -149,7 +149,7 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel, ABC):
               dataset,
               epochs: int = 20,
               batch_size: int = 32):
-        from apps.models.model_retriever import \
+        from apps.models.ai.model_retriever import \
             COMPLEX_MUlTI_LAYER_MODEL_DIRECTORY
         checkpoint_dir = os.path.join(COMPLEX_MUlTI_LAYER_MODEL_DIRECTORY,
                                       "checkpoints")
@@ -189,6 +189,6 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel, ABC):
     @staticmethod
     @override
     def get_model_path(target_currency: str) -> str:
-        from apps.models.model_retriever import \
+        from apps.models.ai.model_retriever import \
             COMPLEX_MUlTI_LAYER_MODEL_DIRECTORY
         return COMPLEX_MUlTI_LAYER_MODEL_DIRECTORY + target_currency + '_complex_multi_layer_model.keras'
