@@ -25,8 +25,23 @@ class TrainingType(Enum):
     LARGEST_DATA_DETAILED_TRAINING: TrainingModel = TrainingModel(
         max_rows=40000, epochs=100, batch_size=32, skip_small_samples=True, sequence_length=10
     )
+    SUPER_LARGE_DATA_DETAILED_TRAINING: TrainingModel = TrainingModel(
+        max_rows=65000, epochs=100, batch_size=32, skip_small_samples=True, sequence_length=10
+    )
+    MINI_DATA_DETAILED_TRAINING: TrainingModel = TrainingModel(
+        max_rows=1000, epochs=100, batch_size=32, skip_small_samples=True, sequence_length=10
+    )
+    SMALL_DATA_DETAILED_TRAINING: TrainingModel = TrainingModel(
+        max_rows=5000, epochs=100, batch_size=32, skip_small_samples=True, sequence_length=10
+    )
+    MODERATE_DATA_DETAILED_TRAINING: TrainingModel = TrainingModel(
+        max_rows=10000, epochs=100, batch_size=32, skip_small_samples=True, sequence_length=10
+    )
     ALL_DATA_DETAILED_TRAINING: TrainingModel = TrainingModel(
         max_rows=100000, epochs=100, batch_size=32, skip_small_samples=True, sequence_length=10
+    )
+    ALL_DATA_GENERAL_TRAINING: TrainingModel = TrainingModel(
+        max_rows=100000, epochs=100, batch_size=128, skip_small_samples=True, sequence_length=60
     )
     # LARGE_DATA_DETAILED_TRAINING: TrainingModel = TrainingModel(
     #     max_rows=30000, epochs=100, batch_size=32, skip_small_samples=True, sequence_length=10
