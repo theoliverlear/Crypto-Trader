@@ -43,7 +43,6 @@ class BaseModel(ABC):
     def get_model_path(target_currency: str) -> str:
         pass
 
-    @abstractmethod
     @staticmethod
     def get_tensorboard_callback(self):
         pass
