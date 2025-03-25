@@ -2,6 +2,7 @@ package org.theoliverlear.entity.currency;
 //=================================-Imports-==================================
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class SupportedCurrencies {
     //============================-Constants-=================================
     public static final List<Currency> SUPPORTED_CURRENCIES = new ArrayList<>();
@@ -25,7 +27,7 @@ public class SupportedCurrencies {
         try {
             File jsonFile = new File(JSON_FILE_PATH);
             if (!jsonFile.exists()) {
-                System.err.println("Warning: Currency JSON file not found. Using empty list.");
+                log.error("Currency JSON file not found. Using empty list.");
                 return;
             }
             loadCurrenciesFromJson(objectMapper, jsonFile);
@@ -47,8 +49,8 @@ public class SupportedCurrencies {
                 SUPPORTED_CURRENCIES.add(currency);
                 CURRENCY_MAP.put(code, currency);
             }
-            System.out.println("Loaded currency: " + name + " (" + code + ")");
+            log.info("Loaded currency: {} ({})", name, code);
         }
-        System.out.println("Loaded " + SUPPORTED_CURRENCIES.size() + " currencies from JSON.");
+        log.info("Loaded {} currencies from JSON.", SUPPORTED_CURRENCIES.size());
     }
 }
