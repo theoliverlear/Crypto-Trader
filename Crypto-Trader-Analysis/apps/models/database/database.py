@@ -30,17 +30,39 @@ class Database:
             echo=False
         )
 
-    def get_inaccurate_models(self, error_threshold) -> list[str]:
-        query = text("SELECT DISTINCT currency_code FROM predictions WHERE ABS(percent_difference) > :error_threshold;")
+    def get_inaccurate_models(self, error_threshold: float,
+                              only_recent_predictions: bool = False) -> list[str]:
+        # TODO: Refactor to allow for num rows for recent results.
+        recent_query = ''
+        if only_recent_predictions:
+            recent_query = """
+                AND last_updated > (NOW() - INTERVAL '1 hour')
+            """
+        query = f"""
+            SELECT
+                currency_code,
+                AVG(percent_difference) AS avg_difference
+            FROM
+                predictions
+            WHERE
+                percent_difference > %(error_threshold)s
+            {recent_query}
+            GROUP BY
+                currency_code
+            ORDER BY
+                avg_difference DESC;
+        """
+        params = {"error_threshold": error_threshold}
         try:
-            with self.engine.connect() as connection:
-                result = connection.execute(query,{"error_threshold": error_threshold})
-                currencies = [row[0] for row in result]
-            logging.info(f"Fetched {len(currencies)} currencies with error > {error_threshold}")
-            return currencies
-        except Exception as e:
-            logging.error(f"Failed to query inaccurate predictions: {e}")
-            return []
+            logging.debug(f"Executing query...")
+            df = pd.read_sql_query(query, self.engine, params=params)
+            logging.debug(f"Query executed successfully.")
+        except Exception as exception:
+            df = pd.DataFrame()
+        return [currency_code for currency_code in df['currency_code'].tolist()]
+
+
+
 
 
     def _get_default_history_query(self) -> str:
