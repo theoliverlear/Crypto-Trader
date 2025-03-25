@@ -25,7 +25,7 @@ class LstmModel(BaseModel, ABC):
             Dense(1)  
         ])
         self.model.compile(optimizer="adam", loss="mean_squared_error")
-        self.log_model_summary()
+        # self.log_model_summary()
 
     @override
     @staticmethod
@@ -45,7 +45,7 @@ class LstmModel(BaseModel, ABC):
               dataset,
               epochs: int = 20,
               batch_size: int = 32):
-        from apps.models.model_retriever import LSTM_MODEL_DIRECTORY
+        from apps.models.ai.model_retriever import LSTM_MODEL_DIRECTORY
         checkpoint_dir = os.path.join(LSTM_MODEL_DIRECTORY, "checkpoints")
         os.makedirs(checkpoint_dir, exist_ok=True)
         checkpoint_path = os.path.join(checkpoint_dir,
@@ -85,5 +85,5 @@ class LstmModel(BaseModel, ABC):
     @staticmethod
     @override
     def get_model_path(target_currency: str) -> str:
-        from apps.models.model_retriever import LSTM_MODEL_DIRECTORY
+        from apps.models.ai.model_retriever import LSTM_MODEL_DIRECTORY
         return LSTM_MODEL_DIRECTORY + target_currency + '_model.keras'
