@@ -1,5 +1,4 @@
 # multi_layer_lstm_model.py
-import logging
 from abc import ABC
 from datetime import datetime
 
@@ -68,7 +67,7 @@ class MultiLayerLstmModel(MultiLayerBaseModel, ABC):
 
     def train(self, dataset,
               epochs=20, batch_size=32):
-        from apps.models.model_retriever import MULTI_LAYER_MODEL_DIRECTORY
+        from apps.models.ai.model_retriever import MULTI_LAYER_MODEL_DIRECTORY
         checkpoint_dir = os.path.join(MULTI_LAYER_MODEL_DIRECTORY,
                                       "checkpoints")
         os.makedirs(checkpoint_dir, exist_ok=True)
@@ -106,5 +105,5 @@ class MultiLayerLstmModel(MultiLayerBaseModel, ABC):
     @staticmethod
     @override
     def get_model_path(target_currency: str) -> str:
-        from apps.models.model_retriever import MULTI_LAYER_MODEL_DIRECTORY
+        from apps.models.ai.model_retriever import MULTI_LAYER_MODEL_DIRECTORY
         return MULTI_LAYER_MODEL_DIRECTORY + target_currency + '_multi_layer_model.keras'
