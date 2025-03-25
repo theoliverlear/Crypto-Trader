@@ -25,9 +25,20 @@ class TestDatabase(unittest.TestCase):
 
     def test_fetch_data(self):
         db = setup_database()
-        df= db.fetch_data("BTC",10000, QueryType.HISTORICAL_PRICE_SPACED)
+        df= db.fetch_data("BTC", 500, QueryType.HISTORICAL_PRICE_SPACED)
         print(df)
         self.assertFalse(df.empty)
+
+    def test_get_inaccurate_models(self):
+        db = setup_database()
+        currencies = db.get_inaccurate_models(5)
+        print(currencies)
+        self.assertFalse(len(currencies) == 0)
+
+        currencies = db.get_inaccurate_models(5, True)
+        print(currencies)
+        self.assertFalse(len(currencies) == 0)
+
 
 if __name__ == '__main__':
     unittest.main()
