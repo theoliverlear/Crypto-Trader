@@ -13,3 +13,15 @@ class ModelType(Enum):
     COMPLEX_LSTM: BaseModel = ComplexLstmModel
     MULTI_LAYER: BaseModel = MultiLayerLstmModel
     COMPLEX_MULTI_LAYER: BaseModel = ComplexMultiLayerLstmModel
+
+    def __str__(self):
+        if self == ModelType.LSTM:
+            return "LSTM Model"
+        elif self == ModelType.COMPLEX_LSTM:
+            return "Complex LSTM Model"
+        elif self == ModelType.MULTI_LAYER:
+            return "Multi-Layer LSTM Model"
+        elif self == ModelType.COMPLEX_MULTI_LAYER:
+            return "Complex Multi-Layer LSTM Model"
+        else:
+            raise ValueError(f"Unknown model type: {self}")
