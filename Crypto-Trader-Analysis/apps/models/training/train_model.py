@@ -3,11 +3,12 @@ import logging
 import os
 
 os.environ["TF_XLA_FLAGS"] = "--tf_xla_auto_jit=2"
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "1"
 
 import tensorflow as tf
 tf.config.optimizer.set_jit(True)
+tf.get_logger().setLevel('ERROR')
 
 from concurrent.futures import ThreadPoolExecutor
 
@@ -20,7 +21,7 @@ from apps.models.ai.lstm_model import LstmModel
 from apps.models.ai.model_type import ModelType
 from apps.models.data.preprocessor import Preprocessor
 from apps.models.database.query_type import QueryType
-from apps.models.model_retriever import get_model, get_lstm_model, \
+from apps.models.ai.model_retriever import get_model, get_lstm_model, \
     get_complex_lstm_model
 from apps.models.training.training_type import TrainingType
 from currency_json_generator import get_all_currency_codes
@@ -52,8 +53,6 @@ def configure_concurrency():
     os.environ["TF_ENABLE_ONEDNN_OPTS"] = "1"
 
 def setup_tensorflow_env():
-    from tensorflow.python.compiler.xla import xla
-
     if tf.config.optimizer.get_jit():
         print("XLA JIT is enabled")
     else:
@@ -90,26 +89,45 @@ def setup_tensorflow_env():
     logging.info(f"TensorFlow Configured for CPU Cores and {len(gpus)} GPU(s).")
 
 
+def get_untrained_models() -> list[str]:
+    from apps.models.prediction.predictions import model_exists
+    currencies: list[str] = get_all_currency_codes(False)
+    untrained_models: list[str] = []
+    for currency in currencies:
+        if not model_exists(currency):
+            untrained_models.append(currency)
+    return untrained_models
+
 def train_new_models(currency_codes: list[str] = None,
                      training_type: TrainingType = TrainingType.BALANCED_MEDIUM_TRAINING,
                      model_type: ModelType = ModelType.LSTM,
                      gpu_id: int = 0):
-    from apps.models.prediction.predictions import model_exists
-    for currency in currency_codes:
-        if not model_exists(currency):
-            logging.info(f"No model found for {currency}. Training model now...")
-            train_model(currency, training_type, model_type=model_type, gpu_id=gpu_id, use_previous_model=False)
-            logging.info(f"Training completed for {currency}.")
-        else:
-            logging.debug(f"Model already exists for {currency}. Skipping.")
+    # from apps.models.prediction.predictions import model_exists
+    # for currency in currency_codes:
+    #     if not model_exists(currency):
+    #         logging.info(f"No model found for {currency}. Training model now...")
+    #         train_model(currency, training_type, model_type=model_type, gpu_id=gpu_id, use_previous_model=False)
+    #         logging.info(f"Training completed for {currency}.")
+    #     else:
+    #         logging.debug(f"Model already exists for {currency}. Skipping.")
+    for currency in get_untrained_models():
+        logging.info(f"Training model for {currency}...")
+        train_model(target_currency=currency,
+                    training_type=training_type,
+                    model_type=model_type,
+                    gpu_id=gpu_id)
+        logging.info(f"Model for {currency} trained and saved.")
 
 
 def train_inaccurate_models(training_type: TrainingType = TrainingType.BALANCED_MEDIUM_TRAINING,
                             model_type: ModelType = ModelType.LSTM,
-                            gpu_id: int = 0):
+                            gpu_id: int = 0,
+                            only_recent_predictions: bool = False):
     from apps.models.database.database import Database
     db: Database = Database()
-    inaccurate_models: list[str] = db.get_inaccurate_models(5)
+    inaccurate_models: list[str] = db.get_inaccurate_models(5, only_recent_predictions)
+    if gpu_id == 1:
+        inaccurate_models.reverse()
     logging.info(f"Found {len(inaccurate_models)} inaccurate models.")
 
     for currency in inaccurate_models:
@@ -163,11 +181,9 @@ def train_model(target_currency: str = 'BTC',
     target_scaler.fit(raw_target_vals)
     logging.info("Scaling future prices...")
     future_prices_scaled = target_scaler.transform(rescale_future_prices(future_prices_unscaled)).ravel()
-
-
     dataset = tf.data.Dataset.from_tensor_slices(
         (historical_prices, future_prices_scaled))
-    dataset = dataset.cache().shuffle(5120).batch(
+    dataset = dataset.cache().shuffle(9216).batch(
         training_type.value.batch_size).prefetch(tf.data.AUTOTUNE)
 
 
@@ -201,7 +217,7 @@ def train_model(target_currency: str = 'BTC',
     logging.info(f"Predicting currency price.")
     predicted_price = model.predict(last_sequence, target_scaler)
     logging.debug(f"Predicted Next {target_currency} Price: {predicted_price}")
-    log_actual_vs_printed(target_currency, predicted_price)
+    log_actual_vs_printed(target_currency, predicted_price, model_type)
 
 def get_currency_prices(dataframe, target_currency):
     return dataframe[[f"{target_currency}_price"]].values
@@ -312,7 +328,7 @@ def train_multi_layer_model(target_currency: str = 'BTC',
         (short_data, med_data, long_data),
         future_prices_scaled
     ))
-    dataset = dataset.cache().shuffle(5120) \
+    dataset = dataset.cache().shuffle(9216) \
         .batch(training_type.value.batch_size) \
         .prefetch(tf.data.AUTOTUNE)
 
@@ -325,12 +341,6 @@ def train_multi_layer_model(target_currency: str = 'BTC',
     logging.info(f"Training Multi-Layer Model for {target_currency}...")
     with tf.device(f'/GPU:{gpu_id}'):
         logging.info(f"Training on GPU...")
-        # model.train(
-        #     [short_data, med_data, long_data],
-        #     future_prices_scaled,
-        #     epochs=training_type.value.epochs,
-        #     batch_size=training_type.value.batch_size
-        # )
         model.train(
             dataset,
             epochs=training_type.value.epochs,
