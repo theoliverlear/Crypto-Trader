@@ -1,5 +1,4 @@
 # complex_lstm_model.py
-import logging
 from abc import ABC
 from datetime import datetime
 
@@ -73,7 +72,7 @@ class ComplexLstmModel(BaseModel, ABC):
               dataset,
               epochs: int = 20,
               batch_size: int = 32):
-        from apps.models.model_retriever import COMPLEX_MODEL_DIRECTORY
+        from apps.models.ai.model_retriever import COMPLEX_MODEL_DIRECTORY
         checkpoint_dir = os.path.join(COMPLEX_MODEL_DIRECTORY, "checkpoints")
         os.makedirs(checkpoint_dir, exist_ok=True)
         checkpoint_path = os.path.join(checkpoint_dir,
@@ -113,5 +112,5 @@ class ComplexLstmModel(BaseModel, ABC):
     @staticmethod
     @override
     def get_model_path(target_currency: str) -> str:
-        from apps.models.model_retriever import COMPLEX_MODEL_DIRECTORY
+        from apps.models.ai.model_retriever import COMPLEX_MODEL_DIRECTORY
         return COMPLEX_MODEL_DIRECTORY + target_currency + '_complex_model.keras'
