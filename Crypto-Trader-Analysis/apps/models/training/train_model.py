@@ -111,12 +111,21 @@ def train_new_models(currency_codes: list[str] = None,
     #     else:
     #         logging.debug(f"Model already exists for {currency}. Skipping.")
     for currency in get_untrained_models():
-        logging.info(f"Training model for {currency}...")
-        train_model(target_currency=currency,
-                    training_type=training_type,
-                    model_type=model_type,
-                    gpu_id=gpu_id)
-        logging.info(f"Model for {currency} trained and saved.")
+        if currency_codes:
+            if currency in currency_codes:
+                logging.info(f"Training model for {currency}...")
+                train_model(target_currency=currency,
+                            training_type=training_type,
+                            model_type=model_type,
+                            gpu_id=gpu_id)
+                logging.info(f"Model for {currency} trained and saved.")
+        else:
+            logging.info(f"Training model for {currency}...")
+            train_model(target_currency=currency,
+                        training_type=training_type,
+                        model_type=model_type,
+                        gpu_id=gpu_id)
+            logging.info(f"Model for {currency} trained and saved.")
 
 
 def train_inaccurate_models(training_type: TrainingType = TrainingType.BALANCED_MEDIUM_TRAINING,
@@ -183,7 +192,7 @@ def train_model(target_currency: str = 'BTC',
     future_prices_scaled = target_scaler.transform(rescale_future_prices(future_prices_unscaled)).ravel()
     dataset = tf.data.Dataset.from_tensor_slices(
         (historical_prices, future_prices_scaled))
-    dataset = dataset.cache().shuffle(9216).batch(
+    dataset = dataset.cache().shuffle(1024).batch(
         training_type.value.batch_size).prefetch(tf.data.AUTOTUNE)
 
 
@@ -328,7 +337,7 @@ def train_multi_layer_model(target_currency: str = 'BTC',
         (short_data, med_data, long_data),
         future_prices_scaled
     ))
-    dataset = dataset.cache().shuffle(9216) \
+    dataset = dataset.cache().shuffle(1024) \
         .batch(training_type.value.batch_size) \
         .prefetch(tf.data.AUTOTUNE)
 
