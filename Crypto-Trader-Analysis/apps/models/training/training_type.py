@@ -37,6 +37,9 @@ class TrainingType(Enum):
     MODERATE_DATA_DETAILED_TRAINING: TrainingModel = TrainingModel(
         max_rows=10000, epochs=100, batch_size=32, skip_small_samples=True, sequence_length=10
     )
+    MOST_DATA_DETAILED_TRAINING: TrainingModel = TrainingModel(
+        max_rows=75000, epochs=100, batch_size=32, skip_small_samples=True, sequence_length=10
+    )
     ALL_DATA_DETAILED_TRAINING: TrainingModel = TrainingModel(
         max_rows=100000, epochs=100, batch_size=32, skip_small_samples=True, sequence_length=10
     )
