@@ -193,7 +193,7 @@ def main():
     # actual_vs_predicted("ETH")
     # actual_vs_predicted("AAVE")
     # predict_and_send_loop()
-    actual_vs_predicted("LTC", model_type=ModelType.LSTM)
+    actual_vs_predicted("AAVE", model_type=ModelType.COMPLEX_LSTM)
     # predict_and_send_all_loop()
     # actual_vs_predicted("MOG")
     # actual_vs_predicted("FLOKI")
@@ -201,3 +201,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# TODO: Make a @predict_saving decorator that applies predictions to the call
+#       of the function.
