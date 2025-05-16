@@ -60,7 +60,7 @@ main {
     padding: $simplest-half-percent;
     margin: $simplest-half-percent $simplest-half-percent 0;
     background-color: $almost-white;
-    box-shadow: $blue-grey 0 0 $simplest-half-percent;
+    box-shadow: $blue-gray 0 0 $simplest-half-percent;
     border-radius: $simplest-half-percent;
 }
 .dropdown-selection {
@@ -76,7 +76,7 @@ main {
     padding: $simplest-half-percent;
     margin: $simplest-half-percent 0;
     background-color: $almost-white;
-    box-shadow: $blue-grey 0 0 $simplest-half-percent;
+    box-shadow: $blue-gray 0 0 $simplest-half-percent;
     border-radius: $simplest-half-percent;
 }
 #your-currencies-header-with-button {
@@ -113,9 +113,9 @@ main {
     padding: $simplest-half-percent;
     margin: simple-calc(1, 0.5) 0;
     background-color: $almost-white;
-    box-shadow: $blue-grey $simplest-quarter-percent $simplest-quarter-percent 0 0;
+    box-shadow: $blue-gray $simplest-quarter-percent $simplest-quarter-percent 0 0;
     border-radius: $simplest-half-percent;
-    border: $blue-grey solid $thin-border;
+    border: $blue-gray solid $thin-border;
 }
 .your-currency-item {
     @include flex(space-around, center, row);
@@ -128,7 +128,7 @@ main {
     height: $simplest-two-percent;
     @include basic-margin-padding(0, 0);
     border-radius: $simplest-one-percent;
-    box-shadow: $blue-grey $simplest-quarter-percent $simplest-quarter-percent 0 0;
+    box-shadow: $blue-gray $simplest-quarter-percent $simplest-quarter-percent 0 0;
     /*margin: 0 calc(((0.5vh + 0.5vw) / 2) + 0.5em) 0 0;*/
 }
 .currency-name-and-code-div {
@@ -155,7 +155,7 @@ main {
     margin: 0 simplest-calc(0.15);
 }
 .your-currency-info-text {
-    color: $blue-grey;
+    color: $blue-gray;
 }
 #shares-wallet-seperator {
     @include flex(space-around, center, row);
@@ -165,7 +165,7 @@ main {
 }
 .currency-input-subtext {
     /*font-size: calc(((0.75vh + 0.75vw) / 2) + 0.75em);*/
-    color: $blue-grey;
+    color: $blue-gray;
     font-style: italic;
 }
 #shares-wallet-with-button {
@@ -216,7 +216,7 @@ main {
     padding: $one-percent 0;
     margin: $simplest-half-percent 0;
     background-color: $air-blue;
-    box-shadow: $blue-grey 0 0 $simplest-half-percent;
+    box-shadow: $blue-gray 0 0 $simplest-half-percent;
     border-radius: $simplest-half-percent;
     .portfolio-selector-option {
         padding: $one-percent;

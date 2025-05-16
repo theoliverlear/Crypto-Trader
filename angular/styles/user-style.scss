@@ -33,7 +33,7 @@ main {
     }
     padding: 0 $simplest-one-percent;
     margin: 0 simple-calc(1, 0.2) 0 0;
-    box-shadow: $blue-grey $simplest-quarter-percent calc($simplest-quarter-percent * -1) 0 0;
+    box-shadow: $blue-gray $simplest-quarter-percent calc($simplest-quarter-percent * -1) 0 0;
     z-index: 0;
     background-color: $pure-white;
     transition: box-shadow, margin-top, margin-left, padding-bottom, 0.3s;
@@ -48,7 +48,7 @@ main {
     &:hover {
         background-color: $almost-white;
         cursor: pointer;
-        box-shadow: $blue-grey $margin-padding-box-shadow calc($margin-padding-box-shadow * -1) 0 0;
+        box-shadow: $blue-gray $margin-padding-box-shadow calc($margin-padding-box-shadow * -1) 0 0;
     }
     &:active {
         box-shadow: none;
@@ -76,11 +76,11 @@ main {
     padding: 0 0 simple-calc(2, 1) 0;
     border-radius: $simplest-one-percent;
     @include flex(space-around, center, column);
-    box-shadow: $blue-grey $box-shadow-size calc($box-shadow-size * -1) 0 0;
+    box-shadow: $blue-gray $box-shadow-size calc($box-shadow-size * -1) 0 0;
     transition: box-shadow, 0.3s;
     &:hover {
         $hover-box-shadow-size: simplest-calc(0.45);
-        box-shadow: $blue-grey $hover-box-shadow-size calc($hover-box-shadow-size * -1) 0 0;
+        box-shadow: $blue-gray $hover-box-shadow-size calc($hover-box-shadow-size * -1) 0 0;
     }
 }
 .input-with-title {

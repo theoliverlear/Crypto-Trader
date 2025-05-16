@@ -21,7 +21,7 @@
     padding: 0 simplest-calc(1);
     margin: 0 simple-calc(1, 0.2) 0 0;
     $box-shadow-size: simplest-calc(0.25);
-    box-shadow: $blue-grey $box-shadow-size calc($box-shadow-size * -1) 0 0;
+    box-shadow: $blue-gray $box-shadow-size calc($box-shadow-size * -1) 0 0;
     z-index: 0;
     background-color: $pure-white;
     transition: box-shadow, margin-top, margin-left, padding-bottom, 0.3s;
@@ -32,7 +32,7 @@
         background-color: $almost-white;
         cursor: pointer;
         $box-shadow-size: simplest-calc(0.35);
-        box-shadow: $blue-grey $box-shadow-size calc($box-shadow-size * -1) 0 0;
+        box-shadow: $blue-gray $box-shadow-size calc($box-shadow-size * -1) 0 0;
     }
     &:active {
         box-shadow: none;
@@ -74,11 +74,11 @@
     border-radius: simplest-calc(1);
     @include flex(space-around, center, column);
     $box-shadow-size: simplest-calc(0.35);
-    box-shadow: $blue-grey $box-shadow-size calc($box-shadow-size * -1) 0 0;
+    box-shadow: $blue-gray $box-shadow-size calc($box-shadow-size * -1) 0 0;
     transition: box-shadow, 0.3s;
     &:hover {
         $box-shadow-size: simplest-calc(0.45);
-        box-shadow: $blue-grey $box-shadow-size calc($box-shadow-size * -1) 0 0;
+        box-shadow: $blue-gray $box-shadow-size calc($box-shadow-size * -1) 0 0;
     }
 }
 

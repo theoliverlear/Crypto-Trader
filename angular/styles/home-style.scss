@@ -38,7 +38,7 @@ $simplest-one-percent: simplest-calc(1);
     padding: $simplest-one-percent 0;
     margin:  0;
     background-color: black;
-    box-shadow: $blue-grey 0 0 $simplest-one-percent;
+    box-shadow: $blue-gray 0 0 $simplest-one-percent;
     .functionality-text-container {
         background-color: $midnight-navy;
         padding: $simplest-one-percent;
@@ -53,7 +53,7 @@ $simplest-one-percent: simplest-calc(1);
     padding: $simplest-one-percent 0;
     margin: $simplest-one-percent 0;
     background-color: $almost-white;
-    box-shadow: $blue-grey 0 0 $simplest-one-percent;
+    box-shadow: $blue-gray 0 0 $simplest-one-percent;
     p {
         margin: $simplest-one-percent;
     }
@@ -64,7 +64,7 @@ $simplest-one-percent: simplest-calc(1);
     padding: $simplest-one-percent 0;
     margin: $simplest-one-percent 0;
     background-color: $morning-frost-blue;
-    box-shadow: $blue-grey 0 0 $simplest-one-percent;
+    box-shadow: $blue-gray 0 0 $simplest-one-percent;
     border-radius: $simplest-one-percent;
     height: simple-calc(20, 2);
 }
@@ -78,8 +78,8 @@ $simplest-one-percent: simplest-calc(1);
     //margin: $simplest-one-percent 0;
     background-color: $almost-white;
     border : {
-        top: $very-thin-border solid $blue-grey;
-        bottom: $very-thin-border solid $blue-grey;
+        top: $very-thin-border solid $blue-gray;
+        bottom: $very-thin-border solid $blue-gray;
     }
 }
 #premium-title-div {
@@ -127,7 +127,7 @@ $simplest-one-percent: simplest-calc(1);
 .supported-platform-image {
     $width-height: simple-calc(7, 3);
     @include size($width-height, $width-height);
-    box-shadow: $blue-grey 0 0 $simplest-one-percent;
+    box-shadow: $blue-gray 0 0 $simplest-one-percent;
     border-radius: 50%;
     margin: $simplest-one-percent;
 }
