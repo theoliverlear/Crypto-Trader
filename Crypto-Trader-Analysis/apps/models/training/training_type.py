@@ -11,6 +11,9 @@ class TrainingType(Enum):
     LARGE_DATA_DETAILED_TRAINING: TrainingModel = TrainingModel(
         max_rows=40000, epochs=100, batch_size=16, skip_small_samples=True, sequence_length=10, query_type=QueryType.HISTORICAL_PRICE
     )
+    ALL_DATA_DETAILED_TRAINING: TrainingModel = TrainingModel(
+        max_rows=690000, epochs=100, batch_size=16, skip_small_samples=True, sequence_length=10, query_type=QueryType.HISTORICAL_PRICE
+    )
     HISTORICAL_LARGE_DATA_DETAILED_TRAINING: TrainingModel = TrainingModel(
         max_rows=40000, epochs=100, batch_size=16, skip_small_samples=True, sequence_length=10, query_type=QueryType.HISTORICAL_PRICE_SPACED
     )
@@ -35,13 +38,10 @@ class TrainingType(Enum):
         max_rows=5000, epochs=100, batch_size=32, skip_small_samples=True, sequence_length=10
     )
     MODERATE_DATA_DETAILED_TRAINING: TrainingModel = TrainingModel(
-        max_rows=10000, epochs=100, batch_size=32, skip_small_samples=True, sequence_length=10
+        max_rows=10000, epochs=100, batch_size=16, skip_small_samples=True, sequence_length=10
     )
     MOST_DATA_DETAILED_TRAINING: TrainingModel = TrainingModel(
         max_rows=75000, epochs=100, batch_size=32, skip_small_samples=True, sequence_length=10
-    )
-    ALL_DATA_DETAILED_TRAINING: TrainingModel = TrainingModel(
-        max_rows=100000, epochs=100, batch_size=32, skip_small_samples=True, sequence_length=10
     )
     ALL_DATA_GENERAL_TRAINING: TrainingModel = TrainingModel(
         max_rows=100000, epochs=100, batch_size=128, skip_small_samples=True, sequence_length=60
