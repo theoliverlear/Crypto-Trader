@@ -1,4 +1,5 @@
 # complex_multi_layer_lstm_model.py
+import logging
 from abc import ABC
 from datetime import datetime
 
@@ -18,6 +19,9 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 @define
 class ComplexMultiLayerLstmModel(MultiLayerBaseModel, ABC):
     def __attrs_post_init__(self):
+        self.initialize_model()
+
+    def initialize_model(self):
         if self.dimension is None:
             raise ValueError(
                 "Please specify 'dimension' for MultiLayerLstmModel.")
@@ -28,7 +32,6 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel, ABC):
                              name="medium_input")
         long_input = Input(shape=(self.long_seq_len, self.dimension),
                            name="long_input")
-
         short_lstm = Bidirectional(LSTM(512,
                                         return_sequences=True,
                                         recurrent_activation="sigmoid",
@@ -36,7 +39,6 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel, ABC):
                                         unroll=True))(short_input)
         short_lstm = Dropout(0.3)(short_lstm)
         short_lstm = BatchNormalization()(short_lstm)
-
         short_lstm = Bidirectional(LSTM(384,
                                         return_sequences=True,
                                         recurrent_activation="sigmoid",
@@ -44,7 +46,6 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel, ABC):
                                         unroll=True))(short_lstm)
         short_lstm = Dropout(0.3)(short_lstm)
         short_lstm = BatchNormalization()(short_lstm)
-
         short_lstm = Bidirectional(LSTM(256,
                                         return_sequences=True,
                                         recurrent_activation="sigmoid",
@@ -52,20 +53,18 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel, ABC):
                                         unroll=True))(short_lstm)
         short_lstm = Dropout(0.3)(short_lstm)
         short_lstm = BatchNormalization()(short_lstm)
-
         short_lstm = Bidirectional(LSTM(128,
                                         recurrent_activation="sigmoid",
                                         use_bias=True,
                                         unroll=True))(short_lstm)
         short_lstm = Dropout(0.3)(short_lstm)
-
         medium_lstm = Bidirectional(LSTM(512,
                                          return_sequences=True,
                                          recurrent_activation="sigmoid",
-                                         use_bias=True, unroll=True))(medium_input)
+                                         use_bias=True, unroll=True))(
+            medium_input)
         medium_lstm = Dropout(0.3)(medium_lstm)
         medium_lstm = BatchNormalization()(medium_lstm)
-
         medium_lstm = Bidirectional(LSTM(384,
                                          return_sequences=True,
                                          recurrent_activation="sigmoid",
@@ -73,7 +72,6 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel, ABC):
                                          unroll=True))(medium_lstm)
         medium_lstm = Dropout(0.3)(medium_lstm)
         medium_lstm = BatchNormalization()(medium_lstm)
-
         medium_lstm = Bidirectional(LSTM(256,
                                          return_sequences=True,
                                          recurrent_activation="sigmoid",
@@ -81,13 +79,11 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel, ABC):
                                          unroll=True))(medium_lstm)
         medium_lstm = Dropout(0.3)(medium_lstm)
         medium_lstm = BatchNormalization()(medium_lstm)
-
         medium_lstm = Bidirectional(LSTM(128,
                                          recurrent_activation="sigmoid",
                                          use_bias=True,
                                          unroll=True))(medium_lstm)
         medium_lstm = Dropout(0.3)(medium_lstm)
-
         long_lstm = Bidirectional(LSTM(512,
                                        return_sequences=True,
                                        recurrent_activation="sigmoid",
@@ -95,7 +91,6 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel, ABC):
                                        unroll=True))(long_input)
         long_lstm = Dropout(0.3)(long_lstm)
         long_lstm = BatchNormalization()(long_lstm)
-
         long_lstm = Bidirectional(LSTM(384,
                                        return_sequences=True,
                                        recurrent_activation="sigmoid",
@@ -103,7 +98,6 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel, ABC):
                                        unroll=True))(long_lstm)
         long_lstm = Dropout(0.3)(long_lstm)
         long_lstm = BatchNormalization()(long_lstm)
-
         long_lstm = Bidirectional(LSTM(256,
                                        return_sequences=True,
                                        recurrent_activation="sigmoid",
@@ -111,15 +105,12 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel, ABC):
                                        unroll=True))(long_lstm)
         long_lstm = Dropout(0.3)(long_lstm)
         long_lstm = BatchNormalization()(long_lstm)
-
         long_lstm = Bidirectional(LSTM(128,
                                        recurrent_activation="sigmoid",
                                        use_bias=True,
                                        unroll=True))(long_lstm)
         long_lstm = Dropout(0.3)(long_lstm)
-
         merged = Concatenate()([short_lstm, medium_lstm, long_lstm])
-
         merged = Dense(256, activation="relu")(merged)
         merged = Dense(128, activation="relu")(merged)
         merged = Dense(64, activation="relu")(merged)
@@ -129,7 +120,6 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel, ABC):
                            name="MultiLayerLSTM")
         self.model.compile(optimizer="adam", loss="mean_squared_error")
         self.log_model_summary()
-
 
     @override
     @staticmethod
@@ -166,11 +156,36 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel, ABC):
                               min_lr=1e-6),
             ComplexMultiLayerLstmModel.get_tensorboard_callback(self.target_currency)
         ]
-        self.model.fit(dataset,
-                       epochs=epochs,
-                       batch_size=batch_size,
-                       verbose=1,
-                       callbacks=callbacks)
+        # self.model.fit(dataset,
+        #                epochs=epochs,
+        #                batch_size=batch_size,
+        #                verbose=1,
+        #                callbacks=callbacks)
+
+        while True:
+            try:
+                self.model.fit(dataset,
+                               epochs=epochs,
+                               batch_size=batch_size,
+                               verbose=1,
+                               callbacks=callbacks)
+                break
+            except Exception as exception:
+                from apps.models.ai.model_type import ModelType
+                from apps.models.prediction.predictions import model_exists, \
+                    delete_model
+                if "Input 0 of layer" in str(exception):
+                    logging.info("Model dimension mismatch. Re-training model.")
+                    model_exists: bool = model_exists(self.target_currency,
+                                                      ModelType.COMPLEX_MULTI_LAYER)
+                    if model_exists:
+                        delete_model(self.target_currency,
+                                     ModelType.COMPLEX_MULTI_LAYER)
+                    self.initialize_model()
+
+                else:
+                    raise
+
 
     @override
     def predict(self, input_data_list, target_scaler):
