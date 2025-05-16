@@ -37,7 +37,7 @@ body {
     @include basic-margin-padding(0, 0);
     min-height: 100vh;
     app {
-        font-family: 'Roboto', sans-serif;
+        font-family: $jetbrains-mono-font;
         width: 100%;
         @include flex(center, center, column);
         @include basic-margin-padding(0, 0);
@@ -83,7 +83,7 @@ body {
     @include flex(space-around, center, column);
     border-radius: simplest-calc(0.5);
     $box-shadow-size: simplest-calc(0.25);
-    box-shadow: $blue-grey $box-shadow-size $box-shadow-size 0 0;
+    box-shadow: $blue-gray $box-shadow-size $box-shadow-size 0 0;
 }
 .dropdown-selection {
     $border-radius-bottom: simplest-calc(0.5);
@@ -104,7 +104,7 @@ body {
     padding: simple-calc(0.5, 0.25);
     transition: background-color, box-shadow, 0.3s;
     &:hover img {
-        box-shadow: $blue-grey 0 0 simplest-calc(0.25);
+        box-shadow: $blue-gray 0 0 simplest-calc(0.25);
     }
     img {
         border-radius: 50%;
