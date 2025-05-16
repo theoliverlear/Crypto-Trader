@@ -11,14 +11,17 @@ nav-bar-item {
     @include flex(center, center, row);
     border-radius: simplest-calc(1);
     transition: background-color, box-shadow, border, transform, 0.3s;
-    padding: simplest-calc(0.25) simplest-calc(1);
-    h5 {
-        font-size: calc($h5-font-size * 0.85);
+    padding: simplest-calc(0.5) simplest-calc(1);
+    background: radial-gradient(circle, $muted-blue, $blue-gray);
+    flex-basis: $ten-percent;
+    h4 {
+        font-size: calc($h4-font-size * 0.85);
+        color: $pure-white;
     }
     &:hover {
         background-color: $almost-white;
-        $box-shadow-size: simplest-calc(0.35);
-        box-shadow: $blue-grey $box-shadow-size $box-shadow-size 0 0;
+        $box-shadow-size: simplest-calc(0.25);
+        box-shadow: $blue-gray $box-shadow-size $box-shadow-size 0 0;
         cursor: pointer;
         border: $muted-blue simple-calc(0.1, 0.05) solid;
     }
@@ -26,7 +29,7 @@ nav-bar-item {
     &:active {
         background-color: $almost-white;
         box-shadow: none;
-        $top-and-right: simplest-calc(0.35);
+        $top-and-right: simplest-calc(0.25);
         transform: translate($top-and-right, $top-and-right);
     }
 }
