@@ -1,4 +1,5 @@
 # lstm_model.py
+import logging
 from abc import ABC
 from datetime import datetime
 
@@ -16,13 +17,18 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 @define
 class LstmModel(BaseModel, ABC):
     def __attrs_post_init__(self):
+        self.initialize_model()
+
+    def initialize_model(self) -> None:
         self.model = Sequential([
             Input(shape=(self.sequence_length, self.dimension)),
-            LSTM(150, return_sequences=True, recurrent_activation="sigmoid", use_bias=True, unroll=True),
+            LSTM(150, return_sequences=True, recurrent_activation="sigmoid",
+                 use_bias=True, unroll=True),
             Dropout(0.2),
-            LSTM(100, recurrent_activation="sigmoid", use_bias=True, unroll=True),
+            LSTM(100, recurrent_activation="sigmoid", use_bias=True,
+                 unroll=True),
             Dense(50, activation="relu"),
-            Dense(1)  
+            Dense(1)
         ])
         self.model.compile(optimizer="adam", loss="mean_squared_error")
         # self.log_model_summary()
@@ -60,11 +66,37 @@ class LstmModel(BaseModel, ABC):
             ReduceLROnPlateau(monitor='loss', factor=0.5, patience=3,
                               min_lr=1e-6)
         ]
-        self.model.fit(dataset,
-                       epochs=epochs,
-                       batch_size=batch_size,
-                       verbose=1,
-                       callbacks=callbacks)
+
+        # self.model.fit(dataset,
+        #                epochs=epochs,
+        #                batch_size=batch_size,
+        #                verbose=1,
+        #                callbacks=callbacks)
+        while True:
+            try:
+                self.model.fit(dataset,
+                                epochs=epochs,
+                                batch_size=batch_size,
+                                verbose=1,
+                                callbacks=callbacks)
+                break
+            except Exception as exception:
+                from apps.models.ai.model_type import ModelType
+                from apps.models.prediction.predictions import model_exists, \
+                    delete_model
+                if "Input 0 of layer" in str(exception):
+                    logging.info("Model dimension mismatch. Re-training model.")
+                    model_exists: bool = model_exists(self.target_currency,
+                                                      ModelType.LSTM)
+                    if model_exists:
+                        delete_model(self.target_currency,
+                                     ModelType.LSTM)
+                    self.initialize_model()
+
+                else:
+                    raise
+
+
 
     @override
     def predict(self, training_data, target_scaler):
