@@ -35,6 +35,8 @@ import tensorflow as tf
 tf.config.optimizer.set_jit(True)
 tf.function(jit_compile=True)
 
+SMALL_DATASET_SIZE = 689999
+
 def setup_logging():
     logging.basicConfig(
         level=logging.DEBUG,
@@ -173,7 +175,7 @@ def train_model(target_currency: str = 'BTC',
     logging.info("Getting data frame...")
     dataframe = get_data_frame(target_currency, limit=training_type.value.max_rows, query_type=QueryType.HISTORICAL_PRICE)
     logging.debug(f"Retrieved {len(dataframe)} rows for {target_currency}")
-    if len(dataframe) < 50 and training_type.value.skip_small_samples:
+    if len(dataframe) < SMALL_DATASET_SIZE and training_type.value.skip_small_samples:
         logging.warning(f"Not enough data to train model for {target_currency}. Skipping...")
         return
     logging.info("Configuring preprocessor...")
@@ -362,6 +364,9 @@ def train_multi_layer_model(target_currency: str = 'BTC',
     predicted_price = model.predict([last_short, last_medium, last_long],
                                     target_scaler=target_scaler)
     log_actual_vs_printed(target_currency, predicted_price)
+
+# TODO: Create a training log API to display when a model was trained and any
+#       details about the training.
 
 def get_last_multi_layer_elements(long_data, med_data, short_data):
     last_short = np.array([short_data[-1]])
