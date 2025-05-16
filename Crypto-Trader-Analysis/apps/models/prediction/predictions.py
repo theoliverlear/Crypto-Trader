@@ -30,6 +30,28 @@ def model_exists(target_currency: str, model_type: ModelType = ModelType.LSTM) -
     exists = model_path.is_file()
     logging.debug(f"Checking model at: {model_path} -> Exists: {exists}")
     return exists
+
+def delete_model(target_currency: str, model_type: ModelType = ModelType.LSTM) -> None:
+    model_file: str = model_type.value.get_model_path(target_currency)
+    current_file_path = Path(__file__).resolve()
+    base_dir = current_file_path.parents[3]
+    model_path = base_dir / model_file
+    if model_path.is_file():
+        logging.debug(f"Deleting model at: {model_path}")
+        model_path.unlink()
+    else:
+        logging.debug(f"Model file not found at: {model_path}, nothing to delete.")
+
+def delete_checkpoint(target_currency: str, model_type: ModelType = ModelType.LSTM) -> None:
+    checkpoint_file: str = model_type.value.get_model_path(target_currency)
+    current_file_path = Path(__file__).resolve()
+    base_dir = current_file_path.parents[3]
+    checkpoint_path = base_dir / "checkpoints" / checkpoint_file
+    if checkpoint_path.is_file():
+        logging.debug(f"Deleting checkpoint at: {checkpoint_path}")
+        checkpoint_path.unlink()
+    else:
+        logging.debug(f"Checkpoint file not found at: {checkpoint_path}, nothing to delete.")
 # TODO: Add multi-layer model support.
 def predict(target_currency: str = 'BTC',
             training_type: TrainingType = TrainingType.DETAILED_SHORT_TRAINING,
@@ -193,8 +215,8 @@ def main():
     # actual_vs_predicted("ETH")
     # actual_vs_predicted("AAVE")
     # predict_and_send_loop()
-    actual_vs_predicted("AAVE", model_type=ModelType.COMPLEX_LSTM)
-    # predict_and_send_all_loop()
+    # actual_vs_predicted("AAVE", model_type=ModelType.COMPLEX_LSTM)
+    predict_and_send_all_loop()
     # actual_vs_predicted("MOG")
     # actual_vs_predicted("FLOKI")
     # actual_vs_predicted("MOBILE")
