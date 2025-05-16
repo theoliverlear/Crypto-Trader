@@ -1,4 +1,5 @@
 # complex_lstm_model.py
+import logging
 from abc import ABC
 from datetime import datetime
 
@@ -18,6 +19,9 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 @define
 class ComplexLstmModel(BaseModel, ABC):
     def __attrs_post_init__(self):
+        self.initialize_model()
+
+    def initialize_model(self):
         self.model = Sequential([
             Input(shape=(self.sequence_length, self.dimension)),
             Bidirectional(LSTM(512,
@@ -87,11 +91,34 @@ class ComplexLstmModel(BaseModel, ABC):
                               min_lr=1e-6),
             ComplexLstmModel.get_tensorboard_callback(self.target_currency)
         ]
-        self.model.fit(dataset,
-                       epochs=epochs,
-                       batch_size=batch_size,
-                       verbose=1,
-                       callbacks=callbacks)
+        # self.model.fit(dataset,
+        #                epochs=epochs,
+        #                batch_size=batch_size,
+        #                verbose=1,
+        #                callbacks=callbacks)
+        while True:
+            try:
+                self.model.fit(dataset,
+                               epochs=epochs,
+                               batch_size=batch_size,
+                               verbose=1,
+                               callbacks=callbacks)
+                break
+            except Exception as exception:
+                from apps.models.ai.model_type import ModelType
+                from apps.models.prediction.predictions import model_exists, \
+                    delete_model
+                if "Input 0 of layer" in str(exception):
+                    logging.info("Model dimension mismatch. Re-training model.")
+                    model_exists: bool = model_exists(self.target_currency,
+                                                      ModelType.COMPLEX_LSTM)
+                    if model_exists:
+                        delete_model(self.target_currency,
+                                     ModelType.COMPLEX_LSTM)
+                    self.initialize_model()
+
+                else:
+                    raise
 
     @override
     def predict(self, training_data, target_scaler):
