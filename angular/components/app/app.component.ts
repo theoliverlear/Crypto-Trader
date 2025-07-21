@@ -5,7 +5,7 @@ import {filter, map, mergeMap} from "rxjs";
 @Component({
     selector: 'app',
     templateUrl: './app.component.html',
-    styleUrls: ['./app-style.component.css']
+    styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
     title: string;
