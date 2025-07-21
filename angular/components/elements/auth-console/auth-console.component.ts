@@ -5,7 +5,7 @@ import {AuthPopup} from "../../../models/auth/AuthPopup";
 @Component({
     selector: 'auth-console',
     templateUrl: './auth-console.component.html',
-    styleUrls: ['./auth-console-style.component.css']
+    styleUrls: ['./auth-console.component.css']
 })
 export class AuthConsoleComponent {
     @Input() currentAuthType: AuthType = AuthType.SIGN_UP;

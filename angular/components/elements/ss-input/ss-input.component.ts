@@ -11,7 +11,7 @@ import {InputType} from "./models/InputType";
 @Component({
     selector: 'ss-input',
     templateUrl: './ss-input.component.html',
-    styleUrls: ['./ss-input-style.component.css']
+    styleUrls: ['./ss-input.component.css']
 })
 export class SsInputComponent {
     @Input() inputType: InputType;
@@ -19,10 +19,12 @@ export class SsInputComponent {
     constructor() {
 
     }
+
     @HostListener('input', ['$event.target.value'])
-    onInput(value: string) {
+    onInput(value: string): void {
         this.inputEvent.emit(value);
     }
+
     isCheckbox(): boolean {
         return this.inputType === InputType.CHECKBOX;
     }

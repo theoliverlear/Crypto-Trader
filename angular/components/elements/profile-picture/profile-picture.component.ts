@@ -14,7 +14,7 @@ import {
 @Component({
     selector: 'profile-picture',
     templateUrl: './profile-picture.component.html',
-    styleUrls: ['./profile-picture-style.component.css']
+    styleUrls: ['./profile-picture.component.css']
 })
 export class ProfilePictureComponent implements AfterViewInit {
     @Input() userId: number = 0;

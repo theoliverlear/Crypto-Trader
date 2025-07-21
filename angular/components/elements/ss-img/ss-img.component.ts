@@ -12,7 +12,7 @@ import {ImageAsset} from "../../../assets/imageAssets";
 @Component({
     selector: 'ss-img',
     templateUrl: './ss-img.component.html',
-    styleUrls: ['./ss-img-style.component.css']
+    styleUrls: ['./ss-img.component.css']
 })
 export class SsImgComponent implements AfterViewInit {
     @Input() imageAsset: ImageAsset;

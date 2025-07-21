@@ -6,7 +6,7 @@ import {AuthPopup} from "../../../models/auth/AuthPopup";
 @Component({
     selector: 'auth-console-tab-section',
     templateUrl: './auth-console-tab-section.component.html',
-    styleUrls: ['./auth-console-tab-section-style.component.css']
+    styleUrls: ['./auth-console-tab-section.component.css']
 })
 export class AuthConsoleTabSectionComponent {
     @Output() authTypeClicked: EventEmitter<AuthType> = new EventEmitter<AuthType>();

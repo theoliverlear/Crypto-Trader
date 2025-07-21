@@ -4,7 +4,7 @@ import {ChartType} from "./models/ChartType";
 @Component({
     selector: 'live-chart',
     templateUrl: './live-chart.component.html',
-    styleUrls: ['./live-chart-style.component.css']
+    styleUrls: ['./live-chart.component.css']
 })
 export class LiveChartComponent implements OnInit {
     chart: any;
