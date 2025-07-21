@@ -60,7 +60,8 @@ public class ApiDataRetriever {
         }
     }
     //-----------------------Shut-Down-Connections----------------------------
-    public static void shutDownConnections(HttpsURLConnection urlConnection, BufferedReader apiReader) {
+    public static void shutDownConnections(HttpsURLConnection urlConnection,
+                                           BufferedReader apiReader) {
         if (apiReader != null) {
             try {
                 apiReader.close();
