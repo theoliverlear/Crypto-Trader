@@ -22,8 +22,9 @@ class Database:
     engine = attr(default=None)
 
     def __attrs_post_init__(self):
+        connection_url: str = f"postgresql+psycopg2://{self.user}:{self.password}@{self.host}:{self.port}/{self.name}"
         self.engine = create_engine(
-            f"postgresql+psycopg2://{self.user}:{self.password}@{self.host}:{self.port}/{self.name}",
+            connection_url,
             poolclass=QueuePool,
             pool_size=20,
             max_overflow=40,
@@ -61,17 +62,13 @@ class Database:
             df = pd.DataFrame()
         return [currency_code for currency_code in df['currency_code'].tolist()]
 
-
-
-
-
     def _get_default_history_query(self) -> str:
         return """WITH btc_data AS (
-    SELECT last_updated, currency_value AS target_price
-    FROM currency_history
-    WHERE currency_code = %(target_currency)s
-    ORDER BY last_updated DESC LIMIT %(limit)s
-)"""
+            SELECT last_updated, currency_value AS target_price
+            FROM currency_history
+            WHERE currency_code = %(target_currency)s
+            ORDER BY last_updated DESC LIMIT %(limit)s
+                      )"""
     def _get_default_select_history_query(self):
         return """ SELECT 
     btc.last_updated,
@@ -93,7 +90,7 @@ class Database:
 
     def get_full_history_query(self) -> str:
         currencies: list[str] = list(filter(lambda currency_code: currency_code != "BTC", get_all_currency_codes(True)))
-    #     currencies: list[str] = get_all_currency_codes()
+        #     currencies: list[str] = get_all_currency_codes()
         print(currencies)
         query: str = self._get_default_history_query() + self._get_default_select_history_query()
         for index, currency in enumerate(currencies):
@@ -151,6 +148,21 @@ class Database:
 
         query += "ORDER BY btc.last_updated DESC;"
         return query
+
+    def fetch_data_in_batches(self,
+                              batch_size: int = 1000,
+                              target_currency: str = 'BTC',
+                              limit: int = 20000,
+                              query_type: QueryType = QueryType.HISTORICAL_PRICE) -> list[pd.DataFrame]:
+        dataframe: pd.DataFrame = self.fetch_data(target_currency, limit, query_type)
+        sliced_dataframes: list[pd.DataFrame] = []
+        if len(dataframe) == 0:
+            return [pd.DataFrame()]
+        for i in range(0, len(dataframe), batch_size):
+            batch_df = dataframe.iloc[i:i + batch_size]
+            sliced_dataframes.append(batch_df)
+        logging.info(f"Fetched {len(dataframe)} rows in {len(sliced_dataframes)} batches.")
+        return sliced_dataframes
 
     def fetch_data(self,
                    target_currency: str = 'BTC',
