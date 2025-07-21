@@ -15,7 +15,7 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 
 
 @define
-class LstmModel(BaseModel, ABC):
+class LstmModel(BaseModel):
     def __attrs_post_init__(self):
         self.initialize_model()
 
@@ -31,7 +31,7 @@ class LstmModel(BaseModel, ABC):
             Dense(1)
         ])
         self.model.compile(optimizer="adam", loss="mean_squared_error")
-        # self.log_model_summary()
+        self.log_model_summary()
 
     @override
     @staticmethod
@@ -75,10 +75,10 @@ class LstmModel(BaseModel, ABC):
         while True:
             try:
                 self.model.fit(dataset,
-                                epochs=epochs,
-                                batch_size=batch_size,
-                                verbose=1,
-                                callbacks=callbacks)
+                               epochs=epochs,
+                               batch_size=batch_size,
+                               verbose=1,
+                               callbacks=callbacks)
                 break
             except Exception as exception:
                 from apps.models.ai.model_type import ModelType
@@ -102,7 +102,7 @@ class LstmModel(BaseModel, ABC):
     def predict(self, training_data, target_scaler):
         scaled_pred = self.model.predict(training_data)
         real_price = target_scaler.inverse_transform(scaled_pred)[0][0]
-        return real_price  
+        return real_price
 
     @override
     def save_model(self,

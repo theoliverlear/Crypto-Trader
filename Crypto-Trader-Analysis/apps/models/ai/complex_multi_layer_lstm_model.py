@@ -17,7 +17,7 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 
 
 @define
-class ComplexMultiLayerLstmModel(MultiLayerBaseModel, ABC):
+class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
     def __attrs_post_init__(self):
         self.initialize_model()
 
@@ -156,12 +156,6 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel, ABC):
                               min_lr=1e-6),
             ComplexMultiLayerLstmModel.get_tensorboard_callback(self.target_currency)
         ]
-        # self.model.fit(dataset,
-        #                epochs=epochs,
-        #                batch_size=batch_size,
-        #                verbose=1,
-        #                callbacks=callbacks)
-
         while True:
             try:
                 self.model.fit(dataset,
@@ -182,7 +176,6 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel, ABC):
                         delete_model(self.target_currency,
                                      ModelType.COMPLEX_MULTI_LAYER)
                     self.initialize_model()
-
                 else:
                     raise
 

@@ -17,7 +17,7 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 
 
 @define
-class ComplexLstmModel(BaseModel, ABC):
+class ComplexLstmModel(BaseModel):
     def __attrs_post_init__(self):
         self.initialize_model()
 

@@ -18,7 +18,7 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 
 
 @define
-class MultiLayerLstmModel(MultiLayerBaseModel, ABC):
+class MultiLayerLstmModel(MultiLayerBaseModel):
     def __attrs_post_init__(self):
         self.initialize_model()
 
