@@ -18,11 +18,11 @@ import java.util.Map;
 @Slf4j
 public class CurrencyService {
     //============================-Variables-=================================
-    private CurrencyRepository currencyRepository;
-    private CurrencyHistoryRepository currencyHistoryRepository;
-    private UniqueCurrencyRepository uniqueCurrencyRepository;
-    private UniqueCurrencyHistoryRepository uniqueCurrencyHistoryRepository;
-    private CurrencyDataRetriever currencyDataRetriever;
+    private final CurrencyRepository currencyRepository;
+    private final CurrencyHistoryRepository currencyHistoryRepository;
+    private final UniqueCurrencyRepository uniqueCurrencyRepository;
+    private final UniqueCurrencyHistoryRepository uniqueCurrencyHistoryRepository;
+    private final CurrencyDataRetriever currencyDataRetriever;
     //===========================-Constructors-===============================
     @Autowired
     public CurrencyService(CurrencyRepository currencyRepository,
