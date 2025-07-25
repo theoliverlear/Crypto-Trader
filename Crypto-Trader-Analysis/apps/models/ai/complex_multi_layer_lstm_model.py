@@ -6,7 +6,7 @@ from datetime import datetime
 from typing_extensions import override
 
 from attrs import define
-from keras import Input, Model
+from keras import Input, Model, Sequential
 from keras.layers import Bidirectional, LSTM, Dropout, BatchNormalization, \
     Concatenate, Dense
 from keras.saving.save import load_model
@@ -32,84 +32,9 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
                              name="medium_input")
         long_input = Input(shape=(self.long_seq_len, self.dimension),
                            name="long_input")
-        short_lstm = Bidirectional(LSTM(512,
-                                        return_sequences=True,
-                                        recurrent_activation="sigmoid",
-                                        use_bias=True,
-                                        unroll=True))(short_input)
-        short_lstm = Dropout(0.3)(short_lstm)
-        short_lstm = BatchNormalization()(short_lstm)
-        short_lstm = Bidirectional(LSTM(384,
-                                        return_sequences=True,
-                                        recurrent_activation="sigmoid",
-                                        use_bias=True,
-                                        unroll=True))(short_lstm)
-        short_lstm = Dropout(0.3)(short_lstm)
-        short_lstm = BatchNormalization()(short_lstm)
-        short_lstm = Bidirectional(LSTM(256,
-                                        return_sequences=True,
-                                        recurrent_activation="sigmoid",
-                                        use_bias=True,
-                                        unroll=True))(short_lstm)
-        short_lstm = Dropout(0.3)(short_lstm)
-        short_lstm = BatchNormalization()(short_lstm)
-        short_lstm = Bidirectional(LSTM(128,
-                                        recurrent_activation="sigmoid",
-                                        use_bias=True,
-                                        unroll=True))(short_lstm)
-        short_lstm = Dropout(0.3)(short_lstm)
-        medium_lstm = Bidirectional(LSTM(512,
-                                         return_sequences=True,
-                                         recurrent_activation="sigmoid",
-                                         use_bias=True, unroll=True))(
-            medium_input)
-        medium_lstm = Dropout(0.3)(medium_lstm)
-        medium_lstm = BatchNormalization()(medium_lstm)
-        medium_lstm = Bidirectional(LSTM(384,
-                                         return_sequences=True,
-                                         recurrent_activation="sigmoid",
-                                         use_bias=True,
-                                         unroll=True))(medium_lstm)
-        medium_lstm = Dropout(0.3)(medium_lstm)
-        medium_lstm = BatchNormalization()(medium_lstm)
-        medium_lstm = Bidirectional(LSTM(256,
-                                         return_sequences=True,
-                                         recurrent_activation="sigmoid",
-                                         use_bias=True,
-                                         unroll=True))(medium_lstm)
-        medium_lstm = Dropout(0.3)(medium_lstm)
-        medium_lstm = BatchNormalization()(medium_lstm)
-        medium_lstm = Bidirectional(LSTM(128,
-                                         recurrent_activation="sigmoid",
-                                         use_bias=True,
-                                         unroll=True))(medium_lstm)
-        medium_lstm = Dropout(0.3)(medium_lstm)
-        long_lstm = Bidirectional(LSTM(512,
-                                       return_sequences=True,
-                                       recurrent_activation="sigmoid",
-                                       use_bias=True,
-                                       unroll=True))(long_input)
-        long_lstm = Dropout(0.3)(long_lstm)
-        long_lstm = BatchNormalization()(long_lstm)
-        long_lstm = Bidirectional(LSTM(384,
-                                       return_sequences=True,
-                                       recurrent_activation="sigmoid",
-                                       use_bias=True,
-                                       unroll=True))(long_lstm)
-        long_lstm = Dropout(0.3)(long_lstm)
-        long_lstm = BatchNormalization()(long_lstm)
-        long_lstm = Bidirectional(LSTM(256,
-                                       return_sequences=True,
-                                       recurrent_activation="sigmoid",
-                                       use_bias=True,
-                                       unroll=True))(long_lstm)
-        long_lstm = Dropout(0.3)(long_lstm)
-        long_lstm = BatchNormalization()(long_lstm)
-        long_lstm = Bidirectional(LSTM(128,
-                                       recurrent_activation="sigmoid",
-                                       use_bias=True,
-                                       unroll=True))(long_lstm)
-        long_lstm = Dropout(0.3)(long_lstm)
+        short_lstm = self.combine_model(short_input)
+        medium_lstm = self.combine_model(medium_input)
+        long_lstm = self.combine_model(long_input)
         merged = Concatenate()([short_lstm, medium_lstm, long_lstm])
         merged = Dense(256, activation="relu")(merged)
         merged = Dense(128, activation="relu")(merged)
@@ -120,6 +45,35 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
                            name="MultiLayerLSTM")
         self.model.compile(optimizer="adam", loss="mean_squared_error")
         self.log_model_summary()
+
+    def combine_model(self, model_input):
+        lstm = Bidirectional(LSTM(512,
+                                        return_sequences=True,
+                                        recurrent_activation="sigmoid",
+                                        use_bias=True,
+                                        unroll=True))(model_input)
+        lstm = Dropout(0.3)(lstm)
+        lstm = BatchNormalization()(lstm)
+        lstm = Bidirectional(LSTM(384,
+                                        return_sequences=True,
+                                        recurrent_activation="sigmoid",
+                                        use_bias=True,
+                                        unroll=True))(lstm)
+        lstm = Dropout(0.3)(lstm)
+        lstm = BatchNormalization()(lstm)
+        lstm = Bidirectional(LSTM(256,
+                                        return_sequences=True,
+                                        recurrent_activation="sigmoid",
+                                        use_bias=True,
+                                        unroll=True))(lstm)
+        lstm = Dropout(0.3)(lstm)
+        lstm = BatchNormalization()(lstm)
+        lstm = Bidirectional(LSTM(128,
+                                        recurrent_activation="sigmoid",
+                                        use_bias=True,
+                                        unroll=True))(lstm)
+        lstm = Dropout(0.3)(lstm)
+        return lstm
 
     @override
     @staticmethod
