@@ -14,7 +14,7 @@ from apps.models.data.preprocessor import Preprocessor
 from apps.models.database.query_type import QueryType
 from apps.models.ai.model_retriever import get_model
 from apps.models.prediction.prediction import Prediction
-from apps.models.training.train_model import get_data_frame, get_last_historical_price, \
+from apps.models.training.train_model import get_dataframe, get_last_historical_price, \
     setup_logging, configure_concurrency, setup_tensorflow_env
 from apps.models.training.training_type import TrainingType
 
@@ -57,7 +57,7 @@ def predict(target_currency: str = 'BTC',
             training_type: TrainingType = TrainingType.DETAILED_SHORT_TRAINING,
             model_type: ModelType = ModelType.LSTM) -> Optional[float]:
     logging.info("Getting data frame...")
-    dataframe = get_data_frame(target_currency, limit=20, query_type=QueryType.HISTORICAL_PRICE)
+    dataframe = get_dataframe(target_currency, limit=20, query_type=QueryType.HISTORICAL_PRICE)
     logging.debug(f"Data frame generated for {target_currency}")
     logging.debug(f"Retrieved {len(dataframe)} rows for {target_currency}")
     logging.info("Configuring preprocessor...")
@@ -65,11 +65,11 @@ def predict(target_currency: str = 'BTC',
     logging.info("Transforming data...")
     historical_prices, future_prices_unscaled, input_scaler = preprocessor.transform(dataframe, target_currency)
     logging.info("Dropping NaN values...")
-    dataframe.dropna(subset=[f"{target_currency}_price"], inplace=True)
+    dataframe.dropna(subset=[f"{target_currency.lower()}_price"], inplace=True)
     logging.info("Scaling target values...")
     target_scaler = MinMaxScaler(feature_range=(0,1))
     logging.info("Getting raw target values...")
-    raw_target_vals = dataframe[[f"{target_currency}_price"]].values
+    raw_target_vals = dataframe[[f"{target_currency.lower()}_price"]].values
     logging.info("Fitting target scaler...")
     target_scaler.fit(raw_target_vals)
     logging.debug(
@@ -95,7 +95,7 @@ def predict(target_currency: str = 'BTC',
     return predicted_price
 
 def get_current_price(target_currency: str = 'BTC') -> Optional[float]:
-    dataframe = get_data_frame(target_currency, 1, QueryType.CURRENT_PRICE)
+    dataframe = get_dataframe(target_currency, 1, QueryType.CURRENT_PRICE)
     if dataframe.empty:
         logging.error(f"No data found for {target_currency}.")
         return None
