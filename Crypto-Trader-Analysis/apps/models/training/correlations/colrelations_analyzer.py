@@ -1,4 +1,4 @@
-# currelations_analyzer.py
+# correlations_analyzer.py
 
 import logging
 import os
@@ -14,7 +14,7 @@ def fetch_joined_data(target_currency: str = "BTC", limit: int = 100000) -> pd.D
         limit=limit,
         query_type=QueryType.HISTORICAL_PRICE
     )
-    df.rename(columns={"target_price": f"{target_currency}_price"}, inplace=True)
+    df.rename(columns={"target_price": f"{target_currency.lower()}_price"}, inplace=True)
     if df.empty:
         logging.warning("DataFrame is empty. Possibly no data returned.")
     return df
@@ -28,7 +28,7 @@ def compute_correlation_scores(
         target_currency: str,
         output_filename: str = "correlation_scores.csv"
 ):
-    target_col = f"{target_currency}_price"
+    target_col = f"{target_currency.lower()}_price"
     if target_col not in df.columns:
         logging.warning(f"'{target_col}' not in DataFrame. Correlation skipped.")
         return
