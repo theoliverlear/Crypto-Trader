@@ -2,9 +2,13 @@ package org.theoliverlear.service;
 //=================================-Imports-==================================
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.theoliverlear.component.MarketSnapshotsBackfiller;
 import org.theoliverlear.entity.currency.*;
 import org.theoliverlear.component.CurrencyDataRetriever;
 import org.theoliverlear.repository.CurrencyHistoryRepository;
@@ -12,7 +16,14 @@ import org.theoliverlear.repository.CurrencyRepository;
 import org.theoliverlear.repository.UniqueCurrencyHistoryRepository;
 import org.theoliverlear.repository.UniqueCurrencyRepository;
 
+import javax.sql.DataSource;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -23,18 +34,31 @@ public class CurrencyService {
     private final UniqueCurrencyRepository uniqueCurrencyRepository;
     private final UniqueCurrencyHistoryRepository uniqueCurrencyHistoryRepository;
     private final CurrencyDataRetriever currencyDataRetriever;
+    private final JdbcTemplate jdbcTemplate;
+    private final DataSource dataSource;
+    private final MarketSnapshotsBackfiller backfiller;
+    private final MarketSnapshotService snapshotService;
+
     //===========================-Constructors-===============================
     @Autowired
     public CurrencyService(CurrencyRepository currencyRepository,
                            CurrencyHistoryRepository currencyHistoryRepository,
                            UniqueCurrencyRepository uniqueCurrencyRepository,
                            UniqueCurrencyHistoryRepository uniqueCurrencyHistoryRepository,
-                           CurrencyDataRetriever currencyDataRetriever) {
+                           CurrencyDataRetriever currencyDataRetriever,
+                           JdbcTemplate jdbcTemplate,
+                           DataSource dataSource,
+                           MarketSnapshotsBackfiller backfiller,
+                           MarketSnapshotService snapshotService) {
         this.currencyRepository = currencyRepository;
         this.currencyHistoryRepository = currencyHistoryRepository;
         this.uniqueCurrencyRepository = uniqueCurrencyRepository;
         this.uniqueCurrencyHistoryRepository = uniqueCurrencyHistoryRepository;
         this.currencyDataRetriever = currencyDataRetriever;
+        this.jdbcTemplate = jdbcTemplate;
+        this.dataSource = dataSource;
+        this.backfiller = backfiller;
+        this.snapshotService = snapshotService;
     }
     //============================-Methods-===================================
 
@@ -52,6 +76,16 @@ public class CurrencyService {
             this.saveCurrency(currency);
             this.saveUniqueCurrencyIfNew(currency, previousCurrency, updatedCurrency);
         }
+        this.snapshotService.saveSnapshot(currencies);
+    }
+
+    public List<String> getAllCurrencyCodes() {
+        return this.currencyRepository.findAllCurrencyCodes();
+    }
+
+
+    public void buildMarketSnapshots(boolean fullRefresh) {
+        this.backfiller.buildSnapshots(fullRefresh);
     }
 
     public void saveCurrencyIfNew(Currency currency, Currency previousCurrency, Currency updatedCurrency) {
