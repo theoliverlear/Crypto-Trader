@@ -77,7 +77,7 @@ class Preprocessor:
             raise ValueError(
                 "Error: The dataframe is empty. No data retrieved from database.")
 
-        target_column = f"{target_currency}_price"
+        target_column = f"{target_currency.lower()}_price"
 
         numeric_cols = dataframe.select_dtypes(include=["number"]).columns
         raw_input_cols = [col for col in numeric_cols if col != target_column]
@@ -175,7 +175,7 @@ class Preprocessor:
         if dataframe.empty:
             raise ValueError("Dataframe is empty. No data to process.")
         dataframe.sort_values("last_updated", inplace=True)
-        target_col = f"{target_currency}_price"
+        target_col = f"{target_currency.lower()}_price"
         numeric_cols = dataframe.select_dtypes(include=["number"]).columns
         raw_input_cols = [col for col in numeric_cols if col != target_col]
         dataframe[raw_input_cols] = dataframe[raw_input_cols].pct_change(fill_method=None)
