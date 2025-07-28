@@ -11,6 +11,7 @@ import org.theoliverlear.entity.currency.builder.CurrencyBuilder;
 import org.theoliverlear.model.http.ApiDataRetriever;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -139,6 +140,15 @@ public class Currency {
         this.updateValue();
         return this.value;
     }
+
+    public static Currency fromExisting(String currencyCode) {
+        List<Currency> currencies = SupportedCurrencies.SUPPORTED_CURRENCIES;
+        return currencies.stream()
+                .filter(currency -> currency.getCurrencyCode().equalsIgnoreCase(currencyCode))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Currency with code " + currencyCode + " not found."));
+    }
+
     public static Currency from(Currency currency) {
         Currency newCurrency = new Currency(currency.getName(), currency.getCurrencyCode(),
                 currency.getUrlPath(), currency.getValue(),
@@ -170,7 +180,7 @@ public class Currency {
     public String toString() {
         String currencyString = """
                 %18s --- %5s - $%16s""".formatted(this.name, this.currencyCode,
-                                          this.formattedValue);
+                this.formattedValue);
         return currencyString;
     }
     public static CurrencyBuilder builder() {
