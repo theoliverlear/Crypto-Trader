@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.theoliverlear.comm.request.PricePredictionRequest;
 import org.theoliverlear.comm.response.OperationSuccessfulResponse;
+import org.theoliverlear.comm.response.PredictionIdResponse;
 import org.theoliverlear.model.http.PayloadStatusResponse;
 import org.theoliverlear.service.PricePredictionService;
 
@@ -19,9 +20,9 @@ public class PricePredictionController {
     public PricePredictionController(PricePredictionService pricePredictionService) {
         this.pricePredictionService = pricePredictionService;
     }
-    @RequestMapping("")
-    public ResponseEntity<PayloadStatusResponse<OperationSuccessfulResponse>> predictions(@RequestBody PricePredictionRequest pricePredictionRequest) {
-        this.pricePredictionService.savePrediction(pricePredictionRequest);
-        return new ResponseEntity<>(new PayloadStatusResponse<>(new OperationSuccessfulResponse(true), HttpStatus.ACCEPTED), HttpStatus.ACCEPTED);
+    @RequestMapping("/add")
+    public ResponseEntity<PredictionIdResponse> predictions(@RequestBody PricePredictionRequest pricePredictionRequest) {
+        Long predictionId = this.pricePredictionService.savePrediction(pricePredictionRequest).getId();
+        return new ResponseEntity<>(new PredictionIdResponse(predictionId), HttpStatus.ACCEPTED);
     }
 }
