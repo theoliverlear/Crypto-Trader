@@ -1,6 +1,5 @@
 # complex_lstm_model.py
 import logging
-from abc import ABC
 from datetime import datetime
 
 from typing_extensions import override
@@ -9,11 +8,12 @@ from keras import Sequential, Input
 from keras.layers import Bidirectional, LSTM, Dropout, BatchNormalization, \
     Dense
 from keras.saving.save import load_model
-from apps.models.ai.base_model import BaseModel
+from apps.models.ai.lstm.base_model import BaseModel
 import os
 from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
+import tensorflow as tf
 
-
+from apps.models.ai.model_retriever import model_exists, delete_model
 
 
 @define
@@ -24,31 +24,16 @@ class ComplexLstmModel(BaseModel):
     def initialize_model(self):
         self.model = Sequential([
             Input(shape=(self.sequence_length, self.dimension)),
-            Bidirectional(LSTM(512,
-                               return_sequences=True,
-                               recurrent_activation="sigmoid",
-                               use_bias=True,
-                               unroll=True)),
+            self.get_lstm_layer(512, True),
             Dropout(0.3),
             BatchNormalization(),
-            Bidirectional(LSTM(384,
-                               return_sequences=True,
-                               recurrent_activation="sigmoid",
-                               use_bias=True,
-                               unroll=True)),
+            self.get_lstm_layer(384, True),
             Dropout(0.3),
             BatchNormalization(),
-            Bidirectional(LSTM(256,
-                               return_sequences=True,
-                               recurrent_activation="sigmoid",
-                               use_bias=True,
-                               unroll=True)),
+            self.get_lstm_layer(256, True),
             Dropout(0.3),
             BatchNormalization(),
-            Bidirectional(LSTM(128,
-                               recurrent_activation="sigmoid",
-                               use_bias=True,
-                               unroll=True)),
+            self.get_lstm_layer(128, False),
             Dropout(0.3),
             Dense(256, activation="relu"),
             Dense(128, activation="relu"),
@@ -58,13 +43,20 @@ class ComplexLstmModel(BaseModel):
         self.model.compile(optimizer="adam", loss="mean_squared_error")
         self.log_model_summary()
 
+    @staticmethod
+    def get_lstm_layer(layers: int, return_sequences: bool):
+        return Bidirectional(LSTM(layers,
+                                  return_sequences=return_sequences,
+                                  recurrent_activation="sigmoid",
+                                  use_bias=True,
+                                  unroll=True))
+
     @override
     @staticmethod
     def get_tensorboard_callback(target_currency: str):
         import tensorflow as tf
         timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
         log_dir = os.path.join("logs", "COMPLEX_LSTM_MODEL", target_currency, timestamp)
-
         return tf.keras.callbacks.TensorBoard(
             log_dir=log_dir,
             profile_batch=10,
@@ -73,7 +65,7 @@ class ComplexLstmModel(BaseModel):
 
     @override
     def train(self,
-              dataset,
+              dataset: tf.data.Dataset,
               epochs: int = 20,
               batch_size: int = 32):
         from apps.models.ai.model_retriever import COMPLEX_MODEL_DIRECTORY
@@ -81,7 +73,6 @@ class ComplexLstmModel(BaseModel):
         os.makedirs(checkpoint_dir, exist_ok=True)
         checkpoint_path = os.path.join(checkpoint_dir,
                                        f"{self.target_currency}_checkpoint.keras")
-
         callbacks = [
             EarlyStopping(monitor="loss", patience=5,
                           restore_best_weights=True),
@@ -91,28 +82,20 @@ class ComplexLstmModel(BaseModel):
                               min_lr=1e-6),
             ComplexLstmModel.get_tensorboard_callback(self.target_currency)
         ]
-        # self.model.fit(dataset,
-        #                epochs=epochs,
-        #                batch_size=batch_size,
-        #                verbose=1,
-        #                callbacks=callbacks)
         while True:
             try:
-                self.model.fit(dataset,
+                return self.model.fit(dataset,
                                epochs=epochs,
                                batch_size=batch_size,
                                verbose=1,
                                callbacks=callbacks)
-                break
             except Exception as exception:
                 from apps.models.ai.model_type import ModelType
-                from apps.models.prediction.predictions import model_exists, \
-                    delete_model
                 if "Input 0 of layer" in str(exception):
                     logging.info("Model dimension mismatch. Re-training model.")
-                    model_exists: bool = model_exists(self.target_currency,
+                    complex_lstm_model_exists: bool = model_exists(self.target_currency,
                                                       ModelType.COMPLEX_LSTM)
-                    if model_exists:
+                    if complex_lstm_model_exists:
                         delete_model(self.target_currency,
                                      ModelType.COMPLEX_LSTM)
                     self.initialize_model()
@@ -127,13 +110,11 @@ class ComplexLstmModel(BaseModel):
         return real_price
 
     @override
-    def save_model(self,
-                   path: str):
+    def save_model(self, path: str):
         self.model.save(path)
 
     @override
-    def load_model(self,
-                   path: str):
+    def load_model(self, path: str):
         self.model = load_model(path)
 
     @staticmethod
