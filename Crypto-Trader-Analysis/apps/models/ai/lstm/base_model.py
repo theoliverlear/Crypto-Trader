@@ -3,21 +3,21 @@ from abc import ABC, abstractmethod
 
 from attr import attr
 from attrs import define
-from keras import Sequential
+from keras import Sequential, Model
 from sklearn.preprocessing import MinMaxScaler
+import tensorflow as tf
 
 
 @define
 class BaseModel(ABC):
     dimension = attr(default=None)
-    model: Sequential = attr(factory=Sequential)
-    scaler: MinMaxScaler = attr(factory=MinMaxScaler)
+    model: Model = attr(factory=Sequential)
     sequence_length: int = attr(default=10)
     target_currency: str = attr(default='BTC')
 
     @abstractmethod
     def train(self,
-              dataset,
+              dataset: tf.data.Dataset,
               epochs: int = 20,
               batch_size: int = 32):
         pass
@@ -25,17 +25,15 @@ class BaseModel(ABC):
     @abstractmethod
     def predict(self,
                 training_data,
-                scaler):
+                scaler: MinMaxScaler):
         pass
 
     @abstractmethod
-    def save_model(self,
-                   path: str):
+    def save_model(self, path: str):
         pass
 
     @abstractmethod
-    def load_model(self,
-                   path: str):
+    def load_model(self, path: str):
         pass
 
     @staticmethod
