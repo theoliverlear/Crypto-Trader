@@ -8,11 +8,11 @@ from os import getenv
 import pandas as pd
 from attr import attr
 from attrs import define
-from sqlalchemy import create_engine, QueuePool, text, Engine
+from sqlalchemy import create_engine, QueuePool, text, Engine, \
+    PoolProxiedConnection
 
 from apps.models.database.query_type import QueryType
 from currency_json_generator import get_all_currency_codes
-import psycopg2.extras as _pg_extras
 
 
 @define
@@ -39,6 +39,7 @@ class Database:
             )
         )
 
+    #-------------------------Get-Connection-Url------------------------------
     def get_connection_url(self) -> str:
         return f"postgresql+psycopg2://{self.user}:{self.password}@{self.host}:{self.port}/{self.name}"
 
@@ -71,15 +72,13 @@ class Database:
             df = pd.read_sql_query(query, self.engine, params=params)
             logging.debug(f"Query executed successfully.")
         except Exception as exception:
+            logging.error(f"Error executing query for inaccurate models: {str(exception)}")
             df = pd.DataFrame()
         return [currency_code for currency_code in df['currency_code'].tolist()]
 
-
     #-------------------------Get-Currencies-List-----------------------------
-    def get_currencies_list(self) -> list[str]:
-        # currencies: list[str] = list(filter(lambda currency_code: currency_code != "BTC",
-        #                          get_all_currency_codes(True)))
-        # return currencies
+    @staticmethod
+    def get_currencies_list() -> list[str]:
         return get_all_currency_codes(True)
 
     #------------------------Fetch-Data-In-Batches----------------------------
@@ -138,26 +137,16 @@ class Database:
             next_mark += rows_per_log
         return next_mark
 
-    def _execute_copy_to_dataframe(self, compiled_sql: str) -> pd.DataFrame:
-        buffer = io.StringIO()
-        raw_conn = self.engine.raw_connection()
-        try:
-            with raw_conn.cursor() as cur:
-                copy_cmd = f"COPY ({compiled_sql.replace(';', '')}) TO STDOUT WITH (FORMAT CSV, HEADER)"
-                cur.copy_expert(copy_cmd, buffer)
-            buffer.seek(0)
-            return pd.read_csv(buffer)
-        finally:
-            raw_conn.close()
 
-    def execute_in_bulk(self, params, query: str):
+    #---------------------------Execute-In-Bulk-------------------------------
+    def _execute_in_bulk(self, params, query: str) -> pd.DataFrame:
         try:
             bound_params = {
                 key: value
                 for key, value in params.items()
                 if f":{key}" in query
             }
-            compiled = (
+            compiled_query = (
                 text(query)
                 .bindparams(**bound_params)
                 .compile(
@@ -165,10 +154,28 @@ class Database:
                     compile_kwargs={"literal_binds": True},
                 )
             )
-            return self._execute_copy_to_dataframe(str(compiled))
+            return self._execute_copy_to_dataframe(str(compiled_query))
         except Exception as exception:
-            logging.error(f"Error executing in bulk: {exception}")
+            logging.error(f"Error executing in bulk: {str(exception)}")
             raise
+
+    #----------------------Execute-Copy-To-Dataframe--------------------------
+    def _execute_copy_to_dataframe(self, compiled_sql: str) -> pd.DataFrame:
+        buffer: io.StringIO = io.StringIO()
+        raw_connection: PoolProxiedConnection = self.engine.raw_connection()
+        try:
+            with raw_connection.cursor() as cur:
+                formatted_query: str = compiled_sql.replace(';', '')
+                copy_command: str = f"COPY ({formatted_query}) TO STDOUT WITH (FORMAT CSV, HEADER)"
+                cur.copy_expert(copy_command, buffer)
+            buffer.seek(0)
+            return pd.read_csv(buffer)
+        except Exception as exception:
+            logging.error(f"Error executing copy to dataframe: {str(exception)}")
+            logging.debug(f"Compiled SQL: {compiled_sql}")
+            raise
+        finally:
+            raw_connection.close()
 
     #----------------------------Execute-Query--------------------------------
     def execute_query(self,
@@ -180,17 +187,15 @@ class Database:
                       batch_size = 10000,
                       in_bulk: bool = True) -> pd.DataFrame:
         if in_bulk:
-            return self.execute_in_bulk(params, query)
+            return self._execute_in_bulk(params, query)
         all_frames: list[pd.DataFrame] = []
         streamed_rows: int = 0
-        with self.engine.connect().execution_options(
-                stream_results=True) as connection:
+        with self.engine.connect().execution_options(stream_results=True) as connection:
             for chunk in pd.read_sql_query(
                     text(query),
                     connection,
                     params=params,
-                    chunksize=batch_size
-            ):
+                    chunksize=batch_size):
                 all_frames.append(chunk)
                 streamed_rows += len(chunk)
                 next_mark = self._log_row_progress(
@@ -198,25 +203,25 @@ class Database:
                     start_time,
                     next_mark,
                     rows_per_log,
-                    limit
-                )
+                    limit)
                 if streamed_rows >= next_mark:
                     logging.info("Retrieved %d rows...", streamed_rows)
                     next_mark += rows_per_log
         return pd.concat(all_frames, ignore_index=True)
 
-
-    def _price_column_names(self) -> list[str]:
+    #-----------------------Get-Price-Column-Names----------------------------
+    def _get_price_column_names(self) -> list[str]:
         return [f"{code.lower()}_price" for code in self.get_currencies_list()]
 
-
-    def _get_select_columns(self):
-        price_cols = self._price_column_names()
-        select_cols = ["last_updated", *price_cols]
+    #-------------------------Get-Select-Columns------------------------------
+    def _get_select_columns(self) -> str:
+        price_cols: list[str] = self._get_price_column_names()
+        select_cols: list[str] = ["last_updated", *price_cols]
         return ", ".join(select_cols)
 
+    #----------------------Get-Market-Snapshot-Query--------------------------
     def _get_market_snapshot_query(self) -> str:
-        select_list = self._get_select_columns()
+        select_list: str = self._get_select_columns()
         return f"""
             SELECT {select_list}
             FROM   market_snapshots
@@ -224,9 +229,9 @@ class Database:
             LIMIT  :limit
         """
 
-    def _get_market_snapshot_spaced_query(self, limit: int) -> str:
+    #------------------Get-Market-Snapshot-Spaced-Query-----------------------
+    def _get_market_snapshot_spaced_query(self) -> str:
         select_list = self._get_select_columns()
-
         return f"""
             WITH bounds AS (
                 SELECT MIN(id) AS min_id,
@@ -237,23 +242,19 @@ class Database:
                 SELECT
                     GREATEST(
                         ((max_id - min_id + 1 + :limit - 1) / :limit), 1
-                    )::bigint                     AS step,
+                    )::bigint AS step,
                     min_id,
                     max_id
                 FROM bounds
             ),
             ids AS (
                 SELECT
-                    generate_series(
-                        max_id,
-                        min_id,
-                        -step  
-                    ) AS id
+                    generate_series(max_id, min_id, -step) AS id
                 FROM params
                 LIMIT :limit   
             )
             SELECT {select_list}
-            FROM   market_snapshots  ms
+            FROM   market_snapshots ms
             JOIN   ids USING (id)
             ORDER  BY ms.last_updated DESC;
         """
@@ -272,7 +273,7 @@ class Database:
             params = {"target_currency": target_currency, "limit": limit}
         elif query_type == QueryType.HISTORICAL_PRICE_SPACED:
             logging.info("Fetching spaced historical price...")
-            query = self._get_market_snapshot_spaced_query(limit)
+            query = self._get_market_snapshot_spaced_query()
             params = {"target_currency": target_currency, "limit": limit}
         return params, query
 
