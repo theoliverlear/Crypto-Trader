@@ -38,3 +38,16 @@ class ModelType(Enum):
             return "Complex Multi-Layer LSTM Model"
         else:
             raise ValueError(f"Unknown model type: {self}")
+
+    def to_entity_str(self) -> str:
+        match self:
+            case ModelType.LSTM:
+                return "lstm"
+            case ModelType.COMPLEX_LSTM:
+                return "complex_lstm"
+            case ModelType.MULTI_LAYER:
+                return "multi_layer"
+            case ModelType.COMPLEX_MULTI_LAYER:
+                return "complex_multi_layer"
+            case _:
+                raise ValueError(f"Unknown model type: {self}")
