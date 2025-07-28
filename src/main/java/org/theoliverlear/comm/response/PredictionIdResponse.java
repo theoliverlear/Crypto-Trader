@@ -1,0 +1,8 @@
+package org.theoliverlear.comm.response;
+
+public class PredictionIdResponse {
+    private Long predictionId;
+    public PredictionIdResponse(Long predictionId) {
+        this.predictionId = predictionId;
+    }
+}
