@@ -15,9 +15,6 @@ from apps.models.ai.lstm.layered.multi_layer_base_model import MultiLayerBaseMod
 import os
 from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 
-from apps.models.ai.model_retriever import model_exists, delete_model
-
-
 @define
 class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
     def __attrs_post_init__(self):
@@ -106,14 +103,15 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
         ]
         while True:
             try:
-                self.model.fit(dataset,
+                return self.model.fit(dataset,
                                epochs=epochs,
                                batch_size=batch_size,
                                verbose=1,
                                callbacks=callbacks)
-                break
             except Exception as exception:
                 from apps.models.ai.model_type import ModelType
+                from apps.models.ai.model_retriever import model_exists, \
+                    delete_model
                 if "Input 0 of layer" in str(exception):
                     logging.info("Model dimension mismatch. Re-training model.")
                     complex_multi_model_exists: bool = model_exists(self.target_currency,
