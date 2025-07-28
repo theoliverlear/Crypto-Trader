@@ -4,10 +4,10 @@ from attr import attr
 from attrs import define
 
 from apps.models.database.query_type import QueryType
-from apps.models.training.batch_size_evaluations import BatchSizeEvaluations
-from apps.models.training.dataset_size import DatasetSize
-from apps.models.training.epoch_focus import EpochFocus
-from apps.models.training.sequence_length_sentiment import \
+from apps.models.training.specs.batch_size_evaluations import BatchSizeEvaluations
+from apps.models.training.specs.dataset_size import DatasetSize
+from apps.models.training.specs.epoch_focus import EpochFocus
+from apps.models.training.specs.sequence_length_sentiment import \
     SequenceLengthSentiment
 if TYPE_CHECKING:
     from apps.models.training.training_model import TrainingModel
