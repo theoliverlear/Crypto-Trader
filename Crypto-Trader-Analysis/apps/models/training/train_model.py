@@ -11,14 +11,12 @@ import tensorflow as tf
 tf.config.optimizer.set_jit(True)
 tf.get_logger().setLevel('ERROR')
 
-from concurrent.futures import ThreadPoolExecutor
-
 import numpy as np
 from pandas import DataFrame
 from sklearn.preprocessing import MinMaxScaler
 
-from apps.models.ai.complex_lstm_model import ComplexLstmModel
-from apps.models.ai.lstm_model import LstmModel
+from apps.models.ai.lstm.complex_lstm_model import ComplexLstmModel
+from apps.models.ai.lstm.lstm_model import LstmModel
 from apps.models.ai.model_type import ModelType
 from apps.models.data.preprocessor import Preprocessor
 from apps.models.database.query_type import QueryType
@@ -48,32 +46,26 @@ def setup_logging():
 #----------------------------Configure-Concurrency----------------------------
 def configure_concurrency():
     os.environ["TF_XLA_FLAGS"] = "--tf_xla_auto_jit=2"
-    os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+    os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
     os.environ["TF_ENABLE_ONEDNN_OPTS"] = "1"
 
 #----------------------------Setup-Tensorflow-Env-----------------------------
 def setup_tensorflow_env():
+    configure_concurrency()
     if tf.config.optimizer.get_jit():
         print("XLA JIT is enabled")
     else:
         print("XLA JIT is NOT enabled")
 
     gpus = tf.config.list_physical_devices('GPU')
-    dmls = tf.config.list_physical_devices('DML')
     if gpus:
         logging.info(f"{len(gpus)} GPU(s) detected.")
         for index, pc_gpu in enumerate(gpus):
             tf.config.experimental.set_memory_growth(pc_gpu, True)
-    if dmls:
-        logging.info(f"{len(dmls)} DML(s) detected.")
-        for index, pc_dml in enumerate(dmls):
-            details = tf.config.experimental.get_device_details(pc_dml)
-            logging.info(f"Configuring DML {pc_dml} with details: {details}")
-            tf.config.experimental.set_memory_growth(pc_dml, True)
     else:
         logging.info("No DML devices detected.")
-    if not gpus and not dmls:
-        logging.warning("No GPU or DML devices detected. Running on CPU.")
+    if not gpus:
+        logging.warning("No GPU devices detected. Running on CPU.")
     logging.info(f"TensorFlow Configured for CPU Cores and {len(gpus)} GPU(s).")
 
 #----------------------------Get-Untrained-Models-----------------------------
@@ -137,8 +129,6 @@ def get_dataframe(target_currency: str = 'BTC',
     db: Database = Database()
     logging.info("Fetching data frame...")
     df: DataFrame = db.fetch_data(target_currency, limit, query_type)
-    # logging.info("Handling price columns...")
-    # df.rename(columns={"target_price": f"{target_currency}_price"}, inplace=True)
     return df
 
 #----------------------------Get-Batched-Dataframe----------------------------
@@ -151,9 +141,6 @@ def get_batched_dataframe(target_currency: str = 'BTC',
     db: Database = Database()
     logging.info("Fetching batched data frame...")
     df: list[DataFrame] = db.fetch_data_in_batches(batch_size, target_currency, limit, query_type)
-    # logging.info("Handling price columns...")
-    # for batch in df:
-    #     batch.rename(columns={"target_price": f"{target_currency}_price"}, inplace=True)
     return df
 
 #--------------------------Get-Last-Historical-Price--------------------------
@@ -171,6 +158,8 @@ def train_model_in_batches(target_currency: str = 'BTC',
                            gpu_id: int = 0,
                            use_previous_model: bool = True,
                            batch_size: int = 10000) -> None:
+    if model_type == ModelType.COMPLEX_LSTM:
+        batch_size = min(batch_size, 15000)
     dataframe = get_batched_dataframe(target_currency, limit=training_type.value.max_rows, query_type=QueryType.HISTORICAL_PRICE, batch_size=batch_size)
     for batch in dataframe:
         logging.info(f"Training model for {target_currency} with batch size {batch_size}...")
@@ -188,7 +177,6 @@ def train_model(target_currency: str = 'BTC',
                 use_previous_model: bool = True,
                 dataframe: DataFrame = None):
     from apps.models.prediction.predictions import log_actual_vs_printed
-    configure_concurrency()
     logging.info("Getting data frame...")
     if dataframe is None:
         dataframe = get_dataframe(target_currency, limit=training_type.value.max_rows, query_type=QueryType.HISTORICAL_PRICE)
@@ -201,7 +189,7 @@ def train_model(target_currency: str = 'BTC',
     logging.info("Transforming data...")
     historical_prices, future_prices_unscaled, input_scaler = preprocessor.transform(dataframe, target_currency)
     logging.info("Dropping NaN values...")
-    dataframe.dropna(subset=[f"{target_currency}_price"], inplace=True)
+    dataframe.dropna(subset=[f"{target_currency.lower()}_price"], inplace=True)
     logging.info("Scaling target values...")
     target_scaler = MinMaxScaler(feature_range=(0,1))
     logging.info("Getting raw target values...")
@@ -226,9 +214,9 @@ def train_model(target_currency: str = 'BTC',
         raise ValueError(f"Incompatible model type: {model_type}")
     logging.info(f"Getting model for {target_currency} at {model_path}...")
     if model_type == ModelType.LSTM:
-        model: LstmModel = get_lstm_model(target_currency, model_path, historical_prices, training_type, use_previous_model)
+        model: LstmModel = get_lstm_model(target_currency, model_path, historical_prices, training_type.value, use_previous_model)
     elif model_type == ModelType.COMPLEX_LSTM:
-        model: ComplexLstmModel = get_complex_lstm_model(target_currency, model_path, historical_prices, training_type, use_previous_model)
+        model: ComplexLstmModel = get_complex_lstm_model(target_currency, model_path, historical_prices, training_type.value, use_previous_model)
     else:
         raise ValueError(f"Incompatible model type: {model_type}")
     logging.info(f"Training model for {target_currency}...")
@@ -247,7 +235,7 @@ def train_model(target_currency: str = 'BTC',
 
 #-----------------------------Get-Currency-Prices-----------------------------
 def get_currency_prices(dataframe, target_currency):
-    return dataframe[[f"{target_currency}_price"]].values
+    return dataframe[[f"{target_currency.lower()}_price"]].values
 
 #----------------------------Rescale-Future-Prices----------------------------
 def rescale_future_prices(future_prices_unscaled):
@@ -342,6 +330,8 @@ def train_multi_layer_model_in_batches(target_currency: str = 'BTC',
                                        model_type: ModelType = ModelType.MULTI_LAYER,
                                        gpu_id: int = 0,
                                        batch_size: int = 10000):
+    batch_size = min(batch_size, 15000)
+
     dataframe = get_batched_dataframe(target_currency,
                                         limit=training_type.value.max_rows,
                                         query_type=QueryType.HISTORICAL_PRICE,
@@ -364,8 +354,8 @@ def train_multi_layer_model(target_currency: str = 'BTC',
                             gpu_id: int = 0,
                             dataframe: DataFrame = None):
     from apps.models.prediction.predictions import log_actual_vs_printed
-    from apps.models.ai.multi_layer_lstm_model import MultiLayerLstmModel
-    from apps.models.ai.complex_multi_layer_lstm_model import ComplexMultiLayerLstmModel
+    from apps.models.ai.lstm.layered.multi_layer_lstm_model import MultiLayerLstmModel
+    from apps.models.ai.lstm.layered.complex_multi_layer_lstm_model import ComplexMultiLayerLstmModel
 
     logging.info(f"Fetching data frame for {target_currency}")
     if dataframe is None:
@@ -412,7 +402,7 @@ def train_multi_layer_model(target_currency: str = 'BTC',
                       target_currency,
                       model_path,
                       short_data,
-                      training_type)
+                      training_type.value)
 
     logging.info(f"Training Multi-Layer Model for {target_currency}...")
     with tf.device(f'/GPU:{gpu_id}'):
