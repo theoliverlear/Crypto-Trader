@@ -1,19 +1,21 @@
 # complex_multi_layer_lstm_model.py
 import logging
-from abc import ABC
 from datetime import datetime
 
+from sklearn.preprocessing import MinMaxScaler
 from typing_extensions import override
 
 from attrs import define
-from keras import Input, Model, Sequential
+from keras import Input, Model
 from keras.layers import Bidirectional, LSTM, Dropout, BatchNormalization, \
     Concatenate, Dense
 from keras.saving.save import load_model
-
-from apps.models.ai.multi_layer_base_model import MultiLayerBaseModel
+import tensorflow as tf
+from apps.models.ai.lstm.layered.multi_layer_base_model import MultiLayerBaseModel
 import os
 from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
+
+from apps.models.ai.model_retriever import model_exists, delete_model
 
 
 @define
@@ -25,7 +27,6 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
         if self.dimension is None:
             raise ValueError(
                 "Please specify 'dimension' for MultiLayerLstmModel.")
-        # TODO: Turn repeated behavior into a function.
         short_input = Input(shape=(self.short_seq_len, self.dimension),
                             name="short_input")
         medium_input = Input(shape=(self.medium_seq_len, self.dimension),
@@ -46,28 +47,12 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
         self.model.compile(optimizer="adam", loss="mean_squared_error")
         self.log_model_summary()
 
-    def combine_model(self, model_input):
-        lstm = Bidirectional(LSTM(512,
-                                        return_sequences=True,
-                                        recurrent_activation="sigmoid",
-                                        use_bias=True,
-                                        unroll=True))(model_input)
-        lstm = Dropout(0.3)(lstm)
-        lstm = BatchNormalization()(lstm)
-        lstm = Bidirectional(LSTM(384,
-                                        return_sequences=True,
-                                        recurrent_activation="sigmoid",
-                                        use_bias=True,
-                                        unroll=True))(lstm)
-        lstm = Dropout(0.3)(lstm)
-        lstm = BatchNormalization()(lstm)
-        lstm = Bidirectional(LSTM(256,
-                                        return_sequences=True,
-                                        recurrent_activation="sigmoid",
-                                        use_bias=True,
-                                        unroll=True))(lstm)
-        lstm = Dropout(0.3)(lstm)
-        lstm = BatchNormalization()(lstm)
+    @staticmethod
+    @override
+    def combine_model(model_input):
+        lstm = ComplexMultiLayerLstmModel.get_layer(model_input, 512, True)
+        lstm = ComplexMultiLayerLstmModel.get_layer(lstm, 384, True)
+        lstm = ComplexMultiLayerLstmModel.get_layer(lstm, 256, True)
         lstm = Bidirectional(LSTM(128,
                                         recurrent_activation="sigmoid",
                                         use_bias=True,
@@ -75,13 +60,22 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
         lstm = Dropout(0.3)(lstm)
         return lstm
 
-    @override
     @staticmethod
+    def get_layer(model_input, layers: int, return_sequences: bool):
+        lstm = Bidirectional(LSTM(layers,
+                                  return_sequences=return_sequences,
+                                  recurrent_activation="sigmoid",
+                                  use_bias=True,
+                                  unroll=True))(model_input)
+        lstm = Dropout(0.3)(lstm)
+        lstm = BatchNormalization()(lstm)
+        return lstm
+
+    @staticmethod
+    @override
     def get_tensorboard_callback(target_currency: str):
-        import tensorflow as tf
         timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
         log_dir = os.path.join("logs", "COMPLEX_MULTI_LAYER_LSTM", target_currency, timestamp)
-
         return tf.keras.callbacks.TensorBoard(
             log_dir=log_dir,
             profile_batch=10,
@@ -120,13 +114,11 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
                 break
             except Exception as exception:
                 from apps.models.ai.model_type import ModelType
-                from apps.models.prediction.predictions import model_exists, \
-                    delete_model
                 if "Input 0 of layer" in str(exception):
                     logging.info("Model dimension mismatch. Re-training model.")
-                    model_exists: bool = model_exists(self.target_currency,
+                    complex_multi_model_exists: bool = model_exists(self.target_currency,
                                                       ModelType.COMPLEX_MULTI_LAYER)
-                    if model_exists:
+                    if complex_multi_model_exists:
                         delete_model(self.target_currency,
                                      ModelType.COMPLEX_MULTI_LAYER)
                     self.initialize_model()
@@ -135,7 +127,7 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
 
 
     @override
-    def predict(self, input_data_list, target_scaler):
+    def predict(self, input_data_list, target_scaler: MinMaxScaler):
         scaled_pred = self.model.predict(input_data_list)
         real_price = target_scaler.inverse_transform(scaled_pred)[0][0]
         return real_price
