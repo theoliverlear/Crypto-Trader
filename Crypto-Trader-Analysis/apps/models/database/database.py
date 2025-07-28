@@ -1,4 +1,5 @@
 # database.py
+import io
 import logging
 import time
 import traceback
@@ -34,12 +35,8 @@ class Database:
                 poolclass=QueuePool,
                 pool_size=20,
                 max_overflow=40,
-                echo=True,
-                connect_args={
-                    "cursor_factory": _pg_extras.NamedTupleCursor,
-                },
+                echo=False
             )
-            .execution_options(stream_results=True)
         )
 
     def get_connection_url(self) -> str:
@@ -107,7 +104,8 @@ class Database:
                    target_currency: str = 'BTC',
                    limit=20000,
                    query_type: QueryType = QueryType.HISTORICAL_PRICE,
-                   rows_per_log: int = 10_000) -> pd.DataFrame:
+                   rows_per_log: int = 10_000,
+                   in_bulk: bool = True) -> pd.DataFrame:
         logging.info("Fetching data from database...")
         params, query = self.build_query(limit, query_type, target_currency)
         next_mark: int = 0
@@ -115,7 +113,8 @@ class Database:
         try:
             logging.debug(f"Executing query...")
             return self.execute_query(next_mark, params, query,
-                                      rows_per_log, start_time, limit)
+                                      rows_per_log, start_time, limit,
+                                      rows_per_log, in_bulk)
         except Exception as exception:
             traceback.print_exc()
             return pd.DataFrame()
@@ -139,6 +138,38 @@ class Database:
             next_mark += rows_per_log
         return next_mark
 
+    def _execute_copy_to_dataframe(self, compiled_sql: str) -> pd.DataFrame:
+        buffer = io.StringIO()
+        raw_conn = self.engine.raw_connection()
+        try:
+            with raw_conn.cursor() as cur:
+                copy_cmd = f"COPY ({compiled_sql.replace(';', '')}) TO STDOUT WITH (FORMAT CSV, HEADER)"
+                cur.copy_expert(copy_cmd, buffer)
+            buffer.seek(0)
+            return pd.read_csv(buffer)
+        finally:
+            raw_conn.close()
+
+    def execute_in_bulk(self, params, query: str):
+        try:
+            bound_params = {
+                key: value
+                for key, value in params.items()
+                if f":{key}" in query
+            }
+            compiled = (
+                text(query)
+                .bindparams(**bound_params)
+                .compile(
+                    dialect=self.engine.dialect,
+                    compile_kwargs={"literal_binds": True},
+                )
+            )
+            return self._execute_copy_to_dataframe(str(compiled))
+        except Exception as exception:
+            logging.error(f"Error executing in bulk: {exception}")
+            raise
+
     #----------------------------Execute-Query--------------------------------
     def execute_query(self,
                       next_mark: int,
@@ -146,7 +177,10 @@ class Database:
                       rows_per_log: int,
                       start_time: float,
                       limit: int = 10000,
-                      batch_size = 1000) -> pd.DataFrame:
+                      batch_size = 10000,
+                      in_bulk: bool = True) -> pd.DataFrame:
+        if in_bulk:
+            return self.execute_in_bulk(params, query)
         all_frames: list[pd.DataFrame] = []
         streamed_rows: int = 0
         with self.engine.connect().execution_options(
@@ -230,7 +264,7 @@ class Database:
         params: dict = {"target_currency": target_currency}
         if query_type == QueryType.CURRENT_PRICE:
             logging.info("Fetching current price...")
-            query = f"SELECT * FROM {query_type.value} WHERE currency_code = :target_currency;"
+            query = f"SELECT * FROM currencies WHERE currency_code = :target_currency;"
         elif query_type == QueryType.HISTORICAL_PRICE:
             logging.info("Fetching historical price...")
             query = self._get_market_snapshot_query()
