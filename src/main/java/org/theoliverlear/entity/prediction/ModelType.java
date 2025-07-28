@@ -15,7 +15,7 @@ public enum ModelType {
             case "complex_lstm" -> ModelType.COMPLEX_LSTM;
             case "multi_layer" -> ModelType.MULTI_LAYER;
             case "complex_multi_layer" -> ModelType.COMPLEX_MULTI_LAYER;
-            default -> ModelType.LSTM;
+            default -> throw new IllegalArgumentException("Unknown model type: " + modelType);
         };
     }
 }
