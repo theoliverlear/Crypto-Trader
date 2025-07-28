@@ -13,9 +13,6 @@ import os
 from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 import tensorflow as tf
 
-from apps.models.ai.model_retriever import model_exists, delete_model
-
-
 @define
 class ComplexLstmModel(BaseModel):
     def __attrs_post_init__(self):
@@ -91,6 +88,8 @@ class ComplexLstmModel(BaseModel):
                                callbacks=callbacks)
             except Exception as exception:
                 from apps.models.ai.model_type import ModelType
+                from apps.models.ai.model_retriever import model_exists, \
+                    delete_model
                 if "Input 0 of layer" in str(exception):
                     logging.info("Model dimension mismatch. Re-training model.")
                     complex_lstm_model_exists: bool = model_exists(self.target_currency,
