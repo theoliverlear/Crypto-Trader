@@ -11,7 +11,7 @@ from apps.models.ai.lstm.base_model import BaseModel
 import os
 from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 import tensorflow as tf
-from apps.models.ai.model_retriever import delete_model, model_exists
+
 
 
 @define
@@ -74,6 +74,8 @@ class LstmModel(BaseModel):
                                callbacks=callbacks)
             except Exception as exception:
                 from apps.models.ai.model_type import ModelType
+                from apps.models.ai.model_retriever import delete_model, \
+                    model_exists
                 if "Input 0 of layer" in str(exception):
                     logging.info("Model dimension mismatch. Re-training model.")
                     lstm_model_exists: bool = model_exists(self.target_currency,
