@@ -18,7 +18,7 @@ public class PricePredictionService {
         this.currencyService = currencyService;
         this.pricePredictionRepository = pricePredictionRepository;
     }
-    public void savePrediction(PricePredictionRequest pricePredictionRequest) {
+    public PricePrediction savePrediction(PricePredictionRequest pricePredictionRequest) {
         Currency currency = this.currencyService.getCurrencyByCurrencyCode(pricePredictionRequest.getCurrencyCode());
         PricePrediction pricePrediction = PricePrediction.builder()
                 .currencyCode(pricePredictionRequest.getCurrencyCode())
@@ -31,6 +31,11 @@ public class PricePredictionService {
                 .numRows(pricePredictionRequest.getNumRows())
                 .lastUpdated(pricePredictionRequest.getLastUpdated())
                 .build();
-        this.pricePredictionRepository.save(pricePrediction);
+        return this.pricePredictionRepository.save(pricePrediction);
+    }
+
+    public PricePrediction getById(Long id) {
+        return this.pricePredictionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Price prediction not found with id: " + id));
     }
 }
