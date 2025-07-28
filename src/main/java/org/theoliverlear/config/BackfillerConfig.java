@@ -8,16 +8,17 @@ import org.theoliverlear.service.CurrencyService;
 
 @Configuration
 public class BackfillerConfig {
+    //==============================-Beans-===================================
 
+    //------------------------Snapshots-Cli-Runner----------------------------
     @Bean
     CommandLineRunner snapshotsCliRunner(CurrencyService service,
                                          ApplicationArguments args) {
-        return ignored -> {
+        return commandLineArgs -> {
             if (args.containsOption("buildSnapshots")) {
-                boolean full = args.containsOption("fullRefresh");
-                service.buildMarketSnapshots(full);
+                boolean fullRefresh = args.containsOption("fullRefresh");
+                service.buildMarketSnapshots(fullRefresh);
             }
         };
     }
-
 }
