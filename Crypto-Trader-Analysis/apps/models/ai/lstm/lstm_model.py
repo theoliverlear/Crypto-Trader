@@ -1,6 +1,5 @@
 # lstm_model.py
 import logging
-from abc import ABC
 from datetime import datetime
 
 from typing_extensions import override
@@ -8,10 +7,11 @@ from attrs import define
 from keras import Sequential, Input
 from keras.layers import LSTM, Dropout, Dense
 from keras.saving.save import load_model
-from apps.models.ai.base_model import BaseModel
+from apps.models.ai.lstm.base_model import BaseModel
 import os
 from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
-
+import tensorflow as tf
+from apps.models.ai.model_retriever import delete_model, model_exists
 
 
 @define
@@ -33,13 +33,11 @@ class LstmModel(BaseModel):
         self.model.compile(optimizer="adam", loss="mean_squared_error")
         self.log_model_summary()
 
-    @override
     @staticmethod
+    @override
     def get_tensorboard_callback(target_currency: str):
-        import tensorflow as tf
         timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
         log_dir = os.path.join("logs", "LSTM_MODEL", target_currency, timestamp)
-
         return tf.keras.callbacks.TensorBoard(
             log_dir=log_dir,
             profile_batch=10,
@@ -48,7 +46,7 @@ class LstmModel(BaseModel):
 
     @override
     def train(self,
-              dataset,
+              dataset: tf.data.Dataset,
               epochs: int = 20,
               batch_size: int = 32):
         from apps.models.ai.model_retriever import LSTM_MODEL_DIRECTORY
@@ -66,33 +64,24 @@ class LstmModel(BaseModel):
             ReduceLROnPlateau(monitor='loss', factor=0.5, patience=3,
                               min_lr=1e-6)
         ]
-
-        # self.model.fit(dataset,
-        #                epochs=epochs,
-        #                batch_size=batch_size,
-        #                verbose=1,
-        #                callbacks=callbacks)
         while True:
             try:
-                self.model.fit(dataset,
+                return self.model.fit(dataset,
+                               use_multiprocessing=True,
                                epochs=epochs,
                                batch_size=batch_size,
                                verbose=1,
                                callbacks=callbacks)
-                break
             except Exception as exception:
                 from apps.models.ai.model_type import ModelType
-                from apps.models.prediction.predictions import model_exists, \
-                    delete_model
                 if "Input 0 of layer" in str(exception):
                     logging.info("Model dimension mismatch. Re-training model.")
-                    model_exists: bool = model_exists(self.target_currency,
+                    lstm_model_exists: bool = model_exists(self.target_currency,
                                                       ModelType.LSTM)
-                    if model_exists:
+                    if lstm_model_exists:
                         delete_model(self.target_currency,
                                      ModelType.LSTM)
                     self.initialize_model()
-
                 else:
                     raise
 
