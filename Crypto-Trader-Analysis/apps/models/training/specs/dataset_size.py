@@ -2,12 +2,12 @@ from enum import Enum
 
 
 class DatasetSize(Enum):
-    MICRO: int = 1000
-    MINI: int = 2000
-    SMALL: int = 5000
-    MEDIUM: int = 7500
-    STANDARD: int = 15000
-    LARGE: int = 25000
-    EXTRA_LARGE: int = 40000
-    HUGE: int = 50000
-    MASSIVE: int = 100000
+    MICRO = 15_000
+    MINI = 30_000
+    SMALL = 75_000
+    MEDIUM = 112_500
+    STANDARD = 225_000
+    LARGE = 375_000
+    EXTRA_LARGE = 600_000
+    HUGE = 750_000
+    MASSIVE = 1_500_000
