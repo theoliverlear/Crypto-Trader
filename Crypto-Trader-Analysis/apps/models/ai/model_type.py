@@ -1,18 +1,31 @@
 from enum import Enum
 
-from apps.models.ai.base_model import BaseModel
-from apps.models.ai.complex_lstm_model import ComplexLstmModel
-from apps.models.ai.complex_multi_layer_lstm_model import \
+from apps.models.ai.lstm.base_model import BaseModel
+from apps.models.ai.lstm.complex_lstm_model import ComplexLstmModel
+from apps.models.ai.lstm.layered.complex_multi_layer_lstm_model import \
     ComplexMultiLayerLstmModel
-from apps.models.ai.lstm_model import LstmModel
-from apps.models.ai.multi_layer_lstm_model import MultiLayerLstmModel
+from apps.models.ai.lstm.lstm_model import LstmModel
+from apps.models.ai.lstm.layered.multi_layer_lstm_model import MultiLayerLstmModel
 
 
 class ModelType(Enum):
-    LSTM: BaseModel = LstmModel
-    COMPLEX_LSTM: BaseModel = ComplexLstmModel
-    MULTI_LAYER: BaseModel = MultiLayerLstmModel
-    COMPLEX_MULTI_LAYER: BaseModel = ComplexMultiLayerLstmModel
+    LSTM = LstmModel
+    COMPLEX_LSTM = ComplexLstmModel
+    MULTI_LAYER = MultiLayerLstmModel
+    COMPLEX_MULTI_LAYER = ComplexMultiLayerLstmModel
+
+    @staticmethod
+    def from_instance(base_model: BaseModel) -> "ModelType":
+        if isinstance(base_model, LstmModel):
+            return ModelType.LSTM
+        elif isinstance(base_model, ComplexLstmModel):
+            return ModelType.COMPLEX_LSTM
+        elif isinstance(base_model, MultiLayerLstmModel):
+            return ModelType.MULTI_LAYER
+        elif isinstance(base_model, ComplexMultiLayerLstmModel):
+            return ModelType.COMPLEX_MULTI_LAYER
+        else:
+            raise ValueError(f"Unknown model type: {type(base_model)}")
 
     def __str__(self):
         if self == ModelType.LSTM:
