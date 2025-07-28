@@ -8,11 +8,11 @@ from typing import Optional
 import requests
 from sklearn.preprocessing import MinMaxScaler
 
-from apps.models.ai.base_model import BaseModel
+from apps.models.ai.lstm.base_model import BaseModel
 from apps.models.ai.model_type import ModelType
 from apps.models.data.preprocessor import Preprocessor
 from apps.models.database.query_type import QueryType
-from apps.models.ai.model_retriever import get_model
+from apps.models.ai.model_retriever import get_model, model_exists
 from apps.models.prediction.prediction import Prediction
 from apps.models.training.train_model import get_dataframe, get_last_historical_price, \
     setup_logging, configure_concurrency, setup_tensorflow_env
@@ -22,36 +22,7 @@ from apps.models.training.training_type import TrainingType
 from currency_json_generator import get_all_currency_codes
 
 
-def model_exists(target_currency: str, model_type: ModelType = ModelType.LSTM) -> bool:
-    model_file: str = model_type.value.get_model_path(target_currency)
-    current_file_path = Path(__file__).resolve()
-    base_dir = current_file_path.parents[3]
-    model_path = base_dir / model_file
-    exists = model_path.is_file()
-    logging.debug(f"Checking model at: {model_path} -> Exists: {exists}")
-    return exists
 
-def delete_model(target_currency: str, model_type: ModelType = ModelType.LSTM) -> None:
-    model_file: str = model_type.value.get_model_path(target_currency)
-    current_file_path = Path(__file__).resolve()
-    base_dir = current_file_path.parents[3]
-    model_path = base_dir / model_file
-    if model_path.is_file():
-        logging.debug(f"Deleting model at: {model_path}")
-        model_path.unlink()
-    else:
-        logging.debug(f"Model file not found at: {model_path}, nothing to delete.")
-
-def delete_checkpoint(target_currency: str, model_type: ModelType = ModelType.LSTM) -> None:
-    checkpoint_file: str = model_type.value.get_model_path(target_currency)
-    current_file_path = Path(__file__).resolve()
-    base_dir = current_file_path.parents[3]
-    checkpoint_path = base_dir / "checkpoints" / checkpoint_file
-    if checkpoint_path.is_file():
-        logging.debug(f"Deleting checkpoint at: {checkpoint_path}")
-        checkpoint_path.unlink()
-    else:
-        logging.debug(f"Checkpoint file not found at: {checkpoint_path}, nothing to delete.")
 # TODO: Add multi-layer model support.
 def predict(target_currency: str = 'BTC',
             training_type: TrainingType = TrainingType.DETAILED_SHORT_TRAINING,
@@ -172,8 +143,10 @@ def predict_and_send(target_currency: str = 'BTC',
 
 def send_prediction_to_server(prediction: Prediction):
     try:
-        response = requests.post("http://localhost:8080/api/predictions", json=prediction.to_json(), verify=False)
+        response = requests.post("http://localhost:8080/api/predictions/add", json=prediction.to_json(), verify=False)
         print(f"[{prediction.currency_code}] Status: {response.status_code} - {response.text}")
+        payload: dict = response.json()
+        return payload.get("predictionId")
     except Exception as e:
         print(f"Failed to send prediction for {prediction.currency_code}: {e}")
 
@@ -201,8 +174,6 @@ def predict_and_send_all_loop(
                 except Exception as e:
                     logging.error(f"Error processing {currency}: {e}")
                 time.sleep(0.5)
-
-
 
 def main():
     setup_logging()
