@@ -7,6 +7,7 @@ from attrs import define
 
 @define
 class Prediction:
+    prediction_id: int = attr(default=0)
     currency_code: str = attr(default='BTC')
     predicted_price: float = attr(default=0.0)
     actual_price: float = attr(default=0.0)
