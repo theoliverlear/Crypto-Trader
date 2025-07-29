@@ -35,6 +35,9 @@ public class TrainingSessionBuilder extends AbstractTrainingSession {
     private QueryLoad queryLoad;
     private Integer queryBatchSize;
     private TrainingDevice trainingDevice;
+    private Integer shortSequenceLength;
+    private Integer mediumSequenceLength;
+    private Integer longSequenceLength;
 
     @Autowired
     private PricePredictionService pricePredictionService;
@@ -59,6 +62,9 @@ public class TrainingSessionBuilder extends AbstractTrainingSession {
         this.queryLoad = null;
         this.queryBatchSize = null;
         this.trainingDevice = null;
+        this.shortSequenceLength = null;
+        this.mediumSequenceLength = null;
+        this.longSequenceLength = null;
     }
 
     @Override
@@ -236,6 +242,24 @@ public class TrainingSessionBuilder extends AbstractTrainingSession {
     }
 
     @Override
+    public AbstractTrainingSession shortSequenceLength(Integer shortSequenceLength) {
+        this.shortSequenceLength = shortSequenceLength;
+        return this;
+    }
+
+    @Override
+    public AbstractTrainingSession mediumSequenceLength(Integer mediumSequenceLength) {
+        this.mediumSequenceLength = mediumSequenceLength;
+        return this;
+    }
+
+    @Override
+    public AbstractTrainingSession longSequenceLength(Integer longSequenceLength) {
+        this.longSequenceLength = longSequenceLength;
+        return this;
+    }
+
+    @Override
     public TrainingSession build() {
         return new TrainingSession(this.currency,
                                    this.prediction,
@@ -255,7 +279,10 @@ public class TrainingSessionBuilder extends AbstractTrainingSession {
                                    this.dimensionWidth,
                                    this.queryLoad,
                                    this.queryBatchSize,
-                                   this.trainingDevice
+                                   this.trainingDevice,
+                                   this.shortSequenceLength,
+                                   this.mediumSequenceLength,
+                                   this.longSequenceLength
         );
     }
 }
