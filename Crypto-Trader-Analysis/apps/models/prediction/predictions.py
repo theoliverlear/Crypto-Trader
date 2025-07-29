@@ -134,19 +134,23 @@ def log_actual_vs_printed(target_currency: str = 'BTC',
 
 def predict_and_send(target_currency: str = 'BTC',
                      training_type: TrainingType = TrainingType.DETAILED_SHORT_TRAINING,
-                     model_type: ModelType = ModelType.LSTM) -> None:
+                     model_type: ModelType = ModelType.LSTM) -> Optional[Prediction]:
     prediction: Prediction = actual_vs_predicted(target_currency, training_type, model_type)
     if prediction is None:
         logging.error(f"No prediction model found for {target_currency}. Stopping prediction.")
-        return
-    send_prediction_to_server(prediction)
+        return None
+    prediction_id: int = send_prediction_to_server(prediction)
+    if prediction_id is not None:
+        logging.info(f"Prediction for {target_currency} sent successfully with ID: {prediction_id}")
+        prediction.prediction_id = prediction_id
+    return prediction
 
-def send_prediction_to_server(prediction: Prediction):
+def send_prediction_to_server(prediction: Prediction) -> Optional[int]:
     try:
         response = requests.post("http://localhost:8080/api/predictions/add", json=prediction.to_json(), verify=False)
         print(f"[{prediction.currency_code}] Status: {response.status_code} - {response.text}")
         payload: dict = response.json()
-        return payload.get("predictionId")
+        return int(payload.get("predictionId"))
     except Exception as e:
         print(f"Failed to send prediction for {prediction.currency_code}: {e}")
 
@@ -187,7 +191,7 @@ def main():
     # actual_vs_predicted("AAVE")
     # predict_and_send_loop()
     # actual_vs_predicted("AAVE", model_type=ModelType.COMPLEX_LSTM)
-    predict_and_send_all_loop()
+    # predict_and_send_all_loop()
     # actual_vs_predicted("MOG")
     # actual_vs_predicted("FLOKI")
     # actual_vs_predicted("MOBILE")
