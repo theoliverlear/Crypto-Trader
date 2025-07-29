@@ -32,12 +32,12 @@ public class MarketSnapshotsBackfiller {
     public void buildSnapshots(boolean fullRefresh) {
         List<String> codes = this.getCurrencyCodes();
         if (codes.isEmpty()) {
-            log.warn("No non-BTC currencies found – nothing to do.");
+            log.warn("No non-base currencies found – nothing to do.");
             return;
         }
         long baseRows = this.getBaseRows();
         if (baseRows == 0) {
-            log.warn("No BTC rows found – nothing to back-fill.");
+            log.warn("No base currency rows found – nothing to back-fill.");
             return;
         }
         this.executeSnapshotCreation(fullRefresh, codes, baseRows);
@@ -53,14 +53,13 @@ public class MarketSnapshotsBackfiller {
         int cores = Math.min(Runtime.getRuntime().availableProcessors(), 18);
         ExecutorService threadPool = Executors.newFixedThreadPool(cores);
         ScheduledExecutorService rowTicker = Executors.newSingleThreadScheduledExecutor();
-
         LongAdder numInserted = new LongAdder();
-        long started = System.nanoTime();
+        long startedTimeNanos = System.nanoTime();
 
-        runRowTracker(rowTicker, numInserted, started);
+        runRowTracker(rowTicker, numInserted, startedTimeNanos);
         this.runInsertThreads(baseRows, threadPool, codes, numInserted);
         awaitShutdown(threadPool, rowTicker);
-        logBackfillCompletion(started, numInserted, cores);
+        logBackfillCompletion(startedTimeNanos, numInserted, cores);
     }
     //---------------------------Await-Shutdown-------------------------------
     private static void awaitShutdown(ExecutorService pool, ScheduledExecutorService ticker) {
@@ -95,8 +94,8 @@ public class MarketSnapshotsBackfiller {
     """.formatted(BASE_COLUMN));
     }
     //----------------------Log-Backfill-Completion---------------------------
-    private static void logBackfillCompletion(long started, LongAdder inserted, int cores) {
-        long nanosElapsed = System.nanoTime() - started;
+    private static void logBackfillCompletion(long startedTimeNanos, LongAdder inserted, int cores) {
+        long nanosElapsed = System.nanoTime() - startedTimeNanos;
         double sec = nanosElapsed / NANO_TO_SECONDS;
         double rowsPerSecond = inserted.sum() / Math.max(sec, 0.001);
         log.info("Snapshot back-fill complete – {} rows, {} rows/s ({} threads).",
