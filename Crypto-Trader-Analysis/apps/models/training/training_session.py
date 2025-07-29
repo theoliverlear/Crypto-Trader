@@ -25,8 +25,11 @@ from apps.models.ai.model_type import ModelType
 from apps.models.data.preprocessor import Preprocessor
 from apps.models.database.database import Database
 from apps.models.database.query_load import QueryLoad
-from apps.models.prediction.predictions import log_actual_vs_printed
+from apps.models.prediction.prediction import Prediction
+from apps.models.prediction.predictions import log_actual_vs_printed, \
+    predict_and_send
 from apps.models.training.training_model import TrainingModel
+from apps.models.training.training_type import TrainingType
 
 
 @define
@@ -37,11 +40,12 @@ class TrainingSession:
     model_type: ModelType = attr(default=ModelType.LSTM)
 
     _model: BaseModel = attr(default=None)
+    _database: Database = attr(default=Database())
+
     _training_start_time: datetime = attr(default=None)
     _training_end_time: datetime = attr(default=None)
     _query_start_time: datetime = attr(default=None)
     _query_end_time: datetime = attr(default=None)
-    _database: Database = attr(default=Database())
     _prediction_id: int = attr(default=0)
     _actual_rows: int = attr(default=0)
     _starting_loss: float = attr(default=0.0)
@@ -152,9 +156,10 @@ class TrainingSession:
         predicted_price: float = self.predict(
             self.get_last_multi_layer_elements(long_data, med_data, short_data),
             target_scaler)
-        log_actual_vs_printed(self.target_currency,
-                                predicted_price,
-                                self.model_type)
+        prediction: Prediction = predict_and_send(self.target_currency,
+                                                  TrainingType.DETAILED_SHORT_TRAINING,
+                                                  ModelType.LSTM)
+        self._prediction_id = prediction.prediction_id
         self._capture_history_data(history)
 
     def _train_multi_layer_in_batches(self):
@@ -303,12 +308,16 @@ class TrainingSession:
             "trainingEndTime": self._training_end_time.strftime(date_format),
             "queryStartTime": self._query_start_time.strftime(date_format),
             "queryEndTime": self._query_end_time.strftime(date_format),
+            "predictionId": self._prediction_id,
             "sequenceLength": self.training_model.sequence_length,
             "batchSize": self.training_model.batch_size,
             "dimensionWidth": self._dimension_width,
             "queryLoad": self._query_load.value,
             "queryBatchSize": self._query_batch_size,
-            "trainingDevice": f"gpu_{self.gpu_id}"
+            "trainingDevice": f"gpu_{self.gpu_id}",
+            "shortSequenceLength": self._short_seq_len,
+            "mediumSequenceLength": self._medium_seq_len,
+            "longSequenceLength": self._long_seq_len,
         }
 
     @staticmethod
