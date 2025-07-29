@@ -59,4 +59,8 @@ public abstract class AbstractTrainingSession implements BuilderFactory<Training
 
     public abstract AbstractTrainingSession trainingDevice(TrainingDevice trainingDevice);
     public abstract AbstractTrainingSession trainingDevice(String trainingDevice);
+
+    public abstract AbstractTrainingSession shortSequenceLength(Integer shortSequenceLength);
+    public abstract AbstractTrainingSession mediumSequenceLength(Integer mediumSequenceLength);
+    public abstract AbstractTrainingSession longSequenceLength(Integer longSequenceLength);
 }
