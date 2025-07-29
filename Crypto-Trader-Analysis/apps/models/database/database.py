@@ -164,10 +164,10 @@ class Database:
         buffer: io.StringIO = io.StringIO()
         raw_connection: PoolProxiedConnection = self.engine.raw_connection()
         try:
-            with raw_connection.cursor() as cur:
+            with raw_connection.cursor() as cursor:
                 formatted_query: str = compiled_sql.replace(';', '')
                 copy_command: str = f"COPY ({formatted_query}) TO STDOUT WITH (FORMAT CSV, HEADER)"
-                cur.copy_expert(copy_command, buffer)
+                cursor.copy_expert(copy_command, buffer)
             buffer.seek(0)
             return pd.read_csv(buffer)
         except Exception as exception:
