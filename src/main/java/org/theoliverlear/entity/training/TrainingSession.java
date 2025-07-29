@@ -85,6 +85,15 @@ public class TrainingSession extends Identifiable {
     @Column(name = "training_device", length = 50, nullable = false)
     private TrainingDevice trainingDevice;
 
+    @Column(name = "short_sequence_length")
+    private Integer shortSequenceLength;
+
+    @Column(name = "medium_sequence_length")
+    private Integer mediumSequenceLength;
+
+    @Column(name = "long_sequence_length")
+    private Integer longSequenceLength;
+
     public TrainingSession(Currency currency,
                            PricePrediction prediction,
                            int numRows,
@@ -103,7 +112,10 @@ public class TrainingSession extends Identifiable {
                            int dimensionWidth,
                            QueryLoad queryLoad,
                            Integer queryBatchSize,
-                           TrainingDevice trainingDevice) {
+                           TrainingDevice trainingDevice,
+                           Integer shortSequenceLength,
+                           Integer mediumSequenceLength,
+                           Integer longSequenceLength) {
         this.currency = currency;
         this.prediction = prediction;
         this.numRows = numRows;
@@ -123,6 +135,9 @@ public class TrainingSession extends Identifiable {
         this.queryLoad = queryLoad;
         this.queryBatchSize = queryBatchSize;
         this.trainingDevice = trainingDevice;
+        this.shortSequenceLength = shortSequenceLength;
+        this.mediumSequenceLength = mediumSequenceLength;
+        this.longSequenceLength = longSequenceLength;
     }
 
     public static TrainingSessionBuilder builder() {
