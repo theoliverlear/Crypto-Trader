@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.theoliverlear.comm.request.TrainingSessionRequest;
+import org.theoliverlear.component.SpringContext;
 import org.theoliverlear.entity.Identifiable;
 import org.theoliverlear.entity.currency.Currency;
 import org.theoliverlear.entity.prediction.ModelType;
@@ -141,6 +143,33 @@ public class TrainingSession extends Identifiable {
     }
 
     public static TrainingSessionBuilder builder() {
-        return new TrainingSessionBuilder();
+        return SpringContext.getBean(TrainingSessionBuilder.class);
+    }
+
+    public static TrainingSession fromRequest(TrainingSessionRequest request) {
+        return builder()
+                .currency(request.getCurrency())
+                .prediction(request.getPrediction())
+                .numRows(request.getNumRows())
+                .epochsTrained(request.getEpochsTrained())
+                .maxEpochs(request.getMaxEpochs())
+                .startingLoss(request.getStartingLoss())
+                .finalLoss(request.getFinalLoss())
+                .modelType(request.getModelType())
+                .queryType(request.getQueryType())
+                .trainingStartTime(request.getTrainingStartTime())
+                .trainingEndTime(request.getTrainingEndTime())
+                .queryStartTime(request.getQueryStartTime())
+                .queryEndTime(request.getQueryEndTime())
+                .sequenceLength(request.getSequenceLength())
+                .batchSize(request.getBatchSize())
+                .dimensionWidth(request.getDimensionWidth())
+                .queryLoad(request.getQueryLoad())
+                .queryBatchSize(request.getQueryBatchSize())
+                .trainingDevice(request.getTrainingDevice())
+                .shortSequenceLength(request.getShortSequenceLength())
+                .mediumSequenceLength(request.getMediumSequenceLength())
+                .longSequenceLength(request.getLongSequenceLength())
+                .build();
     }
 }
