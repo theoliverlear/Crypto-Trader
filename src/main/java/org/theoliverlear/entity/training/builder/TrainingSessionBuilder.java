@@ -1,6 +1,7 @@
 package org.theoliverlear.entity.training.builder;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.theoliverlear.entity.currency.Currency;
 import org.theoliverlear.entity.prediction.ModelType;
@@ -15,6 +16,7 @@ import org.theoliverlear.service.PricePredictionService;
 import java.time.LocalDateTime;
 
 @Component
+@Scope("prototype")
 public class TrainingSessionBuilder extends AbstractTrainingSession {
     private Currency currency;
     private PricePrediction prediction;
