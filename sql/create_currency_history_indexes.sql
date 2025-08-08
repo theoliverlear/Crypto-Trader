@@ -1,21 +1,18 @@
-CREATE INDEX idx_currency_history_code_date_value
-    ON currency_history (currency_code, last_updated, currency_value);
+CREATE INDEX currency_history_code_ts_desc_inc_val
+    ON currency_history USING btree (currency_code, last_updated DESC)
+    INCLUDE (currency_value);
 
-CREATE INDEX idx_currency_history_code_updated
-    ON currency_history (currency_code, last_updated DESC);
 
-CREATE INDEX idx_currency_history_updated
-    ON currency_history(last_updated DESC);
+CREATE INDEX currency_history_ts_desc_code_inc_val
+    ON currency_history (last_updated DESC, currency_code)
+    INCLUDE (currency_value);
 
-CREATE INDEX ON currency_history (currency_code, last_updated DESC);
 
-CREATE INDEX idx_code_updated_value ON currency_history (currency_code, last_updated DESC, currency_value);
+CREATE INDEX currency_history_btc_ts_desc_inc_val
+    ON currency_history (last_updated DESC)
+    INCLUDE (currency_value)
+    WHERE currency_code = 'BTC';
 
-CREATE INDEX idx_currency_history_code_updated_value
-    ON currency_history (currency_code, last_updated DESC, currency_value);
-
-CREATE INDEX idx_currency_history_code_updated
-    ON currency_history (currency_code, last_updated DESC);
-
-CREATE INDEX idx_currency_history_updated
-    ON currency_history (last_updated DESC);
+CREATE INDEX brin_currency_history_ts
+    ON currency_history USING brin (last_updated)
+    WITH (pages_per_range = 128);
