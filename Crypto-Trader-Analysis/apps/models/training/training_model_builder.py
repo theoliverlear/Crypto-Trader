@@ -37,8 +37,12 @@ class TrainingModelBuilder:
         self._skip_small_samples = skip_small_samples
         return self
 
-    def sequence_length(self, sequence_length: SequenceLengthSentiment) -> 'TrainingModelBuilder':
-        self._sequence_length = sequence_length.value
+    def sequence_length(self, sequence_length: SequenceLengthSentiment | int) -> 'TrainingModelBuilder':
+        if isinstance(sequence_length, SequenceLengthSentiment):
+            sequence_length = sequence_length.value
+        else:
+            sequence_length = int(sequence_length)
+        self._sequence_length = sequence_length
         return self
 
     def query_type(self, query_type: QueryType) -> 'TrainingModelBuilder':
