@@ -1,0 +1,10 @@
+# sentiment.py
+from apps.news.analysis.sentiment.sentiment_analyzer import SentimentAnalyzer
+from apps.news.analysis.sentiment.sentiment_result import SentimentResult
+
+if __name__ == "__main__":
+    text: str = """
+    The ETF was the first major factor that disrupted bitcoin's four-year rhythm. It brought in investors with deep pockets who were interested in holding the cryptocurrency longer term.\n\nBut a number of other market factors have changed.\n\nBitwise Asset Management's Hougan points to \"blowups in crypto\" that often preceded the crypto winters. He referenced the crash of so-called initial coin offerings (ICOs) in 2018 and the collapse of crypto exchange FTX in 2022.\n\nMeanwhile, the macroeconomic environment and regulation is becoming more supportive.\n\n\"Interest rates are more likely to go down than up in the next year, and the fact that regulators and legislators are now willing to engage with crypto rather than steadfastly refusing to deal with it will dramatically reduce the risk of future blow-ups,\" Hougan said.\n\nGary Gensler, the former leader of the U.S. Securities and Exchange Commission, had cracked down on the sector and opened a number of cases against crypto firms. Those in the industry said they were being unfairly targeted. Under the current administration of U.S. President Donald Trump, the SEC has dropped some cases against crypto firms. Washington has looked to introduce new laws around crypto and has even launched a bitcoin strategic reserve.\n\nMeanwhile, public companies are accumulating cryptocurrencies, especially bitcoin, as part of a new strategy.\n\n\"With increasing market maturity, long-term holder accumulation at all-time highs, and dampened volatility, the traditional 4-year rhythm is being replaced by more liquidity-sensitive, macro-correlated behavior,\" Ryan Chow, co-founder of Solv Protocol, told CNBC."""
+    sentiment_analyzer: SentimentAnalyzer = SentimentAnalyzer()
+    sentiment: SentimentResult = sentiment_analyzer.get_sentiment(text)
+    print(sentiment)
