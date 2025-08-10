@@ -1,0 +1,8 @@
+// ss-title.component.scss
+@use "../../../../styles/globals" as *;
+
+ss-title {
+    @include flex(center, center, row);
+    color: $absolute-black;
+    text-align: center;
+}
