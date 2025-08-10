@@ -16,6 +16,7 @@ public class NewsSentimentBuilder extends AbstractNewsSentiment {
     private double negativeScore;
     private double compositeScore;
     private double cryptoRelevance;
+    private LocalDateTime lastUpdated;
     
     public NewsSentimentBuilder() {
         this.articleId = 0L;
@@ -28,6 +29,7 @@ public class NewsSentimentBuilder extends AbstractNewsSentiment {
         this.negativeScore = 0;
         this.compositeScore = 0;
         this.cryptoRelevance = 0;
+        this.lastUpdated = LocalDateTime.now();
     }
     
     @Override
@@ -97,6 +99,18 @@ public class NewsSentimentBuilder extends AbstractNewsSentiment {
     }
 
     @Override
+    public AbstractNewsSentiment lastUpdated(LocalDateTime lastUpdated) {
+        this.lastUpdated = lastUpdated;
+        return this;
+    }
+
+    @Override
+    public AbstractNewsSentiment lastUpdated(String lastUpdated) {
+        this.lastUpdated = LocalDateTime.parse(lastUpdated);
+        return this;
+    }
+
+    @Override
     public NewsSentiment build() {
         return new NewsSentiment(
                 this.articleId,
@@ -108,7 +122,8 @@ public class NewsSentimentBuilder extends AbstractNewsSentiment {
                 this.neutralScore,
                 this.negativeScore,
                 this.compositeScore,
-                this.cryptoRelevance
+                this.cryptoRelevance,
+                this.lastUpdated
         );
     }
 }
