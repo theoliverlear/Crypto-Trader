@@ -1,8 +1,8 @@
+// nav-bar-item.component.scss
+
 //=================================-Imports-==================================
-@import "../../../../styles/global-variables";
-@import "../../../../styles/global-mixins";
-@import "../../../../styles/global-functions";
-@import "../../../../styles/global-placeholders";
+@use "../../../../styles/globals" as *;
+
 
 nav-bar-item {
     @include flex(center, center, row);

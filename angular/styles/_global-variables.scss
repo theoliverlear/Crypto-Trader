@@ -1,5 +1,4 @@
-@import "global-mixins";
-@import "global-functions";
+@use "global-functions" as *;
 
 $pure-white: #ffffff;
 $almost-white: #f8f9fa;

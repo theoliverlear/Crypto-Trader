@@ -1,8 +1,6 @@
- // trader-event-bubble-style.component.scss
-@import "../../../../styles/global-variables";
-@import "../../../../styles/global-mixins";
-@import "../../../../styles/global-functions";
-@import "../../../../styles/global-placeholders";
+// trader-event-bubble.component.scss
+@use "../../../../styles/globals" as *;
+
 
 trader-event-bubble {
 

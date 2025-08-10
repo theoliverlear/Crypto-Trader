@@ -1,8 +1,5 @@
 // auth-console-login-section-style.component.scss
-@import "../../../../styles/global-variables";
-@import "../../../../styles/global-mixins";
-@import "../../../../styles/global-functions";
-@import "../../../../styles/global-placeholders";
+@use "../../../../styles/globals" as *;
 @import "../auth-console-signup-section/auth-console-signup-section.component";
 
 auth-console-login-section {

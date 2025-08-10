@@ -1,8 +1,6 @@
- // auth-console-signup-section-style.component.scss
-@import "../../../../styles/global-variables";
-@import "../../../../styles/global-mixins";
-@import "../../../../styles/global-functions";
-@import "../../../../styles/global-placeholders";
+// auth-console-signup-section-style.component.scss
+@use "../../../../styles/globals" as *;
+
 
 $simplest-one-percent: simplest-calc(1);
 $simplest-quarter-percent: simplest-calc(0.25);

@@ -1,7 +1,5 @@
-@import "../../../styles/global-variables";
-@import "../../../styles/global-mixins";
-@import "../../../styles/global-functions";
-@import "../../../styles/global-placeholders";
+// authorize.component.scss
+@use "../../../styles/globals" as *;
 
 authorize {
     @include flex(flex-start, center, column);

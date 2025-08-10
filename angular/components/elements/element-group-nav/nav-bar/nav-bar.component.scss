@@ -1,8 +1,8 @@
+// nav-bar.component.scss
+
 //=================================-Imports-==================================
-@import "../../../../styles/global-variables";
-@import "../../../../styles/global-mixins";
-@import "../../../../styles/global-functions";
-@import "../../../../styles/global-placeholders";
+@use "../../../../styles/globals" as *;
+
 @import "../../../app/app.component";
 
 #logout-button-div {

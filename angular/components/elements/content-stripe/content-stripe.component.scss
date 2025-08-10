@@ -1,7 +1,5 @@
-@import "../../../styles/global-variables";
-@import "../../../styles/global-mixins";
-@import "../../../styles/global-functions";
-@import "../../../styles/global-placeholders";
+// content-stripe.component.scss
+@use "../../../styles/globals" as *;
 
 content-stripe {
     width: 100%;

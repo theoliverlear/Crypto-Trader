@@ -1,8 +1,6 @@
-// ss-input-style.component.scss
-@import "../../../../styles/global-variables";
-@import "../../../../styles/global-mixins";
-@import "../../../../styles/global-functions";
-@import "../../../../styles/global-placeholders";
+// ss-input.component.scss
+@use "../../../../styles/globals" as *;
+
 
 ss-input {
     input {

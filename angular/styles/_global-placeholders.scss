@@ -1,7 +1,7 @@
 //=================================-Imports-==================================
-@import "global-variables";
-@import "global-mixins";
-@import "global-functions";
+@use "global-variables" as *;
+@use "global-mixins" as *;
+@use "global-functions" as *;
 //===============================-Placeholders-===============================
 
 
