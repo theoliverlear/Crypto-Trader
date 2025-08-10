@@ -1,22 +1,24 @@
-# complex_multi_layer_lstm_model.py
+# multi_layer_lstm_model.py
 import logging
 from datetime import datetime
 
-from sklearn.preprocessing import MinMaxScaler
 from typing_extensions import override
 
 from attrs import define
+
 from keras import Input, Model
-from keras.layers import Bidirectional, LSTM, Dropout, BatchNormalization, \
-    Concatenate, Dense
+from keras.layers import LSTM, Dropout, Dense, Concatenate
 from keras.saving.save import load_model
-import tensorflow as tf
-from apps.models.ai.lstm.layered.multi_layer_base_model import MultiLayerBaseModel
+from sklearn.preprocessing import MinMaxScaler
+
+from apps.learning.models.ai.lstm.layered.multi_layer_base_model import MultiLayerBaseModel
 import os
 from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 
+
+
 @define
-class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
+class MultiLayerLstmModel(MultiLayerBaseModel):
     def __attrs_post_init__(self):
         self.initialize_model()
 
@@ -33,60 +35,49 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
         short_lstm = self.combine_model(short_input)
         medium_lstm = self.combine_model(medium_input)
         long_lstm = self.combine_model(long_input)
+
         merged = Concatenate()([short_lstm, medium_lstm, long_lstm])
-        merged = Dense(256, activation="relu")(merged)
-        merged = Dense(128, activation="relu")(merged)
-        merged = Dense(64, activation="relu")(merged)
+        merged = Dense(50, activation="relu")(merged)
         final_model = Dense(1)(merged)
-        self.model = Model(inputs=[short_input, medium_input, long_input],
-                           outputs=final_model,
-                           name="MultiLayerLSTM")
+        self.model = Model(
+            inputs=[short_input, medium_input, long_input],
+            outputs=final_model,
+            name="MultiLayerLstmModel"
+        )
         self.model.compile(optimizer="adam", loss="mean_squared_error")
         self.log_model_summary()
+
 
     @staticmethod
     @override
     def combine_model(model_input):
-        lstm = ComplexMultiLayerLstmModel.get_layer(model_input, 512, True)
-        lstm = ComplexMultiLayerLstmModel.get_layer(lstm, 384, True)
-        lstm = ComplexMultiLayerLstmModel.get_layer(lstm, 256, True)
-        lstm = Bidirectional(LSTM(128,
-                                        recurrent_activation="sigmoid",
-                                        use_bias=True,
-                                        unroll=True))(lstm)
-        lstm = Dropout(0.3)(lstm)
+        lstm = LSTM(150, return_sequences=True,
+                    recurrent_activation="sigmoid", use_bias=True,
+                    unroll=True)(model_input)
+        lstm = Dropout(0.2)(lstm)
+        lstm = LSTM(100, recurrent_activation="sigmoid", use_bias=True,
+                    unroll=True)(lstm)
+        lstm = Dense(50, activation="relu")(lstm)
         return lstm
 
-    @staticmethod
-    def get_layer(model_input, layers: int, return_sequences: bool):
-        lstm = Bidirectional(LSTM(layers,
-                                  return_sequences=return_sequences,
-                                  recurrent_activation="sigmoid",
-                                  use_bias=True,
-                                  unroll=True))(model_input)
-        lstm = Dropout(0.3)(lstm)
-        lstm = BatchNormalization()(lstm)
-        return lstm
 
-    @staticmethod
     @override
+    @staticmethod
     def get_tensorboard_callback(target_currency: str):
+        import tensorflow as tf
         timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-        log_dir = os.path.join("logs", "COMPLEX_MULTI_LAYER_LSTM", target_currency, timestamp)
+        log_dir = os.path.join("logs", "MULTI_LAYER_LSTM", target_currency, timestamp)
+
         return tf.keras.callbacks.TensorBoard(
             log_dir=log_dir,
             profile_batch=10,
             histogram_freq=1
         )
 
-    @override
-    def train(self,
-              dataset,
-              epochs: int = 20,
-              batch_size: int = 32):
-        from apps.models.ai.model_retriever import \
-            COMPLEX_MUlTI_LAYER_MODEL_DIRECTORY
-        checkpoint_dir = os.path.join(COMPLEX_MUlTI_LAYER_MODEL_DIRECTORY,
+    def train(self, dataset,
+              epochs=20, batch_size=32):
+        from apps.learning.models.ai.model_retriever import MULTI_LAYER_MODEL_DIRECTORY
+        checkpoint_dir = os.path.join(MULTI_LAYER_MODEL_DIRECTORY,
                                       "checkpoints")
         os.makedirs(checkpoint_dir, exist_ok=True)
         checkpoint_path = os.path.join(checkpoint_dir,
@@ -99,7 +90,7 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
                             save_best_only=True),
             ReduceLROnPlateau(monitor='loss', factor=0.5, patience=3,
                               min_lr=1e-6),
-            ComplexMultiLayerLstmModel.get_tensorboard_callback(self.target_currency)
+            MultiLayerLstmModel.get_tensorboard_callback(self.target_currency)
         ]
         while True:
             try:
@@ -109,38 +100,34 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
                                verbose=1,
                                callbacks=callbacks)
             except Exception as exception:
-                from apps.models.ai.model_type import ModelType
-                from apps.models.ai.model_retriever import model_exists, \
+                from apps.learning.models.ai.model_type import ModelType
+                from apps.learning.models.ai.model_retriever import model_exists, \
                     delete_model
+
                 if "Input 0 of layer" in str(exception):
                     logging.info("Model dimension mismatch. Re-training model.")
-                    complex_multi_model_exists: bool = model_exists(self.target_currency,
-                                                      ModelType.COMPLEX_MULTI_LAYER)
-                    if complex_multi_model_exists:
+                    multi_model_exists: bool = model_exists(self.target_currency,
+                                                      ModelType.LSTM)
+                    if multi_model_exists:
                         delete_model(self.target_currency,
-                                     ModelType.COMPLEX_MULTI_LAYER)
+                                     ModelType.LSTM)
                     self.initialize_model()
                 else:
                     raise
 
-
-    @override
     def predict(self, input_data_list, target_scaler: MinMaxScaler):
-        scaled_pred = self.model.predict(input_data_list)
-        real_price = target_scaler.inverse_transform(scaled_pred)[0][0]
+        pred_scaled = self.model.predict(input_data_list)
+        real_price = target_scaler.inverse_transform(pred_scaled)[0][0]
         return real_price
 
-    @override
     def save_model(self, path: str):
         self.model.save(path)
 
-    @override
     def load_model(self, path: str):
         self.model = load_model(path)
 
     @staticmethod
     @override
     def get_model_path(target_currency: str) -> str:
-        from apps.models.ai.model_retriever import \
-            COMPLEX_MUlTI_LAYER_MODEL_DIRECTORY
-        return COMPLEX_MUlTI_LAYER_MODEL_DIRECTORY + target_currency + '_complex_multi_layer_model.keras'
+        from apps.learning.models.ai.model_retriever import MULTI_LAYER_MODEL_DIRECTORY
+        return MULTI_LAYER_MODEL_DIRECTORY + target_currency + '_multi_layer_model.keras'

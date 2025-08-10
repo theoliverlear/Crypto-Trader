@@ -8,7 +8,7 @@ from keras import Sequential, Input
 from keras.layers import Bidirectional, LSTM, Dropout, BatchNormalization, \
     Dense
 from keras.saving.save import load_model
-from apps.models.ai.lstm.base_model import BaseModel
+from apps.learning.models.ai.lstm.base_model import BaseModel
 import os
 from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 import tensorflow as tf
@@ -65,7 +65,7 @@ class ComplexLstmModel(BaseModel):
               dataset: tf.data.Dataset,
               epochs: int = 20,
               batch_size: int = 32):
-        from apps.models.ai.model_retriever import COMPLEX_MODEL_DIRECTORY
+        from apps.learning.models.ai.model_retriever import COMPLEX_MODEL_DIRECTORY
         checkpoint_dir = os.path.join(COMPLEX_MODEL_DIRECTORY, "checkpoints")
         os.makedirs(checkpoint_dir, exist_ok=True)
         checkpoint_path = os.path.join(checkpoint_dir,
@@ -87,8 +87,8 @@ class ComplexLstmModel(BaseModel):
                                verbose=1,
                                callbacks=callbacks)
             except Exception as exception:
-                from apps.models.ai.model_type import ModelType
-                from apps.models.ai.model_retriever import model_exists, \
+                from apps.learning.models.ai.model_type import ModelType
+                from apps.learning.models.ai.model_retriever import model_exists, \
                     delete_model
                 if "Input 0 of layer" in str(exception):
                     logging.info("Model dimension mismatch. Re-training model.")
@@ -119,5 +119,5 @@ class ComplexLstmModel(BaseModel):
     @staticmethod
     @override
     def get_model_path(target_currency: str) -> str:
-        from apps.models.ai.model_retriever import COMPLEX_MODEL_DIRECTORY
+        from apps.learning.models.ai.model_retriever import COMPLEX_MODEL_DIRECTORY
         return COMPLEX_MODEL_DIRECTORY + target_currency + '_complex_model.keras'

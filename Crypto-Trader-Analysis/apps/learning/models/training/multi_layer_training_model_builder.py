@@ -4,9 +4,9 @@ from attr import attr
 from attrs import define
 
 if TYPE_CHECKING:
-    from apps.models.training.multi_layer_training_model import \
+    from apps.learning.models.training.multi_layer_training_model import \
         MultiLayerTrainingModel
-from apps.models.training.training_model_builder import TrainingModelBuilder
+from apps.learning.models.training.training_model_builder import TrainingModelBuilder
 
 
 @define

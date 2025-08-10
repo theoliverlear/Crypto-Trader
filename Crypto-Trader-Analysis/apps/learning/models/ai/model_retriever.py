@@ -4,14 +4,13 @@ import os
 from pathlib import Path
 from typing import TypeVar
 
-from apps.models.ai.lstm.complex_lstm_model import ComplexLstmModel
-from apps.models.ai.lstm.layered.complex_multi_layer_lstm_model import \
+from apps.learning.models.ai.lstm.complex_lstm_model import ComplexLstmModel
+from apps.learning.models.ai.lstm.layered.complex_multi_layer_lstm_model import \
     ComplexMultiLayerLstmModel
-from apps.models.ai.lstm.lstm_model import LstmModel
-from apps.models.ai.lstm.layered.multi_layer_lstm_model import MultiLayerLstmModel
-from apps.models.ai.model_type import ModelType
-from apps.models.training.training_model import TrainingModel
-from apps.models.training.training_type import TrainingType
+from apps.learning.models.ai.lstm.lstm_model import LstmModel
+from apps.learning.models.ai.lstm.layered.multi_layer_lstm_model import MultiLayerLstmModel
+from apps.learning.models.ai.model_type import ModelType
+from apps.learning.models.training.training_model import TrainingModel
 
 BASE_DIRECTORY = 'models/'
 

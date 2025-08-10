@@ -3,14 +3,14 @@ from typing import TYPE_CHECKING
 from attr import attr
 from attrs import define
 
-from apps.models.database.query_type import QueryType
-from apps.models.training.specs.batch_size_evaluations import BatchSizeEvaluations
-from apps.models.training.specs.dataset_size import DatasetSize
-from apps.models.training.specs.epoch_focus import EpochFocus
-from apps.models.training.specs.sequence_length_sentiment import \
+from apps.learning.models.database.query_type import QueryType
+from apps.learning.models.training.specs.batch_size_evaluations import BatchSizeEvaluations
+from apps.learning.models.training.specs.dataset_size import DatasetSize
+from apps.learning.models.training.specs.epoch_focus import EpochFocus
+from apps.learning.models.training.specs.sequence_length_sentiment import \
     SequenceLengthSentiment
 if TYPE_CHECKING:
-    from apps.models.training.training_model import TrainingModel
+    from apps.learning.models.training.training_model import TrainingModel
 
 @define
 class TrainingModelBuilder:
@@ -50,7 +50,7 @@ class TrainingModelBuilder:
         return self
 
     def build(self) -> 'TrainingModel':
-        from apps.models.training.training_model import TrainingModel
+        from apps.learning.models.training.training_model import TrainingModel
         return TrainingModel(
             max_rows=self._max_rows,
             epochs=self._epochs,

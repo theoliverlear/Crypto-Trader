@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from attr import attr
 from attrs import define
 
-from apps.models.ai.lstm.base_model import BaseModel
+from apps.learning.models.ai.lstm.base_model import BaseModel
 
 
 @define

@@ -1,10 +1,9 @@
 # correlations_analyzer.py
 
 import logging
-import os
 import pandas as pd
-from apps.models.database.database import Database
-from apps.models.database.query_type import QueryType
+from apps.learning.models.database.database import Database
+from apps.learning.models.database.query_type import QueryType
 
 def fetch_joined_data(target_currency: str = "BTC", limit: int = 100000) -> pd.DataFrame:
     db = Database()

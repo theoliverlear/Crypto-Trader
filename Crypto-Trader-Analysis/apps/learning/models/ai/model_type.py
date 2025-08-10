@@ -1,11 +1,11 @@
 from enum import Enum
 
-from apps.models.ai.lstm.base_model import BaseModel
-from apps.models.ai.lstm.complex_lstm_model import ComplexLstmModel
-from apps.models.ai.lstm.layered.complex_multi_layer_lstm_model import \
+from apps.learning.models.ai.lstm.base_model import BaseModel
+from apps.learning.models.ai.lstm.complex_lstm_model import ComplexLstmModel
+from apps.learning.models.ai.lstm.layered.complex_multi_layer_lstm_model import \
     ComplexMultiLayerLstmModel
-from apps.models.ai.lstm.lstm_model import LstmModel
-from apps.models.ai.lstm.layered.multi_layer_lstm_model import MultiLayerLstmModel
+from apps.learning.models.ai.lstm.lstm_model import LstmModel
+from apps.learning.models.ai.lstm.layered.multi_layer_lstm_model import MultiLayerLstmModel
 
 
 class ModelType(Enum):

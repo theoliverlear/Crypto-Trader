@@ -1,8 +1,8 @@
 # training_type.py
 from enum import Enum
 
-from apps.models.database.query_type import QueryType
-from apps.models.training.training_model import TrainingModel
+from apps.learning.models.database.query_type import QueryType
+from apps.learning.models.training.training_model import TrainingModel
 
 # TODO: Replace loading programmatically with loading a YAML file.
 

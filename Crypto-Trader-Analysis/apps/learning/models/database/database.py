@@ -11,7 +11,7 @@ from attrs import define
 from sqlalchemy import create_engine, QueuePool, text, Engine, \
     PoolProxiedConnection
 
-from apps.models.database.query_type import QueryType
+from apps.learning.models.database.query_type import QueryType
 from currency_json_generator import get_all_currency_codes
 
 

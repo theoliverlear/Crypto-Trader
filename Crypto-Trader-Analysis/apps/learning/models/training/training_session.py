@@ -10,28 +10,26 @@ from pandas import DataFrame
 import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler
 
-from apps.models.ai.lstm.base_model import BaseModel
-from apps.models.ai.lstm.complex_lstm_model import ComplexLstmModel
-from apps.models.ai.lstm.layered.complex_multi_layer_lstm_model import \
+from apps.learning.models.ai.lstm.base_model import BaseModel
+from apps.learning.models.ai.lstm.complex_lstm_model import ComplexLstmModel
+from apps.learning.models.ai.lstm.layered.complex_multi_layer_lstm_model import \
     ComplexMultiLayerLstmModel
-from apps.models.ai.lstm.layered.multi_layer_base_model import MultiLayerBaseModel
-from apps.models.ai.lstm.layered.multi_layer_lstm_model import \
+from apps.learning.models.ai.lstm.layered.multi_layer_base_model import MultiLayerBaseModel
+from apps.learning.models.ai.lstm.layered.multi_layer_lstm_model import \
     MultiLayerLstmModel
-from apps.models.ai.lstm.lstm_model import LstmModel
-from apps.models.ai.model_retriever import get_lstm_model, \
+from apps.learning.models.ai.lstm.lstm_model import LstmModel
+from apps.learning.models.ai.model_retriever import get_lstm_model, \
     get_complex_lstm_model, get_multi_layer_lstm_model, \
     get_complex_multi_layer_lstm_model
-from apps.models.ai.model_type import ModelType
-from apps.models.data.preprocessor import Preprocessor
-from apps.models.database.database import Database
-from apps.models.database.query_load import QueryLoad
-from apps.models.prediction.prediction import Prediction
-from apps.models.prediction.predictions import actual_vs_predicted, \
+from apps.learning.models.ai.model_type import ModelType
+from apps.learning.models.data.preprocessor import Preprocessor
+from apps.learning.models.database.database import Database
+from apps.learning.models.database.query_load import QueryLoad
+from apps.learning.models.prediction.predictions import actual_vs_predicted, \
     send_prediction_to_server
-from apps.models.training.multi_layer_training_model import \
+from apps.learning.models.training.multi_layer_training_model import \
     MultiLayerTrainingModel
-from apps.models.training.training_model import TrainingModel
-from apps.models.training.training_type import TrainingType
+from apps.learning.models.training.training_model import TrainingModel
 
 
 @define

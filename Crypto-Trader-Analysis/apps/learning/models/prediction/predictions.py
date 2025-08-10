@@ -2,22 +2,17 @@
 import logging
 import time
 from datetime import datetime
-from pathlib import Path
 from typing import Optional
 
 import requests
-from sklearn.preprocessing import MinMaxScaler
 
-from apps.models.ai.lstm.base_model import BaseModel
-from apps.models.ai.model_type import ModelType
-from apps.models.data.preprocessor import Preprocessor
-from apps.models.database.query_type import QueryType
-from apps.models.ai.model_retriever import get_model, model_exists
-from apps.models.prediction.prediction import Prediction
-from apps.models.training.train_model import get_dataframe, get_last_historical_price, \
+from apps.learning.models.ai.model_type import ModelType
+from apps.learning.models.database.query_type import QueryType
+from apps.learning.models.prediction.prediction import Prediction
+from apps.learning.models.training.train_model import get_dataframe, \
     setup_logging, configure_concurrency, setup_tensorflow_env
-from apps.models.training.training_model import TrainingModel
-from apps.models.training.training_type import TrainingType
+from apps.learning.models.training.training_model import TrainingModel
+from apps.learning.models.training.training_type import TrainingType
 
 
 from currency_json_generator import get_all_currency_codes
@@ -27,7 +22,7 @@ from currency_json_generator import get_all_currency_codes
 def predict(target_currency: str = 'BTC',
             training_type: TrainingModel = TrainingType.DETAILED_SHORT_TRAINING.value,
             model_type: ModelType = ModelType.LSTM) -> Optional[float]:
-    from apps.models.training.training_session import TrainingSession
+    from apps.learning.models.training.training_session import TrainingSession
     training_session: TrainingSession = TrainingSession(target_currency=target_currency,
                                                         training_model=training_type,
                                                         model_type=model_type)

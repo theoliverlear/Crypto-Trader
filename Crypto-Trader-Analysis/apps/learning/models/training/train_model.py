@@ -15,14 +15,14 @@ import numpy as np
 from pandas import DataFrame
 from sklearn.preprocessing import MinMaxScaler
 
-from apps.models.ai.lstm.complex_lstm_model import ComplexLstmModel
-from apps.models.ai.lstm.lstm_model import LstmModel
-from apps.models.ai.model_type import ModelType
-from apps.models.data.preprocessor import Preprocessor
-from apps.models.database.query_type import QueryType
-from apps.models.ai.model_retriever import get_model, get_lstm_model, \
+from apps.learning.models.ai.lstm.complex_lstm_model import ComplexLstmModel
+from apps.learning.models.ai.lstm.lstm_model import LstmModel
+from apps.learning.models.ai.model_type import ModelType
+from apps.learning.models.data.preprocessor import Preprocessor
+from apps.learning.models.database.query_type import QueryType
+from apps.learning.models.ai.model_retriever import get_model, get_lstm_model, \
     get_complex_lstm_model
-from apps.models.training.training_type import TrainingType
+from apps.learning.models.training.training_type import TrainingType
 from currency_json_generator import get_all_currency_codes
 
 
@@ -70,7 +70,7 @@ def setup_tensorflow_env():
 
 #----------------------------Get-Untrained-Models-----------------------------
 def get_untrained_models() -> list[str]:
-    from apps.models.prediction.predictions import model_exists
+    from apps.learning.models.prediction.predictions import model_exists
     currencies: list[str] = get_all_currency_codes(False)
     untrained_models: list[str] = []
     for currency in currencies:
@@ -105,7 +105,7 @@ def train_inaccurate_models(training_type: TrainingType = TrainingType.BALANCED_
                             model_type: ModelType = ModelType.LSTM,
                             gpu_id: int = 0,
                             only_recent_predictions: bool = False):
-    from apps.models.database.database import Database
+    from apps.learning.models.database.database import Database
     db: Database = Database()
     inaccurate_models: list[str] = db.get_inaccurate_models(5, only_recent_predictions)
     if gpu_id == 1:
@@ -124,7 +124,7 @@ def train_inaccurate_models(training_type: TrainingType = TrainingType.BALANCED_
 def get_dataframe(target_currency: str = 'BTC',
                   limit: int = 2000,
                   query_type: QueryType = QueryType.HISTORICAL_PRICE) -> DataFrame:
-    from apps.models.database.database import Database
+    from apps.learning.models.database.database import Database
     logging.info("Creating database connection...")
     db: Database = Database()
     logging.info("Fetching data frame...")
@@ -136,7 +136,7 @@ def get_batched_dataframe(target_currency: str = 'BTC',
                           limit: int = 2000,
                           query_type: QueryType = QueryType.HISTORICAL_PRICE,
                           batch_size: int = 10000) -> list[DataFrame]:
-    from apps.models.database.database import Database
+    from apps.learning.models.database.database import Database
     logging.info("Creating database connection...")
     db: Database = Database()
     logging.info("Fetching batched data frame...")
@@ -176,7 +176,7 @@ def train_model(target_currency: str = 'BTC',
                 gpu_id: int = 0,
                 use_previous_model: bool = True,
                 dataframe: DataFrame = None):
-    from apps.models.prediction.predictions import log_actual_vs_printed
+    from apps.learning.models.prediction.predictions import log_actual_vs_printed
     logging.info("Getting data frame...")
     if dataframe is None:
         dataframe = get_dataframe(target_currency, limit=training_type.value.max_rows, query_type=QueryType.HISTORICAL_PRICE)
@@ -353,9 +353,9 @@ def train_multi_layer_model(target_currency: str = 'BTC',
                             model_type: ModelType = ModelType.MULTI_LAYER,
                             gpu_id: int = 0,
                             dataframe: DataFrame = None):
-    from apps.models.prediction.predictions import log_actual_vs_printed
-    from apps.models.ai.lstm.layered.multi_layer_lstm_model import MultiLayerLstmModel
-    from apps.models.ai.lstm.layered.complex_multi_layer_lstm_model import ComplexMultiLayerLstmModel
+    from apps.learning.models.prediction.predictions import log_actual_vs_printed
+    from apps.learning.models.ai.lstm.layered.multi_layer_lstm_model import MultiLayerLstmModel
+    from apps.learning.models.ai.lstm.layered.complex_multi_layer_lstm_model import ComplexMultiLayerLstmModel
 
     logging.info(f"Fetching data frame for {target_currency}")
     if dataframe is None:

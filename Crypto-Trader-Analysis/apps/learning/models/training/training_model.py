@@ -4,8 +4,8 @@ from typing import TYPE_CHECKING
 from attr import attr
 from attrs import define
 if TYPE_CHECKING:
-    from apps.models.training.training_model_builder import TrainingModelBuilder
-from apps.models.database.query_type import QueryType
+    from apps.learning.models.training.training_model_builder import TrainingModelBuilder
+from apps.learning.models.database.query_type import QueryType
 
 
 @define
@@ -19,5 +19,5 @@ class TrainingModel:
 
     @staticmethod
     def builder() -> 'TrainingModelBuilder':
-        from apps.models.training.training_model_builder import TrainingModelBuilder
+        from apps.learning.models.training.training_model_builder import TrainingModelBuilder
         return TrainingModelBuilder()
