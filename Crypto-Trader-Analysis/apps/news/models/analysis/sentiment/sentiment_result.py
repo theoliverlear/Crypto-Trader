@@ -1,7 +1,7 @@
 from attr import attr, asdict
 from attrs import define
 
-from apps.news.analysis.sentiment.sentiment_label import SentimentLabel
+from apps.news.models.analysis.sentiment.sentiment_label import SentimentLabel
 
 
 @define

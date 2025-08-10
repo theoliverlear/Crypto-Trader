@@ -1,6 +1,6 @@
 import json
 
-from apps.news.sources.news_source import NewsSource
+from apps.news.models.sources.news_source import NewsSource
 
 def get_news_sources_dict() -> dict:
     with open('sources/news_sources.json') as f:

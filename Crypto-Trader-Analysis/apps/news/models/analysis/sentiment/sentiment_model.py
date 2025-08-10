@@ -8,9 +8,9 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification, \
 
 import re as regex
 
-from apps.news.analysis.crypto_regex import CRYPTO_PATTERN
-from apps.news.analysis.sentiment.sentiment_label import SentimentLabel
-from apps.news.analysis.sentiment.sentiment_result import SentimentResult
+from apps.news.models.analysis.crypto_regex import CRYPTO_PATTERN
+from apps.news.models.analysis.sentiment.sentiment_label import SentimentLabel
+from apps.news.models.analysis.sentiment.sentiment_result import SentimentResult
 
 
 @define

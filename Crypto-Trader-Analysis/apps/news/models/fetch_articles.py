@@ -1,5 +1,4 @@
 import json
-import re
 import time
 from datetime import datetime, timezone, timedelta
 import os
@@ -8,8 +7,7 @@ from typing import Any
 import worldnewsapi
 from worldnewsapi import SearchNews200Response, ApiResponse
 
-from apps.news.sources.author_regex import get_author
-from apps.news.sources.news_sources import NEWS_SOURCES_LINKS, get_by_link
+from apps.news.models.sources.news_sources import NEWS_SOURCES_LINKS, get_by_link
 
 api_key: str = os.getenv("WORLDNEWS_API_KEY")
 api_config = worldnewsapi.Configuration(api_key={'apiKey': api_key})

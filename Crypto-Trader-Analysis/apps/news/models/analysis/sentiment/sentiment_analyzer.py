@@ -1,7 +1,7 @@
 from attr import attr
 from attrs import define
 
-from apps.news.analysis.sentiment.sentiment_model import SentimentModel
+from apps.news.models.analysis.sentiment.sentiment_model import SentimentModel
 
 
 @define

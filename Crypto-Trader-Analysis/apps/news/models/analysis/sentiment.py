@@ -2,10 +2,8 @@
 import json
 from pathlib import Path
 
-from apps.news.analysis.sentiment.sentiment_analyzer import SentimentAnalyzer
-from apps.news.analysis.sentiment.sentiment_result import SentimentResult
-from apps.news.article.article import Article
-from apps.news.article.scored_article import ScoredArticle
+from apps.news.models.article.article import Article
+from apps.news.models.article.scored_article import ScoredArticle
 
 # TODO: Add delete function once used.
 
