@@ -65,6 +65,12 @@ import {
 } from "./element-group-auth/auth-console-tab-section/auth-console-tab-section.component";
 import {AuthInputComponent} from "./element-group-auth/auth-input/auth-input.component";
 import {PopupComponent} from "./popup/popup.component";
+import {
+    SsTitleComponent
+} from "./element-group-native/ss-title/ss-title.component";
+import {
+    SubtitleComponent
+} from "./element-group-text/subtitle/subtitle.component";
 
 export const elements = [
     AuthConsoleComponent,
@@ -95,5 +101,7 @@ export const elements = [
     SsHeadComponent,
     SsImgComponent,
     SsInputComponent,
+    SsTitleComponent,
+    SubtitleComponent,
     TraderEventBubbleComponent,
 ]
