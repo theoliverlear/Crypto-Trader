@@ -22,7 +22,7 @@ public class SupportedCurrencies {
     static {
         loadCurrenciesFromJson();
     }
-    private static void loadCurrenciesFromJson() {
+    public static void loadCurrenciesFromJson() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             File jsonFile = new File(JSON_FILE_PATH);
