@@ -35,17 +35,25 @@ public class NewsSentiment extends Identifiable {
     private double compositeScore;
     @Column(name = "crypto_relevance")
     private double cryptoRelevance;
+    @Column(name = "last_updated")
+    private LocalDateTime lastUpdated;
     @Column(name = "weighted_score")
     private double weightedScore;
     
     public NewsSentiment() {
         super();
+        this.articleId = 0L;
+        this.title = "";
+        this.publishedDate = null;
+        this.source = "";
+        this.url = "";
         this.positiveScore = 0;
         this.neutralScore = 0;
         this.negativeScore = 0;
         this.compositeScore = 0;
         this.cryptoRelevance = 0;
         this.weightedScore = 0;
+        this.lastUpdated = LocalDateTime.now();
     }
     
     public NewsSentiment(Long articleId,
@@ -57,7 +65,8 @@ public class NewsSentiment extends Identifiable {
                          double neutralScore,
                          double negativeScore,
                          double compositeScore,
-                         double cryptoRelevance) {
+                         double cryptoRelevance,
+                         LocalDateTime lastUpdated) {
         super();
         this.articleId = articleId;
         this.title = title;
@@ -69,6 +78,7 @@ public class NewsSentiment extends Identifiable {
         this.negativeScore = negativeScore;
         this.compositeScore = compositeScore;
         this.cryptoRelevance = cryptoRelevance;
+        this.lastUpdated = lastUpdated;
         this.weightedScore = calculateWeightedScore(compositeScore, cryptoRelevance);
 
     }
