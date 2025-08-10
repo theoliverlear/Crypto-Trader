@@ -1,6 +1,6 @@
 import unittest
 
-from apps.models.prediction.predictions import model_exists, get_current_price
+from apps.learning.models.prediction import model_exists, get_current_price
 
 
 class TestPredictions(unittest.TestCase):

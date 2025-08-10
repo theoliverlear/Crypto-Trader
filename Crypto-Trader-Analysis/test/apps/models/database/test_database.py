@@ -1,12 +1,8 @@
-import time
 import unittest
 from datetime import datetime
 
-from oauthlib.uri_validate import query
-from pandas import DataFrame
-
-from apps.models.database.database import Database
-from apps.models.database.query_type import QueryType
+from apps.learning.models import Database
+from apps.learning.models.database.query_type import QueryType
 
 
 def setup_database():

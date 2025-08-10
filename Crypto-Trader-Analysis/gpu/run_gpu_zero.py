@@ -1,16 +1,13 @@
 # run_gpu_zero.py
 # AMD RX 6700 XT
-from apps.models.ai.model_type import ModelType
-from apps.models.database.query_type import QueryType
-from apps.models.training.specs.batch_size_evaluations import \
+from apps.learning.models.ai import ModelType
+from apps.learning.models.database.query_type import QueryType
+from apps.learning.models.training import \
     BatchSizeEvaluations
-from apps.models.training.specs.dataset_size import DatasetSize
-from apps.models.training.specs.epoch_focus import EpochFocus
-from apps.models.training.train_model import get_split_currency_list, \
-    setup_tensorflow_env, setup_logging, \
-    train_all_models, train_new_models, train_multi_layer_model, train_model
-from apps.models.training.training_model import TrainingModel
-from apps.models.training.training_type import TrainingType
+from apps.learning.models.training.specs.epoch_focus import EpochFocus
+from apps.learning.models.training import get_split_currency_list, \
+    setup_tensorflow_env, setup_logging
+from apps.learning.models.training import TrainingModel
 from currency_json_generator import get_all_currency_codes
 
 
@@ -19,9 +16,9 @@ def main():
     setup_tensorflow_env()
     gpu_zero_currencies, gpu_one_currencies = get_split_currency_list()
     currencies = get_all_currency_codes(True)
-    from apps.models.training.training_session import TrainingSession
-    from apps.models.training.specs.dataset_size import DatasetSize
-    from apps.models.training.specs.sequence_length_sentiment import \
+    from apps.learning.models.training.training_session import TrainingSession
+    from apps.learning.models.training import DatasetSize
+    from apps.learning.models.training.specs.sequence_length_sentiment import \
         SequenceLengthSentiment
     training_model: TrainingModel = TrainingModel().builder() \
                                                    .max_rows(DatasetSize.MICRO) \
