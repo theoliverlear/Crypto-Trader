@@ -1,0 +1,114 @@
+package org.theoliverlear.entity.news.builder;
+
+import org.theoliverlear.entity.news.NewsSentiment;
+import org.theoliverlear.entity.news.builder.models.AbstractNewsSentiment;
+
+import java.time.LocalDateTime;
+
+public class NewsSentimentBuilder extends AbstractNewsSentiment {
+    private Long articleId;
+    private String title;
+    private LocalDateTime publishedDate;
+    private String source;
+    private String url;
+    private double positiveScore;
+    private double neutralScore;
+    private double negativeScore;
+    private double compositeScore;
+    private double cryptoRelevance;
+    
+    public NewsSentimentBuilder() {
+        this.articleId = 0L;
+        this.title = "";
+        this.publishedDate = null;
+        this.source = "";
+        this.url = "";
+        this.positiveScore = 0;
+        this.neutralScore = 0;
+        this.negativeScore = 0;
+        this.compositeScore = 0;
+        this.cryptoRelevance = 0;
+    }
+    
+    @Override
+    public AbstractNewsSentiment articleId(Long articleId) {
+        this.articleId = articleId;
+        return this;
+    }
+
+    @Override
+    public AbstractNewsSentiment title(String title) {
+        this.title = title;
+        return this;
+    }
+
+    @Override
+    public AbstractNewsSentiment publishedDate(String publishedDate) {
+        this.publishedDate = LocalDateTime.parse(publishedDate);
+        return this;
+    }
+
+    @Override
+    public AbstractNewsSentiment publishedDate(LocalDateTime publishedDate) {
+        this.publishedDate = publishedDate;
+        return this;
+    }
+
+    @Override
+    public AbstractNewsSentiment source(String source) {
+        this.source = source;
+        return this;
+    }
+
+    @Override
+    public AbstractNewsSentiment url(String url) {
+        this.url = url;
+        return this;
+    }
+
+    @Override
+    public AbstractNewsSentiment positiveScore(double positiveScore) {
+        this.positiveScore = positiveScore;
+        return this;
+    }
+
+    @Override
+    public AbstractNewsSentiment neutralScore(double neutralScore) {
+        this.neutralScore = neutralScore;
+        return this;
+    }
+
+    @Override
+    public AbstractNewsSentiment negativeScore(double negativeScore) {
+        this.negativeScore = negativeScore;
+        return this;
+    }
+
+    @Override
+    public AbstractNewsSentiment compositeScore(double compositeScore) {
+        this.compositeScore = compositeScore;
+        return this;
+    }
+
+    @Override
+    public AbstractNewsSentiment cryptoRelevance(double cryptoRelevance) {
+        this.cryptoRelevance = cryptoRelevance;
+        return this;
+    }
+
+    @Override
+    public NewsSentiment build() {
+        return new NewsSentiment(
+                this.articleId,
+                this.title,
+                this.publishedDate,
+                this.source,
+                this.url,
+                this.positiveScore,
+                this.neutralScore,
+                this.negativeScore,
+                this.compositeScore,
+                this.cryptoRelevance
+        );
+    }
+}
