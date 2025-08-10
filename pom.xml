@@ -64,6 +64,12 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.14</version> <!-- Or a newer version -->
+        </dependency>
         <!--
         Provides fast application restarts, LiveReload, and configurations
         for enhanced development experience
