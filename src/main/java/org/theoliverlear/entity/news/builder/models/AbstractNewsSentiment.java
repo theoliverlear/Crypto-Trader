@@ -17,4 +17,6 @@ public abstract class AbstractNewsSentiment implements BuilderFactory<NewsSentim
     public abstract AbstractNewsSentiment negativeScore(double negativeScore);
     public abstract AbstractNewsSentiment compositeScore(double compositeScore);
     public abstract AbstractNewsSentiment cryptoRelevance(double cryptoRelevance);
+    public abstract AbstractNewsSentiment lastUpdated(LocalDateTime lastUpdated);
+    public abstract AbstractNewsSentiment lastUpdated(String lastUpdated);
 }
