@@ -1,0 +1,9 @@
+// subtitle.component.scss
+@use "../../../../styles/globals" as *;
+
+subtitle {
+    @include flex(center, center, row);
+    color: $absolute-black;
+    font-style: italic;
+    text-align: center;
+}
