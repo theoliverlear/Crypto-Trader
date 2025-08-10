@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.theoliverlear.component.CurrencyJsonGenerator;
 import org.theoliverlear.component.MarketSnapshotsBackfiller;
 import org.theoliverlear.entity.currency.*;
 import org.theoliverlear.component.CurrencyDataRetriever;
@@ -34,10 +35,9 @@ public class CurrencyService {
     private final UniqueCurrencyRepository uniqueCurrencyRepository;
     private final UniqueCurrencyHistoryRepository uniqueCurrencyHistoryRepository;
     private final CurrencyDataRetriever currencyDataRetriever;
-    private final JdbcTemplate jdbcTemplate;
-    private final DataSource dataSource;
     private final MarketSnapshotsBackfiller backfiller;
     private final MarketSnapshotService snapshotService;
+    private final CurrencyJsonGenerator currencyJsonGenerator;
 
     //===========================-Constructors-===============================
     @Autowired
@@ -46,19 +46,17 @@ public class CurrencyService {
                            UniqueCurrencyRepository uniqueCurrencyRepository,
                            UniqueCurrencyHistoryRepository uniqueCurrencyHistoryRepository,
                            CurrencyDataRetriever currencyDataRetriever,
-                           JdbcTemplate jdbcTemplate,
-                           DataSource dataSource,
                            MarketSnapshotsBackfiller backfiller,
-                           MarketSnapshotService snapshotService) {
+                           MarketSnapshotService snapshotService,
+                           CurrencyJsonGenerator currencyJsonGenerator) {
         this.currencyRepository = currencyRepository;
         this.currencyHistoryRepository = currencyHistoryRepository;
         this.uniqueCurrencyRepository = uniqueCurrencyRepository;
         this.uniqueCurrencyHistoryRepository = uniqueCurrencyHistoryRepository;
         this.currencyDataRetriever = currencyDataRetriever;
-        this.jdbcTemplate = jdbcTemplate;
-        this.dataSource = dataSource;
         this.backfiller = backfiller;
         this.snapshotService = snapshotService;
+        this.currencyJsonGenerator = currencyJsonGenerator;
     }
     //============================-Methods-===================================
 
@@ -66,17 +64,23 @@ public class CurrencyService {
     @Async("taskExecutor")
     @Scheduled(fixedRate = 5000)
     public void saveCurrencies() {
-        log.info("Updating currencies...");
-        Map<String, Currency> currencies = this.currencyDataRetriever.getUpdatedCurrencies();
-        for (Currency currency : SupportedCurrencies.SUPPORTED_CURRENCIES) {
-            Currency previousCurrency = Currency.from(currency);
-            String currencyCode = currency.getCurrencyCode();
-            Currency updatedCurrency = currencies.get(currencyCode);
-            currency.setValue(updatedCurrency.getValue());
-            this.saveCurrency(currency);
-            this.saveUniqueCurrencyIfNew(currency, previousCurrency, updatedCurrency);
+        try {
+            log.info("Updating currencies...");
+            Map<String, Currency> currencies = this.currencyDataRetriever.getUpdatedCurrencies();
+            for (Currency currency : SupportedCurrencies.SUPPORTED_CURRENCIES) {
+                Currency previousCurrency = Currency.from(currency);
+                String currencyCode = currency.getCurrencyCode();
+                Currency updatedCurrency = currencies.get(currencyCode);
+                currency.setValue(updatedCurrency.getValue());
+                this.saveCurrency(currency);
+                this.saveUniqueCurrencyIfNew(currency, previousCurrency, updatedCurrency);
+            }
+            this.snapshotService.saveSnapshot(currencies);
+        } catch (NullPointerException exception) {
+            log.error("Failed to update currencies. Regenerating JSON. Error: ", exception);
+            this.currencyJsonGenerator.generateAndSave();
+            SupportedCurrencies.loadCurrenciesFromJson();
         }
-        this.snapshotService.saveSnapshot(currencies);
     }
 
     public List<String> getAllCurrencyCodes() {
