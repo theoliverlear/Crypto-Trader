@@ -1,13 +1,17 @@
 # run_gpu_zero.py
 # AMD RX 6700 XT
-from apps.learning.models.ai import ModelType
+from apps.learning.models.ai.model_type import ModelType
 from apps.learning.models.database.query_type import QueryType
-from apps.learning.models.training import \
+from apps.learning.models.training.specs.batch_size_evaluations import \
     BatchSizeEvaluations
+from apps.learning.models.training.specs.dataset_size import DatasetSize
 from apps.learning.models.training.specs.epoch_focus import EpochFocus
-from apps.learning.models.training import get_split_currency_list, \
-    setup_tensorflow_env, setup_logging
-from apps.learning.models.training import TrainingModel
+from apps.learning.models.training.specs.sequence_length_sentiment import \
+    SequenceLengthSentiment
+from apps.learning.models.training.train_model import setup_logging, \
+    setup_tensorflow_env, get_split_currency_list
+from apps.learning.models.training.training_model import TrainingModel
+from apps.learning.models.training.training_session import TrainingSession
 from currency_json_generator import get_all_currency_codes
 
 
@@ -16,10 +20,7 @@ def main():
     setup_tensorflow_env()
     gpu_zero_currencies, gpu_one_currencies = get_split_currency_list()
     currencies = get_all_currency_codes(True)
-    from apps.learning.models.training.training_session import TrainingSession
-    from apps.learning.models.training import DatasetSize
-    from apps.learning.models.training.specs.sequence_length_sentiment import \
-        SequenceLengthSentiment
+
     training_model: TrainingModel = TrainingModel().builder() \
                                                    .max_rows(DatasetSize.MICRO) \
                                                    .epochs(EpochFocus.SMALL_ANALYSIS) \
