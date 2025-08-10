@@ -1,0 +1,12 @@
+@import "../../../../styles/global-variables";
+@import "../../../../styles/global-mixins";
+@import "../../../../styles/global-functions";
+@import "../../../../styles/global-placeholders";
+
+auth-console {
+    margin: simple-calc(3, 1) 0 0 0;
+    padding: 0;
+    @include flex(center, center, column);
+    width: $thirty-percent;
+    z-index: 0;
+}

@@ -1,0 +1,15 @@
+ // auth-console-tab-section-style.component.scss
+@import "../../../../styles/global-variables";
+@import "../../../../styles/global-mixins";
+@import "../../../../styles/global-functions";
+@import "../../../../styles/global-placeholders";
+
+auth-console-tab-section {
+    @include flex(flex-start, center, row);
+    width: 100%;
+    z-index: 2;
+    margin-left: $three-percent;
+    auth-console-tab {
+        margin-right: $one-half-percent;
+    }
+}

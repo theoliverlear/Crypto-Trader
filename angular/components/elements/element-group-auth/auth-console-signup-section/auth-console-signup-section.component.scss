@@ -1,0 +1,26 @@
+ // auth-console-signup-section-style.component.scss
+@import "../../../../styles/global-variables";
+@import "../../../../styles/global-mixins";
+@import "../../../../styles/global-functions";
+@import "../../../../styles/global-placeholders";
+
+$simplest-one-percent: simplest-calc(1);
+$simplest-quarter-percent: simplest-calc(0.25);
+
+auth-console-signup-section {
+    $box-shadow-size: calc(((0.35vh + 0.35vw) / 2) + 0.35em);
+    border: $very-thin-border solid black;
+    width: 100%;
+    margin: calc((((0.05vh + 0.05vw) / 2) + 0.05em) * -1) 0 simple-calc(5, 2) 0;
+    //padding: 0 0 simple-calc(2, 1) 0;
+    padding: $one-half-percent;
+    border-radius: $simplest-one-percent;
+    z-index: 1;
+    @include flex(space-around, center, column);
+    box-shadow: $blue-gray $box-shadow-size calc($box-shadow-size * -1) 0 0;
+    transition: box-shadow, 0.3s;
+    &:hover {
+        $hover-box-shadow-size: simplest-calc(0.45);
+        box-shadow: $blue-gray $hover-box-shadow-size calc($hover-box-shadow-size * -1) 0 0;
+    }
+}
