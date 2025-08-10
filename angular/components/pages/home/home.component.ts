@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {TagType} from "../../../models/html/TagType";
 
 @Component({
   selector: 'home',
@@ -7,4 +8,5 @@ import { Component } from '@angular/core';
 })
 export class HomeComponent {
 
+    protected readonly TagType = TagType;
 }
