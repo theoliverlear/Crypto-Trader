@@ -1,10 +1,67 @@
 # sentiment.py
+import json
+from pathlib import Path
+
 from apps.news.analysis.sentiment.sentiment_analyzer import SentimentAnalyzer
 from apps.news.analysis.sentiment.sentiment_result import SentimentResult
+from apps.news.article.article import Article
+from apps.news.article.scored_article import ScoredArticle
+
+# TODO: Add delete function once used.
+
+def find_latest_data_file(base_dir: Path) -> Path | None:
+    candidates: list[Path] = list(base_dir.glob("temp_data_*.json"))
+    if not candidates:
+        return None
+    return max(candidates, key=lambda latest_file: latest_file.stat().st_mtime)
+
+def load_articles() -> list[dict]:
+    news_dir: Path = Path(__file__).resolve().parents[1]  # apps/news
+    latest_file: Path | None = find_latest_data_file(news_dir)
+
+    if latest_file is None:
+        raise FileNotFoundError(f"No temp_data_*.json files found in {news_dir}")
+
+    try:
+        with latest_file.open("r", encoding="utf-8") as file:
+            json_data: object = json.load(file)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Failed to parse JSON from {latest_file}: {e}") from e
+
+    if not isinstance(json_data, list):
+        raise ValueError(f"Unexpected JSON structure in {latest_file}: expected a list, got {type(json_data).__name__}")
+
+    all_articles: list[dict] = []
+    for day_entry in json_data:
+        if isinstance(day_entry, dict) and isinstance(day_entry.get("articles"), list):
+            all_articles.extend(day_entry["articles"])
+    return all_articles
+
+def capture_latest_sentiment():
+    articles: list[dict] = load_articles()
+    print(f"Loaded {len(articles)} articles")
+    scored_articles: list[ScoredArticle] = []
+    for article in articles:
+        article_id: int = article["id"]
+        title: str = article["title"]
+        publish_date: str = article["publish_date"]
+        source: str = article["source"]
+        url: str = article["url"]
+        text: str = article["text"]
+        print(f"Article {article_id}: {title} ({source})")
+        news_article: Article = Article(
+            article_id=article_id,
+            title=title,
+            publish_date=publish_date,
+            source=source,
+            url=url,
+            text=text
+        )
+        scored_article: ScoredArticle = news_article.as_scored_article()
+        scored_article.score_article()
+        scored_articles.append(scored_article)
+    for scored_article in scored_articles:
+        print(scored_article)
 
 if __name__ == "__main__":
-    text: str = """
-    The ETF was the first major factor that disrupted bitcoin's four-year rhythm. It brought in investors with deep pockets who were interested in holding the cryptocurrency longer term.\n\nBut a number of other market factors have changed.\n\nBitwise Asset Management's Hougan points to \"blowups in crypto\" that often preceded the crypto winters. He referenced the crash of so-called initial coin offerings (ICOs) in 2018 and the collapse of crypto exchange FTX in 2022.\n\nMeanwhile, the macroeconomic environment and regulation is becoming more supportive.\n\n\"Interest rates are more likely to go down than up in the next year, and the fact that regulators and legislators are now willing to engage with crypto rather than steadfastly refusing to deal with it will dramatically reduce the risk of future blow-ups,\" Hougan said.\n\nGary Gensler, the former leader of the U.S. Securities and Exchange Commission, had cracked down on the sector and opened a number of cases against crypto firms. Those in the industry said they were being unfairly targeted. Under the current administration of U.S. President Donald Trump, the SEC has dropped some cases against crypto firms. Washington has looked to introduce new laws around crypto and has even launched a bitcoin strategic reserve.\n\nMeanwhile, public companies are accumulating cryptocurrencies, especially bitcoin, as part of a new strategy.\n\n\"With increasing market maturity, long-term holder accumulation at all-time highs, and dampened volatility, the traditional 4-year rhythm is being replaced by more liquidity-sensitive, macro-correlated behavior,\" Ryan Chow, co-founder of Solv Protocol, told CNBC."""
-    sentiment_analyzer: SentimentAnalyzer = SentimentAnalyzer()
-    sentiment: SentimentResult = sentiment_analyzer.get_sentiment(text)
-    print(sentiment)
+    capture_latest_sentiment()
