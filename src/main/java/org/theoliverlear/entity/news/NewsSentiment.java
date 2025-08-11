@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class NewsSentiment extends Identifiable {
     @Column(name = "article_id", unique = true)
     private Long articleId;
-    @Column(name = "article_title", unique = true)
+    @Column(name = "article_title")
     private String title;
     @Column(name = "published_date")
     private LocalDateTime publishedDate;
