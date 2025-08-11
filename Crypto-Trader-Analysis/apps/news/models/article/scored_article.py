@@ -37,4 +37,15 @@ class ScoredArticle(Article):
     def send_to_server(self):
         if self.sentiment_result is None:
             self.score_article()
-        pass
+        payload: dict = self.to_json()
+        try:
+            import requests
+            response = requests.post('http://localhost:8080/api/news-sentiment/add', json=payload, verify=False)
+            print(response.text)
+            if response.status_code == 200:
+                print("Article sent successfully.")
+            else:
+                print(f"Error sending article: CODE - {response.status_code}")
+        except Exception as e:
+            print(f"Error sending article: {e}")
+            
