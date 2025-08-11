@@ -8,4 +8,5 @@ public interface NewsSentimentRepository extends JpaRepository<NewsSentiment, Lo
     
     @Query("SELECT n FROM NewsSentiment n ORDER BY n.id DESC")
     NewsSentiment getLastInserted();
+    boolean existsByArticleId(Long newsId);
 }
