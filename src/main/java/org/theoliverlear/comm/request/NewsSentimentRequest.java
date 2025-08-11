@@ -6,7 +6,7 @@ import lombok.Data;
 public class NewsSentimentRequest {
     private Long articleId;
     private String title;
-    private String publishedDate;
+    private String publishDate;
     private String source;
     private String url;
     private double positiveScore;
@@ -17,7 +17,7 @@ public class NewsSentimentRequest {
     private String lastUpdated;
     public NewsSentimentRequest(Long articleId,
                                 String title,
-                                String publishedDate,
+                                String publishDate,
                                 String source,
                                 String url,
                                 double positiveScore,
@@ -28,7 +28,7 @@ public class NewsSentimentRequest {
                                 String lastUpdated) {
         this.articleId = articleId;
         this.title = title;
-        this.publishedDate = publishedDate;
+        this.publishDate = publishDate;
         this.source = source;
         this.url = url;
         this.positiveScore = positiveScore;
