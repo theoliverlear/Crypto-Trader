@@ -1,6 +1,6 @@
 import json
 import time
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone, timedelta, date
 import os
 from typing import Any
 
@@ -21,8 +21,14 @@ QUERIES = [
 ]
 SOURCES = ','.join(NEWS_SOURCES_LINKS)
 SLEEP_DURATION = 0.6
-PAGE_SIZE = 50
+PAGE_SIZE = 100
 
+def get_time_bounds(start_date: date, end_date: date) -> tuple[str, str, str]:
+    day_label: str = start_date.isoformat()
+    end_day_label: str = end_date.isoformat()
+    earliest_date: str = f"{day_label} 00:00:00"
+    latest_date: str = f"{end_day_label} 23:59:59"
+    return day_label, earliest_date, latest_date
 
 def day_bounds_strings(day_offset: int) -> tuple[str, str, str]:
     now_utc: datetime = datetime.now(timezone.utc)
@@ -34,11 +40,15 @@ def day_bounds_strings(day_offset: int) -> tuple[str, str, str]:
 
 def get_points_remaining(headers: Any) -> float:
     headers_dict: dict = dict(headers)
-    return float(headers_dict.get("X-API-Quota-Left", 0))
+    print(headers_dict)
+    return float(headers_dict.get("X-API-Quota-Left"))
     
+    
+def get_points_used(headers: Any) -> float:
+    headers_dict: dict = dict(headers)
+    return float(headers_dict.get("X-API-Quota-Request"))
 
 def fetch_articles(earliest_date: str, latest_date: str, num_articles: int = 50):
-    last_points: float = 0.0
     total_points_used: float = 0.0
     collected: dict[str, dict] = {}
     for query in QUERIES:
@@ -58,13 +68,14 @@ def fetch_articles(earliest_date: str, latest_date: str, num_articles: int = 50)
                 offset=offset,
             )
             remaining_points: float = get_points_remaining(api_response.headers)
-            if last_points != 0:
-                points_used: float = last_points - remaining_points
-                last_points = remaining_points
-                total_points_used += points_used
-                print(f"Points used: {points_used:.4f}")
-            else:
-                last_points = remaining_points
+            points_used: float = get_points_used(api_response.headers)
+            total_points_used += points_used
+            print(f"""
+            Used: {points_used:.4f} points
+            Remaining: {remaining_points:.4f} points
+            """)
+            if remaining_points < 50:
+                return list(collected)
             data: dict = api_response.data.to_dict()
             news_items: list = data.get("news", []) or []
             if not news_items:
@@ -101,32 +112,38 @@ def fetch_articles(earliest_date: str, latest_date: str, num_articles: int = 50)
             break
         rate_limit_sleep()
     
-    points_per_article: float = total_points_used / len(collected)
     print(f"""Used {total_points_used:.4f} points
-    Total articles: {len(collected)}
-    Points per article: {points_per_article:.4f}
-    Points remaining: {last_points:.4f}""")
+    Total articles: {len(collected)}""")
     return list(collected.values())
 
-# TODO: Use ID system for article fetching. Then once parsed, delete by file
-#       matching the ID.
 def load_to_json(days_articles: list) -> None:
     timestamp = datetime.now(timezone.utc).strftime("%Y_%m_%d__%H_%M_%S")
-    out_path = f"temp_data_{timestamp}.json"
+    out_path = f"data/temp/temp_data_{timestamp}.json"
     with open(out_path, "w", encoding="utf-8") as file:
         json.dump(days_articles, file, ensure_ascii=False, indent=2)
-    print(f"\nSaved {sum(len(day['articles']) for day in all_days)} articles across {len(all_days)} days → {out_path}")
+    print(f"\nSaved {sum(len(day['articles']) for day in days_articles)} articles across {len(days_articles)} days → {out_path}")
 
 def rate_limit_sleep():
     time.sleep(SLEEP_DURATION)
 
+def get_by_target(num_articles: int, start_date: date, end_date: date) -> list[dict]:
+    day_label, earliest_str, latest_str = get_time_bounds(start_date, end_date)
+    print(f"\n=== Collecting for {day_label} (UTC {earliest_str}..{latest_str}) ===")
+    items = fetch_articles(earliest_str, latest_str, num_articles=num_articles)
+    print(f"Collected {len(items)} articles for {day_label}")
+    all_days: list[dict] = [{
+        "day": day_label,
+        "earliest_publish_date": earliest_str,
+        "latest_publish_date": latest_str,
+        "articles": items,
+    }]
+    return all_days
 
 def get_by_day(num_days: int, days_offset: int, num_articles: int) -> list[dict]:
     all_days = []
     for day_offset in range(num_days):
         day_label, earliest_str, latest_str = day_bounds_strings(day_offset + days_offset)
-        print(
-            f"\n=== Collecting for {day_label} (UTC {earliest_str}..{latest_str}) ===")
+        print(f"\n=== Collecting for {day_label} (UTC {earliest_str}..{latest_str}) ===")
         items = fetch_articles(earliest_str, latest_str, num_articles=num_articles)
         print(f"Collected {len(items)} articles for {day_label}")
         all_days.append({
@@ -140,5 +157,5 @@ def get_by_day(num_days: int, days_offset: int, num_articles: int) -> list[dict]
 # TODO: Make this OOP. Function chaining doesn't do enough to define a type
 #       flow.
 if __name__ == "__main__":
-    all_days = get_by_day(2, 350, 5)
-    load_to_json(all_days)
+    articles = get_by_day(2, 350, 5)
+    load_to_json(articles)
