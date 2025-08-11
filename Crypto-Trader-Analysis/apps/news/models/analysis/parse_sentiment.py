@@ -5,7 +5,6 @@ from pathlib import Path
 from apps.news.models.article.article import Article
 from apps.news.models.article.scored_article import ScoredArticle
 
-# TODO: Add delete function once used.
 
 def find_latest_data_file(base_dir: Path) -> Path | None:
     candidates: list[Path] = list(base_dir.glob("temp_data_*.json"))
@@ -14,12 +13,10 @@ def find_latest_data_file(base_dir: Path) -> Path | None:
     return max(candidates, key=lambda latest_file: latest_file.stat().st_mtime)
 
 def load_articles() -> list[dict]:
-    news_dir: Path = Path(__file__).resolve().parents[1]  # apps/news
+    news_dir = get_storage_directory()
     latest_file: Path | None = find_latest_data_file(news_dir)
-
     if latest_file is None:
         raise FileNotFoundError(f"No temp_data_*.json files found in {news_dir}")
-
     try:
         with latest_file.open("r", encoding="utf-8") as file:
             json_data: object = json.load(file)
@@ -35,7 +32,24 @@ def load_articles() -> list[dict]:
             all_articles.extend(day_entry["articles"])
     return all_articles
 
-def capture_latest_sentiment():
+
+def get_storage_directory() -> Path:
+    storage_dir: str = "data\\temp"
+    news_dir: Path = Path(__file__).resolve().parents[4] / storage_dir
+    print(str(news_dir))
+    return news_dir
+
+
+def delete_file(file_path: Path) -> None:
+    file_path.unlink(missing_ok=True)
+    print(
+        f"Deleted {file_path.name} (at {file_path.parent.name} folder)"
+    )
+
+def capture_latest_sentiment() -> None:
+    if get_num_files_in_dir(get_storage_directory()) < 1:
+        print("No articles to score")
+        return
     articles: list[dict] = load_articles()
     print(f"Loaded {len(articles)} articles")
     scored_articles: list[ScoredArticle] = []
@@ -56,10 +70,22 @@ def capture_latest_sentiment():
             text=text
         )
         scored_article: ScoredArticle = news_article.as_scored_article()
-        scored_article.score_article()
-        scored_articles.append(scored_article)
+        is_unique_article: bool = True
+        if len(articles) > 1:
+            for found_article in scored_articles:
+                if scored_article.title == found_article.title:
+                    is_unique_article = False
+                    break
+        if is_unique_article:
+            scored_articles.append(scored_article)
+            scored_article.score_article(False)
     for scored_article in scored_articles:
         print(scored_article)
+        scored_article.send_to_server()
+    delete_file(get_storage_directory() / find_latest_data_file(get_storage_directory()))
+
+def get_num_files_in_dir(dir_path: Path) -> int:
+    return len(list(dir_path.glob("temp_data_*.json")))
 
 if __name__ == "__main__":
     capture_latest_sentiment()
