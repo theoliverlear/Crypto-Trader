@@ -4,6 +4,7 @@ import org.theoliverlear.entity.news.NewsSentiment;
 import org.theoliverlear.entity.news.builder.models.AbstractNewsSentiment;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class NewsSentimentBuilder extends AbstractNewsSentiment {
     private Long articleId;
@@ -46,7 +47,8 @@ public class NewsSentimentBuilder extends AbstractNewsSentiment {
 
     @Override
     public AbstractNewsSentiment publishedDate(String publishedDate) {
-        this.publishedDate = LocalDateTime.parse(publishedDate);
+        this.publishedDate = LocalDateTime.parse(publishedDate,
+                                                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         return this;
     }
 
