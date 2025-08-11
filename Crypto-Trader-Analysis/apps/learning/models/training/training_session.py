@@ -353,7 +353,7 @@ class TrainingSession:
         logging.info("Sending training session to server...")
         try:
             import requests
-            response = requests.post(f"http://localhost:8080/api/training-session/add", json=payload, verify=False)
+            response = requests.post("http://localhost:8080/api/training-session/add", json=payload, verify=False)
             if response.status_code != 200:
                 logging.error(f"Failed to send training session to server. Status code: {response.status_code}")
                 return
