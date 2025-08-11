@@ -12,8 +12,8 @@ import org.theoliverlear.repository.NewsSentimentRepository;
 
 import java.time.LocalDateTime;
 
-@Service
 @Slf4j
+@Service
 public class NewsSentimentService {
     private final NewsSentimentRepository newsSentimentRepository;
     private final NewsSentimentHarvesterClient sentimentHarvesterClient;
@@ -23,13 +23,13 @@ public class NewsSentimentService {
                                 NewsSentimentHarvesterClient sentimentHarvesterClient) {
         this.newsSentimentRepository = newsSentimentRepository;
         this.sentimentHarvesterClient = sentimentHarvesterClient;
-        this.handleOutdatedHarvest();
+//        this.handleOutdatedHarvest();
     }
 
     private void handleOutdatedHarvest() {
         if (this.shouldHarvest()) {
             log.info("Harvest sentiments are out of date. Triggering a new harvest.");
-            this.triggerHarvest();
+            this.triggerHourlySentimentHarvest();
         }
     }
 
@@ -38,7 +38,7 @@ public class NewsSentimentService {
         NewsSentiment newsSentiment = NewsSentiment.builder()
                                                    .articleId(request.getArticleId())
                                                    .title(request.getTitle())
-                                                   .publishedDate(request.getPublishedDate())
+                                                   .publishedDate(request.getPublishDate())
                                                    .source(request.getSource())
                                                    .url(request.getUrl())
                                                    .positiveScore(request.getPositiveScore())
@@ -47,18 +47,25 @@ public class NewsSentimentService {
                                                    .compositeScore(request.getCompositeScore())
                                                    .cryptoRelevance(request.getCryptoRelevance())
                                                    .build();
-        this.newsSentimentRepository.save(newsSentiment);
+        log.info("{}", newsSentiment);
+        if (!this.newsSentimentRepository.existsByArticleId(newsSentiment.getArticleId())) {
+            this.newsSentimentRepository.save(newsSentiment);
+        }
     }
     
     public boolean shouldHarvest() {
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime lastHarvest = this.newsSentimentRepository.getLastInserted().getLastUpdated();
+        NewsSentiment lastInserted = this.newsSentimentRepository.getLastInserted();
+        if (lastInserted == null) {
+            return true;
+        }
+        LocalDateTime lastHarvest = lastInserted.getLastUpdated();
         return now.isAfter(lastHarvest.plusHours(1));
     }
     
-    @Async
-    @Scheduled(fixedRate = 3600000)
-    public void triggerHarvest() {
+//    @Async
+//    @Scheduled(fixedRate = 3600000)
+    public void triggerHourlySentimentHarvest() {
         log.info("Triggering hourly news sentiment harvest...");
         this.sentimentHarvesterClient.triggerHarvest();
     }
