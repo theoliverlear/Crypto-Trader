@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {TagType} from "../../../models/html/TagType";
+import {transparentLogo} from "../../../assets/imageAssets";
 
 @Component({
   selector: 'home',
@@ -9,4 +10,5 @@ import {TagType} from "../../../models/html/TagType";
 export class HomeComponent {
 
     protected readonly TagType = TagType;
+    protected readonly transparentLogo = transparentLogo;
 }
