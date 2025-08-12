@@ -7,12 +7,13 @@ nav-bar-profile-picture {
     box-sizing: border-box;
     top: $quarter-percent;
     right: $one-percent;
-    @include square-size(calc($three-half-percent * .95));
+    @include square-size(calc($three-half-percent * 1.15));
     padding: simple-calc(0.15, 0.05);
     border-radius: simple-calc(1, 1);
     transition: box-shadow, transform, 0.3s;
     profile-picture {
-        @include square-size(calc($three-half-percent * .95));
+        @include square-size(100%);
+        //@include square-size(calc($three-half-percent * .95));
     }
     &:hover {
         $hover-box-shadow-size: simplest-calc(0.15);
