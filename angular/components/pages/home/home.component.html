@@ -1,5 +1,11 @@
 <!-- home.component.html -->
 <ng-container>
-    <ss-title [text]="'Crypto Trader'" [tagType]="TagType.H1"/>
-    <subtitle [text]="'100% of the profit is 100% yours.'" [tagType]="TagType.H4"/>
+    <content-stripe class="intro-stripe">
+        <div class="title-text-div">
+            <ss-title [text]="'Crypto Trader'" [tagType]="TagType.H1"/>
+<!--            <subtitle [text]="'100% of the profit is 100% yours.'" [tagType]="TagType.H4"/>-->
+            <subtitle [text]="'Right trades, at the right time, every time.'" [tagType]="TagType.H5"/>
+        </div>
+        <ss-img [imageAsset]="transparentLogo"/>
+    </content-stripe>
 </ng-container>
