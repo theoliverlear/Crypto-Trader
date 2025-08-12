@@ -2,8 +2,10 @@
 @use "../../../../styles/globals" as *;
 
 ss-anchor {
+    @include flex(center, center, row);
     //@extend %fill-container;
     a {
+        text-align: center;
         @extend %fill-container;
     }
 }
