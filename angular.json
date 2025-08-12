@@ -42,6 +42,7 @@
               "angular/components/elements/element-group-native/ss-footer/ss-footer.component.css",
               "angular/components/elements/element-group-native/ss-img/ss-img.component.css",
               "angular/components/elements/element-group-native/ss-input/ss-input.component.css",
+              "angular/components/elements/element-group-native/ss-paragraph/ss-paragraph.component.css",
               "angular/components/elements/element-group-native/ss-title/ss-title.component.css",
               "angular/components/elements/element-group-nav/nav-bar-item/nav-bar-item.component.css",
               "angular/components/elements/element-group-nav/nav-bar-profile-picture/nav-bar-profile-picture.component.css",
