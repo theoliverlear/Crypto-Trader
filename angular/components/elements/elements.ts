@@ -71,6 +71,9 @@ import {
 import {
     SubtitleComponent
 } from "./element-group-text/subtitle/subtitle.component";
+import {
+    SsParagraphComponent
+} from "./element-group-native/ss-paragraph/ss-paragraph.component";
 
 export const elements = [
     AuthConsoleComponent,
@@ -101,6 +104,7 @@ export const elements = [
     SsHeadComponent,
     SsImgComponent,
     SsInputComponent,
+    SsParagraphComponent,
     SsTitleComponent,
     SubtitleComponent,
     TraderEventBubbleComponent,
