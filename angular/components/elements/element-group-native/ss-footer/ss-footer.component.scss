@@ -6,7 +6,8 @@ ss-footer {
     margin-top: auto;
     //background-color: $midnight-navy;
     //background-color: transparent;
-    background-image: linear-gradient(to bottom, $charcoal 10%, $midnight-navy 90%);
+    //background-image: linear-gradient(to bottom, $charcoal 10%, $midnight-navy 90%);
+    background-image: linear-gradient(to bottom, $muted-blue 60%, $midnight-navy);
     padding: $quarter-percent $zero;
     box-sizing: border-box;
     footer {
