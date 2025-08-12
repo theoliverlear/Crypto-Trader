@@ -3,6 +3,8 @@
 
 content-stripe {
     width: 100%;
-    margin: 0;
     @include flex(center, center, row);
+    //background-image: linear-gradient(to right, $light-charcoal, $muted-blue);
+    background-image: linear-gradient(to right, add-alpha($muted-blue, 0.8), $muted-blue);
+    margin: $half-percent 0;
 }
