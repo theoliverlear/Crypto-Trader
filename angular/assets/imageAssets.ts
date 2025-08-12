@@ -7,7 +7,7 @@ export function getImagePath(fileName: string): string {
     return imageAssetPath + fileName;
 }
 export function getCryptoTraderLogo(fileName: string): string {
-    return logoImageAssetPath + fileName;
+    return cryptoTraderLogoImageAssetPath + fileName;
 }
 export function getIconImagePath(fileName: string): string {
     return iconImageAssetPath + fileName;
@@ -23,7 +23,7 @@ export function getCurrencyLogoPath(fileName: string): string {
 }
 
 const imageAssetPath: string = 'assets/images/';
-const logoImageAssetPath: string = imageAssetPath + 'logo/';
+const logoImageAssetPath: string = imageAssetPath + 'logos/';
 const cryptoTraderLogoImageAssetPath: string = logoImageAssetPath + 'crypto_trader/';
 const brandLogoImageAssetPath: string = logoImageAssetPath + 'brand/';
 const currencyLogoImageAssetPath: string = logoImageAssetPath + 'currency/';
@@ -33,3 +33,8 @@ export const defaultAvatar: ImageAsset = {
     src: getIconImagePath('default_avatar.png'),
     alt: 'Default Avatar'
 };
+
+export const transparentLogo: ImageAsset = {
+    src: getCryptoTraderLogo('crypto_trader_logo_cropped_transparent.png'),
+    alt: 'Transparent Logo'
+}
