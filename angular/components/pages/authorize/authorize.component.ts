@@ -4,7 +4,7 @@ import {AuthPopup} from "../../../models/auth/AuthPopup";
 @Component({
     selector: 'authorize',
     templateUrl: './authorize.component.html',
-    styleUrls: ['./authorize.component.css']
+    styleUrls: ['./authorize.component.scss']
 })
 export class AuthorizeComponent {
     constructor() {

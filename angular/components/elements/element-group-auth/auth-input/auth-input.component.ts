@@ -6,7 +6,7 @@ import {InputType} from "../../element-group-native/ss-input/models/InputType";
 @Component({
     selector: 'auth-input',
     templateUrl: './auth-input.component.html',
-    styleUrls: ['./auth-input.component.css']
+    styleUrls: ['./auth-input.component.scss']
 })
 export class AuthInputComponent implements OnInit {
     @Input() authInputType: AuthInputType;

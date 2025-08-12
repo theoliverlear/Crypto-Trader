@@ -4,7 +4,7 @@ import {ChartType} from "./models/ChartType";
 @Component({
     selector: 'live-chart',
     templateUrl: './live-chart.component.html',
-    styleUrls: ['./live-chart.component.css']
+    styleUrls: ['./live-chart.component.scss']
 })
 export class LiveChartComponent implements OnInit {
     chart: any;
@@ -14,6 +14,5 @@ export class LiveChartComponent implements OnInit {
     }
     ngOnInit() {
         const canvas = this.element.nativeElement.querySelector('canvas').getContext('2d');
-
     }
 }

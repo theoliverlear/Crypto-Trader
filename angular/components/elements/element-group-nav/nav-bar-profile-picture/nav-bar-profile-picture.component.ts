@@ -4,11 +4,11 @@ import {navBarAccountLink} from "../../../../assets/elementLinkAssets";
 @Component({
     selector: 'nav-bar-profile-picture',
     templateUrl: './nav-bar-profile-picture.component.html',
-    styleUrls: ['./nav-bar-profile-picture.component.css']
+    styleUrls: ['./nav-bar-profile-picture.component.scss']
 })
 export class NavBarProfilePictureComponent {
     constructor() {
-        console.log('NavBarProfilePictureComponent loaded');
+        
     }
 
     protected readonly navBarAccountLink = navBarAccountLink;

@@ -13,7 +13,7 @@ import {ButtonPosition} from "./models/ButtonPosition";
 @Component({
     selector: 'ss-button',
     templateUrl: './ss-button.component.html',
-    styleUrls: ['./ss-button.component.css']
+    styleUrls: ['./ss-button.component.scss']
 })
 export class SsButtonComponent implements OnInit{
     @Input() text: ButtonText;

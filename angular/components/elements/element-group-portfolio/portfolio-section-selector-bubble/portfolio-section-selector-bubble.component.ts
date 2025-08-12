@@ -4,7 +4,7 @@ import { Component } from "@angular/core";
 @Component({
     selector: 'portfolio-section-selector-bubble',
     templateUrl: './portfolio-section-selector-bubble.component.html',
-    styleUrls: ['./portfolio-section-selector-bubble.component.css']
+    styleUrls: ['./portfolio-section-selector-bubble.component.scss']
 })
 export class PortfolioSectionSelectorBubbleComponent {
     constructor() {

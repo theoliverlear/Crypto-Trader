@@ -8,7 +8,7 @@ import {LoginCredentials} from "../../../../models/auth/LoginCredentials";
 @Component({
     selector: 'auth-console-login-section',
     templateUrl: './auth-console-login-section.component.html',
-    styleUrls: ['./auth-console-login-section.component.css']
+    styleUrls: ['./auth-console-login-section.component.scss']
 })
 export class AuthConsoleLoginSectionComponent {
     loginCredentials: LoginCredentials = new LoginCredentials();

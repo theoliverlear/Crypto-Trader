@@ -5,7 +5,7 @@ import {transparentLogo} from "../../../assets/imageAssets";
 @Component({
   selector: 'home',
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.scss'
 })
 export class HomeComponent {
 

@@ -4,7 +4,7 @@ import { Component } from "@angular/core";
 @Component({
     selector: 'currency-wallet',
     templateUrl: './currency-wallet.component.html',
-    styleUrls: ['./currency-wallet.component.css']
+    styleUrls: ['./currency-wallet.component.scss']
 })
 export class CurrencyWalletComponent {
     constructor() {

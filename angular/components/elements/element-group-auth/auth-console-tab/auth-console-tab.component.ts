@@ -11,7 +11,7 @@ import {AuthType} from "../../../../models/auth/AuthType";
 @Component({
     selector: 'auth-console-tab',
     templateUrl: './auth-console-tab.component.html',
-    styleUrls: ['./auth-console-tab.component.css']
+    styleUrls: ['./auth-console-tab.component.scss']
 })
 export class AuthConsoleTabComponent {
     @Input() authType: AuthType;

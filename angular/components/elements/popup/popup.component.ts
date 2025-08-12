@@ -5,7 +5,7 @@ import {AuthPopup} from "../../../models/auth/AuthPopup";
 @Component({
     selector: 'popup',
     templateUrl: './popup.component.html',
-    styleUrls: ['./popup.component.css']
+    styleUrls: ['./popup.component.scss']
 })
 export class PopupComponent {
     @Input() popupMessage: AuthPopup | null = null;

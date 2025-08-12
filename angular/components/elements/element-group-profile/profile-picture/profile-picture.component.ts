@@ -14,7 +14,7 @@ import {
 @Component({
     selector: 'profile-picture',
     templateUrl: './profile-picture.component.html',
-    styleUrls: ['./profile-picture.component.css']
+    styleUrls: ['./profile-picture.component.scss']
 })
 export class ProfilePictureComponent implements AfterViewInit {
     @Input() userId: number = 0;
@@ -23,7 +23,7 @@ export class ProfilePictureComponent implements AfterViewInit {
     @ViewChild('profilePictureImage') profilePictureImage: SsImgComponent;
     constructor(private profilePictureService: ProfilePictureService,
                 private changeDetection: ChangeDetectorRef) {
-        console.log('ProfilePictureComponent created');
+        
     }
     ngAfterViewInit() {
         if (this.userId !== 0) {

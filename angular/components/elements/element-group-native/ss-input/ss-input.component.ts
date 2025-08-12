@@ -11,7 +11,7 @@ import {InputType} from "./models/InputType";
 @Component({
     selector: 'ss-input',
     templateUrl: './ss-input.component.html',
-    styleUrls: ['./ss-input.component.css']
+    styleUrls: ['./ss-input.component.scss']
 })
 export class SsInputComponent {
     @Input() inputType: InputType;
