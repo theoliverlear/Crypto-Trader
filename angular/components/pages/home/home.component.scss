@@ -2,5 +2,26 @@
 @use "../../../styles/globals" as *;
 
 home {
+    .intro-stripe {
+        @include flex(space-around, center, row);
+        .title-text-div {
+            @include flex(center, center, column);
+            width: 50%;
+            padding: $one-percent 0;
 
+            ss-title {
+                //align-self: flex-start;
+                //margin-right: $fifteen-percent;
+            }
+
+            subtitle {
+                //align-self: flex-end;
+                //margin-left: $fifteen-percent;
+                color: $alabaster-stone;
+            }
+        }
+        ss-img {
+            @include square-size($eight-percent);
+        }
+    }
 }
