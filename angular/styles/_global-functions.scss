@@ -16,3 +16,7 @@
 @function simple-pixel-calc($width-height, $px) {
     @return calc(((#{$width-height}vw + #{$width-height}vh) / 2) + #{$px}px);
 }
+
+@function add-alpha($color, $alpha) {
+    @return rgba($color, $alpha);
+}
