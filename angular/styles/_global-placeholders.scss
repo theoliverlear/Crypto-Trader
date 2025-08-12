@@ -24,3 +24,7 @@
 %fill-container {
     @include square-size(100%);
 }
+
+%soft-text-shadow {
+    text-shadow: add-alpha($absolute-black, 0.3) 0 0 $half-percent;
+}
