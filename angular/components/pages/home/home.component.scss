@@ -2,6 +2,9 @@
 @use "../../../styles/globals" as *;
 
 home {
+    ss-paragraph {
+        width: 80%;
+    }
     .intro-stripe {
         @include flex(space-around, center, row);
         .title-text-div {
@@ -12,6 +15,7 @@ home {
             ss-title {
                 //align-self: flex-start;
                 //margin-right: $fifteen-percent;
+                @extend %soft-text-shadow;
             }
 
             subtitle {
