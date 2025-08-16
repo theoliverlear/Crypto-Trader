@@ -1,3 +1,5 @@
+import logging
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -11,19 +13,19 @@ class SentimentHarvestView(APIView):
             num_articles: int = payload.get("numArticles")
             days_offset: int = payload.get("daysOffset")
             num_days: int = payload.get("numDays")
-            print(payload)
+            include_forbes = payload.get("includeForbes")
             articles = get_by_day(
                 num_articles=num_articles,
                 days_offset=days_offset,
-                num_days=num_days
+                num_days=num_days,
+                include_forbes=include_forbes,
             )
             load_to_json(articles)
             capture_latest_sentiment()
             return Response(status=200)
-        except Exception as e:
-            print(f"Error: {e}")
+        except Exception as exception:
             import traceback
-            stack_trace = traceback.format_exc()
-            print(stack_trace)
-            return Response(status=500, data={"error": str(e)})
+            stack_trace: str = traceback.format_exc()
+            logging.error(stack_trace)
+            return Response(status=500, data={"error": str(exception)})
         
