@@ -20,9 +20,6 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "currencyCode")
 @AllArgsConstructor
 public class Currency {
-    // TODO: Make a change calculator, static or nay, that takes two
-    //       currencies, or passes one with this keyword, and returns the
-    //       difference price and percentage change.
     //============================-Variables-=================================
     @Column(name = "currency_name")
     private String name;
@@ -106,6 +103,12 @@ public class Currency {
     //---------------------------Get-Api-Value--------------------------------
     public double getApiValue() {
         String currencyApiJson = this.getCurrencyApiJson();
+        boolean isEmpty = currencyApiJson == null || currencyApiJson.isEmpty();
+        boolean isNoDataString = currencyApiJson.equals(ApiDataRetriever.NO_DATA_ERROR_MESSAGE);
+        if (isNoDataString || isEmpty) {
+            String errorMessage = "No data received from API for %s. Aborting Currency construction.".formatted(this.currencyCode);
+            throw new IllegalStateException(errorMessage);
+        }
         return this.getValueFromJson(currencyApiJson);
     }
     //----------------------------Format-Value--------------------------------
