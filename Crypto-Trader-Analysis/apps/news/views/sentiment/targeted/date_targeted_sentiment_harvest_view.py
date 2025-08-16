@@ -1,3 +1,4 @@
+import logging
 from datetime import date
 
 from rest_framework.views import APIView
@@ -13,18 +14,18 @@ class DateTargetedSentimentHarvestView(APIView):
             num_articles: int = payload.get("numArticles")
             start_date: date = date.fromisoformat(payload.get("startDate"))
             end_date: date = date.fromisoformat(payload.get("endDate"))
-            print(payload)
+            include_forbes = payload.get("includeForbes")
             articles = get_by_target(num_articles=num_articles,
                                      start_date=start_date,
-                                     end_date=end_date)
+                                     end_date=end_date,
+                                     include_forbes=include_forbes)
             load_to_json(articles)
             capture_latest_sentiment()
             return Response(status=200)
-        except Exception as e:
-            print(f"Error: {e}")
+        except Exception as exception:
             import traceback
-            stack_trace = traceback.format_exc()
-            print(stack_trace)
-            return Response(status=500, data={"error": str(e)})
+            stack_trace: str = traceback.format_exc()
+            logging.error(stack_trace)
+            return Response(status=500, data={"error": str(exception)})
 
             
