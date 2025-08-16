@@ -7,7 +7,8 @@ from typing import Any
 import worldnewsapi
 from worldnewsapi import SearchNews200Response, ApiResponse
 
-from apps.news.models.sources.news_sources import NEWS_SOURCES_LINKS, get_by_link
+from apps.news.models.sources.news_sources import ALL_NEWS_SOURCES_LINKS, \
+    get_by_link, FILTERED_NEWS_SOURCES_LINKS
 
 api_key: str = os.getenv("WORLDNEWS_API_KEY")
 api_config = worldnewsapi.Configuration(api_key={'apiKey': api_key})
@@ -19,7 +20,8 @@ QUERIES = [
     # "(ethereum OR eth OR blockchain OR web3 OR defi OR stablecoin)",
     # "(xrp OR solana OR cardano OR bnb OR dogecoin OR litecoin or crypto mining)"
 ]
-SOURCES = ','.join(NEWS_SOURCES_LINKS)
+SOURCES = ','.join(ALL_NEWS_SOURCES_LINKS)
+FILTERED_SOURCES = ','.join(FILTERED_NEWS_SOURCES_LINKS)
 SLEEP_DURATION = 0.6
 PAGE_SIZE = 100
 
@@ -48,7 +50,10 @@ def get_points_used(headers: Any) -> float:
     headers_dict: dict = dict(headers)
     return float(headers_dict.get("X-API-Quota-Request"))
 
-def fetch_articles(earliest_date: str, latest_date: str, num_articles: int = 50):
+def fetch_articles(earliest_date: str,
+                   latest_date: str,
+                   num_articles: int = 50,
+                   include_forbes: bool = True):
     total_points_used: float = 0.0
     collected: dict[str, dict] = {}
     for query in QUERIES:
@@ -57,7 +62,7 @@ def fetch_articles(earliest_date: str, latest_date: str, num_articles: int = 50)
             api_response: ApiResponse[SearchNews200Response] = api_instance.search_news_with_http_info(
                 language="en",
                 source_country="us",
-                news_sources=SOURCES,
+                news_sources=SOURCES if include_forbes else FILTERED_SOURCES,
                 number=PAGE_SIZE,
                 categories="business,technology,politics,science",
                 sort="publish-time",
@@ -93,10 +98,10 @@ def fetch_articles(earliest_date: str, latest_date: str, num_articles: int = 50)
                     "url": url,
                     "publish_date": news_item.get("publish_date"),
                     "author": author,
-                    "summary": news_item.get("summary"),
-                    "language": news_item.get("language"),
-                    "source_country": news_item.get("source_country"),
-                    "sentiment_api": news_item.get("sentiment"),
+                    # "summary": news_item.get("summary"),
+                    # "language": news_item.get("language"),
+                    # "source_country": news_item.get("source_country"),
+                    # "sentiment_api": news_item.get("sentiment"),
                     "text": news_item.get("text"),
                     "keywords": query,
                     "source": get_by_link(url).name if get_by_link(url) else "Unknown",
@@ -126,10 +131,10 @@ def load_to_json(days_articles: list) -> None:
 def rate_limit_sleep():
     time.sleep(SLEEP_DURATION)
 
-def get_by_target(num_articles: int, start_date: date, end_date: date) -> list[dict]:
+def get_by_target(num_articles: int, start_date: date, end_date: date, include_forbes: bool = True) -> list[dict]:
     day_label, earliest_str, latest_str = get_time_bounds(start_date, end_date)
     print(f"\n=== Collecting for {day_label} (UTC {earliest_str}..{latest_str}) ===")
-    items = fetch_articles(earliest_str, latest_str, num_articles=num_articles)
+    items = fetch_articles(earliest_str, latest_str, num_articles=num_articles, include_forbes=include_forbes)
     print(f"Collected {len(items)} articles for {day_label}")
     all_days: list[dict] = [{
         "day": day_label,
@@ -139,12 +144,12 @@ def get_by_target(num_articles: int, start_date: date, end_date: date) -> list[d
     }]
     return all_days
 
-def get_by_day(num_days: int, days_offset: int, num_articles: int) -> list[dict]:
+def get_by_day(num_days: int, days_offset: int, num_articles: int, include_forbes: bool = True) -> list[dict]:
     all_days = []
     for day_offset in range(num_days):
         day_label, earliest_str, latest_str = day_bounds_strings(day_offset + days_offset)
         print(f"\n=== Collecting for {day_label} (UTC {earliest_str}..{latest_str}) ===")
-        items = fetch_articles(earliest_str, latest_str, num_articles=num_articles)
+        items = fetch_articles(earliest_str, latest_str, num_articles=num_articles, include_forbes=include_forbes)
         print(f"Collected {len(items)} articles for {day_label}")
         all_days.append({
             "day": day_label,
