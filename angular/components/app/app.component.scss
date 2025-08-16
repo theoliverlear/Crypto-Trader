@@ -66,6 +66,7 @@ body {
         portfolio,
         terms-of-service,
         trader  {
+            @include flex(flex-start, center, column);
             width: 100%;
             box-sizing: border-box;
             flex: 1;
