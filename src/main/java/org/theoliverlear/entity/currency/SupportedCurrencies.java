@@ -41,7 +41,12 @@ public class SupportedCurrencies {
         for (Map<String, String> entry : currencyData) {
             String name = entry.get("name");
             String code = entry.get("code");
-            Currency currency = new Currency(name, code);
+            Currency currency;
+            try {
+                currency = new Currency(name, code);
+            } catch (IllegalStateException exception) {
+                continue;
+            }
             if (name.equals("Bitcoin")) {
                 SUPPORTED_CURRENCIES.add(BITCOIN);
                 CURRENCY_MAP.put(code, BITCOIN);
