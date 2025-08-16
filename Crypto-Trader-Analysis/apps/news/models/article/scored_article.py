@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 
 from attr import attr
@@ -41,9 +42,8 @@ class ScoredArticle(Article):
         try:
             import requests
             response = requests.post('http://localhost:8080/api/news-sentiment/add', json=payload, verify=False)
-            print(response.text)
             if response.status_code == 200:
-                print("Article sent successfully.")
+                logging.info("Article sent successfully.")
             else:
                 print(f"Error sending article: CODE - {response.status_code}")
         except Exception as e:
