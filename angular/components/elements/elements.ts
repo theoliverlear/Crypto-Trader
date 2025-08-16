@@ -74,6 +74,12 @@ import {
 import {
     SsParagraphComponent
 } from "./element-group-native/ss-paragraph/ss-paragraph.component";
+import {
+    TierPromoComponent
+} from "./element-group-promo/tier-promo/tier-promo.component";
+import {
+    TierPromoStripeComponent
+} from "./element-group-promo/tier-promo-stripe/tier-promo-stripe.component";
 
 export const elements = [
     AuthConsoleComponent,
@@ -107,5 +113,7 @@ export const elements = [
     SsParagraphComponent,
     SsTitleComponent,
     SubtitleComponent,
+    TierPromoComponent,
+    TierPromoStripeComponent,
     TraderEventBubbleComponent,
 ]
