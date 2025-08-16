@@ -56,6 +56,8 @@
               "angular/components/elements/element-group-portfolio/portfolio-section-selector/portfolio-section-selector.component.css",
               "angular/components/elements/element-group-portfolio/portfolio-section/portfolio-section.component.css",
               "angular/components/elements/element-group-profile/profile-picture/profile-picture.component.css",
+              "angular/components/elements/element-group-promo/tier-promo-stripe/tier-promo-stripe.component.css",
+              "angular/components/elements/element-group-promo/tier-promo/tier-promo.component.css",
               "angular/components/elements/element-group-text/subtitle/subtitle.component.css",
               "angular/components/elements/element-group-trader/trader-event-bubble/trader-event-bubble.component.css",
               "angular/components/elements/popup/popup.component.css",
