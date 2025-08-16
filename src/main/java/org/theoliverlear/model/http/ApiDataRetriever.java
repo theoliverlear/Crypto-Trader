@@ -20,7 +20,7 @@ public class ApiDataRetriever {
     private String url;
     private String response;
     //============================-Constants-=================================
-    static final String NO_DATA_ERROR_MESSAGE = "Error: No data received " +
+    public static final String NO_DATA_ERROR_MESSAGE = "Error: No data received " +
                                                 "from API";
     //===========================-Constructors-===============================
     public ApiDataRetriever(String url) {
