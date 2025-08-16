@@ -1,5 +1,6 @@
 # sentiment.py
 import json
+import logging
 from pathlib import Path
 
 from apps.news.models.article.article import Article
@@ -20,8 +21,8 @@ def load_articles() -> list[dict]:
     try:
         with latest_file.open("r", encoding="utf-8") as file:
             json_data: object = json.load(file)
-    except json.JSONDecodeError as e:
-        raise ValueError(f"Failed to parse JSON from {latest_file}: {e}") from e
+    except json.JSONDecodeError as exception:
+        raise ValueError(f"Failed to parse JSON from {latest_file}: {exception}") from exception
 
     if not isinstance(json_data, list):
         raise ValueError(f"Unexpected JSON structure in {latest_file}: expected a list, got {type(json_data).__name__}")
@@ -36,22 +37,18 @@ def load_articles() -> list[dict]:
 def get_storage_directory() -> Path:
     storage_dir: str = "data\\temp"
     news_dir: Path = Path(__file__).resolve().parents[4] / storage_dir
-    print(str(news_dir))
     return news_dir
 
 
 def delete_file(file_path: Path) -> None:
     file_path.unlink(missing_ok=True)
-    print(
-        f"Deleted {file_path.name} (at {file_path.parent.name} folder)"
-    )
+    logging.debug(f"Deleted {file_path.name} (at {file_path.parent.name} folder)")
 
 def capture_latest_sentiment() -> None:
     if get_num_files_in_dir(get_storage_directory()) < 1:
-        print("No articles to score")
+        logging.debug("No articles to score")
         return
     articles: list[dict] = load_articles()
-    print(f"Loaded {len(articles)} articles")
     scored_articles: list[ScoredArticle] = []
     for article in articles:
         article_id: int = article["id"]
@@ -60,7 +57,7 @@ def capture_latest_sentiment() -> None:
         source: str = article["source"]
         url: str = article["url"]
         text: str = article["text"]
-        print(f"Article {article_id}: {title} ({source})")
+        logging.debug(f"Article {article_id}: {title} ({source})")
         news_article: Article = Article(
             article_id=article_id,
             title=title,
@@ -88,4 +85,5 @@ def get_num_files_in_dir(dir_path: Path) -> int:
     return len(list(dir_path.glob("temp_data_*.json")))
 
 if __name__ == "__main__":
-    capture_latest_sentiment()
+    for i in range(3):
+        capture_latest_sentiment()
