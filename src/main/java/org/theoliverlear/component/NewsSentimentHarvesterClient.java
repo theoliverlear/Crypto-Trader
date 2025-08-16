@@ -14,13 +14,14 @@ import org.theoliverlear.comm.request.NewsSentimentTargetedHarvestRequest;
 import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDate;
+import java.time.Month;
 
 @Component
 @Slf4j
 public class NewsSentimentHarvesterClient {
     private static final String DAILY_API_URL = "http://localhost:8000/api/news/sentiment/harvest";
     private static final String TARGETED_API_URL = "http://localhost:8000/api/news/sentiment/harvest/targeted/by-date";
-    private static final NewsSentimentHarvestRequest DEFAULT_REQUEST = new NewsSentimentHarvestRequest(100, 0, 1);
+    private static final NewsSentimentHarvestRequest DEFAULT_REQUEST = new NewsSentimentHarvestRequest(100, 0, 1, true);
     private final HttpPost httpPost;
     private final ObjectMapper objectMapper;
     private final CloseableHttpClient httpClient;
@@ -88,7 +89,39 @@ public class NewsSentimentHarvesterClient {
                 today = today.minusMonths(1);
             }
             LocalDate lastMonth = today.minusMonths(1);
-            NewsSentimentTargetedHarvestRequest request = new NewsSentimentTargetedHarvestRequest(100, lastMonth, today);
+            NewsSentimentTargetedHarvestRequest request = new NewsSentimentTargetedHarvestRequest(100, lastMonth, today, true);
+            this.triggerHarvest(request);
+        }
+    }
+    
+    public void harvestMonthlySinceStart() {
+        LocalDate today = LocalDate.now();
+        for (int i = 1; i <= 12; i++) {
+            if (today.getMonth() == Month.FEBRUARY) {
+                break;
+            }
+            if (i != 1) {
+                today = today.minusMonths(1);
+            }
+            LocalDate lastMonth = today.minusMonths(1);
+            NewsSentimentTargetedHarvestRequest request = new NewsSentimentTargetedHarvestRequest(100, lastMonth, today, true);
+            this.triggerHarvest(request);
+        }
+    }
+    
+    public void harvestWeeklySinceStart() {
+        LocalDate today = LocalDate.now();
+        for (int i = 1; i <= 52; i++) {
+            Month month = today.getMonth();
+            int day = today.getDayOfMonth();
+            if ((month == Month.MARCH) && (day >= 15) || month == Month.FEBRUARY) {
+                break;
+            }
+            if (i != 1) {
+                today = today.minusWeeks(1);
+            }
+            LocalDate lastWeek = today.minusWeeks(1);
+            NewsSentimentTargetedHarvestRequest request = new NewsSentimentTargetedHarvestRequest(100, lastWeek, today, false);
             this.triggerHarvest(request);
         }
     }
