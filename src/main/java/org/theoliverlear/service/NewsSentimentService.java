@@ -23,13 +23,12 @@ public class NewsSentimentService {
                                 NewsSentimentHarvesterClient sentimentHarvesterClient) {
         this.newsSentimentRepository = newsSentimentRepository;
         this.sentimentHarvesterClient = sentimentHarvesterClient;
-//        this.handleOutdatedHarvest();
     }
 
     private void handleOutdatedHarvest() {
         if (this.shouldHarvest()) {
             log.info("Harvest sentiments are out of date. Triggering a new harvest.");
-            this.triggerHourlySentimentHarvest();
+            this.triggerDailySentimentHarvest();
         }
     }
 
@@ -63,9 +62,9 @@ public class NewsSentimentService {
         return now.isAfter(lastHarvest.plusHours(1));
     }
     
-//    @Async
-//    @Scheduled(fixedRate = 3600000)
-    public void triggerHourlySentimentHarvest() {
+    @Async
+    @Scheduled(fixedRate = 1860000)
+    public void triggerDailySentimentHarvest() {
         log.info("Triggering hourly news sentiment harvest...");
         this.sentimentHarvesterClient.triggerHarvest();
     }
