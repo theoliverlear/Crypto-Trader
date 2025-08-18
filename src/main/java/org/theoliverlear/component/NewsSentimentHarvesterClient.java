@@ -21,11 +21,13 @@ import java.time.Month;
 public class NewsSentimentHarvesterClient {
     private static final String DAILY_API_URL = "http://localhost:8000/api/news/sentiment/harvest";
     private static final String TARGETED_API_URL = "http://localhost:8000/api/news/sentiment/harvest/targeted/by-date";
-    private static final NewsSentimentHarvestRequest DEFAULT_REQUEST = new NewsSentimentHarvestRequest(100, 0, 1, true);
+    private static final LocalDate START_DATE = LocalDate.of(2025, Month.MARCH, 15);
+    private static final int MAX_ARTICLES = 100;
+    private static final NewsSentimentHarvestRequest DEFAULT_REQUEST = new NewsSentimentHarvestRequest(MAX_ARTICLES, 1, 1, true);
     private final HttpPost httpPost;
     private final ObjectMapper objectMapper;
     private final CloseableHttpClient httpClient;
-    
+
     @Autowired
     public NewsSentimentHarvesterClient(HttpPost httpPost,
                                         ObjectMapper objectMapper,
@@ -82,47 +84,46 @@ public class NewsSentimentHarvesterClient {
         }
     }
     
-    public void targetedHarvestMonthly() {
+    public static NewsSentimentTargetedHarvestRequest getTargetedHarvestRequest(LocalDate startDate,
+                                                                                LocalDate endDate) {
+        return new NewsSentimentTargetedHarvestRequest(100, startDate, endDate, true);
+    }
+
+    public void triggerTargetedHarvest(LocalDate startDate, LocalDate endDate) {
+        NewsSentimentTargetedHarvestRequest request = getTargetedHarvestRequest(startDate, endDate);
+        this.triggerHarvest(request);
+    }
+    
+    public void backFillMonthly() {
         LocalDate today = LocalDate.now();
-        for (int i = 1; i <= 12; i++) {
-            if (i != 1) {
-                today = today.minusMonths(1);
-            }
-            LocalDate lastMonth = today.minusMonths(1);
-            NewsSentimentTargetedHarvestRequest request = new NewsSentimentTargetedHarvestRequest(100, lastMonth, today, true);
-            this.triggerHarvest(request);
+        LocalDate startMonth = today;
+        LocalDate endMonth = today.minusMonths(1);
+        while (endMonth.isAfter(START_DATE)) {
+            this.triggerTargetedHarvest(startMonth, endMonth);
+            startMonth = startMonth.minusMonths(1);
+            endMonth = endMonth.minusMonths(1);
         }
     }
     
-    public void harvestMonthlySinceStart() {
+    public void backFillWeekly() {
         LocalDate today = LocalDate.now();
-        for (int i = 1; i <= 12; i++) {
-            if (today.getMonth() == Month.FEBRUARY) {
-                break;
-            }
-            if (i != 1) {
-                today = today.minusMonths(1);
-            }
-            LocalDate lastMonth = today.minusMonths(1);
-            NewsSentimentTargetedHarvestRequest request = new NewsSentimentTargetedHarvestRequest(100, lastMonth, today, true);
-            this.triggerHarvest(request);
+        LocalDate startWeek = today;
+        LocalDate endWeek = today.minusWeeks(1);
+        while (endWeek.isAfter(START_DATE)) {
+            this.triggerTargetedHarvest(startWeek, endWeek);
+            startWeek = startWeek.minusWeeks(1);
+            endWeek = endWeek.minusWeeks(1);
         }
     }
     
-    public void harvestWeeklySinceStart() {
+    public void backFillDaily() {
         LocalDate today = LocalDate.now();
-        for (int i = 1; i <= 52; i++) {
-            Month month = today.getMonth();
-            int day = today.getDayOfMonth();
-            if ((month == Month.MARCH) && (day >= 15) || month == Month.FEBRUARY) {
-                break;
-            }
-            if (i != 1) {
-                today = today.minusWeeks(1);
-            }
-            LocalDate lastWeek = today.minusWeeks(1);
-            NewsSentimentTargetedHarvestRequest request = new NewsSentimentTargetedHarvestRequest(100, lastWeek, today, false);
-            this.triggerHarvest(request);
+        LocalDate startDay = today;
+        LocalDate endDay = today.minusDays(1);
+        while (endDay.isAfter(START_DATE)) {
+            this.triggerTargetedHarvest(startDay, endDay);
+            startDay = startDay.minusDays(1);
+            endDay = endDay.minusDays(1);
         }
     }
 }
