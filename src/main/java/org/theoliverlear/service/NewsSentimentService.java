@@ -62,10 +62,26 @@ public class NewsSentimentService {
         return now.isAfter(lastHarvest.plusHours(1));
     }
     
-    @Async
-    @Scheduled(fixedRate = 1860000)
+    // TODO: Use event listeners to trigger these methods.
+    
+//    @Async
+//    @Scheduled(fixedRate = 3600000)
     public void triggerDailySentimentHarvest() {
         log.info("Triggering hourly news sentiment harvest...");
         this.sentimentHarvesterClient.triggerHarvest();
+    }
+
+//    @Async
+//    @Scheduled(fixedRate = 2592000000L)
+    public void backFillDailySentimentHarvest() {
+        log.info("Back-filling daily news sentiment harvest...");
+        this.sentimentHarvesterClient.backFillDaily();
+    }
+
+//    @Async
+//    @Scheduled(fixedRate = 604800000L)
+    public void backFillWeeklySentimentHarvest() {
+        log.info("Back-filling weekly news sentiment harvest...");
+        this.sentimentHarvesterClient.backFillWeekly();
     }
 }
