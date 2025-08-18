@@ -23,7 +23,7 @@ from apps.learning.models.database.query_type import QueryType
 from apps.learning.models.ai.model_retriever import get_model, get_lstm_model, \
     get_complex_lstm_model
 from apps.learning.models.training.training_type import TrainingType
-from currency_json_generator import get_all_currency_codes
+from apps.learning.models.currency_json_generator import get_all_currency_codes
 
 
 import tensorflow as tf

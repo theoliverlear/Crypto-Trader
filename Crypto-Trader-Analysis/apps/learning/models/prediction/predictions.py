@@ -15,7 +15,7 @@ from apps.learning.models.training.training_model import TrainingModel
 from apps.learning.models.training.training_type import TrainingType
 
 
-from currency_json_generator import get_all_currency_codes
+from apps.learning.models.currency_json_generator import get_all_currency_codes
 
 
 

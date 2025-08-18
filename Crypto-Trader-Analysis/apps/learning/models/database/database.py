@@ -12,7 +12,7 @@ from sqlalchemy import create_engine, QueuePool, text, Engine, \
     PoolProxiedConnection
 
 from apps.learning.models.database.query_type import QueryType
-from currency_json_generator import get_all_currency_codes
+from apps.learning.models.currency_json_generator import get_all_currency_codes
 
 
 @define

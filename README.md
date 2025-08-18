@@ -1,7 +1,7 @@
 # Crypto Trader
 ## Democratizing high‑frequency trading.
 
-<img src="angular/assets/images/logos/crypto_trader/crypto_trader_logo_cropped_transparent.png" alt="Crypto Trader Logo" width="320">
+<img src="Crypto-Trader-Website/angular/assets/images/logos/crypto_trader/crypto_trader_logo_cropped_transparent.png" alt="Crypto Trader Logo" width="320">
 
 ---
 

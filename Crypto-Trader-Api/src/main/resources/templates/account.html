@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Account | Crypto Trader</title>
+    <link rel="stylesheet" href="../static/style/global-style.css"
+          th:href="@{/style/global-style.css}">
+    <link rel="stylesheet" href="../static/style/account-style.css"
+          th:href="@{/style/account-style.css}">
+    <link rel="icon" href="../static/images/favicon/crypto_trader_logo_cropped.ico"
+          th:href="@{/images/favicon/crypto_trader_logo_cropped.ico}">
+</head>
+<body data-page="account">
+<!----------------------------------Nav-Bar---------------------------------->
+<header>
+    <nav>
+        <div id="nav-div">
+            <!--------------------Nav-To-Home-------------------------------->
+            <div class="nav-item">
+                <a href="/static" class="link-no-style">
+                    <div class="nav-bar-item-container">
+                        <h5>Home</h5>
+                    </div>
+                </a>
+            </div>
+            <!-----------------Nav-To-Portfolio------------------------------>
+            <div class="nav-item">
+                <a href="/portfolio/" class="link-no-style">
+                    <div class="nav-bar-item-container">
+                        <h5>Portfolio</h5>
+                    </div>
+                </a>
+            </div>
+            <!-------------------Nav-To-Trader------------------------------->
+            <div class="nav-item">
+                <a href="/trader/" class="link-no-style">
+                    <div class="nav-bar-item-container">
+                        <h5>Trader</h5>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div>
+            <!------------------Nav-To-Account------------------------------->
+            <div id="account-image-container">
+                <a href="/user/" class="link-no-style">
+                    <img id="default-avatar-image"
+                         src="../static/images/default_avatar.png"
+                         th:src="@{/images/default_avatar.png}" alt="user avatar">
+                </a>
+                <div id="logout-button-div">
+                    <h5 id="logout-button-text">Logout</h5>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+<main>
+    <section id="user-info-section">
+        <div id="image-and-name-container">
+            <div id="user-avatar-div">
+                <img id="user-avatar-img"
+                     src="../static/images/default_avatar.png"
+                     th:src="@{/images/default_avatar.png}" alt="user avatar">
+            </div>
+        </div>
+        <div id="profile-picture-edit-div">
+            <div id="profile-picture-input-div">
+                <label for="profile-picture-input" class="small-button" id="profile-picture-input-label">
+                    Change Picture
+                </label>
+                <input id="profile-picture-input" type="file" accept="image/*">
+            </div>
+            <div id="profile-picture-edit-dashboard">
+
+            </div>
+        </div>
+        <div id="user-info-div">
+            <div id="user-name-div">
+                <h3 id="user-name-text">User Name</h3>
+            </div>
+            <div id="user-email-div">
+                <h5 id="user-email-text">user@emailservice.com</h5>
+            </div>
+        </div>
+    </section>
+    <section id="buttons-section">
+        <div class="small-button" id="account-logout-button">
+            <h5>Logout</h5>
+        </div>
+    </section>
+</main>
+<footer>
+    <section id="footer-content">
+        <div class="footer-item">
+            <h6 class="footer-item-text">&copy; 2024 Sigwarth Software. All rights reserved.</h6>
+        </div>
+        <div class="footer-item">
+            <h6 class="footer-item-text">Terms of Service</h6>
+        </div>
+    </section>
+</footer>
+<script src="../static/script/bundle.js"
+        th:src="@{/script/bundle.js}"></script>
+</body>
+</html>

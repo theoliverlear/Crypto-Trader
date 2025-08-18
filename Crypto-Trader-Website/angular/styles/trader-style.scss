@@ -1,0 +1,28 @@
+@import "angular/styles/global-variables";
+@import "angular/styles/global-mixins";
+@import "angular/styles/global-functions";
+
+#trade-history-title {
+    @include flex(center, center, row);
+    margin: $one-percent $zero;
+}
+#trade-history-section {
+    width: 90%;
+    @include flex(center, center, column);
+    max-height: 70vh;
+    overflow-y: scroll;
+    background-color: $almost-white;
+    #trades-div {
+        width: 90%;
+        padding: $half-percent;
+        @include flex(center, center, column);
+        border-radius: $one-percent;
+        background-color: $soft-grey;
+        hr {
+            width: 90%;
+        }
+        .trade-item {
+            @include flex(center, center, column);
+        }
+    }
+}
