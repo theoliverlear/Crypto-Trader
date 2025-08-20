@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<?import org.theoliverlear.admin.ui.NavBar?>
+<VBox spacing="20.0"
+      xmlns="http://javafx.com/javafx"
+      fx:controller="org.theoliverlear.admin.controller.AdminController"
+      xmlns:fx="http://javafx.com/fxml">
+    <NavBar fx:id="navBar"/>
+
+    <Label fx:id="welcomeText"/>
+<!--    <Button text="Authorize" onAction="#onAuthorizeClick"/>-->
+</VBox>
