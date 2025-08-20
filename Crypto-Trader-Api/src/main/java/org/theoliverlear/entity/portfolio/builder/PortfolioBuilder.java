@@ -4,6 +4,7 @@ import org.theoliverlear.entity.portfolio.Portfolio;
 import org.theoliverlear.entity.portfolio.PortfolioAsset;
 import org.theoliverlear.entity.portfolio.PortfolioHistory;
 import org.theoliverlear.entity.portfolio.builder.models.AbstractPortfolio;
+import org.theoliverlear.entity.user.ProductUser;
 import org.theoliverlear.entity.user.User;
 
 import java.time.LocalDateTime;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PortfolioBuilder extends AbstractPortfolio {
-    private User user;
+    private ProductUser user;
     private double dollarBalance;
     private double shareBalance;
     private double totalWorth;
@@ -23,14 +24,14 @@ public class PortfolioBuilder extends AbstractPortfolio {
         this.dollarBalance = 0;
         this.shareBalance = 0;
         this.totalWorth = 0;
-        this.user = new User();
+        this.user = new ProductUser();
         this.assets = new ArrayList<>();
         this.portfolioHistory = new ArrayList<>();
         this.lastUpdated = LocalDateTime.now();
     }
 
     @Override
-    public AbstractPortfolio user(User user) {
+    public AbstractPortfolio user(ProductUser user) {
         this.user = user;
         return this;
     }

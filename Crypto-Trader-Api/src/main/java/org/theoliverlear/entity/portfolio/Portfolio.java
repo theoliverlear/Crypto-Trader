@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.theoliverlear.entity.Identifiable;
 import org.theoliverlear.entity.portfolio.builder.PortfolioBuilder;
+import org.theoliverlear.entity.user.ProductUser;
 import org.theoliverlear.entity.user.User;
 
 import java.time.LocalDateTime;
@@ -24,7 +24,7 @@ public class Portfolio extends Identifiable implements UpdatableValues {
     //============================-Variables-=================================
     @JsonBackReference
     @OneToOne(mappedBy = "portfolio")
-    private User user;
+    private ProductUser user;
     @Column(name = "dollar_balance", columnDefinition = "DECIMAL(34, 18)")
     private double dollarBalance;
     @Column(name = "share_balance", columnDefinition = "DECIMAL(34, 18)")
@@ -43,19 +43,19 @@ public class Portfolio extends Identifiable implements UpdatableValues {
         this.dollarBalance = 0;
         this.shareBalance = 0;
         this.totalWorth = 0;
-        this.user = new User();
+        this.user = new ProductUser();
         this.assets = new ArrayList<>();
         this.portfolioHistory = new ArrayList<>();
         this.lastUpdated = LocalDateTime.now();
     }
-    public Portfolio(User user) {
+    public Portfolio(ProductUser user) {
         super();
         this.user = user;
         this.assets = new ArrayList<>();
         this.portfolioHistory = new ArrayList<>();
         this.lastUpdated = LocalDateTime.now();
     }
-    public Portfolio(User user, List<PortfolioAsset> assets) {
+    public Portfolio(ProductUser user, List<PortfolioAsset> assets) {
         super();
         this.user = user;
         this.assets = assets;
@@ -64,7 +64,7 @@ public class Portfolio extends Identifiable implements UpdatableValues {
     }
     public Portfolio(double dollarBalance, double shareBalance, double totalWorth) {
         super();
-        this.user = new User();
+        this.user = new ProductUser();
         this.dollarBalance = dollarBalance;
         this.shareBalance = shareBalance;
         this.totalWorth = totalWorth;
@@ -75,14 +75,14 @@ public class Portfolio extends Identifiable implements UpdatableValues {
 
     public Portfolio(List<PortfolioAsset> assets) {
         super();
-        this.user = new User();
+        this.user = new ProductUser();
         this.assets = assets;
         this.lastUpdated = LocalDateTime.now();
         this.portfolioHistory = new ArrayList<>();
         this.updateValues();
     }
 
-    public Portfolio(User user,
+    public Portfolio(ProductUser user,
                      double dollarBalance,
                      double shareBalance,
                      double totalWorth,
