@@ -15,7 +15,7 @@ import org.theoliverlear.entity.portfolio.Portfolio;
 import org.theoliverlear.entity.portfolio.PortfolioAsset;
 import org.theoliverlear.entity.portfolio.PortfolioAssetHistory;
 import org.theoliverlear.entity.portfolio.PortfolioHistory;
-import org.theoliverlear.entity.user.User;
+import org.theoliverlear.entity.user.ProductUser;
 import org.theoliverlear.service.CryptoTraderService;
 import org.theoliverlear.service.PortfolioService;
 
@@ -26,7 +26,7 @@ import java.util.Optional;
 @RequestMapping("/api/portfolio")
 public class PortfolioController {
     //============================-Variables-=================================
-    private User currentUser;
+    private ProductUser currentUser;
     private Portfolio portfolio = new Portfolio();
     private CryptoTraderService cryptoTraderService;
     private PortfolioService portfolioService;
@@ -58,11 +58,11 @@ public class PortfolioController {
         if (!userInSession) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        Optional<User> possibleSessionUser = this.cryptoTraderService.getUserFromSession(session);
+        Optional<ProductUser> possibleSessionUser = this.cryptoTraderService.getUserFromSession(session);
         if (possibleSessionUser.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        User sessionUser = possibleSessionUser.get();
+        ProductUser sessionUser = possibleSessionUser.get();
         Portfolio portfolio = sessionUser.getPortfolio();
         if (portfolio == null) {
             return ResponseEntity.ok(new HasPortfolioResponse(false));
@@ -77,11 +77,11 @@ public class PortfolioController {
         if (!userInSession) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        Optional<User> possibleSessionUser = this.cryptoTraderService.getUserFromSession(session);
+        Optional<ProductUser> possibleSessionUser = this.cryptoTraderService.getUserFromSession(session);
         if (possibleSessionUser.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        User sessionUser = possibleSessionUser.get();
+        ProductUser sessionUser = possibleSessionUser.get();
         Portfolio portfolio = this.portfolioService.getPortfolioByUserId(sessionUser.getId());
         List<PortfolioHistory> portfolioHistory = this.portfolioService.getPortfolioHistory(portfolio);
         if (portfolioHistory.isEmpty()) {
@@ -91,7 +91,7 @@ public class PortfolioController {
     }
     @RequestMapping("/history/get/asset")
     public ResponseEntity<List<PortfolioAssetHistory>> getPortfolioAssetHistory(HttpSession session) {
-        User sessionUser = (User) session.getAttribute("user");
+        ProductUser sessionUser = (ProductUser) session.getAttribute("user");
         this.currentUser = sessionUser;
         this.portfolio = this.portfolioService.getPortfolioByUserId(this.currentUser.getId());
         List<PortfolioAssetHistory> portfolioAssetHistory = this.portfolioService.getPortfolioAssetHistory(this.portfolio);
