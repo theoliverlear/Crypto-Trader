@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.theoliverlear.comm.response.HasProfilePictureResponse;
 import org.theoliverlear.comm.response.OperationSuccessfulResponse;
-import org.theoliverlear.entity.user.ProfilePicture;
+import org.theoliverlear.entity.user.ProductUser;
 import org.theoliverlear.entity.user.User;
+import org.theoliverlear.entity.user.ProfilePicture;
 import org.theoliverlear.service.CryptoTraderService;
 import org.theoliverlear.service.ProfilePictureService;
-import org.theoliverlear.service.UserService;
+import org.theoliverlear.service.ProductUserService;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -28,15 +29,15 @@ public class AccountController {
     //============================-Variables-=================================
     private CryptoTraderService cryptoTraderService;
     private ProfilePictureService profilePictureService;
-    private UserService userService;
+    private ProductUserService productUserService;
     //===========================-Constructors-===============================
     @Autowired
     public AccountController(CryptoTraderService cryptoTraderService,
                              ProfilePictureService profilePictureService,
-                             UserService userService) {
+                             ProductUserService productUserService) {
         this.cryptoTraderService = cryptoTraderService;
         this.profilePictureService = profilePictureService;
-        this.userService = userService;
+        this.productUserService = productUserService;
     }
     //=============================-Methods-==================================
 
@@ -48,11 +49,11 @@ public class AccountController {
         if (!userInSession) {
             return new ResponseEntity<>(new OperationSuccessfulResponse(false), HttpStatus.UNAUTHORIZED);
         }
-        Optional<User> possibleSessionUser = this.cryptoTraderService.getUserFromSession(session);
+        Optional<ProductUser> possibleSessionUser = this.cryptoTraderService.getUserFromSession(session);
         if (possibleSessionUser.isEmpty()) {
             return new ResponseEntity<>(new OperationSuccessfulResponse(false), HttpStatus.UNAUTHORIZED);
         }
-        User sessionUser = possibleSessionUser.get();
+        ProductUser sessionUser = possibleSessionUser.get();
         String fileName = file.getOriginalFilename();
         try {
             byte[] fileData = file.getBytes();
@@ -64,7 +65,7 @@ public class AccountController {
             sessionUser.setProfilePicture(profilePicture);
             profilePicture.setUser(sessionUser);
             this.profilePictureService.saveProfilePicture(profilePicture);
-            this.userService.saveUser(sessionUser);
+            this.productUserService.saveUser(sessionUser);
             return new ResponseEntity<>(new OperationSuccessfulResponse(true), HttpStatus.OK);
         } catch (IOException ex) {
             return new ResponseEntity<>(new OperationSuccessfulResponse(false), HttpStatus.INTERNAL_SERVER_ERROR);
