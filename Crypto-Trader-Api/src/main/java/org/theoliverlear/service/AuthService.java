@@ -5,8 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.theoliverlear.comm.request.UserRequest;
 import org.theoliverlear.comm.response.AuthResponse;
-import org.theoliverlear.comm.response.UserResponse;
 import org.theoliverlear.entity.portfolio.Portfolio;
+import org.theoliverlear.entity.user.ProductUser;
 import org.theoliverlear.entity.user.SafePassword;
 import org.theoliverlear.entity.user.User;
 import org.theoliverlear.model.http.AuthStatus;
@@ -14,31 +14,31 @@ import org.theoliverlear.model.http.PayloadStatusResponse;
 
 @Service
 public class AuthService {
-    private UserService userService;
+    private ProductUserService productUserService;
     private PortfolioService portfolioService;
     @Autowired
-    public AuthService(UserService userService,
+    public AuthService(ProductUserService productUserService,
                        PortfolioService portfolioService) {
-        this.userService = userService;
+        this.productUserService = productUserService;
         this.portfolioService = portfolioService;
     }
     public PayloadStatusResponse<AuthResponse> signup(UserRequest userRequest) {
         String username = userRequest.getUsername();
         String email = userRequest.getEmail();
         String password = userRequest.getPassword();
-        boolean userExists = this.userService.userExistsByUsername(username);
+        boolean userExists = this.productUserService.userExistsByUsername(username);
         if (userExists) {
             return new PayloadStatusResponse<>(new AuthResponse(AuthStatus.UNAUTHORIZED), HttpStatus.CONFLICT);
         } else {
             SafePassword safePassword = new SafePassword(password);
-            User user = User.builder()
+            ProductUser user = ProductUser.builder()
                             .username(username)
                             .email(email)
                             .safePassword(safePassword)
                             .build();
             Portfolio portfolio = new Portfolio(user);
             user.setPortfolio(portfolio);
-            this.userService.saveUser(user);
+            this.productUserService.saveUser(user);
             this.portfolioService.savePortfolio(portfolio);
             this.portfolioService.addPortfolioToTraders(portfolio);
             return new PayloadStatusResponse<>(new AuthResponse(AuthStatus.AUTHORIZED), HttpStatus.OK);
@@ -47,11 +47,11 @@ public class AuthService {
     public PayloadStatusResponse<AuthResponse> login(UserRequest userRequest) {
         String username = userRequest.getUsername();
         String password = userRequest.getPassword();
-        User user = this.userService.getUserByUsername(username);
+        User user = this.productUserService.getUserByUsername(username);
         if (user == null) {
             return new PayloadStatusResponse<>(new AuthResponse(AuthStatus.UNAUTHORIZED), HttpStatus.NOT_FOUND);
         } else {
-            boolean passwordsMatch = this.userService.comparePassword(user, password);
+            boolean passwordsMatch = this.productUserService.comparePassword(user, password);
             if (passwordsMatch) {
                 return new PayloadStatusResponse<>(new AuthResponse(AuthStatus.AUTHORIZED), HttpStatus.OK);
             } else {
