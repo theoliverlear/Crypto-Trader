@@ -3,28 +3,29 @@ package org.theoliverlear.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.theoliverlear.entity.user.ProductUser;
 import org.theoliverlear.entity.user.User;
-import org.theoliverlear.repository.UserRepository;
+import org.theoliverlear.repository.ProductUserRepository;
 
 @Service
 @Slf4j
-public class UserService {
+public class ProductUserService {
     //============================-Variables-=================================
-    private UserRepository userRepository;
+    private ProductUserRepository productUserRepository;
     //===========================-Constructors-===============================
     @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public ProductUserService(ProductUserRepository productUserRepository) {
+        this.productUserRepository = productUserRepository;
     }
     //============================-Methods-===================================
 
     //----------------------User-Exists-By-Username---------------------------
     public boolean userExistsByUsername(String username) {
-        return this.userRepository.existsByUsername(username);
+        return this.productUserRepository.existsByUsername(username);
     }
     //------------------------Get-User-By-Username----------------------------
     public User getUserByUsername(String username) {
-        return this.userRepository.getUserByUsername(username);
+        return this.productUserRepository.getUserByUsername(username);
     }
     //--------------------------Compare-Password------------------------------
     public boolean comparePassword(User user, String password) {
@@ -32,12 +33,12 @@ public class UserService {
         return passwordsMatch;
     }
     //-----------------------------Save-User----------------------------------
-    public void saveUser(User user) {
+    public void saveUser(ProductUser user) {
         log.info("Saving user: {}", user.getUsername());
-        this.userRepository.save(user);
+        this.productUserRepository.save(user);
     }
     //---------------------------Get-User-By-Id-------------------------------
     public User getUserById(Long id) {
-        return this.userRepository.getUserById(id);
+        return this.productUserRepository.getUserById(id);
     }
 }
