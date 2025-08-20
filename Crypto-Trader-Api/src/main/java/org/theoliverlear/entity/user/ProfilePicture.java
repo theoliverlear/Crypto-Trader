@@ -20,7 +20,7 @@ public class ProfilePicture extends Identifiable {
     private byte[] fileData;
     @OneToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private ProductUser user;
     public ProfilePicture() {
         super();
         this.fileName = "";
@@ -34,7 +34,7 @@ public class ProfilePicture extends Identifiable {
         this.fetchFileType();
         this.user = null;
     }
-    public ProfilePicture(String fileName, byte[] fileData, User user) {
+    public ProfilePicture(String fileName, byte[] fileData, ProductUser user) {
         super();
         this.fileName = fileName;
         this.fileData = fileData;

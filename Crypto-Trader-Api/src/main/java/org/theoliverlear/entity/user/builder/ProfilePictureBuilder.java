@@ -1,14 +1,15 @@
 package org.theoliverlear.entity.user.builder;
 
-import org.theoliverlear.entity.user.ProfilePicture;
+import org.theoliverlear.entity.user.ProductUser;
 import org.theoliverlear.entity.user.User;
+import org.theoliverlear.entity.user.ProfilePicture;
 import org.theoliverlear.entity.user.builder.models.AbstractProfilePicture;
 
 public class ProfilePictureBuilder extends AbstractProfilePicture {
     private String fileName;
     private String fileType;
     private byte[] fileData;
-    private User user;
+    private ProductUser user;
     public ProfilePictureBuilder() {
         super();
         this.fileName = "";
@@ -36,7 +37,7 @@ public class ProfilePictureBuilder extends AbstractProfilePicture {
     }
 
     @Override
-    public AbstractProfilePicture user(User user) {
+    public AbstractProfilePicture user(ProductUser user) {
         this.user = user;
         return this;
     }
