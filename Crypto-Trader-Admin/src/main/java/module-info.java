@@ -2,33 +2,41 @@ module org.theoliverlear.admin {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
-
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires net.synedra.validatorfx;
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
-
-    requires spring.context;
+/*    requires org.reactfx; */
+    requires fr.brouillard.oss.cssfx;
     requires spring.boot;
     requires spring.boot.autoconfigure;
+    requires spring.context;
     requires spring.core;
     requires spring.beans;
-    requires spring.aop;
-
+    requires spring.web;
+    requires spring.jdbc;
     requires org.apache.httpcomponents.client5.httpclient5;
     requires org.apache.httpcomponents.core5.httpcore5;
+    requires com.fasterxml.jackson.databind;
     requires org.slf4j;
-    
+    requires java.sql;
+    requires net.rgielen.fxweaver.core;
     requires static lombok;
-    requires spring.web;
-
-    opens org.theoliverlear.admin to javafx.fxml, spring.core, spring.beans, spring.context;
-
-    opens org.theoliverlear.admin.config;
-    
+    requires reactfx;
+    requires javafx.graphics;
+    requires javafx.base;
+    requires jakarta.annotation;
+    opens org.theoliverlear.admin to spring.core, spring.beans, spring.context;
+    opens org.theoliverlear.admin.controller to javafx.fxml, spring.core, spring.beans, spring.context;
+    opens org.theoliverlear.admin.config to spring.core, spring.beans, spring.context;
+    opens org.theoliverlear.admin.component to spring.core, spring.beans, spring.context;
+    opens org.theoliverlear.admin.ui to javafx.fxml, javafx.base, spring.core, spring.beans, spring.context;
     exports org.theoliverlear.admin;
     exports org.theoliverlear.admin.controller;
-    opens org.theoliverlear.admin.controller to javafx.fxml, spring.beans, spring.context, spring.core;
+    exports org.theoliverlear.admin.event;
+    exports org.theoliverlear.admin.component;
+    exports org.theoliverlear.admin.route;
+    exports org.theoliverlear.admin.ui;
 }
