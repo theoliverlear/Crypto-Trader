@@ -1,4 +1,4 @@
-package org.theoliverlear.admin.controller.view;
+package org.theoliverlear.admin.controller;
 
 import org.springframework.stereotype.Component;
 
