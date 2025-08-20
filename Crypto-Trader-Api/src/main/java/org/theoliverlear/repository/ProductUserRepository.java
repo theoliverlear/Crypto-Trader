@@ -1,15 +1,16 @@
 package org.theoliverlear.repository;
 //=================================-Imports-==================================
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.theoliverlear.entity.user.ProductUser;
 import org.theoliverlear.entity.user.User;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface ProductUserRepository extends JpaRepository<ProductUser, Long> {
     //============================-Methods-===================================
 
     //------------------------Get-User-By-Username----------------------------
-    User getUserByUsername(String username);
+    ProductUser getUserByUsername(String username);
     //---------------------------Get-User-By-Id-------------------------------
-    User getUserById(Long id);
+    ProductUser getUserById(Long id);
     //-------------------------Exists-By-Username-----------------------------
     boolean existsByUsername(String username);
 }
