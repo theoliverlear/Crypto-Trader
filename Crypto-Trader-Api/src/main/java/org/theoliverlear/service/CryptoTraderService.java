@@ -2,6 +2,8 @@ package org.theoliverlear.service;
 //=================================-Imports-==================================
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
+import org.theoliverlear.entity.user.admin.AdminUser;
+import org.theoliverlear.entity.user.ProductUser;
 import org.theoliverlear.entity.user.User;
 
 import java.util.Optional;
@@ -19,8 +21,8 @@ public class CryptoTraderService {
         return session.getAttribute("user") != null;
     }
     //-----------------------Get-User-From-Session----------------------------
-    public Optional<User> getUserFromSession(HttpSession session) {
-        User user = (User) session.getAttribute("user");
+    public Optional<ProductUser> getUserFromSession(HttpSession session) {
+        ProductUser user = (ProductUser) session.getAttribute("product-user");
         if (user == null) {
             return Optional.empty();
         } else {
@@ -28,9 +30,17 @@ public class CryptoTraderService {
         }
     }
     public void setSessionUser(HttpSession session, User user) {
-        session.setAttribute("user", user);
+        if (user instanceof ProductUser) {
+            session.setAttribute("product-user", user);
+        } else if (user instanceof AdminUser) {
+            session.setAttribute("admin-user", user);
+        } else {
+            throw new IllegalArgumentException("User is not a ProductUser or AdminUser");
+        }
     }
     public void removeSessionUser(HttpSession session) {
         session.removeAttribute("user");
+        session.removeAttribute("product-user");
+        session.removeAttribute("admin-user");
     }
 }
