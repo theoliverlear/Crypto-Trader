@@ -1,1 +1,4 @@
 <!-- tier-promo-stripe.component.html -->
+<ng-container>
+    <tier-promo [tier]="tier" *ngFor="let tier of SubscriptionTier.values()"/>
+</ng-container>
