@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.cryptotrader.entity.portfolio.Portfolio;
 import org.cryptotrader.entity.portfolio.PortfolioAsset;
+import org.cryptotrader.entity.vendor.SupportedVendors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,24 +15,28 @@ public class Trader {
     //============================-Variables-=================================
     // TODO: Allow for trades based on target prices and a strategy.
     private Portfolio portfolio;
-    private List<AssetTrader> assetTraders;
+    private List<TradingEngine> assetTraders;
     //===========================-Constructors-===============================
     public Trader(Portfolio portfolio) {
         this.portfolio = portfolio;
         this.assetTraders = new ArrayList<>();
-        this.initializeAssetTraders();
+        this.initializeTraders();
     }
     //============================-Methods-===================================
 
     //----------------------Initialize-Asset-Traders--------------------------
-    public void initializeAssetTraders() {
+    public void initializeTraders() {
         for (PortfolioAsset asset : this.portfolio.getAssets()) {
-            this.assetTraders.add(new AssetTrader(asset));
+            if (asset.getVendor().equals(SupportedVendors.PAPER_MODE)) {
+                this.assetTraders.add(new AssetTrader(asset));
+            } else {
+                this.assetTraders.add(new VendorAssetTrader(asset));
+            }
         }
     }
     //--------------------------Trade-All-Assets------------------------------
     public void tradeAllAssets() {
-        for (AssetTrader assetTrader : this.assetTraders) {
+        for (TradingEngine assetTrader : this.assetTraders) {
             assetTrader.trade();
         }
     }
