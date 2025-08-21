@@ -1,9 +1,13 @@
 // ss-anchor.component.scss
 @use "../../../../styles/globals" as *;
+@import "../ss-button/ss-button.component";
 
 ss-anchor {
     @include flex(center, center, row);
     //@extend %fill-container;
+    &.link-button {
+        @extend ss-button;
+    }
     a {
         text-align: center;
         @extend %fill-container;
