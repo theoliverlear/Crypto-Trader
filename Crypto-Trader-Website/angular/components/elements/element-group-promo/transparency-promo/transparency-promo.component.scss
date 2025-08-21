@@ -1,0 +1,36 @@
+// transparency-promo.component.scss
+@use "../../../../styles/globals" as *;
+
+transparency-promo {
+    @include flex(center, center, column);
+    @extend %soft-border-radius;
+    padding: $one-percent;
+    width: 90%;
+    background-color: add-alpha($alabaster-stone, 0.2);
+    ss-title {
+        //@extend %soft-text-shadow;
+        //text-shadow: add-alpha($charcoal, 0.1) 0 0 $half-percent;
+        //text-shadow: -2px -2px 0 #000,  /* Top-left */
+        //2px -2px 0 #000,   /* Top-right */
+        //-2px 2px 0 #000,   /* Bottom-left */
+        //2px 2px 0 #000;
+        -webkit-text-stroke: 2px add-alpha($charcoal, 0.1);
+        color: add-alpha($pure-white, 1);
+        text-decoration: underline;
+        margin: $half-percent 0;
+    }
+    .text-with-button-div {
+        @include flex(space-around, center, row);
+        ss-paragraph {
+            //width: 35%;
+            flex: 2;
+            margin: $half-percent $one-percent $half-percent 0;
+        }
+
+        ss-anchor {
+            width: $twenty-five-percent;
+            max-height: $four-percent;
+            flex: 1;
+        }
+    }
+}
