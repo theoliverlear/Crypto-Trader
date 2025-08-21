@@ -8,5 +8,10 @@
         </div>
         <ss-img [imageAsset]="transparentLogo"/>
     </content-stripe>
-    <ss-paragraph class="intro-paragraph" [text]="'Crypto Trader is a web application that automates cryptocurrency trading so you do not have to watch markets all day. Our mission is simple: democratize high‑frequency trading for everyone. We operate without taking a profit; paid tiers only cover compute costs so the value created stays with you.'"/>
+    <div class="intro-text-div">
+        <ss-paragraph class="intro-paragraph" [text]="cryptoTraderDescription"/>
+        <ss-anchor [elementLink]="getStartedElementLink" [isButton]="true"/>
+    </div>
+    <tier-promo-stripe/>
+    <transparency-promo/>
 </ng-container>
