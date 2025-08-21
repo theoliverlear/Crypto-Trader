@@ -1,7 +1,8 @@
 import {
     Component,
     EventEmitter,
-    HostBinding, HostListener,
+    HostBinding,
+    HostListener,
     Input,
     OnInit,
     Output
@@ -9,6 +10,7 @@ import {
 import {ElementSize} from "../../../../models/ElementSize";
 import {ButtonText} from "./models/ButtonText";
 import {ButtonPosition} from "./models/ButtonPosition";
+import {TagType} from "../../../../models/html/TagType";
 
 @Component({
     selector: 'ss-button',
@@ -22,7 +24,7 @@ export class SsButtonComponent implements OnInit{
     @HostBinding('style.align-self') alignSelf: string;
     @Output() buttonClick: EventEmitter<void> = new EventEmitter<void>();
     constructor() {
-        console.log('SsButtonComponent loaded');
+        
     }
     ngOnInit() {
         this.setAlignSelf();
@@ -35,6 +37,20 @@ export class SsButtonComponent implements OnInit{
     onClick(): void {
         this.emitButtonClick();
     }
+
+    getTagType(): TagType {
+        switch (this.size) {
+            case ElementSize.SMALL:
+                return TagType.H5;
+            case ElementSize.MEDIUM:
+                return TagType.H4;
+            case ElementSize.LARGE:
+                return TagType.H3;
+            default:
+                return TagType.H5;
+        }
+    }
+
     private setAlignSelf(): void {
         switch (this.buttonPosition) {
             case ButtonPosition.START:
