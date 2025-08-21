@@ -80,6 +80,12 @@ import {
 import {
     TierPromoStripeComponent
 } from "./element-group-promo/tier-promo-stripe/tier-promo-stripe.component";
+import {
+    TransparencyPromoComponent
+} from "./element-group-promo/transparency-promo/transparency-promo.component";
+import {
+    PaperModePromoComponent
+} from "./element-group-promo/paper-mode-promo/paper-mode-promo.component";
 
 export const elements = [
     AuthConsoleComponent,
@@ -95,6 +101,7 @@ export const elements = [
     NavBarComponent,
     NavBarItemComponent,
     NavBarProfilePictureComponent,
+    PaperModePromoComponent,
     PerformanceChartComponent,
     PerformanceChartSettingsComponent,
     PerformanceSectionComponent,
@@ -116,4 +123,5 @@ export const elements = [
     TierPromoComponent,
     TierPromoStripeComponent,
     TraderEventBubbleComponent,
+    TransparencyPromoComponent
 ]
