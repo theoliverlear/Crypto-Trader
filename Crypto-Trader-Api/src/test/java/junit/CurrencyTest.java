@@ -1,7 +1,7 @@
 package junit;
 //=================================-Imports-==================================
 import org.junit.jupiter.api.Test;
-import org.theoliverlear.entity.currency.Currency;
+import org.cryptotrader.entity.currency.Currency;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

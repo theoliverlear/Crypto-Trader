@@ -1,4 +1,7 @@
-open module org.theoliverlear {
+open module org.cryptotrader.api {
+
+    requires org.cryptotrader.api.library;
+    
     requires spring.boot;
     requires spring.boot.autoconfigure;
 
@@ -36,4 +39,6 @@ open module org.theoliverlear {
     requires static lombok;
     requires tomcat.embed.core;
     requires tomcat.embed.websocket;
+    
+    exports org.cryptotrader.api;
 }

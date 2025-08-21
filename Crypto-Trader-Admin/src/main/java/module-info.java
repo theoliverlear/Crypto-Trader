@@ -1,4 +1,4 @@
-module org.theoliverlear.admin {
+module org.cryptotrader.admin {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -28,15 +28,15 @@ module org.theoliverlear.admin {
     requires javafx.graphics;
     requires javafx.base;
     requires jakarta.annotation;
-    opens org.theoliverlear.admin to spring.core, spring.beans, spring.context;
-    opens org.theoliverlear.admin.controller to javafx.fxml, spring.core, spring.beans, spring.context;
-    opens org.theoliverlear.admin.config to spring.core, spring.beans, spring.context;
-    opens org.theoliverlear.admin.component to spring.core, spring.beans, spring.context;
-    opens org.theoliverlear.admin.ui to javafx.fxml, javafx.base, spring.core, spring.beans, spring.context;
-    exports org.theoliverlear.admin;
-    exports org.theoliverlear.admin.controller;
-    exports org.theoliverlear.admin.event;
-    exports org.theoliverlear.admin.component;
-    exports org.theoliverlear.admin.route;
-    exports org.theoliverlear.admin.ui;
+    opens org.cryptotrader.admin to spring.core, spring.beans, spring.context;
+    opens org.cryptotrader.admin.controller to javafx.fxml, spring.core, spring.beans, spring.context;
+    opens org.cryptotrader.admin.config to spring.core, spring.beans, spring.context;
+    opens org.cryptotrader.admin.component to spring.core, spring.beans, spring.context;
+    opens org.cryptotrader.admin.ui to javafx.fxml, javafx.base, spring.core, spring.beans, spring.context;
+    exports org.cryptotrader.admin;
+    exports org.cryptotrader.admin.controller;
+    exports org.cryptotrader.admin.event;
+    exports org.cryptotrader.admin.component;
+    exports org.cryptotrader.admin.route;
+    exports org.cryptotrader.admin.ui;
 }

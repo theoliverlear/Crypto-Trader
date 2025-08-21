@@ -35,7 +35,7 @@
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
     </logger>
-    <logger name="org.theoliverlear" level="DEBUG">
+    <logger name="org.cryptotrader" level="DEBUG">
         <appender-ref ref="CONSOLE"/>
     </logger>
 </configuration>

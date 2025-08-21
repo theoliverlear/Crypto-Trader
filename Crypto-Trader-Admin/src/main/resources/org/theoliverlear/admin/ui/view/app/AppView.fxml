@@ -6,10 +6,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import org.theoliverlear.admin.ui.NavBar?>
+<?import org.cryptotrader.admin.ui.NavBar?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.theoliverlear.admin.controller.AppController"
+            fx:controller="org.cryptotrader.admin.controller.AppController"
             prefHeight="400.0" prefWidth="600.0">
     <top>
         <NavBar fx:id="navBar"/>
