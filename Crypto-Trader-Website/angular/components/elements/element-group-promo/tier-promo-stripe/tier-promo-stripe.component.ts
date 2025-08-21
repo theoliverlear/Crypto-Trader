@@ -1,5 +1,6 @@
 // tier-promo-stripe.component.ts
 import { Component } from "@angular/core";
+import {SubscriptionTier} from "../tier-promo/models/SubscriptionTier";
 
 @Component({
     selector: 'tier-promo-stripe',
@@ -10,4 +11,6 @@ export class TierPromoStripeComponent {
     constructor() {
         
     }
+
+    protected readonly SubscriptionTier = SubscriptionTier;
 }
