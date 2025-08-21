@@ -2,8 +2,14 @@
 @use "../../../styles/globals" as *;
 
 home {
-    ss-paragraph {
-        width: 80%;
+    .intro-text-div {
+        @include flex(space-around, center, row);
+        ss-paragraph {
+            width: 60%;
+        }
+        ss-anchor {
+            box-shadow: $sunbeam-yellow simplest-calc(0.25) simplest-calc(0.25) 0 0;
+        }
     }
     .intro-stripe {
         @include flex(space-around, center, row);
