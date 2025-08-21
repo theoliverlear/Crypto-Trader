@@ -28,3 +28,7 @@
 %soft-text-shadow {
     text-shadow: add-alpha($absolute-black, 0.3) 0 0 $half-percent;
 }
+
+%simple-box-shadow {
+    box-shadow: $darker-black-shadow 0 0 $half-percent simple-calc(0.25, 0.25);
+}
