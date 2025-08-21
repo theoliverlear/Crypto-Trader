@@ -2,5 +2,22 @@
 @use "../../../../styles/globals" as *;
 
 tier-promo {
-    
+    @include flex(center, center, column);
+    max-width: 30vw;
+    @extend %soft-border-radius;
+    //background-color: $darker-black-shadow;
+    margin: 0 $half-percent;
+    padding: $one-percent $half-percent;
+    ss-title {
+        margin: $quarter-percent;
+    }
+    ss-img {
+        @include square-size($six-percent);
+        background-color: $muted-blue-half-opacity;
+        padding: $half-percent;
+        box-shadow: $blue-gray $quarter-percent $quarter-percent 0 0;
+        img {
+            //filter: invert(0.75);
+        }
+    }
 }
