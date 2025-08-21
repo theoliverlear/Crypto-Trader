@@ -11,6 +11,8 @@ import lombok.Setter;
 import org.cryptotrader.entity.Identifiable;
 import org.cryptotrader.entity.currency.Currency;
 import org.cryptotrader.entity.currency.SupportedCurrencies;
+import org.cryptotrader.entity.vendor.SupportedVendors;
+import org.cryptotrader.entity.vendor.Vendor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -45,6 +47,12 @@ public class PortfolioAsset extends Identifiable implements UpdatableValues {
     private LocalDateTime lastUpdated;
     @OneToMany(mappedBy = "portfolioAsset", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<PortfolioAssetHistory> assetHistory;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "name", column = @Column(name = "vendor_name", length = 255)),
+            @AttributeOverride(name = "rate", column = @Column(name = "vendor_rate", columnDefinition = "DECIMAL(6, 10)"))
+    })
+    private Vendor vendor;
     // TODO: Add buying strategy which may sell the whole asset, only the
     //       profits, or a set amount or percentage of the asset.
     //===========================-Constructors-===============================
@@ -56,6 +64,7 @@ public class PortfolioAsset extends Identifiable implements UpdatableValues {
         this.assetWalletDollars = 0;
         this.targetPrice = this.currency.getValue();
         this.assetHistory = new ArrayList<>();
+        this.vendor = SupportedVendors.PAPER_MODE;
         this.lastUpdated = LocalDateTime.now();
     }
     public PortfolioAsset(Portfolio portfolio, Currency currency, double shares, double assetWalletDollars) {
@@ -67,6 +76,7 @@ public class PortfolioAsset extends Identifiable implements UpdatableValues {
         this.targetPrice = currency.getValue();
         this.portfolio.addAsset(this);
         this.assetHistory = new ArrayList<>();
+        this.vendor = SupportedVendors.PAPER_MODE;
         this.lastUpdated = LocalDateTime.now();
     }
     public PortfolioAsset(Currency currency, double shares, double assetWalletDollars) {
@@ -76,6 +86,7 @@ public class PortfolioAsset extends Identifiable implements UpdatableValues {
         this.assetWalletDollars = assetWalletDollars;
         this.targetPrice = currency.getValue();
         this.assetHistory = new ArrayList<>();
+        this.vendor = SupportedVendors.PAPER_MODE;
         this.lastUpdated = LocalDateTime.now();
     }
     //=============================-Methods-==================================
@@ -111,6 +122,7 @@ public class PortfolioAsset extends Identifiable implements UpdatableValues {
                                                          .assetWalletDollars(portfolioAsset.getAssetWalletDollars())
                                                          .totalValueInDollars(portfolioAsset.getTotalValueInDollars())
                                                          .targetPrice(portfolioAsset.getTargetPrice())
+                                                         .vendor(portfolioAsset.getVendor())
                                                          .build();
         return newPortfolioAsset;
     }
