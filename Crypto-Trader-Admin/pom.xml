@@ -5,15 +5,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.2</version>
-        <relativePath/>
+<!--        <groupId>org.springframework.boot</groupId>-->
+<!--        <artifactId>spring-boot-starter-parent</artifactId>-->
+<!--        <version>3.3.2</version>-->
+<!--        <relativePath/>-->
+        <groupId>org.cryptotrader</groupId>
+        <artifactId>crypto-trader</artifactId>
+        <version>0.0.1</version>
     </parent>
 
-    <groupId>org.cryptotrader</groupId>
+<!--    <groupId>org.cryptotrader</groupId>-->
     <artifactId>crypto-trader-admin</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>Crypto-Trader-Admin</name>
 
     <properties>

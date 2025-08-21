@@ -6,11 +6,11 @@
 
     <name>Crypto-Trader-Api</name>
     <artifactId>crypto-trader-api</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.1</version>
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.0.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <properties>
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-api-library</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.0.1</version>
         </dependency>
 
         <dependency>
