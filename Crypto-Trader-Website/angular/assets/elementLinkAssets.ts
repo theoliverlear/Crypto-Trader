@@ -25,3 +25,16 @@ export const navBarAccountLink = new ElementLink('/account',
     TargetType.SELF,
     false
 );
+
+export const getStartedElementLink = new TextElementLink('/authorize',
+    TargetType.SELF,
+    false,
+    'Get Started',
+    TagType.H4,
+)
+
+export const repositoryElementLink = new TextElementLink('https://github.com/theoliverlear/Crypto-Trader',
+    TargetType.BLANK,
+    false,
+    'Explore Source Code',
+    TagType.H4)
