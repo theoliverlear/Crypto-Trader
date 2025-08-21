@@ -38,3 +38,18 @@ export const transparentLogo: ImageAsset = {
     src: getCryptoTraderLogo('crypto_trader_logo_cropped_transparent.png'),
     alt: 'Transparent Logo'
 }
+
+export const stockIcon: ImageAsset = {
+    src: getIconImagePath('stock_icon.svg'),
+    alt: 'Stock Icon'
+};
+
+export const brainIcon: ImageAsset = {
+    src: getIconImagePath('brain_icon.svg'),
+    alt: 'Brain Icon'
+};
+
+export const aiStarIcon: ImageAsset = {
+    src: getIconImagePath('ai_star_icon.svg'),
+    alt: 'AI Star Icon'
+};
