@@ -2,13 +2,15 @@ package org.cryptotrader.model.trade;
 //=================================-Imports-==================================
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.entity.portfolio.PortfolioAsset;
 
 @Getter
 @Setter
-public class AssetTrader {
+@Slf4j
+public class AssetTrader implements TradingEngine {
     //============================-Variables-=================================
-    private PortfolioAsset asset;
+    protected PortfolioAsset asset;
     //===========================-Constructors-===============================
     public AssetTrader(PortfolioAsset asset) {
         this.asset = asset;
@@ -16,8 +18,14 @@ public class AssetTrader {
     //=============================-Methods-==================================
 
     //-------------------------------Trade------------------------------------
+    @Override
     public boolean trade() {
         double currentPrice = this.asset.getCurrency().getUpdatedValue();
+        return this.trade(currentPrice);
+    }
+    //-------------------------------Trade------------------------------------
+    @Override
+    public boolean trade(double currentPrice) {
         double targetPrice = this.asset.getTargetPrice();
         if (currentPrice > targetPrice) {
             if (this.asset.canSell()) {
@@ -35,12 +43,13 @@ public class AssetTrader {
         return false;
     }
     //--------------------------------Sell------------------------------------
+    @Override
     public void sell(double currentPrice) {
         double valueInDollars = this.asset.getShares() * currentPrice;
         double walletDollars = this.asset.getAssetWalletDollars() + valueInDollars;
         this.asset.setAssetWalletDollars(walletDollars);
         this.asset.updateValues();
-        System.out.printf("Selling %f shares of %s for %f dollars.%n",
+        log.info("Selling {} shares of {} for {} dollars.",
                           this.asset.getShares(),
                           this.asset.getCurrency().getName(),
                           walletDollars);
@@ -48,11 +57,12 @@ public class AssetTrader {
         this.asset.updateValues();
     }
     //---------------------------------Buy------------------------------------
+    @Override
     public void buy(double currentPrice) {
         double shares = this.asset.getAssetWalletDollars() / currentPrice;
         this.asset.setShares(shares);
         this.asset.updateValues();
-        System.out.printf("Buying %f shares of %s for %f dollars.%n",
+        log.info("Buying {} shares of {} for {} dollars.",
                           shares,
                           this.asset.getCurrency().getName(),
                           this.asset.getAssetWalletDollars());
