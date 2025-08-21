@@ -1,0 +1,20 @@
+// transparency-promo.component.ts
+import { Component } from "@angular/core";
+import {TagType} from "../../../../models/html/TagType";
+import {transparencyParagraph} from "../../../../assets/textAssets";
+import {repositoryElementLink} from "../../../../assets/elementLinkAssets";
+
+@Component({
+    selector: 'transparency-promo',
+    templateUrl: './transparency-promo.component.html',
+    styleUrls: ['./transparency-promo.component.scss']
+})
+export class TransparencyPromoComponent {
+    constructor() {
+        
+    }
+
+    protected readonly TagType = TagType;
+    protected readonly transparencyParagraph = transparencyParagraph;
+    protected readonly repositoryElementLink = repositoryElementLink;
+}
