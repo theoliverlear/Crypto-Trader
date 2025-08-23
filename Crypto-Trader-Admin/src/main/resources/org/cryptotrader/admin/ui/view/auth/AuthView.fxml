@@ -6,9 +6,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.cryptotrader.admin.controller.AuthController"
-            prefHeight="400.0" prefWidth="600.0">
-    <Label text="Auth View"/>
-</AnchorPane>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.cryptotrader.admin.controller.AuthController"
+      fx:id="root">
+    <children>
+        <Label text="Auth View"/>
+    </children>
+</VBox>
