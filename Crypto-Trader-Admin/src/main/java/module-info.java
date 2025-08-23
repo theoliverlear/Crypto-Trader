@@ -1,4 +1,4 @@
-module org.cryptotrader.admin {
+open module org.cryptotrader.admin {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -28,11 +28,14 @@ module org.cryptotrader.admin {
     requires javafx.graphics;
     requires javafx.base;
     requires jakarta.annotation;
-    opens org.cryptotrader.admin to spring.core, spring.beans, spring.context;
-    opens org.cryptotrader.admin.controller to javafx.fxml, spring.core, spring.beans, spring.context;
-    opens org.cryptotrader.admin.config to spring.core, spring.beans, spring.context;
-    opens org.cryptotrader.admin.component to spring.core, spring.beans, spring.context;
-    opens org.cryptotrader.admin.ui to javafx.fxml, javafx.base, spring.core, spring.beans, spring.context;
+    requires org.cryptotrader.assets;
+    requires javafxsvg;
+    requires org.scenicview.scenicview;
+//    opens org.cryptotrader.admin to spring.core, spring.beans, spring.context;
+//    opens org.cryptotrader.admin.controller to javafx.fxml, spring.core, spring.beans, spring.context;
+//    opens org.cryptotrader.admin.config to spring.core, spring.beans, spring.context;
+//    opens org.cryptotrader.admin.component to spring.core, spring.beans, spring.context;
+//    opens org.cryptotrader.admin.ui to javafx.fxml, javafx.base, spring.core, spring.beans, spring.context;
     exports org.cryptotrader.admin;
     exports org.cryptotrader.admin.controller;
     exports org.cryptotrader.admin.event;
