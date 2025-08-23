@@ -9,12 +9,11 @@
 <?import org.cryptotrader.admin.ui.NavBar?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.cryptotrader.admin.controller.AppController"
-            prefHeight="400.0" prefWidth="600.0">
+            fx:controller="org.cryptotrader.admin.controller.AppController" fx:id="root">
     <top>
         <NavBar fx:id="navBar"/>
     </top>
     <center>
-        <StackPane fx:id="page" styleClass="spa-outlet"/>
+        <VBox fx:id="page" styleClass="spa-outlet"/>
     </center>
 </BorderPane>
