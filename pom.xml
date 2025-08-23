@@ -20,6 +20,7 @@
         <module>Crypto-Trader-Api</module>
         <module>Crypto-Trader-Admin</module>
         <module>Crypto-Trader-Library</module>
+        <module>Crypto-Trader-Assets</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
