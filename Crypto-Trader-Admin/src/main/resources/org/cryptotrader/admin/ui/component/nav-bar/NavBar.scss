@@ -2,10 +2,23 @@
 @use "../../../styles/globals" as *;
 
 NavBar {
-    -fx-background-color: #444;
+    //-fx-background-color: #444;
+    -fx-background-color: linear-gradient(to bottom, $charcoal, $light-charcoal);
     -fx-alignment: center;
-    -fx-padding: 30px;
+    -fx-padding: 10px;
+    -fx-spacing: 25px;
     Label {
         -fx-text-fill: white;
     }
+
+    HBox {
+        //-fx-min-width: Infinity;
+    }
+
+    .spacer {
+        -fx-max-width: Infinity;
+        -fx-min-width: 8px;
+    }
+
+
 }
