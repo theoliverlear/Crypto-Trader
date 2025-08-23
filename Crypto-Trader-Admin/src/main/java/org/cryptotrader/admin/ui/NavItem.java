@@ -1,48 +1,49 @@
 package org.cryptotrader.admin.ui;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
 import lombok.extern.slf4j.Slf4j;
+import org.cryptotrader.admin.component.ComponentLoader;
+import org.cryptotrader.admin.config.SpringContext;
+import org.cryptotrader.admin.event.PageNavigationEvent;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.cryptotrader.admin.route.AppPage;
 
 @Slf4j
 @Component
-public class NavItem extends BaseComponent {
+public class NavItem extends HBox {
     @FXML
     private Button actionButton;
     
-    private final ObjectProperty<AppPage> page = new SimpleObjectProperty<>(this, "page", null);
-    private final StringProperty navTitle = new SimpleStringProperty(this, "navTitle", "");
+    private final ObjectProperty<AppPage> page = new SimpleObjectProperty<>();
     public NavItem() {
-        this.load();
+        SpringContext.getBean(ComponentLoader.class).loadWithFxRoot(this, this);
     }
-    
+
+
+    @Autowired
+    private ApplicationEventPublisher events;
     
     @FXML
     public void initialize() {
-//        this.actionButton.textProperty().bind(this.navTitleProperty());
-        this.navTitle.bind(page.asString());
-        this.actionButton.textProperty().bind(this.navTitle);
+        this.actionButton.textProperty().bind(Bindings.createStringBinding(() -> {
+            AppPage enumPage = this.page.get();
+            return enumPage == null ? "" : enumPage.pageName;
+        }, this.page));
     }
     
     @FXML
     public void go() {
-        log.info("Navigating to {}", this.navTitle.get());
-    }
-    
-    public StringProperty navTitleProperty() {
-        return this.navTitle;
-    }
-    public String getNavTitle() {
-        return this.navTitleProperty().get();
-    }
-    public void setNavTitle(String value) {
-        this.navTitleProperty().set(value);
+        log.info("Navigating to {}", this.page.get());
+        this.events.publishEvent(new PageNavigationEvent(this.page.get()));
     }
 
     public AppPage getPage() {
