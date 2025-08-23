@@ -1,0 +1,19 @@
+%hover-box-shadow {
+    -fx-effect: null;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+    -fx-padding: 4px;
+    &:hover {
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.95), 14, 0.2, 0, 3);
+    }
+    &:pressed {
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.65), 8, 0.15, 0, 1);
+    }
+    &:armed {
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.65), 8, 0.15, 0, 1);
+    }
+}
+
+%soft-background-radius {
+    -fx-background-radius: 10px;
+}
