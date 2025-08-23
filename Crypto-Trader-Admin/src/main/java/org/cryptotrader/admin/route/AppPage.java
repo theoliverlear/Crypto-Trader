@@ -1,9 +1,9 @@
 package org.cryptotrader.admin.route;
 
 public enum AppPage {
-    ADMIN("Admin"),
+    ADMIN_USERS("Admin Users"),
     AUTH("Authorize"),
-    TABLE("Table");
+    TABLES("Tables");
     public final String pageName;
     AppPage(String pageName) {
         this.pageName = pageName;
