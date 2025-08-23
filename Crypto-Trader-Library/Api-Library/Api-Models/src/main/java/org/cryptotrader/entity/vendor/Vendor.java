@@ -4,13 +4,12 @@ import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.cryptotrader.entity.Identifiable;
 
 @Getter
 @Setter
 @Embeddable
 @NoArgsConstructor
-public class Vendor extends Identifiable {
+public class Vendor {
     private String name;
     private double rate;
     public Vendor(String name, double rate) {
