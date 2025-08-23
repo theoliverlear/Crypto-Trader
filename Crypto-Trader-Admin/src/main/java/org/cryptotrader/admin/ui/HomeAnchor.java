@@ -35,7 +35,7 @@ public class HomeAnchor extends HBox {
     
     @FXML
     public void navigateHome() {
-        log.info("Navigating to home. BIG CHANGE MADE");
+        log.info("Navigating to home.");
         this.events.publishEvent(new PageNavigationEvent(AppPage.ADMIN_USERS));
     }
 }
