@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "src/main/resources/templates/angular_build",
+            "outputPath": "build",
             "index": "angular/index.html",
             "main": "angular/main.ts",
             "polyfills": "angular/polyfills.ts",
@@ -22,7 +22,7 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "angular/assets",
+                "input": "../Crypto-Trader-Assets/src/main/resources/assets",
                 "output": "/assets/"
               }
             ],
@@ -145,7 +145,7 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": [
-              "angular/assets"
+              "../Crypto-Trader-Assets/src/main/resources/assets"
             ],
             "styles": [
               "angular/styles/styles.css"
