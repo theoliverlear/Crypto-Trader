@@ -31,6 +31,7 @@ public class Currency {
     private String urlPath;
     @Column(name = "currency_value", columnDefinition = "DECIMAL(34, 18)")
     private double value;
+    // TODO: Safely drop this column. This can be done programmatically.
     @Column(name = "currency_value_formatted")
     private String formattedValue;
     @JsonIgnore
