@@ -46,6 +46,8 @@ module org.cryptotrader.api.models {
     opens org.cryptotrader.entity.training to org.hibernate.orm.core, spring.core;
     opens org.cryptotrader.entity.user to org.hibernate.orm.core, spring.core;
     opens org.cryptotrader.entity.user.admin to org.hibernate.orm.core, spring.core;
+    opens org.cryptotrader.entity.vendor to org.hibernate.orm.core, spring.core;
+
 
     opens org.cryptotrader.model;
     opens org.cryptotrader.model.http;
