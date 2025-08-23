@@ -72,30 +72,31 @@ public class PortfolioService {
         for (Trader trader : this.cryptoTrader.getTraders()) {
             Portfolio previousPortfolio = Portfolio.from(trader.getPortfolio());
             System.out.println(previousPortfolio);
-            for (AssetTrader assetTrader : trader.getAssetTraders()) {
-                PortfolioAsset previousAsset = PortfolioAsset.from(assetTrader.getAsset());
-                boolean tradeOccurred = assetTrader.trade();
-                assetTrader.getAsset().updateValues();
-                trader.getPortfolio().updateValues();
-                if (!previousAsset.equals(assetTrader.getAsset())) {
-                    PortfolioAssetHistory portfolioAssetHistory = new PortfolioAssetHistory(assetTrader.getAsset(), tradeOccurred);
-                    PortfolioAssetHistory previousPortfolioAssetHistory = this.getLatestPortfolioAssetHistory(assetTrader.getAsset());
-                    this.setPortfolioValueChange(previousPortfolioAssetHistory, portfolioAssetHistory);
-                    assetTrader.getAsset().addPortfolioAssetHistory(portfolioAssetHistory);
-                    PortfolioHistory previousPortfolioHistory = this.getLatestPortfolioHistory(trader.getPortfolio());
-                    PortfolioHistory portfolioHistory = new PortfolioHistory(trader.getPortfolio(), tradeOccurred);
-                    if (previousPortfolioHistory != null) {
-                        portfolioHistory.calculateValueChange(previousPortfolioHistory);
-                    } else {
-                        portfolioHistory.setValueChange(0);
-                    }
-                    trader.getPortfolio().addPortfolioHistory(portfolioHistory);
-                    this.savePortfolioAsset(assetTrader.getAsset());
-                    this.savePortfolio(trader.getPortfolio());
-                    this.savePortfolioAssetHistory(portfolioAssetHistory);
-                    this.savePortfolioHistory(portfolioHistory);
-                }
-            }
+            // TODO: Reimplement using TradingEngine interface.
+//            for (AssetTrader assetTrader : trader.getAssetTraders()) {
+//                PortfolioAsset previousAsset = PortfolioAsset.from(assetTrader.getAsset());
+//                boolean tradeOccurred = assetTrader.trade();
+//                assetTrader.getAsset().updateValues();
+//                trader.getPortfolio().updateValues();
+//                if (!previousAsset.equals(assetTrader.getAsset())) {
+//                    PortfolioAssetHistory portfolioAssetHistory = new PortfolioAssetHistory(assetTrader.getAsset(), tradeOccurred);
+//                    PortfolioAssetHistory previousPortfolioAssetHistory = this.getLatestPortfolioAssetHistory(assetTrader.getAsset());
+//                    this.setPortfolioValueChange(previousPortfolioAssetHistory, portfolioAssetHistory);
+//                    assetTrader.getAsset().addPortfolioAssetHistory(portfolioAssetHistory);
+//                    PortfolioHistory previousPortfolioHistory = this.getLatestPortfolioHistory(trader.getPortfolio());
+//                    PortfolioHistory portfolioHistory = new PortfolioHistory(trader.getPortfolio(), tradeOccurred);
+//                    if (previousPortfolioHistory != null) {
+//                        portfolioHistory.calculateValueChange(previousPortfolioHistory);
+//                    } else {
+//                        portfolioHistory.setValueChange(0);
+//                    }
+//                    trader.getPortfolio().addPortfolioHistory(portfolioHistory);
+//                    this.savePortfolioAsset(assetTrader.getAsset());
+//                    this.savePortfolio(trader.getPortfolio());
+//                    this.savePortfolioAssetHistory(portfolioAssetHistory);
+//                    this.savePortfolioHistory(portfolioHistory);
+//                }
+//            }
         }
     }
     private void setPortfolioValueChange(PortfolioAssetHistory previousPortfolioAssetHistory, PortfolioAssetHistory portfolioAssetHistory) {
