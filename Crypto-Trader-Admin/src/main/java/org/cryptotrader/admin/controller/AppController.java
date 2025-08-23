@@ -1,7 +1,8 @@
 package org.cryptotrader.admin.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -15,7 +16,8 @@ import org.cryptotrader.admin.ui.NavBar;
 @Component
 public class AppController extends BaseViewController {
     @FXML private NavBar navBar;
-    @FXML private StackPane page;
+    @FXML private VBox page;
+    @FXML private BorderPane root;
 
     private final ViewLoader viewLoader;
     
@@ -26,7 +28,7 @@ public class AppController extends BaseViewController {
 
     @FXML
     private void initialize() {
-
+        this.onNavigate(new PageNavigationEvent(AppPage.AUTH));
     }
     
     @EventListener
@@ -34,7 +36,7 @@ public class AppController extends BaseViewController {
         log.info("Navigation event received");
         Class<?> controllerClass;
         switch (event.appPage()) {
-            case AppPage.ADMIN -> controllerClass = AdminController.class;
+            case AppPage.ADMIN_USERS -> controllerClass = AdminUsersController.class;
             case AppPage.AUTH -> controllerClass = AuthController.class;
             default -> throw new IllegalArgumentException("Unknown appPage: " + event.appPage());
         }
