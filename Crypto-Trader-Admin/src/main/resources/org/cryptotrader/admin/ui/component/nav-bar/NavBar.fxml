@@ -7,9 +7,20 @@
 <?import javafx.scene.layout.*?>
 
 <?import org.cryptotrader.admin.ui.NavItem?>
+<?import org.cryptotrader.admin.ui.HomeAnchor?>
+<?import org.cryptotrader.admin.ui.ExitAnchor?>
 <fx:root type="HBox" xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml"
          fx:controller="org.cryptotrader.admin.ui.NavBar">
-    <NavItem page="AUTH"/>
-    <NavItem page="ADMIN"/>
+    <children>
+        <HomeAnchor fx:id="homeAnchor"/>
+        <HBox HBox.hgrow="ALWAYS">
+            <Region HBox.hgrow="ALWAYS" styleClass="spacer"/>
+            <NavItem page="AUTH" fx:id="authButton"/>
+            <Region HBox.hgrow="ALWAYS" styleClass="spacer"/>
+            <NavItem page="ADMIN_USERS" fx:id="adminButton"/>
+            <Region HBox.hgrow="ALWAYS" styleClass="spacer"/>
+        </HBox>
+        <ExitAnchor fx:id="exitAnchor"/>
+    </children>
 </fx:root>
