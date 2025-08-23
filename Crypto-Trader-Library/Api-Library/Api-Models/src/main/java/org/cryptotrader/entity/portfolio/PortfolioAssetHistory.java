@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.cryptotrader.entity.Identifiable;
 import org.cryptotrader.entity.currency.Currency;
+import org.cryptotrader.entity.vendor.SupportedVendors;
+import org.cryptotrader.entity.vendor.Vendor;
 
 import java.time.LocalDateTime;
 
@@ -39,6 +41,12 @@ public class PortfolioAssetHistory extends Identifiable implements SequentiallyV
     private double sharesChange;
     @Column(name = "trade_occurred")
     boolean tradeOccurred;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "name", column = @Column(name = "vendor_name", length = 255)),
+            @AttributeOverride(name = "rate", column = @Column(name = "vendor_rate", columnDefinition = "DECIMAL(6, 10)"))
+    })
+    private Vendor vendor;
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
     //===========================-Constructors-===============================
@@ -49,6 +57,7 @@ public class PortfolioAssetHistory extends Identifiable implements SequentiallyV
         this.sharesValueInDollars = 0;
         this.assetWalletDollars = 0;
         this.targetPrice = this.currency.getValue();
+        this.vendor = SupportedVendors.PAPER_MODE;
         this.lastUpdated = LocalDateTime.now();
     }
     public PortfolioAssetHistory(PortfolioAsset portfolioAsset, boolean tradeOccurred) {
@@ -61,6 +70,7 @@ public class PortfolioAssetHistory extends Identifiable implements SequentiallyV
         this.assetWalletDollars = portfolioAsset.getAssetWalletDollars();
         this.totalValueInDollars = portfolioAsset.getTotalValueInDollars();
         this.targetPrice = portfolioAsset.getTargetPrice();
+        this.vendor = portfolioAsset.getVendor();
         this.tradeOccurred = tradeOccurred;
         this.lastUpdated = LocalDateTime.now();
     }
@@ -74,6 +84,7 @@ public class PortfolioAssetHistory extends Identifiable implements SequentiallyV
         this.assetWalletDollars = portfolioAsset.getAssetWalletDollars();
         this.totalValueInDollars = portfolioAsset.getTotalValueInDollars();
         this.targetPrice = portfolioAsset.getTargetPrice();
+        this.vendor = portfolioAsset.getVendor();
         this.lastUpdated = lastUpdated;
     }
     @Override
