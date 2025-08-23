@@ -2,5 +2,10 @@
 @use "../../../styles/globals" as *;
 
 NavItem {
-
+    -fx-alignment: center;
+    Button {
+        -fx-pref-width: 200px;
+        -fx-padding: 10px;
+        @extend %hover-box-shadow;
+    }
 }
