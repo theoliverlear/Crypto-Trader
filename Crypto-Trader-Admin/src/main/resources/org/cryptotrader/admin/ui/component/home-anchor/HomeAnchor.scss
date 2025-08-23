@@ -1,0 +1,9 @@
+// HomeAnchor.scss
+@use "../../../styles/globals" as *;
+
+HomeAnchor {
+    @extend %hover-box-shadow;
+    ImageView {
+
+    }
+}
