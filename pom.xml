@@ -5,7 +5,7 @@
 
     <groupId>org.cryptotrader</groupId>
     <artifactId>crypto-trader</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <packaging>pom</packaging>
     <name>Crypto-Trader</name>
     <description>Crypto Trader is a web application that automates cryptocurrency trading to democratize high‑frequency trading. See README for details.</description>
@@ -63,6 +63,7 @@
                 <version>3.13.0</version>
                 <configuration>
                     <release>${maven.compiler.release}</release>
+                    <skip>false</skip>
                 </configuration>
             </plugin>
         </plugins>
