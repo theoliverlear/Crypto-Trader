@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.cryptotrader.entity.user.ProfilePicture;
-import org.cryptotrader.api.repository.ProfilePictureRepository;
+import org.cryptotrader.repository.ProfilePictureRepository;
 
 import java.util.Optional;
 

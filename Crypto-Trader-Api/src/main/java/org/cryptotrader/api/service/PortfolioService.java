@@ -11,10 +11,10 @@ import org.cryptotrader.model.trade.CryptoTrader;
 import org.cryptotrader.comm.request.PortfolioAssetRequest;
 import org.cryptotrader.entity.currency.Currency;
 import org.cryptotrader.model.trade.Trader;
-import org.cryptotrader.api.repository.PortfolioAssetHistoryRepository;
-import org.cryptotrader.api.repository.PortfolioAssetRepository;
-import org.cryptotrader.api.repository.PortfolioHistoryRepository;
-import org.cryptotrader.api.repository.PortfolioRepository;
+import org.cryptotrader.repository.PortfolioAssetHistoryRepository;
+import org.cryptotrader.repository.PortfolioAssetRepository;
+import org.cryptotrader.repository.PortfolioHistoryRepository;
+import org.cryptotrader.repository.PortfolioRepository;
 
 import java.util.ArrayList;
 import java.util.List;

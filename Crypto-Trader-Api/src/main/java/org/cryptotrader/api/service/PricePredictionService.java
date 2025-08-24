@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.cryptotrader.comm.request.PricePredictionRequest;
 import org.cryptotrader.entity.currency.Currency;
 import org.cryptotrader.entity.prediction.PricePrediction;
-import org.cryptotrader.api.repository.PricePredictionRepository;
+import org.cryptotrader.repository.PricePredictionRepository;
 
 
 @Service

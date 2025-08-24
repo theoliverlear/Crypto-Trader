@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.cryptotrader.entity.user.ProductUser;
 import org.cryptotrader.entity.user.User;
-import org.cryptotrader.api.repository.ProductUserRepository;
+import org.cryptotrader.repository.ProductUserRepository;
 
 @Service
 @Slf4j

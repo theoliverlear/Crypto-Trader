@@ -9,10 +9,10 @@ import org.cryptotrader.component.CurrencyJsonGenerator;
 import org.cryptotrader.component.MarketSnapshotsBackfiller;
 import org.cryptotrader.entity.currency.*;
 import org.cryptotrader.component.CurrencyDataRetriever;
-import org.cryptotrader.api.repository.CurrencyHistoryRepository;
-import org.cryptotrader.api.repository.CurrencyRepository;
-import org.cryptotrader.api.repository.UniqueCurrencyHistoryRepository;
-import org.cryptotrader.api.repository.UniqueCurrencyRepository;
+import org.cryptotrader.repository.CurrencyHistoryRepository;
+import org.cryptotrader.repository.CurrencyRepository;
+import org.cryptotrader.repository.UniqueCurrencyHistoryRepository;
+import org.cryptotrader.repository.UniqueCurrencyRepository;
 
 import java.util.List;
 import java.util.Map;
