@@ -1,8 +1,8 @@
-package org.cryptotrader.api.repository;
+package org.cryptotrader.repository;
 //=================================-Imports-==================================
-import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.cryptotrader.entity.user.ProductUser;
-import org.cryptotrader.entity.user.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductUserRepository extends JpaRepository<ProductUser, Long> {
     //============================-Methods-===================================

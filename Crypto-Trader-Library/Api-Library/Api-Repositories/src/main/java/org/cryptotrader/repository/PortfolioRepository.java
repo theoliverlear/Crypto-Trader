@@ -1,7 +1,8 @@
-package org.cryptotrader.api.repository;
+package org.cryptotrader.repository;
 //=================================-Imports-==================================
-import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.cryptotrader.entity.portfolio.Portfolio;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PortfolioRepository extends JpaRepository<Portfolio, Long> {
     //=============================-Methods-==================================

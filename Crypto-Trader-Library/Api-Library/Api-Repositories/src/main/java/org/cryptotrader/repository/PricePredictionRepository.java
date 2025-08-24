@@ -1,7 +1,7 @@
-package org.cryptotrader.api.repository;
+package org.cryptotrader.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.cryptotrader.entity.prediction.PricePrediction;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PricePredictionRepository extends JpaRepository<PricePrediction, Long> {
 }

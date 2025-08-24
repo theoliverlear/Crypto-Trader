@@ -1,7 +1,8 @@
-package org.cryptotrader.api.repository;
+package org.cryptotrader.repository;
 //=================================-Imports-==================================
-import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.cryptotrader.entity.currency.CurrencyHistory;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CurrencyHistoryRepository extends JpaRepository<CurrencyHistory, Long> {
     boolean existsByCurrencyCurrencyCode(String currencyCode);

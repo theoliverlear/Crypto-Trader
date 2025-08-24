@@ -1,7 +1,7 @@
-package org.cryptotrader.api.repository;
+package org.cryptotrader.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.cryptotrader.entity.user.ProfilePicture;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProfilePictureRepository extends JpaRepository<ProfilePicture, Long> {
     ProfilePicture findByUserId(Long userId);

@@ -1,7 +1,7 @@
-package org.cryptotrader.api.repository;
+package org.cryptotrader.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.cryptotrader.entity.training.TrainingSession;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TrainingSessionRepository extends JpaRepository<TrainingSession, Long> {
     

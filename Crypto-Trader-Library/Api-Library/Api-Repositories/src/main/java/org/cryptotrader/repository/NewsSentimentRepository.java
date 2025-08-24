@@ -1,8 +1,8 @@
-package org.cryptotrader.api.repository;
+package org.cryptotrader.repository;
 
+import org.cryptotrader.entity.news.NewsSentiment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.cryptotrader.entity.news.NewsSentiment;
 
 public interface NewsSentimentRepository extends JpaRepository<NewsSentiment, Long> {
     
