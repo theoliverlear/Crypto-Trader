@@ -16,10 +16,12 @@
         <module>Api-Library/Api-Components</module>
         <module>Api-Library/Api-Communication</module>
         <module>Api-Library/Api-Models</module>
+        <module>Api-Library/Api-Repositories</module>
     </modules>
 
     <artifactId>crypto-trader-library</artifactId>
     <name>Crypto-Trader-Library</name>
+    <description>Shared Java libraries for Crypto Trader, including API models, components, communication, and repositories.</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

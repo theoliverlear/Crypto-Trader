@@ -12,6 +12,7 @@
 
     <artifactId>crypto-trader-api-components</artifactId>
     <name>Crypto-Trader-Api-Components</name>
+    <description>Reusable Spring-based components (web, JDBC, HTTP clients) for Crypto Trader APIs.</description>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>

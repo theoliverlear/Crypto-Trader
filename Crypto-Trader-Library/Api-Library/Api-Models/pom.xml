@@ -12,6 +12,7 @@
 
     <artifactId>crypto-trader-api-models</artifactId>
     <name>Crypto-Trader-Api-Models</name>
+    <description>Domain models and entities used across Crypto Trader APIs and services.</description>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>

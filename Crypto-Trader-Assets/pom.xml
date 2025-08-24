@@ -11,6 +11,7 @@
 
     <artifactId>crypto-trader-assets</artifactId>
     <name>Crypto-Trader-Assets</name>
+    <description>Shared UI assets and resources (images, styles, etc.) for Crypto Trader.</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
