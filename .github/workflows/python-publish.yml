@@ -96,7 +96,7 @@ jobs:
         run: |
           if [ -n "$GH_PACKAGES_TOKEN" ]; then echo "present=true" >> "$GITHUB_OUTPUT"; else echo "present=false" >> "$GITHUB_OUTPUT"; fi
 
-      - name: Publish to GitHub Packages (Python registry)
+      - name: Publish to GitHub Packages (Python registry via GH_PACKAGES_TOKEN)
         if: steps.has_gh_packages_token.outputs.present == 'true'
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
@@ -107,10 +107,16 @@ jobs:
           skip-existing: true
           attestations: false
 
-      - name: Skip GitHub Packages publish (token not configured)
+      - name: Publish to GitHub Packages (Python registry via GITHUB_TOKEN)
         if: steps.has_gh_packages_token.outputs.present != 'true'
-        run: |
-          echo "Skipping GitHub Packages upload: no GH_PACKAGES_TOKEN secret configured. Set a classic PAT with write:packages, read:packages, and repo scopes."
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          repository-url: https://pypi.pkg.github.com/${{ github.repository_owner }}/
+          packages-dir: Crypto-Trader-Analysis/dist
+          skip-existing: true
+          attestations: false
 
       - name: Debug upload to GitHub Packages with twine (verbose)
         if: always() && env.DEBUG_GH_PACKAGES == '1'
