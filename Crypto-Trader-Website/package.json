@@ -1,6 +1,6 @@
 {
   "name": "crypto-trader",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "A cryptocurrency trading app",
   "main": "../angular/main.js",
   "scripts": {
