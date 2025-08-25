@@ -88,15 +88,29 @@ jobs:
           echo "Skipping publish: No PYPI_API_TOKEN configured and this run is not on a tag (github.ref=${GITHUB_REF})."
           echo "To use Trusted Publishing (OIDC), configure a Trusted Publisher for this project on PyPI and trigger this workflow from a tag or release."
 
+      - name: Check for GitHub Packages token
+        id: has_gh_packages_token
+        shell: bash
+        env:
+          GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+        run: |
+          if [ -n "$GH_PACKAGES_TOKEN" ]; then echo "present=true" >> "$GITHUB_OUTPUT"; else echo "present=false" >> "$GITHUB_OUTPUT"; fi
+
       - name: Publish to GitHub Packages (Python registry)
+        if: steps.has_gh_packages_token.outputs.present == 'true'
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          user: ${{ github.actor }}
-          password: ${{ github.token }}
+          user: ${{ github.repository_owner }}
+          password: ${{ secrets.GH_PACKAGES_TOKEN }}
           repository-url: https://pypi.pkg.github.com/${{ github.repository_owner }}/
           packages-dir: Crypto-Trader-Analysis/dist
           skip-existing: true
           attestations: false
+
+      - name: Skip GitHub Packages publish (token not configured)
+        if: steps.has_gh_packages_token.outputs.present != 'true'
+        run: |
+          echo "Skipping GitHub Packages upload: no GH_PACKAGES_TOKEN secret configured. Set a classic PAT with write:packages, read:packages, and repo scopes."
 
       - name: Debug upload to GitHub Packages with twine (verbose)
         if: always() && env.DEBUG_GH_PACKAGES == '1'
