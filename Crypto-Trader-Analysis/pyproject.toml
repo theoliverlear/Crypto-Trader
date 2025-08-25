@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "crypto-trader-analysis"
-version = "0.1.0"
+version = "0.1.1"
 description = "Analysis and ML components for the Crypto Trader platform (news sentiment, training, utilities)."
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.10"
-license = { file = "../LICENSE.md" }
+license = "LicenseRef-Proprietary"
 authors = [
   { name = "Oliver Lear Sigwarth", email = "sigwarthsoftware@gmail.com" }
 ]
