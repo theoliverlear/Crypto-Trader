@@ -61,13 +61,13 @@ GPUs for training.
     `gpu/run_gpu_zero.py`).
 - Common operator actions
   - Train a single‑currency LSTM model
-    - Entry: `apps/learning/models/training/training_session.py`
+    - Entry: `src/apps/learning/models/training/training_session.py`
   - Train a multi‑layer model (short/medium/long sequences)
-    - Entry: `apps/learning/models/training/training_session.py`
+    - Entry: `src/apps/learning/models/training/training_session.py`
   - Make a one‑off prediction for a currency
-    - Entry: `apps/learning/models/training/training_session.py`
+    - Entry: `src/apps/learning/models/training/training_session.py`
   - Prediction and reporting lifecycle
-    - Entry: `apps/learning/models/training/training_session.py`
+    - Entry: `src/apps/learning/models/training/training_session.py`
     - Note: `TrainingSession.train()` will compute a prediction after training
       and report it via the platform integration.
     - Standalone utilities for sending predictions also exist under 
@@ -78,9 +78,9 @@ GPUs for training.
 
 Notes:
 - Training hyperparameters can be chosen via `TrainingType` 
-  (`apps/learning/models/training/training_type.py`) or by building a 
+  (`src/apps/learning/models/training/training_type.py`) or by building a 
   `TrainingModel`.
-- Multi‑layer models live under `apps/learning/models/ai/lstm/layered/...`.
+- Multi‑layer models live under `src/apps/learning/models/ai/lstm/layered/...`.
 
 ## 🔒 Safety, privacy, and control
 - This module does not manage exchange API keys directly; it trains/predicts 

@@ -1,0 +1,78 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crypto-trader-analysis"
+version = "0.1.0"
+description = "Analysis and ML components for the Crypto Trader platform (news sentiment, training, utilities)."
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.10"
+license = { file = "../LICENSE.md" }
+authors = [
+  { name = "Oliver Lear Sigwarth", email = "sigwarthsoftware@gmail.com" }
+]
+keywords = ["crypto", "trading", "machine-learning", "tensorflow", "django", "analysis", "sentiment"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Office/Business :: Financial :: Investment",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "License :: Other/Proprietary License",
+  "Operating System :: OS Independent",
+]
+# Keep base deps light; provide heavy ones as extras
+dependencies = [
+  "attrs>=23.0.0",
+  "requests>=2.31.0",
+  "beautifulsoup4>=4.12.0",
+]
+
+[project.optional-dependencies]
+web = [
+  "Django>=5.1",
+]
+data = [
+  "numpy>=1.23",
+  "pandas>=2.0",
+]
+ml = [
+  "numpy>=1.23",
+  "pandas>=2.0",
+  "tensorflow>=2.14",
+]
+all = [
+  "Django>=5.1",
+  "numpy>=1.23",
+  "pandas>=2.0",
+  "tensorflow>=2.14",
+]
+
+[project.urls]
+Homepage = "https://github.com/theoliverlear/Crypto-Trader"
+Repository = "https://github.com/theoliverlear/Crypto-Trader"
+Issues = "https://github.com/theoliverlear/Crypto-Trader/issues"
+
+[project.scripts]
+crypto-trader-gpu-zero = "src.crypto_trader_analysis.gpu.run_gpu_zero:main"
+crypto-trader-gpu-one = "src.crypto_trader_analysis.gpu.run_gpu_one:main"
+
+[tool.setuptools]
+# We intentionally package the top-level "src" as a package because the code imports via
+# "src.crypto_trader_analysis". This preserves import compatibility on installation.
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = [
+  "src",
+  "src.*",
+]
+
+[tool.setuptools.package-data]
+# Include JSON data files inside the package
+"src.crypto_trader_analysis" = ["**/*.json"]

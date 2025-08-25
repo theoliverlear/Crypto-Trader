@@ -1,0 +1,1 @@
+recursive-include src/crypto_trader_analysis *.json
