@@ -72,7 +72,7 @@ jobs:
           packages-dir: Crypto-Trader-Analysis/dist
 
       - name: Publish package to PyPI (OIDC)
-        if: steps.check_pypi.outputs.exists == 'false' && steps.has_token.outputs.present != 'true'
+        if: steps.check_pypi.outputs.exists == 'false' && steps.has_token.outputs.present != 'true' && startsWith(github.ref, 'refs/tags/')
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: Crypto-Trader-Analysis/dist
@@ -80,3 +80,9 @@ jobs:
       - name: Skip publish (already exists)
         if: steps.check_pypi.outputs.exists == 'true'
         run: echo "Skipped publish. Version ${{ steps.get_version.outputs.version }} already exists on PyPI."
+
+      - name: Skip publish (no token and not a tag)
+        if: steps.check_pypi.outputs.exists == 'false' && steps.has_token.outputs.present != 'true' && !startsWith(github.ref, 'refs/tags/')
+        run: |
+          echo "Skipping publish: No PYPI_API_TOKEN configured and this run is not on a tag (github.ref=${GITHUB_REF})."
+          echo "To use Trusted Publishing (OIDC), configure a Trusted Publisher for this project on PyPI and trigger this workflow from a tag or release."
