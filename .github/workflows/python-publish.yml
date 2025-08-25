@@ -15,6 +15,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
+      packages: write
 
     steps:
       - name: Check out repository
@@ -90,8 +91,8 @@ jobs:
       - name: Publish to GitHub Packages (Python registry)
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          user: ${{ github.repository_owner }}
-          password: ${{ secrets.GH_PACKAGES_TOKEN }}
+          user: ${{ github.actor }}
+          password: ${{ github.token }}
           repository-url: https://pypi.pkg.github.com/${{ github.repository_owner }}/
           packages-dir: Crypto-Trader-Analysis/dist
           skip-existing: true
