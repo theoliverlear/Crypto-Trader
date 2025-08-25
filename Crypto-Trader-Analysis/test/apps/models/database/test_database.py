@@ -1,8 +1,8 @@
 import unittest
 from datetime import datetime
 
-from apps.learning.models import Database
-from apps.learning.models.database.query_type import QueryType
+from src.crypto_trader_analysis.apps.learning.models import Database
+from src.crypto_trader_analysis.apps.learning.models.database.query_type import QueryType
 
 
 def setup_database():
