@@ -97,6 +97,8 @@ jobs:
           if [ -n "$GH_PACKAGES_TOKEN" ]; then echo "present=true" >> "$GITHUB_OUTPUT"; else echo "present=false" >> "$GITHUB_OUTPUT"; fi
 
       - name: Publish to GitHub Packages (Python registry via GH_PACKAGES_TOKEN)
+        id: publish_ghp_pat
+        continue-on-error: true
         if: steps.has_gh_packages_token.outputs.present == 'true'
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
@@ -108,7 +110,7 @@ jobs:
           attestations: false
 
       - name: Publish to GitHub Packages (Python registry via GITHUB_TOKEN)
-        if: steps.has_gh_packages_token.outputs.present != 'true'
+        if: always() && (steps.has_gh_packages_token.outputs.present != 'true' || steps.publish_ghp_pat.conclusion == 'failure')
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: ${{ github.repository_owner }}
