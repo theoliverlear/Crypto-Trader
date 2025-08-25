@@ -1,0 +1,67 @@
+# Publishes the Python package (Crypto-Trader-Analysis) to PyPI when a GitHub Release is created
+# Requires repository secret: PYPI_API_TOKEN (an API token from PyPI)
+# You can also run this manually via the "Run workflow" button (workflow_dispatch).
+
+name: Publish Python Package (Crypto-Trader-Analysis)
+
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install build tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install build
+
+      - name: Build package
+        working-directory: Crypto-Trader-Analysis
+        run: |
+          python -m build
+
+      - name: Extract project version
+        id: get_version
+        shell: bash
+        run: |
+          V=$(python -c "import tomllib; d=tomllib.load(open('Crypto-Trader-Analysis/pyproject.toml','rb')); print(d['project']['version'])")
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+
+      - name: Check if version already exists on PyPI
+        id: check_pypi
+        shell: bash
+        run: |
+          NAME="crypto-trader-analysis"
+          V="${{ steps.get_version.outputs.version }}"
+          URL="https://pypi.org/pypi/${NAME}/${V}/json"
+          echo "Checking existence on PyPI: $URL"
+          code=$(curl -L -s -o /dev/null -w "%{http_code}" "$URL")
+          exists=false
+          if [ "$code" = "200" ]; then exists=true; fi
+          echo "exists=$exists" >> "$GITHUB_OUTPUT"
+          if [ "$exists" = true ]; then echo "Version $V already exists on PyPI. Skipping upload."; fi
+
+      - name: Publish package to PyPI
+        if: steps.check_pypi.outputs.exists == 'false'
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          packages_dir: Crypto-Trader-Analysis/dist
+
+      - name: Skip publish (already exists)
+        if: steps.check_pypi.outputs.exists == 'true'
+        run: echo "Skipped publish. Version ${{ steps.get_version.outputs.version }} already exists on PyPI."
