@@ -96,3 +96,14 @@ jobs:
           packages-dir: Crypto-Trader-Analysis/dist
           skip-existing: true
           attestations: false
+
+      - name: Debug upload to GitHub Packages with twine (verbose)
+        if: always() && env.DEBUG_GH_PACKAGES == '1'
+        env:
+          TWINE_USERNAME: ${{ github.repository_owner }}
+          TWINE_PASSWORD: ${{ secrets.GH_PACKAGES_TOKEN }}
+        run: |
+          python -m pip install --upgrade twine
+          python -m twine upload --verbose \
+            --repository-url https://pypi.pkg.github.com/${{ github.repository_owner }}/ \
+            Crypto-Trader-Analysis/dist/*
