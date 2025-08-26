@@ -67,6 +67,45 @@
                     <skip>false</skip>
                 </configuration>
             </plugin>
+            <!-- Ensure aggregator (parent) POM deploys via deploy-file with skipExisting, without affecting submodules -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>3.1.2</version>
+                <inherited>false</inherited>
+                <executions>
+                    <!-- Prevent the default deploy goal for the aggregator only -->
+                    <execution>
+                        <id>override-default-deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </execution>
+                    <!-- Deploy the parent POM using deploy-file with skipExisting support -->
+                    <execution>
+                        <id>deploy-parent-pom-file</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>${project.file}</file>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>${project.artifactId}</artifactId>
+                            <version>${project.version}</version>
+                            <packaging>pom</packaging>
+                            <repositoryId>github</repositoryId>
+                            <url>${project.distributionManagement.repository.url}</url>
+                            <retryFailedDeploymentCount>1</retryFailedDeploymentCount>
+                            <skipExisting>true</skipExisting>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
