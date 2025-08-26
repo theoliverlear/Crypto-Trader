@@ -13,7 +13,7 @@
     <artifactId>crypto-trader-api-models</artifactId>
     <name>Crypto-Trader-Api-Models</name>
     <description>Domain models and entities used across Crypto Trader APIs and services.</description>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <properties>
         <maven.compiler.source>23</maven.compiler.source>
         <maven.compiler.target>23</maven.compiler.target>
@@ -137,11 +137,23 @@
             <groupId>org.testcontainers</groupId>
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>postgresql</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- SLF4J API needed because production code uses @Slf4j -->
         <dependency>
