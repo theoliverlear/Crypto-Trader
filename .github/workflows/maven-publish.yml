@@ -39,9 +39,6 @@ jobs:
           poms=$(git ls-files '**/pom.xml')
           for pom in $poms; do
             PACK=$(mvn -q -DforceStdout -f "$pom" help:evaluate -Dexpression=project.packaging)
-            if [ "$PACK" = "pom" ]; then
-              continue
-            fi
             G=$(mvn -q -DforceStdout -f "$pom" help:evaluate -Dexpression=project.groupId)
             A=$(mvn -q -DforceStdout -f "$pom" help:evaluate -Dexpression=project.artifactId)
             V=$(mvn -q -DforceStdout -f "$pom" help:evaluate -Dexpression=project.version)
@@ -56,6 +53,11 @@ jobs:
             if [ "$code" = "401" ] || [ "$code" = "403" ]; then
               echo "Auth check issue for $A:$V (HTTP $code). Proceeding with deploy to avoid false skip."
             fi
-            echo "Deploying $A:$V from $pom"
-            mvn -B -f "$pom" -DskipTests=true deploy -s "$GITHUB_WORKSPACE/settings.xml"
+            if [ "$PACK" = "pom" ]; then
+              echo "Deploying parent POM $A:$V from $pom (non-recursive)"
+              mvn -B -N -f "$pom" deploy -s "$GITHUB_WORKSPACE/settings.xml"
+            else
+              echo "Deploying $A:$V from $pom"
+              mvn -B -f "$pom" -DskipTests=true deploy -s "$GITHUB_WORKSPACE/settings.xml"
+            fi
           done
