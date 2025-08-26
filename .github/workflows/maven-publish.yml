@@ -37,7 +37,10 @@ jobs:
         run: |
           set -e
           echo "Discovering modules..."
-          poms=$(git ls-files '**/pom.xml')
+          # Use git pathspec globbing to reliably find all pom.xml files, including the root
+          poms=$(git ls-files "pom.xml" ":(glob)**/pom.xml")
+          echo "Found POMs:"
+          echo "$poms"
           for pom in $poms; do
             PACK=$(mvn -q -DforceStdout -f "$pom" help:evaluate -Dexpression=project.packaging)
             G=$(mvn -q -DforceStdout -f "$pom" help:evaluate -Dexpression=project.groupId)
