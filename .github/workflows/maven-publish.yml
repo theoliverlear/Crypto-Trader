@@ -29,31 +29,33 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
-      - name: Check if Maven version already published
-        id: check_maven
+      - name: Deploy modules (skip if version exists)
         env:
           GITHUB_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
         run: |
-          V=$(mvn -q -DforceStdout help:evaluate -Dexpression=project.version)
-          G=$(mvn -q -DforceStdout help:evaluate -Dexpression=project.groupId)
-          A=$(mvn -q -DforceStdout help:evaluate -Dexpression=project.artifactId)
-          GP=${G//./\/}
-          URL="https://maven.pkg.github.com/${REPO}/${GP}/${A}/${V}/${A}-${V}.pom"
-          echo "Checking existence of: $URL"
-          code=$(curl -L -s -o /dev/null -w "%{http_code}" -u "${{ github.actor }}:${GITHUB_TOKEN}" "$URL")
-          exists=false
-          if [ "$code" = "200" ]; then exists=true; fi
-          if [ "$code" = "401" ] || [ "$code" = "403" ]; then echo "Auth issue checking $URL (HTTP $code). Proceeding to deploy to avoid false skip."; exists=false; fi
-          echo "exists=$exists" >> "$GITHUB_OUTPUT"
-          if [ "$exists" = "true" ]; then echo "Version $V already exists on GitHub Packages for root artifact. Proceeding with deploy to publish sub-modules and skip existing artifacts."; fi
-
-      - name: Publish to GitHub Packages Apache Maven
-        run: mvn -B -DskipExisting=true deploy -s $GITHUB_WORKSPACE/settings.xml
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-
-      - name: Skip publish (already exists)
-        if: false
-        run: |
-          echo "Skipped publish: $(mvn -q -DforceStdout help:evaluate -Dexpression=project.groupId):$(mvn -q -DforceStdout help:evaluate -Dexpression=project.artifactId):$(mvn -q -DforceStdout help:evaluate -Dexpression=project.version) already exists in GitHub Packages"
+          set -e
+          echo "Discovering modules..."
+          poms=$(git ls-files '**/pom.xml')
+          for pom in $poms; do
+            PACK=$(mvn -q -DforceStdout -f "$pom" help:evaluate -Dexpression=project.packaging)
+            if [ "$PACK" = "pom" ]; then
+              continue
+            fi
+            G=$(mvn -q -DforceStdout -f "$pom" help:evaluate -Dexpression=project.groupId)
+            A=$(mvn -q -DforceStdout -f "$pom" help:evaluate -Dexpression=project.artifactId)
+            V=$(mvn -q -DforceStdout -f "$pom" help:evaluate -Dexpression=project.version)
+            GP=${G//./\/}
+            URL="https://maven.pkg.github.com/${REPO}/${GP}/${A}/${V}/${A}-${V}.pom"
+            echo "Checking $A:$V at $URL"
+            code=$(curl -L -s -o /dev/null -w "%{http_code}" -u "${{ github.actor }}:${GITHUB_TOKEN}" "$URL")
+            if [ "$code" = "200" ]; then
+              echo "Artifact already exists (HTTP 200). Skipping deploy for $A:$V"
+              continue
+            fi
+            if [ "$code" = "401" ] || [ "$code" = "403" ]; then
+              echo "Auth check issue for $A:$V (HTTP $code). Proceeding with deploy to avoid false skip."
+            fi
+            echo "Deploying $A:$V from $pom"
+            mvn -B -f "$pom" -DskipTests=true deploy -s "$GITHUB_WORKSPACE/settings.xml"
+          done
