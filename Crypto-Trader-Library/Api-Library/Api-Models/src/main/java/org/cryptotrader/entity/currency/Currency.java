@@ -39,6 +39,7 @@ public class Currency {
     private static final DecimalFormat decimalFormat = new DecimalFormat("##,#00.00000000");
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
+    public static String TESTING_URL = "test";
     //===========================-Constructors-===============================
     public Currency() {
         this.name = "";
@@ -143,6 +144,9 @@ public class Currency {
     }
     //-------------------------Get-Updated-Value------------------------------
     public double getUpdatedValue() {
+        if (this.urlPath.equals(TESTING_URL)) {
+            return this.value;
+        }
         this.updateValue();
         return this.value;
     }
