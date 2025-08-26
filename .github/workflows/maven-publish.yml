@@ -53,11 +53,38 @@ jobs:
             if [ "$code" = "401" ] || [ "$code" = "403" ]; then
               echo "Auth check issue for $A:$V (HTTP $code). Proceeding with deploy to avoid false skip."
             fi
+            # Deploy with graceful handling of 409 Conflict (version already exists)
             if [ "$PACK" = "pom" ]; then
               echo "Deploying parent POM $A:$V from $pom (non-recursive)"
-              mvn -B -N -f "$pom" deploy -s "$GITHUB_WORKSPACE/settings.xml"
+              log="deploy_${A}_${V}.log"
+              set +e
+              mvn -B -N -f "$pom" deploy -s "$GITHUB_WORKSPACE/settings.xml" 2>&1 | tee "$log"
+              rc=${PIPESTATUS[0]}
+              set -e
+              if [ $rc -ne 0 ]; then
+                if grep -q "status code: 409" "$log"; then
+                  echo "Received 409 Conflict for $A:$V. Assuming already present. Skipping."
+                  continue
+                else
+                  echo "Deploy failed for $A:$V with code $rc"
+                  exit $rc
+                fi
+              fi
             else
               echo "Deploying $A:$V from $pom"
-              mvn -B -f "$pom" -DskipTests=true deploy -s "$GITHUB_WORKSPACE/settings.xml"
+              log="deploy_${A}_${V}.log"
+              set +e
+              mvn -B -f "$pom" -DskipTests=true deploy -s "$GITHUB_WORKSPACE/settings.xml" 2>&1 | tee "$log"
+              rc=${PIPESTATUS[0]}
+              set -e
+              if [ $rc -ne 0 ]; then
+                if grep -q "status code: 409" "$log"; then
+                  echo "Received 409 Conflict for $A:$V. Assuming already present. Skipping."
+                  continue
+                else
+                  echo "Deploy failed for $A:$V with code $rc"
+                  exit $rc
+                fi
+              fi
             fi
           done
