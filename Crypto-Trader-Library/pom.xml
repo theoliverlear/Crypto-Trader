@@ -22,6 +22,7 @@
     <artifactId>crypto-trader-library</artifactId>
     <name>Crypto-Trader-Library</name>
     <description>Shared Java libraries for Crypto Trader, including API models, components, communication, and repositories.</description>
+    <version>0.0.2</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
