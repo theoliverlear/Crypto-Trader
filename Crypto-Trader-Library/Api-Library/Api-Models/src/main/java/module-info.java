@@ -5,7 +5,7 @@ module org.cryptotrader.api.models {
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires static lombok;
-    requires static org.slf4j;
+    requires org.slf4j;
     requires spring.beans;
     requires spring.context;
     requires spring.security.crypto;
