@@ -21,15 +21,12 @@
     </properties>
 
     <dependencies>
-        <!-- Jackson annotations commonly used in DTOs -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>2.17.1</version>
             <scope>provided</scope>
         </dependency>
-
-        <!-- Lombok if used in the comm classes -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
