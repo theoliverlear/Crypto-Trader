@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@DisplayName("Asset Trader")
 public class AssetTraderTest extends CryptoTraderTest {
     private Currency testCurrency;
     private PortfolioAsset testAsset;
@@ -49,5 +50,24 @@ public class AssetTraderTest extends CryptoTraderTest {
         this.testCurrency.setValue(99);
         expected = true;
         assertEquals(expected, this.testTrader.trade());
+    }
+    
+    @Test
+    @DisplayName("Selling should empty shares")
+    public void testShouldEmptyShares() {
+        this.testAsset.setShares(1);
+        this.testAsset.setTargetPrice(100);
+        this.testTrader.sell(this.testCurrency.getValue());
+        assertEquals(0, this.testAsset.getShares());
+    }
+    
+    @Test
+    @DisplayName("Buying should add shares")
+    public void testShouldAddShares() {
+        this.testAsset.setShares(0);
+        this.testAsset.setAssetWalletDollars(100);
+        this.testAsset.setTargetPrice(100);
+        this.testTrader.buy(this.testCurrency.getValue());
+        assertEquals(1, this.testAsset.getShares());
     }
 }
