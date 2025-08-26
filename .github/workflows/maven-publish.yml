@@ -66,8 +66,14 @@ jobs:
                 mvn -B -N -f "$GITHUB_WORKSPACE/pom.xml" -DskipExisting=true deploy -s "$GITHUB_WORKSPACE/settings.xml" 2>&1 | tee "$log"
                 rc=${PIPESTATUS[0]}
               else
-                mvn -B -f "$GITHUB_WORKSPACE/pom.xml" -pl ":$A" -DskipExisting=true -DskipRootDeploy=true deploy -s "$GITHUB_WORKSPACE/settings.xml" 2>&1 | tee "$log"
+                # Build required dependent modules into local repo, but do not deploy them
+                mvn -B -f "$GITHUB_WORKSPACE/pom.xml" -pl ":$A" -am -DskipTests=true -DskipRootDeploy=true install -s "$GITHUB_WORKSPACE/settings.xml" 2>&1 | tee "$log"
                 rc=${PIPESTATUS[0]}
+                if [ $rc -eq 0 ]; then
+                  # Now deploy only the selected module
+                  mvn -B -f "$GITHUB_WORKSPACE/pom.xml" -pl ":$A" -DskipExisting=true -DskipRootDeploy=true deploy -s "$GITHUB_WORKSPACE/settings.xml" 2>&1 | tee -a "$log"
+                  rc=${PIPESTATUS[0]}
+                fi
               fi
               set -e
               if [ $rc -ne 0 ]; then
@@ -83,8 +89,14 @@ jobs:
               echo "Deploying $A:$V from $pom"
               log="deploy_${A}_${V}.log"
               set +e
-              mvn -B -f "$GITHUB_WORKSPACE/pom.xml" -pl ":$A" -DskipTests=true -DskipExisting=true -DskipRootDeploy=true deploy -s "$GITHUB_WORKSPACE/settings.xml" 2>&1 | tee "$log"
+              # Build required dependent modules into local repo, but do not deploy them
+              mvn -B -f "$GITHUB_WORKSPACE/pom.xml" -pl ":$A" -am -DskipTests=true -DskipRootDeploy=true install -s "$GITHUB_WORKSPACE/settings.xml" 2>&1 | tee "$log"
               rc=${PIPESTATUS[0]}
+              if [ $rc -eq 0 ]; then
+                # Now deploy only the selected module
+                mvn -B -f "$GITHUB_WORKSPACE/pom.xml" -pl ":$A" -DskipTests=true -DskipExisting=true -DskipRootDeploy=true deploy -s "$GITHUB_WORKSPACE/settings.xml" 2>&1 | tee -a "$log"
+                rc=${PIPESTATUS[0]}
+              fi
               set -e
               if [ $rc -ne 0 ]; then
                 if grep -Ei -q "(status code: 409|Return code is: 409|409[^0-9]*Conflict)" "$log"; then
