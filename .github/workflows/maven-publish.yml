@@ -55,11 +55,16 @@ jobs:
             fi
             # Deploy with graceful handling of 409 Conflict (version already exists)
             if [ "$PACK" = "pom" ]; then
-              echo "Deploying parent POM $A:$V from $pom (non-recursive)"
+              echo "Deploying POM $A:$V from $pom"
               log="deploy_${A}_${V}.log"
               set +e
-              mvn -B -f "$GITHUB_WORKSPACE/pom.xml" -pl ":$A" -am -DskipExisting=true deploy -s "$GITHUB_WORKSPACE/settings.xml" 2>&1 | tee "$log"
-              rc=${PIPESTATUS[0]}
+              if [ "$A" = "crypto-trader" ]; then
+                mvn -B -N -f "$GITHUB_WORKSPACE/pom.xml" -DskipExisting=true deploy -s "$GITHUB_WORKSPACE/settings.xml" 2>&1 | tee "$log"
+                rc=${PIPESTATUS[0]}
+              else
+                mvn -B -f "$GITHUB_WORKSPACE/pom.xml" -pl ":$A" -am -DskipExisting=true -DskipRootDeploy=true deploy -s "$GITHUB_WORKSPACE/settings.xml" 2>&1 | tee "$log"
+                rc=${PIPESTATUS[0]}
+              fi
               set -e
               if [ $rc -ne 0 ]; then
                 if grep -Ei -q "(status code: 409|Return code is: 409|409[^0-9]*Conflict)" "$log"; then
@@ -74,7 +79,7 @@ jobs:
               echo "Deploying $A:$V from $pom"
               log="deploy_${A}_${V}.log"
               set +e
-              mvn -B -f "$GITHUB_WORKSPACE/pom.xml" -pl ":$A" -am -DskipTests=true -DskipExisting=true deploy -s "$GITHUB_WORKSPACE/settings.xml" 2>&1 | tee "$log"
+              mvn -B -f "$GITHUB_WORKSPACE/pom.xml" -pl ":$A" -am -DskipTests=true -DskipExisting=true -DskipRootDeploy=true deploy -s "$GITHUB_WORKSPACE/settings.xml" 2>&1 | tee "$log"
               rc=${PIPESTATUS[0]}
               set -e
               if [ $rc -ne 0 ]; then
