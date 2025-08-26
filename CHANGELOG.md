@@ -21,6 +21,7 @@
 | Api-Components         | v.v.v   |
 | Api-Models             | v.v.v   |
 | Api-Repositories       | v.v.v   |
+| Crypto-Trader-Testing  | v.v.v   |
 | Crypto-Trader-Website  | v.v.v   |
 
 
@@ -87,6 +88,11 @@
 - Bullet
 
 ### [Api Repositories](Crypto-Trader-Library/Api-Library/Api-Repositories)
+- Bullet
+- Bullet
+- Bullet
+
+### [Crypto Trader Testing](Crypto-Trader-Testing)
 - Bullet
 - Bullet
 - Bullet
