@@ -11,7 +11,6 @@ import java.util.Optional;
 public class LoggingTestWatcher implements TestWatcher {
     private static final Logger log = LoggerFactory.getLogger(LoggingTestWatcher.class);
 
-    // ANSI colors
     private static final String RESET  = "\u001B[0m";
     private static final String GREEN  = "\u001B[32m";
     private static final String RED    = "\u001B[31m";
