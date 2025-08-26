@@ -50,7 +50,7 @@ jobs:
 
       - name: Publish to GitHub Packages Apache Maven
         if: steps.check_maven.outputs.exists == 'false'
-        run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
+        run: mvn -B -DskipExisting=true deploy -s $GITHUB_WORKSPACE/settings.xml
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
