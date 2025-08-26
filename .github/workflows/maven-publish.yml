@@ -58,7 +58,7 @@ jobs:
               echo "Deploying parent POM $A:$V from $pom (non-recursive)"
               log="deploy_${A}_${V}.log"
               set +e
-              mvn -B -N -f "$pom" -DskipExisting=true deploy -s "$GITHUB_WORKSPACE/settings.xml" 2>&1 | tee "$log"
+              mvn -B -f "$GITHUB_WORKSPACE/pom.xml" -pl ":$A" -am -DskipExisting=true deploy -s "$GITHUB_WORKSPACE/settings.xml" 2>&1 | tee "$log"
               rc=${PIPESTATUS[0]}
               set -e
               if [ $rc -ne 0 ]; then
@@ -74,7 +74,7 @@ jobs:
               echo "Deploying $A:$V from $pom"
               log="deploy_${A}_${V}.log"
               set +e
-              mvn -B -f "$pom" -DskipTests=true -DskipExisting=true deploy -s "$GITHUB_WORKSPACE/settings.xml" 2>&1 | tee "$log"
+              mvn -B -f "$GITHUB_WORKSPACE/pom.xml" -pl ":$A" -am -DskipTests=true -DskipExisting=true deploy -s "$GITHUB_WORKSPACE/settings.xml" 2>&1 | tee "$log"
               rc=${PIPESTATUS[0]}
               set -e
               if [ $rc -ne 0 ]; then
