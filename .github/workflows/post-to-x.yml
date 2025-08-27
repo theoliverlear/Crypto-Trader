@@ -1,0 +1,116 @@
+name: Post Crypto Trader updates to X (Java)
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    types: [ closed ]
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Run mode (test = no post, prod = post)"
+        required: false
+        default: test
+        type: choice
+        options: [ test, prod ]
+      start:
+        description: "Start commit SHA (optional)"
+        required: false
+        type: string
+      end:
+        description: "End commit SHA (optional)"
+        required: false
+        type: string
+
+jobs:
+  promo:
+    runs-on: ubuntu-latest
+    permissions: { contents: read }
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '23'
+          cache: 'maven'
+
+      - name: Resolve mode
+        id: mode
+        shell: bash
+        run: |
+          set -eo pipefail
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            MODE="${{ inputs.mode }}"
+            if [[ -z "$MODE" ]]; then MODE="test"; fi
+          elif [[ "${{ github.event_name }}" == "push" ]]; then
+            MODE="prod"
+          elif [[ "${{ github.event_name }}" == "pull_request" && "${{ github.event.action }}" == "closed" && "${{ github.event.pull_request.merged }}" == "true" ]]; then
+            MODE="prod"
+          else
+            MODE="test"
+          fi
+          echo "value=$MODE" >> "$GITHUB_OUTPUT"
+
+      - name: Determine commit range
+        id: range
+        shell: bash
+        run: |
+          set -eo pipefail
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            START="${{ github.event.before }}"
+            END="${{ github.sha }}"
+            if [[ "$START" == "0000000000000000000000000000000000000000" || -z "$START" ]]; then
+              # Branch creation or unknown 'before' — fall back to first commit reachable from END
+              START="$(git rev-list --max-parents=0 "$END" | tail -n1)"
+            fi
+            echo "start=$START" >> "$GITHUB_OUTPUT"
+            echo "end=$END" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            if [[ "${{ github.event.action }}" == "closed" && "${{ github.event.pull_request.merged }}" == "true" ]]; then
+              BASE="${{ github.event.pull_request.base.sha }}"
+              HEAD="${{ github.event.pull_request.head.sha }}"
+              echo "start=$BASE" >> "$GITHUB_OUTPUT"
+              echo "end=$HEAD" >> "$GITHUB_OUTPUT"
+              echo "merge=${{ github.event.pull_request.merge_commit_sha }}" >> "$GITHUB_OUTPUT"
+            else
+              echo "start=" >> "$GITHUB_OUTPUT"
+              echo "end=" >> "$GITHUB_OUTPUT"
+            fi
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            START="${{ inputs.start }}"
+            END="${{ inputs.end }}"
+            if [[ -z "$END" ]]; then END="$(git rev-parse HEAD)"; fi
+            if [[ -z "$START" ]]; then
+              # Default to previous commit if available, or repository root commit otherwise
+              START="$(git rev-parse HEAD~1 2>/dev/null || true)"
+              if [[ -z "$START" ]]; then
+                START="$(git rev-list --max-parents=0 "$END" | tail -n1)"
+              fi
+            fi
+            echo "start=$START" >> "$GITHUB_OUTPUT"
+            echo "end=$END" >> "$GITHUB_OUTPUT"
+          else
+            echo "start=" >> "$GITHUB_OUTPUT"
+            echo "end=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build promo module
+        run: mvn -B -pl Crypto-Trader-Promo -am package
+
+      - name: 'Run ReleaseBot (mode: ${{ steps.mode.outputs.value }})'
+        if: ${{ steps.range.outputs.start != '' && steps.range.outputs.end != '' }}
+        working-directory: ./Crypto-Trader-Promo
+        env:
+          OPENAI_KEY:       ${{ secrets.OPENAI_KEY }}
+          GITHUB_TOKEN:     ${{ secrets.GITHUB_TOKEN }}
+          START_COMMIT:     ${{ steps.range.outputs.start }}
+          END_COMMIT:       ${{ steps.range.outputs.end }}
+          RELEASEBOT_MODE:  ${{ steps.mode.outputs.value }}
+          X_API_KEY:        ${{ secrets.X_API_KEY }}
+          X_SECRET:         ${{ secrets.X_SECRET }}
+          X_ACCESS_TOKEN:   ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_SECRET:  ${{ secrets.X_ACCESS_SECRET }}
+        run: mvn -q -DskipTests org.codehaus.mojo:exec-maven-plugin:3.5.0:java -Dexec.mainClass=org.cryptotrader.promo.CommitPromo -Dexec.classpathScope=runtime
