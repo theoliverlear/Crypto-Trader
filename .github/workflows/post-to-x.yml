@@ -98,7 +98,7 @@ jobs:
           fi
 
       - name: Build promo module
-        run: mvn -B -pl Crypto-Trader-Promo -am package
+        run: mvn -B -f Crypto-Trader-Promo/pom.xml -DskipTests package
 
       - name: 'Run ReleaseBot (mode: ${{ steps.mode.outputs.value }})'
         if: ${{ steps.range.outputs.start != '' && steps.range.outputs.end != '' }}
