@@ -1,4 +1,4 @@
-package org.cryptotrader.admin.config;
+package org.cryptotrader.desktop.component.config;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

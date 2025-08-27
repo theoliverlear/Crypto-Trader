@@ -1,4 +1,4 @@
-package org.cryptotrader.admin.component;
+package org.cryptotrader.desktop.component;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

@@ -1,9 +1,9 @@
-package org.cryptotrader.admin.component;
+package org.cryptotrader.desktop.component;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
-import org.cryptotrader.admin.config.SpringContext;
+import org.cryptotrader.desktop.component.config.SpringContext;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.stereotype.Component;
 
