@@ -2,6 +2,7 @@ package org.cryptotrader.promo;
 
 
 import org.cryptotrader.promo.models.openai.*;
+import org.cryptotrader.promo.models.openai.commit.CommitCapture;
 import org.cryptotrader.promo.models.twitter.Tweeter;
 
 public class CommitPromo {
