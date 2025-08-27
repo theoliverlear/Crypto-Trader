@@ -105,7 +105,7 @@ jobs:
         working-directory: ./Crypto-Trader-Promo
         env:
           OPENAI_KEY:       ${{ secrets.OPENAI_KEY }}
-          GITHUB_TOKEN:     ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN:     ${{ secrets.GH_TOKEN }}
           START_COMMIT:     ${{ steps.range.outputs.start }}
           END_COMMIT:       ${{ steps.range.outputs.end }}
           RELEASEBOT_MODE:  ${{ steps.mode.outputs.value }}
