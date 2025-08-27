@@ -1,0 +1,40 @@
+{
+  "name": "desktop-styles",
+  "version": "0.0.1",
+  "description": "A set of JavaFX styles easily imported with SCSS.",
+  "keywords": [
+    "javafx",
+    "scss",
+    "sass",
+    "stylesheet",
+    "styles",
+    "cryptotrader"
+  ],
+  "homepage": "https://github.com/theoliverlear/Crypto-Trader#readme",
+  "bugs": {
+    "url": "https://github.com/theoliverlear/Crypto-Trader/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theoliverlear/Crypto-Trader.git",
+    "directory": "Crypto-Trader-Library/Desktop-Library/Desktop-Styles"
+  },
+  "license": "ISC",
+  "author": "@theoliverlear - Oliver Lear Sigwarth",
+  "type": "commonjs",
+  "style": "index.scss",
+  "files": [
+    "*.scss",
+    "!**/*.map"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "scripts": {
+    "prepublishOnly": "npm run verify",
+    "verify": "node -e \"require('fs').accessSync('index.scss')\"",
+    "version:exists": "node -e \"const {execSync}=require('child_process'); const pkg=require('./package.json'); const v=pkg.version; const name=pkg.name.startsWith('@')?pkg.name:'@theoliverlear/'+pkg.name; try{execSync('npm view '+name+'@'+v+' version',{stdio:'ignore'}); console.log(name+'@'+v+' exists on registry'); process.exit(0);}catch(e){ console.log(name+'@'+v+' does not exist on registry'); process.exit(1);}\"",
+    "pack:dryrun": "npm publish --dry-run",
+    "test": "echo \"No tests for SCSS-only package\""
+  }
+}
