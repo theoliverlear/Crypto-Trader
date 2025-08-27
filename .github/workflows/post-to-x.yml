@@ -51,7 +51,7 @@ jobs:
             MODE="prod"
           elif [[ "${{ github.event_name }}" == "pull_request" && "${{ github.event.action }}" == "closed" && "${{ github.event.pull_request.merged }}" == "true" ]]; then
             MODE="prod"
-          elif [[ "${{ github.event_name }}" == "issues" && "${{ github.event.action }}" == "opened" ]]; then
+          elif [[ "${{ github.event_name }}" == "issues" && "${{ github.event.action }}" == "opened" && "${{ github.event.issue.user.login }}" == "theoliverlear" ]]; then
             MODE="prod"
           else
             MODE="test"
@@ -59,7 +59,7 @@ jobs:
           echo "value=$MODE" >> "$GITHUB_OUTPUT"
 
       - name: Set ISSUE_* environment variables (on issue opened)
-        if: ${{ github.event_name == 'issues' && github.event.action == 'opened' }}
+        if: ${{ github.event_name == 'issues' && github.event.action == 'opened' && github.event.issue.user.login == 'theoliverlear' }}
         shell: bash
         run: |
           echo "ISSUE_TITLE<<'EOF'" >> "$GITHUB_ENV"
@@ -117,7 +117,7 @@ jobs:
         run: mvn -B -f Crypto-Trader-Promo/pom.xml -DskipTests package
 
       - name: 'Run IssuePromo (mode: ${{ steps.mode.outputs.value }})'
-        if: ${{ github.event_name == 'issues' && github.event.action == 'opened' }}
+        if: ${{ github.event_name == 'issues' && github.event.action == 'opened' && github.event.issue.user.login == 'theoliverlear' }}
         working-directory: ./Crypto-Trader-Promo
         env:
           OPENAI_KEY:       ${{ secrets.OPENAI_KEY }}
