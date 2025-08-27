@@ -6,6 +6,8 @@ on:
   pull_request:
     types: [ closed ]
     branches: [ "main", "master" ]
+  issues:
+    types: [ opened ]
   workflow_dispatch:
     inputs:
       mode:
@@ -26,7 +28,7 @@ on:
 jobs:
   promo:
     runs-on: ubuntu-latest
-    permissions: { contents: read }
+    permissions: { contents: read, issues: read }
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
@@ -49,10 +51,24 @@ jobs:
             MODE="prod"
           elif [[ "${{ github.event_name }}" == "pull_request" && "${{ github.event.action }}" == "closed" && "${{ github.event.pull_request.merged }}" == "true" ]]; then
             MODE="prod"
+          elif [[ "${{ github.event_name }}" == "issues" && "${{ github.event.action }}" == "opened" ]]; then
+            MODE="prod"
           else
             MODE="test"
           fi
           echo "value=$MODE" >> "$GITHUB_OUTPUT"
+
+      - name: Set ISSUE_* environment variables (on issue opened)
+        if: ${{ github.event_name == 'issues' && github.event.action == 'opened' }}
+        shell: bash
+        run: |
+          echo "ISSUE_TITLE<<'EOF'" >> "$GITHUB_ENV"
+          echo "${{ github.event.issue.title }}" >> "$GITHUB_ENV"
+          echo "EOF" >> "$GITHUB_ENV"
+          echo "ISSUE_BODY<<'EOF'" >> "$GITHUB_ENV"
+          echo "${{ github.event.issue.body }}" >> "$GITHUB_ENV"
+          echo "EOF" >> "$GITHUB_ENV"
+          echo "ISSUE_TAGS=${{ join(github.event.issue.labels.*.name, ',') }}" >> "$GITHUB_ENV"
 
       - name: Determine commit range
         id: range
@@ -99,6 +115,22 @@ jobs:
 
       - name: Build promo module
         run: mvn -B -f Crypto-Trader-Promo/pom.xml -DskipTests package
+
+      - name: 'Run IssuePromo (mode: ${{ steps.mode.outputs.value }})'
+        if: ${{ github.event_name == 'issues' && github.event.action == 'opened' }}
+        working-directory: ./Crypto-Trader-Promo
+        env:
+          OPENAI_KEY:       ${{ secrets.OPENAI_KEY }}
+          GITHUB_TOKEN:     ${{ secrets.GH_TOKEN }}
+          RELEASEBOT_MODE:  ${{ steps.mode.outputs.value }}
+          ISSUE_TITLE:      ${{ env.ISSUE_TITLE }}
+          ISSUE_BODY:       ${{ env.ISSUE_BODY }}
+          ISSUE_TAGS:       ${{ env.ISSUE_TAGS }}
+          X_API_KEY:        ${{ secrets.X_API_KEY }}
+          X_SECRET:         ${{ secrets.X_SECRET }}
+          X_ACCESS_TOKEN:   ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_SECRET:  ${{ secrets.X_ACCESS_SECRET }}
+        run: mvn -q -DskipTests org.codehaus.mojo:exec-maven-plugin:3.5.0:java -Dexec.mainClass=org.cryptotrader.promo.IssuePromo -Dexec.classpathScope=runtime
 
       - name: 'Run ReleaseBot (mode: ${{ steps.mode.outputs.value }})'
         if: ${{ steps.range.outputs.start != '' && steps.range.outputs.end != '' }}
