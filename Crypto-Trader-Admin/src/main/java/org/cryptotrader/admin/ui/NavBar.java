@@ -4,16 +4,20 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.admin.component.ComponentLoader;
+import org.cryptotrader.desktop.component.ComponentLoader;
+import org.cryptotrader.desktop.component.config.SpringContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.cryptotrader.admin.config.SpringContext;
 import org.cryptotrader.admin.event.PageNavigationEvent;
 import org.cryptotrader.admin.route.AppPage;
 
 @Slf4j
 @Component
+@Scope("prototype")
+@Lazy
 public class NavBar extends HBox {
     @FXML
     private HomeAnchor homeAnchor;

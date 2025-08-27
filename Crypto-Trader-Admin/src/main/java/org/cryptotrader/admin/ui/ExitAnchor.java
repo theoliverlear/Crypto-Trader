@@ -5,13 +5,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.SVGPath;
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.admin.component.ComponentLoader;
-import org.cryptotrader.admin.config.SpringContext;
 import org.cryptotrader.assets.images.icons.fx.IconImageAssets;
+import org.cryptotrader.desktop.component.ComponentLoader;
+import org.cryptotrader.desktop.component.config.SpringContext;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+@Scope("prototype")
+@Lazy
 public class ExitAnchor extends HBox {
     @FXML
     ImageView anchorImage;

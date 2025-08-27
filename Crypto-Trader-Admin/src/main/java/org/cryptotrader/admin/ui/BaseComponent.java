@@ -2,8 +2,10 @@ package org.cryptotrader.admin.ui;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.HBox;
+import org.cryptotrader.desktop.component.config.SpringContext;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.cryptotrader.admin.config.SpringContext;
 import org.cryptotrader.admin.model.Loadable;
 
 import java.io.IOException;
@@ -11,6 +13,8 @@ import java.net.URL;
 import java.util.Objects;
 
 @Component
+@Scope("prototype")
+@Lazy
 public abstract class BaseComponent extends HBox implements Loadable {
     protected FXMLLoader loader;
     protected BaseComponent() {
@@ -30,7 +34,7 @@ public abstract class BaseComponent extends HBox implements Loadable {
         String cssPath = fxmlPath.replace(".fxml", ".css");
         URL cssResource = this.getClass().getResource(cssPath);
         if (cssResource != null) {
-            getStylesheets().add(cssResource.toExternalForm());
+            this.getStylesheets().add(cssResource.toExternalForm());
         }
     }
     
