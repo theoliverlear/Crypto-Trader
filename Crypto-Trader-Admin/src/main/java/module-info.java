@@ -31,6 +31,7 @@ open module org.cryptotrader.admin {
     requires org.cryptotrader.assets;
     requires javafxsvg;
     requires org.scenicview.scenicview;
+    requires org.cryptotrader.desktop.components;
 //    opens org.cryptotrader.admin to spring.core, spring.beans, spring.context;
 //    opens org.cryptotrader.admin.controller to javafx.fxml, spring.core, spring.beans, spring.context;
 //    opens org.cryptotrader.admin.config to spring.core, spring.beans, spring.context;
@@ -39,7 +40,7 @@ open module org.cryptotrader.admin {
     exports org.cryptotrader.admin;
     exports org.cryptotrader.admin.controller;
     exports org.cryptotrader.admin.event;
-    exports org.cryptotrader.admin.component;
+//    exports org.cryptotrader.admin.component;
     exports org.cryptotrader.admin.route;
     exports org.cryptotrader.admin.ui;
 }
