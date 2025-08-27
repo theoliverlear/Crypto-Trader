@@ -1,0 +1,13 @@
+/*!
+ * desktop-styles (SCSS)
+ * Entry file that forwards Crypto Trader Desktop base functions and mixins.
+ *
+ * Usage (recommended):
+ *   @use "@theoliverlear/desktop-styles" as ss;
+ *   .box { @include ss.flex(center, center, row); width: 100%; }
+ */
+
+@forward "desktop-functions";
+@forward "desktop-mixins";
+@forward "desktop-placeholders";
+@forward "desktop-variables";
