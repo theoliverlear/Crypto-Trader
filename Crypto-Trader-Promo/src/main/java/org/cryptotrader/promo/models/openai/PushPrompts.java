@@ -9,7 +9,8 @@ public enum PushPrompts {
                     - Some readers may be developers, so sparingly throw in specific jargon if it fits in a general sense.
                     """),
     USER("""
-            Focus on what a user gets ((in no order of importance) speed, reliability, new feature, clarity, quality, bug fix, etc.). 
+            Focus on what a user gets ((in no order of importance) speed, reliability, new feature, clarity, quality, bug fix, etc.).
+            Try to be as specific as you can while being approachable in tone.
             Find the tangible benefit and promote it.
             Avoid internal paths or test-only noise. 
             At most one short hashtag related to the commit aimed at maximizing reach.
