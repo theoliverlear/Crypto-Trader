@@ -51,7 +51,6 @@
         <module>Crypto-Trader-Testing</module>
         <module>Crypto-Trader-Promo</module>
         <module>Crypto-Trader-Version</module>
-        <module>Crypto-Trader-Library/Desktop-Library</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
