@@ -1,9 +1,11 @@
 package org.cryptotrader.version.script;
 
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.version.model.CryptoTraderModules;
-import org.cryptotrader.version.model.Module;
+import org.cryptotrader.version.model.dependency.type.PomDependency;
+import org.cryptotrader.version.model.module.CryptoTraderModules;
+import org.cryptotrader.version.model.module.Module;
 import org.cryptotrader.version.model.config.ConfigFileType;
+import org.cryptotrader.version.model.module.type.Pom;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -24,30 +26,46 @@ import java.util.stream.Collectors;
 public class PomParser {
     private static List<String> skipDirs = List.of("target", "node_modules", ".angular", "logs", ".git");
     private static Path rootPath = Path.of("..");
-    public static List<Module> getAllPoms() {
-        List<Module> modules;
+    public static List<Pom> getAllPoms() {
+        List<Pom> modules;
         List<Path> pomPaths = getPomPaths();
         modules = pomPaths.stream().map(PomParser::getPom).collect(Collectors.toList());
         return modules;
     }
 
-    public static Module getPom(Path pomPath) {
+    public static Pom getPom(Path pomPath) {
         try {
             Document doc = new SAXBuilder().build(pomPath.toFile());
             Element project = doc.getRootElement();
             Namespace namespace = project.getNamespace();
-
+            String groupId;
+            Element parent = project.getChild("parent", namespace);
+            if (parent != null) {
+                groupId = textFromNamespace(parent, namespace, "groupId");
+            } else {
+                groupId = textFromNamespace(project, namespace, "groupId");
+            }
             ConfigFileType fileType = ConfigFileType.POM;
             String modulePathDir = getModulePath(pomPath);
             Path modulePath = Path.of(modulePathDir);
+            String name = textFromNamespace(project, namespace, "name");
+            String artifactId = textFromNamespace(project, namespace, "artifactId");
+            String version = textFromNamespace(project, namespace, "version");
             CryptoTraderModules module = CryptoTraderModules.resolveFromPath(modulePath);
-            return new Module(module, modulePath, fileType);
-        } catch (IOException | JDOMException e) {
-            throw new RuntimeException(e);
+            PomDependency moduleDependency = new PomDependency(name, version, groupId, artifactId);
+            Pom pom = new Pom(module, modulePath, fileType, moduleDependency);
+            return pom;
+        } catch (IOException | JDOMException exception) {
+            throw new RuntimeException(exception);
         }
 
     }
 
+    public static String textFromNamespace(Element element, 
+                                           Namespace namespace,
+                                           String name) {
+        return element.getChild(name, namespace).getText();
+    }
 
     public static String getModulePath(Path path) {
         String modulePath = path.toString();
