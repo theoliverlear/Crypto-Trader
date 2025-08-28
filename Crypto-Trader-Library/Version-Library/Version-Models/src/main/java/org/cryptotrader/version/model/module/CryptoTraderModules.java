@@ -1,10 +1,9 @@
-package org.cryptotrader.version.model;
+package org.cryptotrader.version.model.module;
 
 import java.nio.file.Path;
 import java.util.Arrays;
 
 public enum CryptoTraderModules {
-    CRYPTO_TRADER("Crypto-Trader"),
     ADMIN("Crypto-Trader-Admin"),
     ANALYSIS("Crypto-Trader-Analysis"),
     API("Crypto-Trader-Api"),
@@ -19,8 +18,9 @@ public enum CryptoTraderModules {
     PROMO("Crypto-Trader-Promo"),
     TESTING("Crypto-Trader-Testing"),
     VERSION("Crypto-Trader-Version"),
-    WEBSITE("Crypto-Trader-Website");
-    
+    WEBSITE("Crypto-Trader-Website"),
+    CRYPTO_TRADER("Crypto-Trader");
+
     private final String name;
     
     CryptoTraderModules(final String name) {
