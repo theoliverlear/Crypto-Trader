@@ -1,6 +1,10 @@
 package org.cryptotrader.version.model;
 
+import java.nio.file.Path;
+import java.util.Arrays;
+
 public enum CryptoTraderModules {
+    CRYPTO_TRADER("Crypto-Trader"),
     ADMIN("Crypto-Trader-Admin"),
     ANALYSIS("Crypto-Trader-Analysis"),
     API("Crypto-Trader-Api"),
@@ -25,5 +29,11 @@ public enum CryptoTraderModules {
     
     public String getName() {
         return this.name;
+    }
+    
+    public static CryptoTraderModules resolveFromPath(Path path) {
+        return Arrays.stream(CryptoTraderModules.values()).filter(module -> {
+            return path.toString().contains(module.getName());
+        }).findFirst().orElseThrow(RuntimeException::new);
     }
 }
