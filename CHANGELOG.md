@@ -21,7 +21,13 @@
 | Api-Components         | v.v.v   |
 | Api-Models             | v.v.v   |
 | Api-Repositories       | v.v.v   |
+| Desktop-Library        | v.v.v   |
+| Desktop-Components     | v.v.v   |
+| Desktop-Styles         | v.v.v   |        
+| Version-Library        | v.v.v   |
+| Version-Models         | v.v.v   |
 | Crypto-Trader-Testing  | v.v.v   |
+| Crypto-Trader-Version  | v.v.v   |
 | Crypto-Trader-Website  | v.v.v   |
 
 
@@ -92,7 +98,37 @@
 - Bullet
 - Bullet
 
+### [Desktop Library](Crypto-Trader-Library/Desktop-Library)
+- Bullet
+- Bullet
+- Bullet
+
+### [Desktop Components](Crypto-Trader-Library/Desktop-Library/Desktop-Components)
+- Bullet
+- Bullet
+- Bullet
+
+### [Desktop Styles](Crypto-Trader-Library/Desktop-Library/Desktop-Styles)
+- Bullet
+- Bullet
+- Bullet
+
+### [Version Library](Crypto-Trader-Library/Version-Library)
+- Bullet
+- Bullet
+- Bullet
+
+### [Version Models](Crypto-Trader-Library/Version-Library/Version-Models)
+- Bullet
+- Bullet
+- Bullet
+
 ### [Crypto Trader Testing](Crypto-Trader-Testing)
+- Bullet
+- Bullet
+- Bullet
+
+### [Crypto Trader Version](Crypto-Trader-Version)
 - Bullet
 - Bullet
 - Bullet
