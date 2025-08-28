@@ -15,4 +15,5 @@ open module org.cryptotrader.promo {
     exports org.cryptotrader.promo.models.twitter;
     exports org.cryptotrader.promo.models.openai.commit;
     exports org.cryptotrader.promo.models.openai.issue;
+    exports org.cryptotrader.promo.models.openai.prompt;
 }
