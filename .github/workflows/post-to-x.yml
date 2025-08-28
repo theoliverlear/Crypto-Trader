@@ -8,6 +8,8 @@ on:
     branches: [ "main", "master" ]
   issues:
     types: [ opened ]
+  release:
+    types: [ published ]
   workflow_dispatch:
     inputs:
       mode:
@@ -52,6 +54,8 @@ jobs:
           elif [[ "${{ github.event_name }}" == "pull_request" && "${{ github.event.action }}" == "closed" && "${{ github.event.pull_request.merged }}" == "true" ]]; then
             MODE="prod"
           elif [[ "${{ github.event_name }}" == "issues" && "${{ github.event.action }}" == "opened" && "${{ github.event.issue.user.login }}" == "theoliverlear" ]]; then
+            MODE="prod"
+          elif [[ "${{ github.event_name }}" == "release" && "${{ github.event.action }}" == "published" ]]; then
             MODE="prod"
           else
             MODE="test"
@@ -146,3 +150,27 @@ jobs:
           X_ACCESS_TOKEN:   ${{ secrets.X_ACCESS_TOKEN }}
           X_ACCESS_SECRET:  ${{ secrets.X_ACCESS_SECRET }}
         run: mvn -q -DskipTests org.codehaus.mojo:exec-maven-plugin:3.5.0:java -Dexec.mainClass=org.cryptotrader.promo.CommitPromo -Dexec.classpathScope=runtime
+
+      - name: Set RELEASE_* environment variables (on release published)
+        if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+        shell: bash
+        run: |
+          echo "RELEASE_NAME=${{ github.event.release.tag_name || github.event.release.name }}" >> "$GITHUB_ENV"
+          echo "RELEASE_BODY<<EOF" >> "$GITHUB_ENV"
+          cat CHANGELOG.md >> "$GITHUB_ENV"
+          echo "EOF" >> "$GITHUB_ENV"
+
+      - name: 'Run ReleasePromo (mode: ${{ steps.mode.outputs.value }})'
+        if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+        working-directory: ./Crypto-Trader-Promo
+        env:
+          OPENAI_KEY:       ${{ secrets.OPENAI_KEY }}
+          GITHUB_TOKEN:     ${{ secrets.GH_TOKEN }}
+          RELEASEBOT_MODE:  ${{ steps.mode.outputs.value }}
+          RELEASE_NAME:     ${{ env.RELEASE_NAME }}
+          RELEASE_BODY:     ${{ env.RELEASE_BODY }}
+          X_API_KEY:        ${{ secrets.X_API_KEY }}
+          X_SECRET:         ${{ secrets.X_SECRET }}
+          X_ACCESS_TOKEN:   ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_SECRET:  ${{ secrets.X_ACCESS_SECRET }}
+        run: mvn -q -DskipTests org.codehaus.mojo:exec-maven-plugin:3.5.0:java -Dexec.mainClass=org.cryptotrader.promo.ReleasePromo -Dexec.classpathScope=runtime
