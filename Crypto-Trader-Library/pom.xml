@@ -18,6 +18,10 @@
         <module>Api-Library/Api-Communication</module>
         <module>Api-Library/Api-Models</module>
         <module>Api-Library/Api-Repositories</module>
+        <module>Desktop-Library</module>
+        <module>Desktop-Library/Desktop-Components</module>
+        <module>Version-Library</module>
+        <module>Version-Library/Version-Models</module>
     </modules>
 
     <artifactId>crypto-trader-library</artifactId>
