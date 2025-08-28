@@ -1,4 +1,4 @@
-package org.cryptotrader.promo.models.openai;
+package org.cryptotrader.promo.models.openai.prompt;
 
 public enum PushPrompts {
     SYSTEM("""
