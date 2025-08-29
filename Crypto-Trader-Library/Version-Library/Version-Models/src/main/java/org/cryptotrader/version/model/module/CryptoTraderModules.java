@@ -2,6 +2,7 @@ package org.cryptotrader.version.model.module;
 
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Comparator;
 
 public enum CryptoTraderModules {
     ADMIN("Crypto-Trader-Admin"),
@@ -15,6 +16,11 @@ public enum CryptoTraderModules {
     API_MODELS("Api-Models"),
     API_REPOSITORIES("Api-Repositories"),
     DESKTOP_LIBRARY("Desktop-Library"),
+    DESKTOP_COMPONENTS("Desktop-Components"),
+    VERSION_LIBRARY("Version-Library"),
+    VERSION_MODELS("Version-Models"),
+    EXTERNALS_LIBRARY("Externals-Library"),
+    EXTERNALS_OPENAI("Externals-OpenAI"),
     PROMO("Crypto-Trader-Promo"),
     TESTING("Crypto-Trader-Testing"),
     VERSION("Crypto-Trader-Version"),
@@ -32,8 +38,27 @@ public enum CryptoTraderModules {
     }
     
     public static CryptoTraderModules resolveFromPath(Path path) {
-        return Arrays.stream(CryptoTraderModules.values()).filter(module -> {
-            return path.toString().contains(module.getName());
-        }).findFirst().orElseThrow(RuntimeException::new);
+        String pathText = path.toString();
+        String[] segments = pathText.split("[\\\\/]+");
+        CryptoTraderModules deepestSegmentMatch = null;
+        int deepestIndex = -1;
+        for (int i = 0; i < segments.length; i++) {
+            String segment = segments[i];
+            for (CryptoTraderModules module : CryptoTraderModules.values()) {
+                if (segment.equals(module.getName())) {
+                    if (i > deepestIndex) {
+                        deepestIndex = i;
+                        deepestSegmentMatch = module;
+                    }
+                }
+            }
+        }
+        if (deepestSegmentMatch != null) {
+            return deepestSegmentMatch;
+        }
+        return Arrays.stream(CryptoTraderModules.values())
+                .filter(module -> pathText.contains(module.getName()))
+                .max(Comparator.comparingInt(module -> module.getName().length()))
+                .orElseThrow(RuntimeException::new);
     }
 }
