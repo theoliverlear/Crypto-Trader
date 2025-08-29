@@ -23,7 +23,9 @@
 | Api-Repositories       | v.v.v   |
 | Desktop-Library        | v.v.v   |
 | Desktop-Components     | v.v.v   |
-| Desktop-Styles         | v.v.v   |        
+| Desktop-Styles         | v.v.v   |     
+| Externals-Library      | v.v.v   |
+| Externals-OpenAI       | v.v.v   |
 | Version-Library        | v.v.v   |
 | Version-Models         | v.v.v   |
 | Crypto-Trader-Testing  | v.v.v   |
@@ -109,6 +111,16 @@
 - Bullet
 
 ### [Desktop Styles](Crypto-Trader-Library/Desktop-Library/Desktop-Styles)
+- Bullet
+- Bullet
+- Bullet
+
+### [Externals Library](Crypto-Trader-Library/Externals-Library)
+- Bullet
+- Bullet
+- Bullet
+
+### [Externals OpenAI](Crypto-Trader-Library/Externals-Library/Externals-OpenAI)
 - Bullet
 - Bullet
 - Bullet
