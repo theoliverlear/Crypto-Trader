@@ -1,4 +1,4 @@
-package org.cryptotrader.promo.models.openai.release;
+package org.cryptotrader.promo.models.github.release;
 
 
 public record Release(String name, String body) {

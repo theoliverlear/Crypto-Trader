@@ -1,4 +1,4 @@
-package org.cryptotrader.promo.models.openai.issue;
+package org.cryptotrader.promo.models.github.issue;
 
 public record Issue(String title, String body, String tags) {
     public static Issue fromSystem() {

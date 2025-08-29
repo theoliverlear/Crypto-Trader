@@ -1,4 +1,4 @@
-package org.cryptotrader.promo.models.openai.commit;
+package org.cryptotrader.promo.models.github.commit;
 
 public record CommitRange(String startCommitSha, String endCommitSha) {
     public static CommitRange fromSystem() {

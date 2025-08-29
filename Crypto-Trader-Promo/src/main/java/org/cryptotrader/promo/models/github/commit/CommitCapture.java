@@ -1,4 +1,4 @@
-package org.cryptotrader.promo.models.openai.commit;
+package org.cryptotrader.promo.models.github.commit;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
