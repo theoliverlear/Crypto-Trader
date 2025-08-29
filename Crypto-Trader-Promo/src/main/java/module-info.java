@@ -9,11 +9,12 @@ open module org.cryptotrader.promo {
     requires scribejava.apis;
     requires scribejava.core;
     requires org.slf4j;
+    requires org.cryptotrader.externals.openai;
 
     exports org.cryptotrader.promo;
     exports org.cryptotrader.promo.models.openai;
     exports org.cryptotrader.promo.models.twitter;
-    exports org.cryptotrader.promo.models.openai.commit;
-    exports org.cryptotrader.promo.models.openai.issue;
+    exports org.cryptotrader.promo.models.github.commit;
+    exports org.cryptotrader.promo.models.github.issue;
     exports org.cryptotrader.promo.models.openai.prompt;
 }
