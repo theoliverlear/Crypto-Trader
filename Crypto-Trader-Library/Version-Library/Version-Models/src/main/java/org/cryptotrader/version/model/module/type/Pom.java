@@ -2,6 +2,7 @@ package org.cryptotrader.version.model.module.type;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 import org.cryptotrader.version.model.config.ConfigFileType;
 import org.cryptotrader.version.model.dependency.type.PomDependency;
@@ -14,6 +15,7 @@ import java.nio.file.Path;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
+@Getter
 public class Pom extends ModuleDescendent {
     private PomDependency moduleDependency;
     public Pom(CryptoTraderModules moduleType,

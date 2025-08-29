@@ -1,12 +1,14 @@
 package org.cryptotrader.version.model.module;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.cryptotrader.version.model.config.ConfigFileType;
 
 import java.nio.file.Path;
 
 @NoArgsConstructor
+@Getter
 public class ModuleDescendent extends Module {
     private Module parent;
     private Module child;
