@@ -1,6 +1,7 @@
 package org.cryptotrader.version.model.element;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.cryptotrader.version.model.config.ConfigFileType;
 import org.cryptotrader.version.model.dependency.type.PomDependency;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 @NoArgsConstructor
 @Data
+@Getter
 public class PomElement {
     private static final Namespace MAVEN_NAMESPACE = Namespace.getNamespace("http://maven.apache.org/POM/4.0.0");
     private Optional<PomElement> parent;
