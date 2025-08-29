@@ -5,6 +5,7 @@ import org.cryptotrader.externals.openai.OpenAiChat;
 import org.cryptotrader.promo.models.github.commit.CommitCapture;
 import org.cryptotrader.promo.models.github.commit.CommitRange;
 import org.cryptotrader.version.changelog.prompt.ChangelogPrompt;
+import org.cryptotrader.version.script.PomParser;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,25 +26,26 @@ public class ReleaseChangelogGenerator {
         }
     }
 
-    public static String getChangelog(CommitRange commitRange, String version) {
+    public static String getChangelog(CommitRange commitRange, String releaseVersion) {
         String changelogFormat = getChangelogTemplate();
         String systemPrompt = ChangelogPrompt.SYSTEM.getText().formatted(changelogFormat);
         CommitCapture capture = new CommitCapture(commitRange);
-        String userPrompt = ChangelogPrompt.USER.getText().formatted(version, LocalDate.now().toString());
+        String allVersions = PomParser.getVersionString();
+        String userPrompt = ChangelogPrompt.USER.getText().formatted(allVersions, releaseVersion, LocalDate.now().toString());
         List<String> messages = capture.getMessages();
         userPrompt += String.join("\n", messages);
         OpenAiChat chat = new OpenAiChat();
         String response = chat.chat(systemPrompt, userPrompt);
-        writeVersionedFile(response, version);
+        writeVersionedFile(response, releaseVersion);
         return response;
     }
     
-    private static void writeVersionedFile(String markdown, String version) {
-        String fileName = "%s.md".formatted(version);
+    private static void writeVersionedFile(String markdown, String releaseVersion) {
+        String fileName = "%s.md".formatted(releaseVersion);
         try {
             Files.writeString(Paths.get(fileName), markdown, StandardCharsets.UTF_8);
-        } catch (IOException ignored) {
-            throw new IllegalStateException("Error in writing changelog file.", ignored);
+        } catch (IOException exception) {
+            throw new IllegalStateException("Error in writing changelog file.", exception);
         }
     }
     
