@@ -6,11 +6,11 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.1.6</version>
+        <version>0.2.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <version>0.0.1</version>
+    <version>0.1.0</version>
     <artifactId>crypto-trader-promo</artifactId>
     <name>Crypto-Trader-Promo</name>
 
@@ -18,12 +18,12 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>externals-library</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>externals-openai</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

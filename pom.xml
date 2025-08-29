@@ -5,7 +5,7 @@
 
     <groupId>org.cryptotrader</groupId>
     <artifactId>crypto-trader</artifactId>
-    <version>0.1.6</version>
+    <version>0.2.0</version>
     <packaging>pom</packaging>
     <name>Crypto-Trader</name>
     <description>Crypto Trader is a web application that automates cryptocurrency trading to democratize high‑frequency trading. See README for details.</description>

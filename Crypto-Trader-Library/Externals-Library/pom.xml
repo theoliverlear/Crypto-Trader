@@ -6,10 +6,10 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.0.3</version>
+        <version>0.0.4</version>
     </parent>
 
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <artifactId>externals-library</artifactId>
     <name>Externals-Library</name>
 
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>externals-openai</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.2</version>
         </dependency>
     </dependencies>
 </project>

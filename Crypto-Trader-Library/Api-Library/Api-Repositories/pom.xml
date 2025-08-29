@@ -6,14 +6,14 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.0.3</version>
+        <version>0.0.4</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>api-repositories</artifactId>
     <name>Api-Repositories</name>
     <description>Spring Data JPA repositories for Crypto Trader domain models.</description>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>
@@ -21,7 +21,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
-        <!-- Spring Data JPA: provides JpaRepository and @Query -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -32,7 +31,6 @@
             <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
-        <!-- Lombok (if used by your project); compile-only -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -42,12 +40,11 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-models</artifactId>
-            <version>0.0.4</version>
+            <version>0.0.5</version>
         </dependency>
     </dependencies>
     <build>
         <plugins>
-            <!-- Ensure Lombok annotations are processed -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>

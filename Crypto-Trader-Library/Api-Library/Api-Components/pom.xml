@@ -6,14 +6,14 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.0.3</version>
+        <version>0.0.4</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>api-components</artifactId>
     <name>Api-Components</name>
     <description>Reusable Spring-based components (web, JDBC, HTTP clients) for Crypto Trader APIs.</description>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <properties>
         <maven.compiler.source>23</maven.compiler.source>
         <maven.compiler.target>23</maven.compiler.target>
@@ -32,7 +32,7 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-models</artifactId>
-            <version>0.0.4</version>
+            <version>0.0.5</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -58,7 +58,6 @@
     </dependencies>
     <build>
         <plugins>
-            <!-- Ensure Lombok annotations are processed -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>

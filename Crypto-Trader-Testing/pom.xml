@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.1.6</version>
+        <version>0.2.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>crypto-trader-testing</artifactId>
     <name>Crypto-Trader-Testing</name>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <description>
         The standard library for the specialized test needs of Crypto-Trader.
     </description>
@@ -76,7 +76,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Lombok (compile-time only) -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -98,7 +97,6 @@
             </exclusions>
         </dependency>
 
-        <!-- Optional: be explicit about Jupiter API in tests -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -137,7 +135,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- SLF4J API needed because production code uses @Slf4j -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -147,7 +144,6 @@
     </dependencies>
     <build>
         <plugins>
-            <!-- Ensure Lombok annotations are processed -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
@@ -193,7 +189,6 @@
                 <version>3.2.5</version>
                 <configuration>
                     <useModulePath>false</useModulePath>
-                    <!-- Hard-disable the Vintage engine when running tests via Maven -->
                     <systemPropertyVariables>
                         <junit.platform.excludeEngines>vintage</junit.platform.excludeEngines>
                     </systemPropertyVariables>
