@@ -22,6 +22,8 @@
         <module>Desktop-Library/Desktop-Components</module>
         <module>Version-Library</module>
         <module>Version-Library/Version-Models</module>
+        <module>Externals-Library</module>
+        <module>Externals-Library/Externals-OpenAI</module>
     </modules>
 
     <artifactId>crypto-trader-library</artifactId>
