@@ -12,6 +12,7 @@
     <version>0.0.2</version>
     <artifactId>externals-library</artifactId>
     <name>Externals-Library</name>
+    <description>Aggregator for external service integrations used by Crypto Trader.</description>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>

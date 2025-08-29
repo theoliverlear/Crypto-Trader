@@ -13,6 +13,7 @@
     <version>0.1.0</version>
     <artifactId>crypto-trader-promo</artifactId>
     <name>Crypto-Trader-Promo</name>
+    <description>Tools to generate promotional content for Crypto Trader integrating OpenAI.</description>
 
     <dependencies>
         <dependency>

@@ -11,6 +11,7 @@
 
     <artifactId>crypto-trader-version</artifactId>
     <name>Crypto-Trader-Version</name>
+    <description>Interface for version management, POM parsing, and generating release notes for Crypto Trader.</description>
     <version>0.1.0</version>
     <properties>
         <maven.compiler.source>23</maven.compiler.source>

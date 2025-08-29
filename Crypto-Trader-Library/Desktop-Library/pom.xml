@@ -13,6 +13,7 @@
     <version>0.0.2</version>
     <artifactId>desktop-library</artifactId>
     <name>Desktop-Library</name>
+    <description>Shared JavaFX desktop library aggregating reusable components for Crypto Trader.</description>
     <packaging>jar</packaging>
 
 

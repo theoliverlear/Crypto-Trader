@@ -12,6 +12,7 @@
 
     <artifactId>desktop-components</artifactId>
     <name>Desktop-Components</name>
+    <description>Reusable and injectable JavaFX components for Crypto Trader desktop applications.</description>
     <version>0.0.2</version>
 
     <properties>

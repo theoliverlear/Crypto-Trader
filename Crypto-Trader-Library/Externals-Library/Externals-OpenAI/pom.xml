@@ -12,6 +12,7 @@
 
     <artifactId>externals-openai</artifactId>
     <name>Externals-OpenAI</name>
+    <description>OpenAI API integration library for Crypto Trader.</description>
     <version>0.0.2</version>
 
     <properties>

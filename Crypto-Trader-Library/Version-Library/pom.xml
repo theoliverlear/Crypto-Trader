@@ -12,6 +12,7 @@
     <artifactId>version-library</artifactId>
     <packaging>pom</packaging>
     <name>Version-Library</name>
+    <description>Parent POM aggregating version management libraries and models for Crypto Trader.</description>
     <version>0.0.2</version>
 
     <properties>

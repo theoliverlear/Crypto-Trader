@@ -12,6 +12,7 @@
 
     <artifactId>version-models</artifactId>
     <name>Version-Models</name>
+    <description>Models for version management and configuration parsing (POM/TOML/JSON) used across Crypto Trader tools.</description>
     <version>0.0.2</version>
 
     <properties>
