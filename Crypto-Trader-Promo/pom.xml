@@ -25,7 +25,6 @@
             <groupId>org.cryptotrader</groupId>
             <artifactId>externals-openai</artifactId>
             <version>0.0.2</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.openai</groupId>
