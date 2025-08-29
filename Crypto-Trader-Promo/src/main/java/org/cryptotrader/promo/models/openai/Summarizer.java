@@ -1,7 +1,7 @@
 package org.cryptotrader.promo.models.openai;
 
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.promo.models.openai.commit.CommitCapture;
+import org.cryptotrader.promo.models.github.commit.CommitCapture;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -9,10 +9,10 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class Summarizer {
-    private OpenAiChat chat;
+    private TwitterAiChat chat;
 
     public Summarizer() {
-        this.chat = new OpenAiChat();
+        this.chat = new TwitterAiChat();
     }
 
     public static String fromMessagesList(List<String> messages) {
