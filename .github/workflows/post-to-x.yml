@@ -118,7 +118,7 @@ jobs:
           fi
 
       - name: Build promo module
-        run: mvn -B -f Crypto-Trader-Promo/pom.xml -DskipTests package
+        run: mvn -B -DskipTests -pl Crypto-Trader-Promo -am package
 
       - name: 'Run IssuePromo (mode: ${{ steps.mode.outputs.value }})'
         if: ${{ github.event_name == 'issues' && github.event.action == 'opened' && github.event.issue.user.login == 'theoliverlear' }}
