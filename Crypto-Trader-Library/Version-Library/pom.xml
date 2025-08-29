@@ -12,9 +12,7 @@
     <artifactId>version-library</artifactId>
     <packaging>pom</packaging>
     <name>Version-Library</name>
-    <modules>
-        <module>Version-Models</module>
-    </modules>
+
     <version>0.0.1</version>
 
     <properties>
