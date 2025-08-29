@@ -68,7 +68,7 @@
         <!-- JPA annotations -->
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-api-communication</artifactId>
+            <artifactId>api-communication</artifactId>
             <version>0.0.2</version>
         </dependency>
         <dependency>
