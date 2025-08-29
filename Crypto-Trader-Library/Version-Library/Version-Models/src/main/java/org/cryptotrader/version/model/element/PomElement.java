@@ -22,7 +22,7 @@ public class PomElement {
     private static final Namespace MAVEN_NAMESPACE = Namespace.getNamespace("http://maven.apache.org/POM/4.0.0");
     private Optional<PomElement> parent;
     private Element baseElement;
-    private Path path; // path to pom.xml
+    private Path path;
 
     public PomElement(Element baseElement, Path path) {
         this.baseElement = baseElement;
@@ -68,18 +68,6 @@ public class PomElement {
         String version = getChildText(parentEl, "version");
         String name = "parent";
         return new PomDependency(name, version, groupId, artifactId);
-    }
-    
-    public Pom getBasePom() {
-        ConfigFileType fileType = ConfigFileType.POM;
-        Path modulePath = Path.of(this.getModulePath());
-        String name = this.directText("name");
-        String artifactId = this.directText("artifactId");
-        String version = this.directText("version");
-        String groupId = this.directText("groupId");
-        CryptoTraderModules module = CryptoTraderModules.resolveFromPath(modulePath);
-        PomDependency moduleDependency = new PomDependency(name, version, groupId, artifactId);
-        return new Pom(module, modulePath, fileType, moduleDependency);
     }
 
     public Pom getParentPomModel() {
