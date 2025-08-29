@@ -138,10 +138,10 @@ public class PomElement {
     public Pom getPom() {
         ConfigFileType fileType = ConfigFileType.POM;
         Path modulePath = Path.of(getModulePath());
-        String name = this.textFromNamespace("name");
-        String artifactId = this.textFromNamespace("artifactId");
-        String version = this.textFromNamespace("version");
-        String groupId = this.textFromNamespace("groupId");
+        String name = this.directText("name");
+        String artifactId = this.directText("artifactId");
+        String version = this.directText("version");
+        String groupId = this.directText("groupId");
         CryptoTraderModules module = CryptoTraderModules.resolveFromPath(modulePath);
         PomDependency moduleDependency = new PomDependency(name, version, groupId, artifactId);
         return new Pom(module, modulePath, fileType, moduleDependency);
