@@ -20,6 +20,10 @@ public enum ChangelogPrompt {
             """),
     USER("""
             You will generate a new release section that matches the style used by this repository's CHANGELOG.md.
+                The versions you may use are:
+                
+                %s
+                
                 The release is version: %s. The date is: %s.
                 Use the following template as the formatting guide. Follow headings, tables, and link structure exactly; but only include sections that have content.
                 
