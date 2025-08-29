@@ -10,11 +10,14 @@ public class Publisher {
         String mode = System.getenv("RELEASEBOT_MODE");
         boolean publishEnabled = mode.equalsIgnoreCase("prod") ||
                                  mode.equalsIgnoreCase("post");
-        if (publishEnabled) {
+        publish(message, publishEnabled);
+    }
+    public static void publish(String message, boolean shouldPublish) {
+        if (shouldPublish) {
             Tweeter tweeter = new Tweeter();
             tweeter.tweet(message);
         } else {
-            log.warn("[INFO] Dry run mode (RELEASEBOT_MODE={}): not posting to X.", mode);
+            log.warn("[INFO] Dry run mode: not posting to X.");
         }
     }
 }
