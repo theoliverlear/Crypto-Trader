@@ -49,6 +49,17 @@ public class PomParser {
 
     }
 
+    public static String getVersionString() {
+        List<PomElement> pomElements = getAllPoms();
+        StringBuilder versionString = new StringBuilder();
+        pomElements.forEach(pomElement -> {
+            String name = pomElement.getPom().getModuleDependency().getName();
+            String version = pomElement.getVersion();
+            versionString.append("%s: %s\n".formatted(name, version));
+        });
+        return versionString.toString();
+    }
+    
     public static String textFromNamespace(Element element, 
                                            Namespace namespace,
                                            String name) {
