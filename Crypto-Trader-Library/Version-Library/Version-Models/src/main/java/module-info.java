@@ -9,4 +9,5 @@ module org.cryptotrader.version.model {
     exports org.cryptotrader.version.model.dependency.type;
     exports org.cryptotrader.version.model.module;
     exports org.cryptotrader.version.model.module.type;
+    exports org.cryptotrader.version.model.element;
 }
