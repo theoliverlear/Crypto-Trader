@@ -2,7 +2,7 @@ package org.cryptotrader.promo;
 
 
 import org.cryptotrader.promo.models.openai.*;
-import org.cryptotrader.promo.models.openai.commit.CommitCapture;
+import org.cryptotrader.promo.models.github.commit.CommitCapture;
 import org.cryptotrader.promo.models.openai.prompt.PushPrompts;
 import org.cryptotrader.promo.models.publish.Publisher;
 

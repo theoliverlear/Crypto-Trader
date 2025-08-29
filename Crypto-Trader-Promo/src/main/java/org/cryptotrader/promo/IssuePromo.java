@@ -1,8 +1,8 @@
 package org.cryptotrader.promo;
 
+import org.cryptotrader.promo.models.github.issue.Issue;
 import org.cryptotrader.promo.models.openai.prompt.IssuePrompts;
 import org.cryptotrader.promo.models.openai.Summarizer;
-import org.cryptotrader.promo.models.openai.issue.Issue;
 import org.cryptotrader.promo.models.publish.Publisher;
 
 public class IssuePromo {
