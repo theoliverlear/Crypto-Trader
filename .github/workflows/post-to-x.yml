@@ -30,7 +30,7 @@ on:
 jobs:
   promo:
     runs-on: ubuntu-latest
-    permissions: { contents: read, issues: read }
+    permissions: { contents: read, issues: read, packages: read }
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
