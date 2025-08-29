@@ -16,6 +16,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>externals-openai</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
             <groupId>com.openai</groupId>
             <artifactId>openai-java</artifactId>
             <version>3.1.2</version>
