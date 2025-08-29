@@ -10,8 +10,8 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>crypto-trader-api-components</artifactId>
-    <name>Crypto-Trader-Api-Components</name>
+    <artifactId>api-components</artifactId>
+    <name>Api-Components</name>
     <description>Reusable Spring-based components (web, JDBC, HTTP clients) for Crypto Trader APIs.</description>
     <version>0.0.3</version>
     <properties>
@@ -31,7 +31,7 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-api-models</artifactId>
+            <artifactId>api-models</artifactId>
             <version>0.0.4</version>
         </dependency>
         <dependency>

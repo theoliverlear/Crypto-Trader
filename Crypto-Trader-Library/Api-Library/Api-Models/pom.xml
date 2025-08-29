@@ -10,8 +10,8 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>crypto-trader-api-models</artifactId>
-    <name>Crypto-Trader-Api-Models</name>
+    <artifactId>api-models</artifactId>
+    <name>Api-Models</name>
     <description>Domain models and entities used across Crypto Trader APIs and services.</description>
     <version>0.0.4</version>
     <properties>

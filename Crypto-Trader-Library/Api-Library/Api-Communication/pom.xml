@@ -10,8 +10,8 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>crypto-trader-api-communication</artifactId>
-    <name>Crypto-Trader-Api-Communication</name>
+    <artifactId>api-communication</artifactId>
+    <name>Api-Communication</name>
     <description>API communication contracts (DTOs) and supporting utilities for Crypto Trader.</description>
     <version>0.0.2</version>
     <packaging>jar</packaging>

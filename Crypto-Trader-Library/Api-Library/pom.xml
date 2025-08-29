@@ -10,8 +10,8 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>crypto-trader-api-library</artifactId>
-    <name>Crypto-Trader-Api-Library</name>
+    <artifactId>api-library</artifactId>
+    <name>Api-Library</name>
     <description>Composite API library aggregating components, communication, models, and repositories for Crypto Trader.</description>
     <packaging>jar</packaging>
     <version>0.0.3</version>
@@ -24,22 +24,22 @@
     <dependencies>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-api-communication</artifactId>
+            <artifactId>api-communication</artifactId>
             <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-api-components</artifactId>
+            <artifactId>api-components</artifactId>
             <version>0.0.3</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-api-models</artifactId>
+            <artifactId>api-models</artifactId>
             <version>0.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-api-repositories</artifactId>
+            <artifactId>api-repositories</artifactId>
             <version>0.0.3</version>
         </dependency>
     </dependencies>

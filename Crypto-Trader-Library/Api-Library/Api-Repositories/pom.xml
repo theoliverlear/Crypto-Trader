@@ -10,8 +10,8 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>crypto-trader-api-repositories</artifactId>
-    <name>Crypto-Trader-Api-Repositories</name>
+    <artifactId>api-repositories</artifactId>
+    <name>Api-Repositories</name>
     <description>Spring Data JPA repositories for Crypto Trader domain models.</description>
     <version>0.0.3</version>
 
@@ -41,7 +41,7 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-api-models</artifactId>
+            <artifactId>api-models</artifactId>
             <version>0.0.4</version>
         </dependency>
     </dependencies>
