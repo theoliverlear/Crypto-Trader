@@ -32,7 +32,7 @@ jobs:
 
       - name: Deploy modules (skip if version exists)
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
         run: |
           set -e
