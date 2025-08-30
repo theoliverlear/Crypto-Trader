@@ -20,8 +20,6 @@ public enum CryptoTraderModules {
     VERSION_LIBRARY("Version-Library"),
     VERSION_MODELS("Version-Models"),
     EXTERNALS_LIBRARY("Externals-Library"),
-    EXTERNALS_OPENAI("Externals-OpenAI"),
-    PROMO("Crypto-Trader-Promo"),
     TESTING("Crypto-Trader-Testing"),
     VERSION("Crypto-Trader-Version"),
     WEBSITE("Crypto-Trader-Website"),

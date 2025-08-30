@@ -4,9 +4,13 @@ module org.cryptotrader.version {
     requires org.slf4j;
     requires java.xml;
     requires org.cryptotrader.version.model;
-    requires org.cryptotrader.externals.openai;
     requires org.apache.commons.io;
-    requires org.cryptotrader.promo;
+    requires org.apache.httpcomponents.httpcore;
+    requires com.sigwarthsoftware.promo;
+    requires com.sigwarthsoftware.openai;
+    requires com.sigwarthsoftware.changelog;
+    requires org.apache.httpcomponents.httpclient;
+
 
     exports org.cryptotrader.version;
     exports org.cryptotrader.version.script;

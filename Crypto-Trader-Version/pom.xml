@@ -32,14 +32,24 @@
         </dependency>
 
         <dependency>
-            <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-promo</artifactId>
-            <version>0.1.0</version>
+            <groupId>com.sigwarthsoftware</groupId>
+            <artifactId>changelog-suite</artifactId>
+            <version>0.0.1</version>
         </dependency>
 
         <dependency>
-            <groupId>org.cryptotrader</groupId>
-            <artifactId>externals-openai</artifactId>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.14</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sigwarthsoftware</groupId>
+            <artifactId>promo-suite</artifactId>
+            <version>0.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sigwarthsoftware</groupId>
+            <artifactId>twitter-suite</artifactId>
             <version>0.0.2</version>
         </dependency>
         <dependency>
