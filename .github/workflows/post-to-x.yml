@@ -20,8 +20,19 @@ jobs:
       packages: read
       pull-requests: read
     steps:
+      - name: Set up JDK and GitHub Packages for Maven
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '23'
+          server-id: github
+          server-username: GITHUB_ACTOR
+          server-password: GITHUB_TOKEN
       - name: Run Promo Bot
         uses: theoliverlear/Sigwarth-Software-Suite@3fcb6c0636f97c3fab34f790c4be2420a2c2560e
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
         with:
           app_name: "Crypto Trader"
           mode: prod
