@@ -10,7 +10,13 @@ on:
   release:
     types: [ published ]
   workflow_dispatch:
-
+    inputs:
+      start:
+        description: 'Start commit SHA (optional)'
+        required: false
+      end:
+        description: 'End commit SHA (optional)'
+        required: false
 jobs:
   promo:
     runs-on: ubuntu-latest
