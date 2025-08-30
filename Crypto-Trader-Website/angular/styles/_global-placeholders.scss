@@ -2,33 +2,10 @@
 @use "global-variables" as *;
 @use "global-mixins" as *;
 @use "global-functions" as *;
+@use "@theoliverlear/styles-suite/sigwarth-variables" as *;
 //===============================-Placeholders-===============================
 
 
-//-------------------------------Indented-Text--------------------------------
-%indented-text {
-    text-indent: $two-percent;
-}
-%circle-border-radius {
-    border-radius: 50%;
-}
-%soft-border-radius {
-    border-radius: $one-percent;
-}
-%no-margin-padding {
-    @include basic-margin-padding(0, 0);
-}
 %nav-bar-padding-top {
     padding-top: $four-percent;
-}
-%fill-container {
-    @include square-size(100%);
-}
-
-%soft-text-shadow {
-    text-shadow: add-alpha($absolute-black, 0.3) 0 0 $half-percent;
-}
-
-%simple-box-shadow {
-    box-shadow: $darker-black-shadow 0 0 $half-percent simple-calc(0.25, 0.25);
 }

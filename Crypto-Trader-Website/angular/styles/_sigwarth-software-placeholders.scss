@@ -1,0 +1,126 @@
+@import "globals";
+
+%sigwarth-software-app {
+    ss-anchor {
+        @include flex(center, center, row);
+        &.link-button {
+            @extend ss-button;
+        }
+        a {
+            text-align: center;
+            @extend %fill-container;
+        }
+    }
+
+    ss-button {
+        @include flex(center, center, row);
+        box-sizing: border-box;
+        position: relative;
+        @include flex(center, center, row);
+        border-radius: simplest-calc(0.5);
+        transition: background-color, box-shadow, transform, 0.3s;
+        padding: simplest-calc(0.5) simplest-calc(1);
+        background-color: $muted-blue;
+        flex-basis: $ten-percent;
+        h1, h2, h3, h4, h5, h6 {
+            min-width: 11ch;
+            color: $pure-white;
+            @extend %soft-text-shadow;
+        }
+        &:hover {
+            $box-shadow-size: simplest-calc(0.25);
+            box-shadow: $blue-gray $box-shadow-size $box-shadow-size 0 0;
+            cursor: pointer;
+        }
+
+        &:active {
+            box-shadow: none;
+            $top-and-right: simplest-calc(0.25);
+            transform: translate($top-and-right, $top-and-right);
+        }
+    }
+
+    ss-footer {
+        width: 100%;
+        margin-top: auto;
+        //background-color: $midnight-navy;
+        //background-color: transparent;
+        //background-image: linear-gradient(to bottom, $charcoal 10%, $midnight-navy 90%);
+        background-image: linear-gradient(to bottom, $muted-blue 60%, $midnight-navy);
+        padding: $quarter-percent $zero;
+        box-sizing: border-box;
+        footer {
+            @include flex(center, center, row);
+            width: 100%;
+            color: $pure-white;
+            padding: $eighth-percent 0;
+            .footer-item {
+                @include flex(center, center, row);
+                @include size(100%, 100%);
+                flex: 1;
+                h6 {
+                    font-size: calc($h6-font-size * 0.85);
+                }
+                //padding: $zero $half-percent;
+                .footer-item-text {
+                    color: $pure-white;
+                }
+                &:last-child {
+                    border-left: $thin-border solid $pure-white;
+                }
+            }
+        }
+    }
+
+    ss-img {
+        @include flex(row, center, center);
+        border-radius: inherit;
+        img {
+            border-radius: inherit;
+            @include size(100%, 100%);
+        }
+    }
+
+    ss-input {
+        input {
+            width: 100%;
+            padding: simplest-calc(0.25);
+            border-radius: simplest-calc(0.25);
+            border: $muted-blue $thin-border solid;
+            box-shadow: $morning-frost-blue 0 0 simplest-calc(0.25);
+            transition: box-shadow, margin-left, margin-top, 0.3s;
+            font-size: calc($h6-font-size * 1.25);
+            &:hover {
+                $box-shadow-size: simplest-calc(0.35);
+                box-shadow: $morning-frost-blue $box-shadow-size $box-shadow-size;
+                cursor: pointer;
+            }
+        }
+        .checkbox-container {
+            @include flex(flex-end, center, row);
+            input[type="checkbox"] {
+                @include square-size($two-percent);
+                color: $charcoal;
+                &:hover {
+                    box-shadow: $morning-frost-blue simplest-calc(0.2) simplest-calc(0.2);
+                }
+            }
+        }
+    }
+
+    ss-paragraph {
+        @include flex(center, center, column);
+        color: $neutral-black;
+        //background-color: $alabaster-stone;
+        background-image: radial-gradient($alabaster-stone, $pure-white);
+        border: $light-charcoal $thin-border solid;
+        padding: $half-percent $one-percent;
+        @extend %soft-border-radius;
+    }
+
+    ss-title {
+        @include flex(center, center, row);
+        color: $absolute-black;
+        text-align: center;
+    }
+}
