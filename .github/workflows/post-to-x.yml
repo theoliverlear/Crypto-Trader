@@ -17,6 +17,8 @@ jobs:
     permissions:
       contents: read
       issues: read
+      packages: read
+      pull-requests: read
     steps:
       - name: Run Promo Bot
         uses: theoliverlear/Sigwarth-Software-Suite@874d4284cf4065bc49315d68bb620e736b99b612
