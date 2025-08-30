@@ -1,5 +1,6 @@
 // app.component.scss
 @use "../../styles/globals" as *;
+@use "../../styles/sigwarth-software-placeholders" as *;
 
 h1 {
     font-size: $h1-font-size;
@@ -35,6 +36,7 @@ body {
     @include basic-margin-padding(0, 0);
     min-height: 100vh;
     app {
+        @extend %sigwarth-software-app;
         font-family: $jetbrains-mono-font;
         width: 100%;
         @include flex(center, center, column);
