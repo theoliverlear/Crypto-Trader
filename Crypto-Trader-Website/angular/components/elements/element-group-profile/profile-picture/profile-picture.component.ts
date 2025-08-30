@@ -6,10 +6,10 @@ import {
     ViewChild
 } from "@angular/core";
 import {defaultAvatar, ImageAsset} from "../../../../assets/imageAssets";
-import {SsImgComponent} from "../../element-group-native/ss-img/ss-img.component";
 import {
     ProfilePictureService
 } from "../../../../services/server/profile-picture.service";
+import {SsImgComponent} from "@theoliverlear/angular-suite";
 
 @Component({
     selector: 'profile-picture',

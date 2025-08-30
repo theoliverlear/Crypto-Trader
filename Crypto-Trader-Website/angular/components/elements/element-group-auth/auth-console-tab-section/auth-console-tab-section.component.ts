@@ -1,7 +1,6 @@
 // auth-console-tab-section.component.ts 
 import {Component, EventEmitter, Output} from "@angular/core";
-import {AuthType} from "../../../../models/auth/AuthType";
-import {AuthPopup} from "../../../../models/auth/AuthPopup";
+import {AuthType, AuthPopup} from "@theoliverlear/angular-suite";
 
 @Component({
     selector: 'auth-console-tab-section',

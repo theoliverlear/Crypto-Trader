@@ -1,9 +1,8 @@
 // auth-console-login-section.component.ts 
 import {Component, EventEmitter, Output} from "@angular/core";
 import {AuthInputType} from "../auth-input/models/AuthInputType";
-import {ButtonText} from "../../element-group-native/ss-button/models/ButtonText";
-import {ElementSize} from "../../../../models/ElementSize";
 import {LoginCredentials} from "../../../../models/auth/LoginCredentials";
+import {ButtonText, ElementSize} from "@theoliverlear/angular-suite";
 
 @Component({
     selector: 'auth-console-login-section',
@@ -20,6 +19,6 @@ export class AuthConsoleLoginSectionComponent {
 
     }
     protected readonly AuthInputType = AuthInputType;
-    protected readonly ButtonText = ButtonText;
     protected readonly ElementSize = ElementSize;
+    protected readonly ButtonText = ButtonText;
 }

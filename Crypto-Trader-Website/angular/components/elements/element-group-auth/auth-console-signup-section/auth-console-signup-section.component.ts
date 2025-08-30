@@ -1,8 +1,7 @@
 // auth-console-signup-section.component.ts 
 import {Component, EventEmitter, Output} from "@angular/core";
 import {AuthInputType} from "../auth-input/models/AuthInputType";
-import {ElementSize} from "../../../../models/ElementSize";
-import {ButtonText} from "../../element-group-native/ss-button/models/ButtonText";
+import {ButtonText, ElementSize} from "@theoliverlear/angular-suite";
 import {SignupCredentials} from "../../../../models/auth/SignupCredentials";
 
 @Component({

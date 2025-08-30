@@ -6,7 +6,7 @@ import {
     Input,
     Output
 } from "@angular/core";
-import {AuthType} from "../../../../models/auth/AuthType";
+import {AuthType} from "@theoliverlear/angular-suite";
 
 @Component({
     selector: 'auth-console-tab',

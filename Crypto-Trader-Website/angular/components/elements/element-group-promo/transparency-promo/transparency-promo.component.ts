@@ -1,8 +1,8 @@
 // transparency-promo.component.ts
 import { Component } from "@angular/core";
-import {TagType} from "../../../../models/html/TagType";
 import {transparencyParagraph} from "../../../../assets/textAssets";
 import {repositoryElementLink} from "../../../../assets/elementLinkAssets";
+import {TagType} from "@theoliverlear/angular-suite";
 
 @Component({
     selector: 'transparency-promo',

@@ -1,7 +1,7 @@
 // auth-input.component.ts 
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {AuthInputType} from "./models/AuthInputType";
-import {InputType} from "../../element-group-native/ss-input/models/InputType";
+import {InputType} from "@theoliverlear/angular-suite"
 
 @Component({
     selector: 'auth-input',
@@ -23,7 +23,7 @@ export class AuthInputComponent implements OnInit {
         this.inputText = text;
         this.emitInputText();
     }
-    ngOnInit() {
+    ngOnInit(): void {
         if (this.authInputType !== AuthInputType.AGREED_TERMS) {
             this.authTypeString = this.authInputType + ":";
         } else {

@@ -7,7 +7,7 @@ import {
     ImageAsset,
     stockIcon
 } from "../../../../assets/imageAssets";
-import {TagType} from "../../../../models/html/TagType";
+import {TagType} from "@theoliverlear/angular-suite";
 
 @Component({
     selector: 'tier-promo',

@@ -1,6 +1,5 @@
 import {Component, Input} from "@angular/core";
-import {AuthType} from "../../../../models/auth/AuthType";
-import {AuthPopup} from "../../../../models/auth/AuthPopup";
+import {AuthPopup, AuthType} from "@theoliverlear/angular-suite";
 
 @Component({
     selector: 'auth-console',
