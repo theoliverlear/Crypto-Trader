@@ -1,7 +1,9 @@
-import {TextElementLink} from "../models/link/TextElementLink";
-import {TargetType} from "../models/html/TargetType";
-import {TagType} from "../models/html/TagType";
-import {ElementLink} from "../models/link/ElementLink";
+import {
+    TagType,
+    TargetType,
+    TextElementLink,
+    ElementLink,
+} from "@theoliverlear/angular-suite";
 
 export const navBarHomeLink = new TextElementLink('',
     TargetType.SELF,
