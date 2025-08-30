@@ -12,6 +12,7 @@ import {NgOptimizedImage} from "@angular/common";
 import {HttpClientModule, provideHttpClient, withFetch} from "@angular/common/http";
 import {services} from "../services/services";
 import {BaseChartDirective} from "ng2-charts";
+import {AngularSuiteModule} from "@theoliverlear/angular-suite";
 
 @NgModule({
     declarations: [
@@ -28,7 +29,8 @@ import {BaseChartDirective} from "ng2-charts";
         RouterOutlet,
         NgOptimizedImage,
         HttpClientModule,
-        BaseChartDirective
+        BaseChartDirective,
+        AngularSuiteModule
     ],
     providers: [
         ...services,
@@ -40,6 +42,6 @@ import {BaseChartDirective} from "ng2-charts";
 })
 export class CryptoTraderModule {
     constructor() {
-        console.log('CryptoTraderModule loaded');
+        
     }
 }
