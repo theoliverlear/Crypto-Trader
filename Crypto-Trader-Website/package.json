@@ -99,6 +99,8 @@
     "tslib": "^2.7.0",
     "uppy": "^3.25.5",
     "webstomp-client": "^1.2.6",
-    "zone.js": "^0.15.0"
+    "zone.js": "^0.15.0",
+    "@theoliverlear/angular-suite": "^0.0.12",
+    "@theoliverlear/styles-suite": "^0.2.1"
   }
 }
