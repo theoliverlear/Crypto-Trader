@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {AuthPopup} from "../../../models/auth/AuthPopup";
+import {AuthPopup} from "@theoliverlear/angular-suite";
 
 @Component({
     selector: 'authorize',
