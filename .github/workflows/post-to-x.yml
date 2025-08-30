@@ -42,6 +42,8 @@ jobs:
         with:
           app_name: "Crypto Trader"
           mode: prod
+          start:           ${{ github.event.inputs.start }}
+          end:             ${{ github.event.inputs.end }}
           openai_key:      ${{ secrets.OPENAI_KEY }}
           github_token:    ${{ secrets.GITHUB_TOKEN }}
           x_api_key:       ${{ secrets.X_API_KEY }}
