@@ -21,7 +21,7 @@ jobs:
       pull-requests: read
     steps:
       - name: Run Promo Bot
-        uses: theoliverlear/Sigwarth-Software-Suite@874d4284cf4065bc49315d68bb620e736b99b612
+        uses: theoliverlear/Sigwarth-Software-Suite@3fcb6c0636f97c3fab34f790c4be2420a2c2560e
         with:
           app_name: "Crypto Trader"
           mode: prod
