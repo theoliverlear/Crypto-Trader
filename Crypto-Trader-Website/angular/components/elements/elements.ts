@@ -1,9 +1,4 @@
 import {NavBarComponent} from "./element-group-nav/nav-bar/nav-bar.component";
-import {SsAnchorComponent} from "./element-group-native/ss-anchor/ss-anchor.component";
-import {SsButtonComponent} from "./element-group-native/ss-button/ss-button.component";
-import {SsFooterComponent} from "./element-group-native/ss-footer/ss-footer.component";
-import {SsHeadComponent} from "./element-group-native/ss-head/ss-head.component";
-import {SsImgComponent} from "./element-group-native/ss-img/ss-img.component";
 import {NavBarItemComponent} from "./element-group-nav/nav-bar-item/nav-bar-item.component";
 import {
     ProfilePictureComponent
@@ -18,9 +13,6 @@ import {
 import {
     AuthConsoleComponent
 } from "./element-group-auth/auth-console/auth-console.component";
-import {
-    SsInputComponent
-} from "./element-group-native/ss-input/ss-input.component";
 import {
     ChartComponent
 } from "./element-group-chart/chart/chart.component";
@@ -66,15 +58,6 @@ import {
 import {AuthInputComponent} from "./element-group-auth/auth-input/auth-input.component";
 import {PopupComponent} from "./popup/popup.component";
 import {
-    SsTitleComponent
-} from "./element-group-native/ss-title/ss-title.component";
-import {
-    SubtitleComponent
-} from "./element-group-text/subtitle/subtitle.component";
-import {
-    SsParagraphComponent
-} from "./element-group-native/ss-paragraph/ss-paragraph.component";
-import {
     TierPromoComponent
 } from "./element-group-promo/tier-promo/tier-promo.component";
 import {
@@ -111,15 +94,6 @@ export const elements = [
     PortfolioSectionSelectorBubbleComponent,
     PortfolioSectionSelectorComponent,
     ProfilePictureComponent,
-    SsAnchorComponent,
-    SsButtonComponent,
-    SsFooterComponent,
-    SsHeadComponent,
-    SsImgComponent,
-    SsInputComponent,
-    SsParagraphComponent,
-    SsTitleComponent,
-    SubtitleComponent,
     TierPromoComponent,
     TierPromoStripeComponent,
     TraderEventBubbleComponent,
