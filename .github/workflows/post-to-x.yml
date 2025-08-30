@@ -1,5 +1,4 @@
-name: Post Crypto Trader updates to X (Java)
-
+name: Post updates to X
 on:
   push:
     branches: [ "main", "master" ]
@@ -11,166 +10,23 @@ on:
   release:
     types: [ published ]
   workflow_dispatch:
-    inputs:
-      mode:
-        description: "Run mode (test = no post, prod = post)"
-        required: false
-        default: test
-        type: choice
-        options: [ test, prod ]
-      start:
-        description: "Start commit SHA (optional)"
-        required: false
-        type: string
-      end:
-        description: "End commit SHA (optional)"
-        required: false
-        type: string
 
 jobs:
   promo:
     runs-on: ubuntu-latest
-    permissions: { contents: read, issues: read, packages: read }
+    permissions:
+      contents: read
+      issues: read
     steps:
-      - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
-
-      - uses: actions/setup-java@v4
+      - name: Run Promo Bot
+        uses: theoliverlear/Sigwarth-Software-Suite@874d4284cf4065bc49315d68bb620e736b99b612
         with:
-          distribution: temurin
-          java-version: '23'
-          cache: 'maven'
-
-      - name: Resolve mode
-        id: mode
-        shell: bash
-        run: |
-          set -eo pipefail
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            MODE="${{ inputs.mode }}"
-            if [[ -z "$MODE" ]]; then MODE="test"; fi
-          elif [[ "${{ github.event_name }}" == "push" ]]; then
-            MODE="prod"
-          elif [[ "${{ github.event_name }}" == "pull_request" && "${{ github.event.action }}" == "closed" && "${{ github.event.pull_request.merged }}" == "true" ]]; then
-            MODE="prod"
-          elif [[ "${{ github.event_name }}" == "issues" && "${{ github.event.action }}" == "opened" && "${{ github.event.issue.user.login }}" == "theoliverlear" ]]; then
-            MODE="prod"
-          elif [[ "${{ github.event_name }}" == "release" && "${{ github.event.action }}" == "published" ]]; then
-            MODE="prod"
-          else
-            MODE="test"
-          fi
-          echo "value=$MODE" >> "$GITHUB_OUTPUT"
-
-      - name: Set ISSUE_* environment variables (on issue opened)
-        if: ${{ github.event_name == 'issues' && github.event.action == 'opened' && github.event.issue.user.login == 'theoliverlear' }}
-        shell: bash
-        run: |
-          echo "ISSUE_TITLE<<EOF" >> "$GITHUB_ENV"
-          echo "${{ github.event.issue.title }}" >> "$GITHUB_ENV"
-          echo "EOF" >> "$GITHUB_ENV"
-          echo "ISSUE_BODY<<EOF" >> "$GITHUB_ENV"
-          echo "${{ github.event.issue.body }}" >> "$GITHUB_ENV"
-          echo "EOF" >> "$GITHUB_ENV"
-          echo "ISSUE_TAGS=${{ join(github.event.issue.labels.*.name, ',') }}" >> "$GITHUB_ENV"
-
-      - name: Determine commit range
-        id: range
-        shell: bash
-        run: |
-          set -eo pipefail
-          if [[ "${{ github.event_name }}" == "push" ]]; then
-            START="${{ github.event.before }}"
-            END="${{ github.sha }}"
-            if [[ "$START" == "0000000000000000000000000000000000000000" || -z "$START" ]]; then
-              # Branch creation or unknown 'before' — fall back to first commit reachable from END
-              START="$(git rev-list --max-parents=0 "$END" | tail -n1)"
-            fi
-            echo "start=$START" >> "$GITHUB_OUTPUT"
-            echo "end=$END" >> "$GITHUB_OUTPUT"
-          elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            if [[ "${{ github.event.action }}" == "closed" && "${{ github.event.pull_request.merged }}" == "true" ]]; then
-              BASE="${{ github.event.pull_request.base.sha }}"
-              HEAD="${{ github.event.pull_request.head.sha }}"
-              echo "start=$BASE" >> "$GITHUB_OUTPUT"
-              echo "end=$HEAD" >> "$GITHUB_OUTPUT"
-              echo "merge=${{ github.event.pull_request.merge_commit_sha }}" >> "$GITHUB_OUTPUT"
-            else
-              echo "start=" >> "$GITHUB_OUTPUT"
-              echo "end=" >> "$GITHUB_OUTPUT"
-            fi
-          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            START="${{ inputs.start }}"
-            END="${{ inputs.end }}"
-            if [[ -z "$END" ]]; then END="$(git rev-parse HEAD)"; fi
-            if [[ -z "$START" ]]; then
-              # Default to previous commit if available, or repository root commit otherwise
-              START="$(git rev-parse HEAD~1 2>/dev/null || true)"
-              if [[ -z "$START" ]]; then
-                START="$(git rev-list --max-parents=0 "$END" | tail -n1)"
-              fi
-            fi
-            echo "start=$START" >> "$GITHUB_OUTPUT"
-            echo "end=$END" >> "$GITHUB_OUTPUT"
-          else
-            echo "start=" >> "$GITHUB_OUTPUT"
-            echo "end=" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Build promo module
-        run: mvn -B -DskipTests -pl Crypto-Trader-Promo -am package
-
-      - name: 'Run IssuePromo (mode: ${{ steps.mode.outputs.value }})'
-        if: ${{ github.event_name == 'issues' && github.event.action == 'opened' && github.event.issue.user.login == 'theoliverlear' }}
-        working-directory: ./Crypto-Trader-Promo
-        env:
-          OPENAI_KEY:       ${{ secrets.OPENAI_KEY }}
-          GITHUB_TOKEN:     ${{ secrets.GH_TOKEN }}
-          RELEASEBOT_MODE:  ${{ steps.mode.outputs.value }}
-          ISSUE_TITLE:      ${{ env.ISSUE_TITLE }}
-          ISSUE_BODY:       ${{ env.ISSUE_BODY }}
-          ISSUE_TAGS:       ${{ env.ISSUE_TAGS }}
-          X_API_KEY:        ${{ secrets.X_API_KEY }}
-          X_SECRET:         ${{ secrets.X_SECRET }}
-          X_ACCESS_TOKEN:   ${{ secrets.X_ACCESS_TOKEN }}
-          X_ACCESS_SECRET:  ${{ secrets.X_ACCESS_SECRET }}
-        run: mvn -q -DskipTests org.codehaus.mojo:exec-maven-plugin:3.5.0:java -Dexec.mainClass=org.cryptotrader.promo.IssuePromo -Dexec.classpathScope=runtime
-
-      - name: 'Run ReleaseBot (mode: ${{ steps.mode.outputs.value }})'
-        if: ${{ steps.range.outputs.start != '' && steps.range.outputs.end != '' }}
-        working-directory: ./Crypto-Trader-Promo
-        env:
-          OPENAI_KEY:       ${{ secrets.OPENAI_KEY }}
-          GITHUB_TOKEN:     ${{ secrets.GH_TOKEN }}
-          START_COMMIT:     ${{ steps.range.outputs.start }}
-          END_COMMIT:       ${{ steps.range.outputs.end }}
-          RELEASEBOT_MODE:  ${{ steps.mode.outputs.value }}
-          X_API_KEY:        ${{ secrets.X_API_KEY }}
-          X_SECRET:         ${{ secrets.X_SECRET }}
-          X_ACCESS_TOKEN:   ${{ secrets.X_ACCESS_TOKEN }}
-          X_ACCESS_SECRET:  ${{ secrets.X_ACCESS_SECRET }}
-        run: mvn -q -DskipTests org.codehaus.mojo:exec-maven-plugin:3.5.0:java -Dexec.mainClass=org.cryptotrader.promo.CommitPromo -Dexec.classpathScope=runtime
-
-      - name: Set RELEASE_* environment variables (on release published)
-        if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
-        shell: bash
-        run: |
-          echo "RELEASE_NAME=${{ github.event.release.tag_name || github.event.release.name }}" >> "$GITHUB_ENV"
-          echo "RELEASE_BODY<<EOF" >> "$GITHUB_ENV"
-          cat CHANGELOG.md >> "$GITHUB_ENV"
-          echo "EOF" >> "$GITHUB_ENV"
-
-      - name: 'Run ReleasePromo (mode: ${{ steps.mode.outputs.value }})'
-        if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
-        working-directory: ./Crypto-Trader-Promo
-        env:
-          OPENAI_KEY:       ${{ secrets.OPENAI_KEY }}
-          GITHUB_TOKEN:     ${{ secrets.GH_TOKEN }}
-          RELEASEBOT_MODE:  ${{ steps.mode.outputs.value }}
-          RELEASE_NAME:     ${{ env.RELEASE_NAME }}
-          RELEASE_BODY:     ${{ env.RELEASE_BODY }}
-          X_API_KEY:        ${{ secrets.X_API_KEY }}
-          X_SECRET:         ${{ secrets.X_SECRET }}
-          X_ACCESS_TOKEN:   ${{ secrets.X_ACCESS_TOKEN }}
-          X_ACCESS_SECRET:  ${{ secrets.X_ACCESS_SECRET }}
-        run: mvn -q -DskipTests org.codehaus.mojo:exec-maven-plugin:3.5.0:java -Dexec.mainClass=org.cryptotrader.promo.ReleasePromo -Dexec.classpathScope=runtime
+          app_name: "Crypto Trader"
+          mode: prod
+          openai_key:      ${{ secrets.OPENAI_KEY }}
+          github_token:    ${{ secrets.GITHUB_TOKEN }}
+          x_api_key:       ${{ secrets.X_API_KEY }}
+          x_secret:        ${{ secrets.X_SECRET }}
+          x_access_token:  ${{ secrets.X_ACCESS_TOKEN }}
+          x_access_secret: ${{ secrets.X_ACCESS_SECRET }}
+          repo_name:       ${{ secrets.REPO_NAME }}
