@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Observable, Subject} from "rxjs";
-import {AuthPopup} from "../models/auth/AuthPopup";
+import {AuthPopup} from "@theoliverlear/angular-suite";
 
 @Injectable({
     providedIn: 'root'
