@@ -22,7 +22,7 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "../Crypto-Trader-Assets/src/main/resources/assets",
+                "input": "node_modules/crypto-trader-assets/assets",
                 "output": "/assets/"
               },
               {
@@ -146,12 +146,16 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "angular/test.ts",
+            "main": "angular/test/testBootstrap.ts",
             "polyfills": "angular/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": [
-              "../Crypto-Trader-Assets/src/main/resources/assets"
+              {
+                "glob": "**/*",
+                "input": "node_modules/crypto-trader-assets/assets",
+                "output": "/assets"
+              }
             ],
             "styles": [
               "angular/components/app/app.component.scss"
