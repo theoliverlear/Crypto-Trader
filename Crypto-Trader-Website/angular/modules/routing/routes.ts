@@ -16,6 +16,9 @@ import {
 import {
     TermsOfServiceComponent
 } from "../../components/pages/terms-of-service/terms-of-service.component";
+import {
+    CurrenciesComponent
+} from "../../components/pages/currencies/currencies.component";
 
 
 const isDevelopment = true;
@@ -79,11 +82,22 @@ export const traderRoute: Route = {
         },
     }
 };
+
+export const currenciesRoute: Route = {
+    path: 'currencies',
+    component: CurrenciesComponent,
+    data: {
+        meta: {
+            title: 'Currencies | Crypto Trader'
+        },
+    }
+};
 export const routes: Routes = [
     accountRoute,
     authorizeRoute,
     homeRoute,
     portfolioRoute,
     termsOfServiceRoute,
+    currenciesRoute,
     traderRoute
 ];
