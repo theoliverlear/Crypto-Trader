@@ -36,20 +36,4 @@ open module org.cryptotrader.api.models {
     exports org.cryptotrader.model;
     exports org.cryptotrader.model.http;
     exports org.cryptotrader.model.trade;
-
-
-//    opens org.cryptotrader.entity to org.hibernate.orm.core, spring.core;
-//    opens org.cryptotrader.entity.currency to org.hibernate.orm.core, spring.core;
-//    opens org.cryptotrader.entity.news to org.hibernate.orm.core, spring.core;
-//    opens org.cryptotrader.entity.portfolio to org.hibernate.orm.core, spring.core;
-//    opens org.cryptotrader.entity.prediction to org.hibernate.orm.core, spring.core;
-//    opens org.cryptotrader.entity.training to org.hibernate.orm.core, spring.core;
-//    opens org.cryptotrader.entity.user to org.hibernate.orm.core, spring.core;
-//    opens org.cryptotrader.entity.user.admin to org.hibernate.orm.core, spring.core;
-//    opens org.cryptotrader.entity.vendor to org.hibernate.orm.core, spring.core;
-//
-//
-//    opens org.cryptotrader.model;
-//    opens org.cryptotrader.model.http;
-//    opens org.cryptotrader.model.trade;
 }
