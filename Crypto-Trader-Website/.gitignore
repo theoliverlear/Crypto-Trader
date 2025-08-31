@@ -1,0 +1,10 @@
+# Generated Angular environment files (do not commit secrets)
+angular/environments/*.ts
+angular/environments/*.js
+
+# Node/Angular common ignores (package-scoped)
+node_modules/
+dist/
+build/
+.tmp/
+coverage/
