@@ -25,7 +25,7 @@ public class Vendor {
     public boolean equals(Object object) {
         if (this == object) return true;
         if (object instanceof Vendor comparedVendor) {
-            return this.name.equals(comparedVendor.name);
+            return this.name.equals(comparedVendor.getName());
         }
         return false;
     }
