@@ -2,16 +2,14 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./",
-    "types": [
-      "jasmine",
-      "node"
-    ]
+    "types": ["jasmine", "node"]
   },
   "files": [
-    "angular/test/test.ts"
+    "angular/polyfills.ts",
+    "angular/test/testBootstrap.ts"
   ],
   "include": [
-    "./**/*.spec.ts",
-    "./**/*.d.ts"
+    "angular/**/*.d.ts",
+    "angular/**/*.spec.ts"
   ]
 }
