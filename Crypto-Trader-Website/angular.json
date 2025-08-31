@@ -27,45 +27,53 @@
               }
             ],
             "styles": [
-              "angular/components/app/app.component.css",
-              "angular/components/elements/content-stripe/content-stripe.component.css",
-              "angular/components/elements/element-group-auth/auth-console-login-section/auth-console-login-section.component.css",
-              "angular/components/elements/element-group-auth/auth-console-signup-section/auth-console-signup-section.component.css",
-              "angular/components/elements/element-group-auth/auth-console-tab-section/auth-console-tab-section.component.css",
-              "angular/components/elements/element-group-auth/auth-console-tab/auth-console-tab.component.css",
-              "angular/components/elements/element-group-auth/auth-console/auth-console.component.css",
-              "angular/components/elements/element-group-auth/auth-input/auth-input.component.css",
-              "angular/components/elements/element-group-chart/chart/chart.component.css",
-              "angular/components/elements/element-group-chart/live-chart/live-chart.component.css",
-              "angular/components/elements/element-group-nav/nav-bar-item/nav-bar-item.component.css",
-              "angular/components/elements/element-group-nav/nav-bar-profile-picture/nav-bar-profile-picture.component.css",
-              "angular/components/elements/element-group-nav/nav-bar/nav-bar.component.css",
-              "angular/components/elements/element-group-portfolio/currency-wallet/currency-wallet.component.css",
-              "angular/components/elements/element-group-portfolio/element-group-performance/performance-chart-settings/performance-chart-settings.component.css",
-              "angular/components/elements/element-group-portfolio/element-group-performance/performance-chart/performance-chart.component.css",
-              "angular/components/elements/element-group-portfolio/element-group-performance/performance-section/performance-section.component.css",
-              "angular/components/elements/element-group-portfolio/portfolio-input/portfolio-input.component.css",
-              "angular/components/elements/element-group-portfolio/portfolio-section-selector-bubble/portfolio-section-selector-bubble.component.css",
-              "angular/components/elements/element-group-portfolio/portfolio-section-selector/portfolio-section-selector.component.css",
-              "angular/components/elements/element-group-portfolio/portfolio-section/portfolio-section.component.css",
-              "angular/components/elements/element-group-profile/profile-picture/profile-picture.component.css",
-              "angular/components/elements/element-group-promo/paper-mode-promo/paper-mode-promo.component.css",
-              "angular/components/elements/element-group-promo/tier-promo-stripe/tier-promo-stripe.component.css",
-              "angular/components/elements/element-group-promo/transparency-promo/transparency-promo.component.css",
-              "angular/components/elements/element-group-promo/tier-promo/tier-promo.component.css",
-              "angular/components/elements/element-group-trader/trader-event-bubble/trader-event-bubble.component.css",
-              "angular/components/elements/popup/popup.component.css",
-              "angular/components/pages/account/account.component.css",
-              "angular/components/pages/authorize/authorize.component.css",
-              "angular/components/pages/currencies/currencies.component.css",
-              "angular/components/pages/home/home.component.css",
-              "angular/components/pages/not-found/not-found.component.css",
-              "angular/components/pages/portfolio/portfolio.component.css",
-              "angular/components/pages/terms-of-service/terms-of-service.component.css",
-              "angular/components/pages/trader/trader.component.css"
+              "angular/components/app/app.component.scss",
+              "angular/components/elements/content-stripe/content-stripe.component.scss",
+              "angular/components/elements/element-group-auth/auth-console-login-section/auth-console-login-section.component.scss",
+              "angular/components/elements/element-group-auth/auth-console-signup-section/auth-console-signup-section.component.scss",
+              "angular/components/elements/element-group-auth/auth-console-tab-section/auth-console-tab-section.component.scss",
+              "angular/components/elements/element-group-auth/auth-console-tab/auth-console-tab.component.scss",
+              "angular/components/elements/element-group-auth/auth-console/auth-console.component.scss",
+              "angular/components/elements/element-group-auth/auth-input/auth-input.component.scss",
+              "angular/components/elements/element-group-chart/chart/chart.component.scss",
+              "angular/components/elements/element-group-chart/live-chart/live-chart.component.scss",
+              "angular/components/elements/element-group-nav/nav-bar-item/nav-bar-item.component.scss",
+              "angular/components/elements/element-group-nav/nav-bar-profile-picture/nav-bar-profile-picture.component.scss",
+              "angular/components/elements/element-group-nav/nav-bar/nav-bar.component.scss",
+              "angular/components/elements/element-group-portfolio/currency-wallet/currency-wallet.component.scss",
+              "angular/components/elements/element-group-portfolio/element-group-performance/performance-chart-settings/performance-chart-settings.component.scss",
+              "angular/components/elements/element-group-portfolio/element-group-performance/performance-chart/performance-chart.component.scss",
+              "angular/components/elements/element-group-portfolio/element-group-performance/performance-section/performance-section.component.scss",
+              "angular/components/elements/element-group-portfolio/portfolio-input/portfolio-input.component.scss",
+              "angular/components/elements/element-group-portfolio/portfolio-section-selector-bubble/portfolio-section-selector-bubble.component.scss",
+              "angular/components/elements/element-group-portfolio/portfolio-section-selector/portfolio-section-selector.component.scss",
+              "angular/components/elements/element-group-portfolio/portfolio-section/portfolio-section.component.scss",
+              "angular/components/elements/element-group-profile/profile-picture/profile-picture.component.scss",
+              "angular/components/elements/element-group-promo/paper-mode-promo/paper-mode-promo.component.scss",
+              "angular/components/elements/element-group-promo/tier-promo-stripe/tier-promo-stripe.component.scss",
+              "angular/components/elements/element-group-promo/transparency-promo/transparency-promo.component.scss",
+              "angular/components/elements/element-group-promo/tier-promo/tier-promo.component.scss",
+              "angular/components/elements/element-group-trader/trader-event-bubble/trader-event-bubble.component.scss",
+              "angular/components/elements/popup/popup.component.scss",
+              "angular/components/pages/account/account.component.scss",
+              "angular/components/pages/authorize/authorize.component.scss",
+              "angular/components/pages/currencies/currencies.component.scss",
+              "angular/components/pages/home/home.component.scss",
+              "angular/components/pages/not-found/not-found.component.scss",
+              "angular/components/pages/portfolio/portfolio.component.scss",
+              "angular/components/pages/terms-of-service/terms-of-service.component.scss",
+              "angular/components/pages/trader/trader.component.scss"
             ],
             "scripts": [],
-            "fileReplacements": []
+            "fileReplacements": [],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "angular/styles"
+              ]
+            },
+            "allowedCommonJsDependencies": [
+              "crypto-js"
+            ]
           },
           "configurations": {
             "production": {
@@ -140,7 +148,7 @@
               "../Crypto-Trader-Assets/src/main/resources/assets"
             ],
             "styles": [
-              "angular/styles/styles.css"
+              "angular/components/app/app.component.scss"
             ],
             "scripts": []
           }
