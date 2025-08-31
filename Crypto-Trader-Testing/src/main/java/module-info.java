@@ -12,6 +12,7 @@ module org.cryptotrader.test {
     requires static jakarta.persistence;
     requires static org.hibernate.orm.core;
     requires org.jetbrains.annotations;
+    requires org.mockito.junit.jupiter;
 
     exports org.cryptotrader.test;
     exports org.cryptotrader.test.logging;
