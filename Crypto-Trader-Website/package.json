@@ -27,8 +27,7 @@
     "test:jest": "jest --config jest.config.cjs",
     "test:jest:watch": "jest --config jest.config.cjs --watch",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "prepublishOnly": "npm run build"
+    "e2e": "ng e2e"
   },
   "repository": {
     "type": "git",
