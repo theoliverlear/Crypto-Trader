@@ -1,8 +1,10 @@
 package org.cryptotrader.api.controller;
 
+import org.cryptotrader.comm.response.CurrencyValuesListResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,5 +30,10 @@ public class CurrencyController {
             double assetValue = currency.getValue() * assetValueRequest.getShares();
             return new ResponseEntity<>(new AssetValueResponse(assetValue), HttpStatus.OK);
         }
+    }
+    
+    @GetMapping("/all")
+    public ResponseEntity<CurrencyValuesListResponse> getAll() {
+        return new ResponseEntity<>(this.currencyService.getCurrencyValuesResponse(), HttpStatus.OK);
     }
 }
