@@ -3,6 +3,7 @@ package org.cryptotrader.api.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -13,13 +14,9 @@ public class SecurityConfig {
     //------------------------Security-Filter-Chain---------------------------
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // HttpSecurity is the builder object used to create the security
-        // filter chain. We authorize all requests and disable CSRF.
-        http.authorizeRequests()
-                .anyRequest().permitAll()
-                .and()
-                .csrf()
-                .disable();
+        http.authorizeHttpRequests(authorize -> {
+            authorize.anyRequest().permitAll();
+        }).csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
     //--------------------------Password-Encoder------------------------------
