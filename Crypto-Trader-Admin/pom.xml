@@ -26,6 +26,11 @@
     <dependencies>
         <dependency>
             <groupId>org.cryptotrader</groupId>
+            <artifactId>desktop-library</artifactId>
+            <version>0.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
             <artifactId>desktop-components</artifactId>
             <version>0.0.2</version>
         </dependency>
