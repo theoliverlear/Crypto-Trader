@@ -1,4 +1,4 @@
-import {NgModule} from "@angular/core";
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA} from "@angular/core";
 import {AppComponent} from "../components/app/app.component";
 import {elements} from "../components/elements/elements";
 import {directives} from "../directives/directives";
@@ -12,7 +12,10 @@ import {NgOptimizedImage} from "@angular/common";
 import {HttpClientModule, provideHttpClient, withFetch} from "@angular/common/http";
 import {services} from "../services/services";
 import {BaseChartDirective} from "ng2-charts";
-import {AngularSuiteModule} from "@theoliverlear/angular-suite";
+import {
+    AngularSuiteModule,
+    SubtitleComponent
+} from "@theoliverlear/angular-suite";
 
 @NgModule({
     declarations: [
@@ -30,7 +33,8 @@ import {AngularSuiteModule} from "@theoliverlear/angular-suite";
         NgOptimizedImage,
         HttpClientModule,
         BaseChartDirective,
-        AngularSuiteModule
+        AngularSuiteModule,
+        SubtitleComponent
     ],
     providers: [
         ...services,
@@ -38,7 +42,7 @@ import {AngularSuiteModule} from "@theoliverlear/angular-suite";
     ],
     bootstrap: [AppComponent],
     exports: [],
-    schemas: []
+    schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 export class CryptoTraderModule {
     constructor() {
