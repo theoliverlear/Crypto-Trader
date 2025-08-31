@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "build",
+            "outputPath": "dist",
             "index": "angular/index.html",
             "main": "angular/main.ts",
             "polyfills": "angular/polyfills.ts",
@@ -24,6 +24,11 @@
                 "glob": "**/*",
                 "input": "../Crypto-Trader-Assets/src/main/resources/assets",
                 "output": "/assets/"
+              },
+              {
+                "glob": "package.json",
+                "input": ".",
+                "output": "/"
               }
             ],
             "styles": [
