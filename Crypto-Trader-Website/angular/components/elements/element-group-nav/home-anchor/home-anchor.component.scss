@@ -1,0 +1,21 @@
+// home-anchor.component.scss
+@use "../../../../styles/globals" as *;
+
+home-anchor {
+    left: $one-percent;
+    position: absolute;
+    @include square-size(calc($three-half-percent + $quarter-percent));
+    box-shadow: none;
+    transition: box-shadow, 0.3s;
+    @extend %soft-border-radius;
+    background-color: $alabaster-stone;
+    padding: $quarter-percent;
+    &:hover {
+        cursor: pointer;
+        box-shadow: $blue-gray $quarter-percent $quarter-percent 0 0;
+    }
+    &:active {
+        box-shadow: none;
+        transform: translate($quarter-percent, $quarter-percent);
+    }
+}
