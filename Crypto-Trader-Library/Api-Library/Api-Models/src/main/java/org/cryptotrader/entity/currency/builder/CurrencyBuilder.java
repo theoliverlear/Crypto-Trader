@@ -11,16 +11,13 @@ public class CurrencyBuilder extends AbstractCurrency {
     private String currencyCode;
     private String urlPath;
     private double value;
-    private String formattedValue;
     private LocalDateTime lastUpdated;
-    private static final DecimalFormat decimalFormat = new DecimalFormat("##,#00.00000000");
 
     public CurrencyBuilder() {
         this.name = "";
         this.currencyCode = "";
         this.urlPath = "";
         this.value = 0;
-        this.formattedValue = decimalFormat.format(this.value);
         this.lastUpdated = LocalDateTime.now();
     }
     @Override
@@ -41,12 +38,6 @@ public class CurrencyBuilder extends AbstractCurrency {
     @Override
     public CurrencyBuilder value(double value) {
         this.value = value;
-        this.formattedValue = decimalFormat.format(value);
-        return this;
-    }
-    @Override
-    public CurrencyBuilder formattedValue(String formattedValue) {
-        this.formattedValue = formattedValue;
         return this;
     }
     @Override
@@ -60,7 +51,6 @@ public class CurrencyBuilder extends AbstractCurrency {
                             this.currencyCode,
                             this.urlPath,
                             this.value,
-                            this.formattedValue,
                             this.lastUpdated);
     }
 }

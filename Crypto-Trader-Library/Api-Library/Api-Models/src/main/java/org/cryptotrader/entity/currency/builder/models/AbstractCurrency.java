@@ -10,6 +10,5 @@ public abstract class AbstractCurrency implements BuilderFactory<Currency> {
     public abstract AbstractCurrency currencyCode(String currencyCode);
     public abstract AbstractCurrency urlPath(String urlPath);
     public abstract AbstractCurrency value(double value);
-    public abstract AbstractCurrency formattedValue(String formattedValue);
     public abstract AbstractCurrency lastUpdated(LocalDateTime lastUpdated);
 }

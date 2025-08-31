@@ -20,7 +20,6 @@ import java.util.List;
 @Entity
 @Table(name = "currencies")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "currencyCode")
-@AllArgsConstructor
 public class Currency {
     //============================-Variables-=================================
     @Column(name = "currency_name")
@@ -31,9 +30,6 @@ public class Currency {
     private String urlPath;
     @Column(name = "currency_value", columnDefinition = "DECIMAL(34, 18)")
     private double value;
-    // TODO: Safely drop this column. This can be done programmatically.
-    @Column(name = "currency_value_formatted")
-    private String formattedValue;
     @JsonIgnore
     @Transient
     private static final DecimalFormat decimalFormat = new DecimalFormat("##,#00.00000000");
@@ -46,7 +42,6 @@ public class Currency {
         this.currencyCode = "";
         this.urlPath = "";
         this.value = 0;
-        this.formattedValue = "";
         this.lastUpdated = LocalDateTime.now();
     }
     public Currency(String name, String currencyCode) {
@@ -54,10 +49,6 @@ public class Currency {
         this.currencyCode = currencyCode;
         this.urlPath = this.getCoinbaseUrl();
         this.value = this.getApiValue();
-        this.formattedValue = decimalFormat.format(this.value);
-        if (this.formattedValue == null) {
-            this.formattedValue = "";
-        }
         this.lastUpdated = LocalDateTime.now();
     }
     public Currency(String name, String currencyCode, String urlPath) {
@@ -65,10 +56,6 @@ public class Currency {
         this.currencyCode = currencyCode;
         this.urlPath = urlPath;
         this.value = this.getApiValue();
-        this.formattedValue = decimalFormat.format(this.value);
-        if (this.formattedValue == null) {
-            this.formattedValue = "";
-        }
         this.lastUpdated = LocalDateTime.now();
     }
     public Currency(String name, String currencyCode, double value, String urlPath) {
@@ -76,10 +63,6 @@ public class Currency {
         this.currencyCode = currencyCode;
         this.value = value;
         this.urlPath = urlPath;
-        this.formattedValue = decimalFormat.format(value);
-        if (this.formattedValue == null) {
-            this.formattedValue = "";
-        }
         this.lastUpdated = LocalDateTime.now();
     }
     public Currency(String name, String currencyCode, String urlPath, double value, LocalDateTime lastUpdated) {
@@ -87,10 +70,6 @@ public class Currency {
         this.currencyCode = currencyCode;
         this.urlPath = urlPath;
         this.value = value;
-        this.formattedValue = decimalFormat.format(value);
-        if (this.formattedValue == null) {
-            this.formattedValue = "";
-        }
         this.lastUpdated = lastUpdated;
     }
     //=============================-Methods-==================================
@@ -102,7 +81,6 @@ public class Currency {
     public void updateValue() {
         this.lastUpdated = LocalDateTime.now();
         this.value = this.getApiValue();
-        this.formattedValue = this.formatValue(this.value);
     }
     //---------------------------Get-Api-Value--------------------------------
     public double getApiValue() {
@@ -190,7 +168,7 @@ public class Currency {
     public String toString() {
         String currencyString = """
                 %18s --- %5s - $%16s""".formatted(this.name, this.currencyCode,
-                this.formattedValue);
+                decimalFormat.format(this.value));
         return currencyString;
     }
     public static CurrencyBuilder builder() {
@@ -203,7 +181,6 @@ public class Currency {
     //=============================-Setters-==================================
     public void setValue(double value) {
         this.value = value;
-        this.formattedValue = decimalFormat.format(value);
         this.lastUpdated = LocalDateTime.now();
     }
 }

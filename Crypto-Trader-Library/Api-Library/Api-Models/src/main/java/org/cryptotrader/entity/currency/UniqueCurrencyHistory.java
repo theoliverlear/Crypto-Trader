@@ -23,8 +23,6 @@ public class UniqueCurrencyHistory extends Identifiable {
     private Currency currency;
     @Column(name = "currency_value", columnDefinition = "DECIMAL(34, 18)")
     private double value;
-    @Column(name = "currency_value_formatted")
-    private String formattedValue;
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
     public UniqueCurrencyHistory(Currency currency) {
@@ -32,7 +30,6 @@ public class UniqueCurrencyHistory extends Identifiable {
         this.name = currency.getName();
         this.currency = currency;
         this.value = currency.getValue();
-        this.formattedValue = currency.getFormattedValue();
         this.lastUpdated = LocalDateTime.now();
     }
 }

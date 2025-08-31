@@ -20,9 +20,6 @@ public class CurrencyHistory extends Identifiable {
     private Currency currency;
     @Column(name = "currency_value", columnDefinition = "DECIMAL(34, 18)")
     private double value;
-    // TODO: Safely drop this column. This can be done programmatically.
-    @Column(name = "currency_value_formatted")
-    private String formattedValue;
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
     //===========================-Constructors-===============================
@@ -31,7 +28,6 @@ public class CurrencyHistory extends Identifiable {
         this.currency = new Currency();
         this.name = "";
         this.value = 0;
-        this.formattedValue = "";
         this.lastUpdated = LocalDateTime.now();
     }
     public CurrencyHistory(Currency currency, double value) {
@@ -39,7 +35,6 @@ public class CurrencyHistory extends Identifiable {
         this.currency = currency;
         this.name = currency.getName();
         this.value = value;
-        this.formattedValue = currency.getDecimalFormat().format(value);
         this.lastUpdated = LocalDateTime.now();
     }
     public CurrencyHistory(Currency currency, double value, LocalDateTime lastUpdated) {
@@ -47,7 +42,6 @@ public class CurrencyHistory extends Identifiable {
         this.currency = currency;
         this.name = currency.getName();
         this.value = value;
-        this.formattedValue = currency.getDecimalFormat().format(value);
         this.lastUpdated = lastUpdated;
     }
 }

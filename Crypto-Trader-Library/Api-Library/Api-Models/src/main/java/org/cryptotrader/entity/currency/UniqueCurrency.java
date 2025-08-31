@@ -26,8 +26,6 @@ public class UniqueCurrency {
     private String urlPath;
     @Column(name = "currency_value", columnDefinition = "DECIMAL(34, 18)")
     private double value;
-    @Column(name = "currency_value_formatted")
-    private String formattedValue;
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
     public UniqueCurrency(Currency currency) {
@@ -35,7 +33,6 @@ public class UniqueCurrency {
         this.currency = currency.getCurrencyCode();
         this.urlPath = currency.getUrlPath();
         this.value = currency.getValue();
-        this.formattedValue = currency.getFormattedValue();
         this.lastUpdated = LocalDateTime.now();
     }
 }
