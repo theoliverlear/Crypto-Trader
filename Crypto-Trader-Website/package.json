@@ -1,14 +1,56 @@
 {
-  "name": "crypto-trader",
+  "name": "@theoliverlear/crypto-trader-website",
   "version": "0.0.1",
-  "description": "A cryptocurrency trading app",
-  "main": "../angular/main.js",
-  "scripts": {
-    "build": "../node_modules/.bin/webpack",
-    "test": "../node_modules/.bin/mocha 'Crypto-Trader-Api/src/main/resources/static/script/test/**/*.test.ts'"
+  "description": "The web interface for Crypto Trader.",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": {
+      "import": "./index.js"
+    },
+    "./angular/*": "./angular/*"
   },
+  "files": [
+    "index.js",
+    "angular/**"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "start": "ng serve",
+    "serve": "ng serve",
+    "build": "ng build --configuration production",
+    "build:dev": "ng build --configuration development",
+    "test": "ng test",
+    "test:jest": "jest --config jest.config.cjs",
+    "test:jest:watch": "jest --config jest.config.cjs --watch",
+    "lint": "ng lint",
+    "e2e": "ng e2e",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theoliverlear/Crypto-Trader.git",
+    "directory": "Crypto-Trader-Website"
+  },
+  "bugs": {
+    "url": "https://github.com/theoliverlear/Crypto-Trader/issues"
+  },
+  "homepage": "https://github.com/theoliverlear/Crypto-Trader#readme",
   "author": "theoliverlear",
   "license": "ISC",
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "crypto",
+    "trader",
+    "angular",
+    "website"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
+  },
   "devDependencies": {
     "@angular-devkit/build-angular": "~18.2.2",
     "@angular/cli": "^18.2.2",
@@ -45,6 +87,7 @@
     "terser-webpack-plugin": "^5.3.10",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
+    "ts-jest": "^29.1.1",
     "tslint": "~6.1.3",
     "typescript": "^5.4.5",
     "webpack": "^5.91.0",
