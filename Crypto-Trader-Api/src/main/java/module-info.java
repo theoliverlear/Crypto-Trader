@@ -40,5 +40,7 @@ open module org.cryptotrader.api {
     requires tomcat.embed.core;
     requires tomcat.embed.websocket;
     
+    requires org.cryptotrader.test;
+    
     exports org.cryptotrader.api;
 }
