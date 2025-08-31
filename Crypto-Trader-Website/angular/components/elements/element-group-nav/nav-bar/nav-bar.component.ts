@@ -1,7 +1,8 @@
 import {
-  Component
+    Component
 } from '@angular/core';
 import {
+    navBarCurrenciesLink,
     navBarHomeLink,
     navBarPortfolioLink,
     navBarTraderLink
@@ -9,16 +10,17 @@ import {
 
 
 @Component({
-  selector: 'nav-bar',
-  templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.scss']
+    selector: 'nav-bar',
+    templateUrl: './nav-bar.component.html',
+    styleUrls: ['./nav-bar.component.scss']
 })
 export class NavBarComponent {
-  constructor() {
-    console.log('NavBarComponent loaded');
-  }
+    constructor() {
+        console.log('NavBarComponent loaded');
+    }
 
-  protected readonly navBarHomeLink = navBarHomeLink;
-  protected readonly navBarPortfolioLink = navBarPortfolioLink;
-  protected readonly navBarTraderLink = navBarTraderLink;
+    protected readonly navBarHomeLink = navBarHomeLink;
+    protected readonly navBarPortfolioLink = navBarPortfolioLink;
+    protected readonly navBarTraderLink = navBarTraderLink;
+    protected readonly navBarCurrenciesLink = navBarCurrenciesLink;
 }
