@@ -1,6 +1,8 @@
 package org.cryptotrader.api.service;
 //=================================-Imports-==================================
 import lombok.extern.slf4j.Slf4j;
+import org.cryptotrader.comm.response.CurrencyValueResponse;
+import org.cryptotrader.comm.response.CurrencyValuesListResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -72,6 +74,23 @@ public class CurrencyService {
             this.currencyJsonGenerator.generateAndSave();
             SupportedCurrencies.loadCurrenciesFromJson();
         }
+    }
+
+    public CurrencyValueResponse toCurrencyValueResponse(Currency currency) {
+        return new CurrencyValueResponse(currency.getName(),
+                                         currency.getCurrencyCode(),
+                                         currency.getValue());
+    }
+
+    public CurrencyValuesListResponse getCurrencyValuesResponse() {
+        List<Currency> currencies = this.getAllCurrencies();
+        return new CurrencyValuesListResponse(currencies.stream()
+                                                        .map(this::toCurrencyValueResponse)
+                                                        .toList());
+    }
+
+    public List<Currency> getAllCurrencies() {
+        return this.currencyRepository.findAll();
     }
 
     public List<String> getAllCurrencyCodes() {
