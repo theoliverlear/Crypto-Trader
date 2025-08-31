@@ -1,130 +1,171 @@
-name: Release Desktop Styles Package
+#name: Release Desktop Styles Package
+#
+#on:
+#  release:
+#    types: [published]
+#  workflow_dispatch:
+#    inputs:
+#      package:
+#        description: 'Package to publish (default: desktop-styles)'
+#        required: false
+#        default: 'desktop-styles'
+#
+#jobs:
+#  publish-desktop-styles:
+#    name: Publish desktop-styles to GitHub Packages
+#    if: ${{ github.event_name == 'release' || github.event.inputs.package == 'desktop-styles' || github.event.inputs.package == '' }}
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: read
+#      packages: write
+#    defaults:
+#      run:
+#        working-directory: Crypto-Trader-Library/Desktop-Library/Desktop-Styles
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v4
+#
+#      - name: Use Node.js 20.x
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: 20
+#          registry-url: 'https://npm.pkg.github.com'
+#          scope: '@theoliverlear'
+#
+#      - name: Verify package files exist
+#        run: |
+#          test -f package.json
+#          test -f index.scss
+#
+#      - name: Install (no-op for SCSS-only)
+#        run: |
+#          if [ -f package-lock.json ]; then
+#            npm ci || npm i
+#          else
+#            npm i --ignore-scripts --no-audit --no-fund || true
+#          fi
+#
+#      - name: Check if version already published
+#        id: check_version
+#        env:
+#          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        run: |
+#          node -e "const fs=require('fs'); const {execSync}=require('child_process'); const pkg=require('./package.json'); const v=pkg.version; const name=pkg.name.startsWith('@')?pkg.name:'@theoliverlear/'+pkg.name; let exists=false; try{execSync('npm view '+name+'@'+v+' version',{stdio:'ignore'}); exists=true;}catch(e){exists=false;} const out=process.env.GITHUB_OUTPUT; if(out){fs.appendFileSync(out,'exists='+exists+'\n');} if(exists){console.log('Version '+name+'@'+v+' already exists on registry. Skipping publish.');}"
+#
+#      - name: Publish to GitHub Packages
+#        if: steps.check_version.outputs.exists == 'false'
+#        run: npm publish
+#        env:
+#          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#
+#      - name: Skip publish (already exists)
+#        if: steps.check_version.outputs.exists == 'true'
+#        run: |
+#          node -e "const pkg=require('./package.json'); const name=pkg.name.startsWith('@')?pkg.name:'@theoliverlear/'+pkg.name; console.log('Skipped publish: '+name+'@' + pkg.version + ' already exists')"
+#
+#      - name: Output published package info
+#        if: steps.check_version.outputs.exists == 'false'
+#        run: |
+#          node -e "const pkg=require('./package.json'); const name=pkg.name.startsWith('@')?pkg.name:'@theoliverlear/'+pkg.name; console.log('Published '+name+'@' + pkg.version)"
+#
+#  publish-website:
+#    name: Publish crypto-trader-website to GitHub Packages
+#    if: ${{ github.event_name == 'release' || github.event.inputs.package == 'website' || github.event.inputs.package == 'crypto-trader-website' || github.event.inputs.package == '' }}
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: read
+#      packages: write
+#    defaults:
+#      run:
+#        working-directory: Crypto-Trader-Website
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v4
+#
+#      - name: Use Node.js 20.x
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: 20
+#          registry-url: 'https://npm.pkg.github.com'
+#          scope: '@theoliverlear'
+#
+#      - name: Verify package files exist
+#        run: |
+#          test -f package.json
+#          test -f index.js
+#
+#      - name: Install dependencies
+#        run: |
+#          if [ -f package-lock.json ]; then
+#            npm ci || npm i
+#          else
+#            npm i --ignore-scripts --no-audit --no-fund || true
+#          fi
+#
+#      - name: Check if version already published
+#        id: check_version_website
+#        env:
+#          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        run: |
+#          node -e "const fs=require('fs'); const {execSync}=require('child_process'); const pkg=require('./package.json'); const v=pkg.version; const name=pkg.name.startsWith('@')?pkg.name:'@theoliverlear/'+pkg.name; let exists=false; try{execSync('npm view '+name+'@'+v+' version',{stdio:'ignore'}); exists=true;}catch(e){exists=false;} const out=process.env.GITHUB_OUTPUT; if(out){fs.appendFileSync(out,'exists='+exists+'\n');} if(exists){console.log('Version '+name+'@'+v+' already exists on registry. Skipping publish.');}"
+#
+#      - name: Build package
+#        if: steps.check_version_website.outputs.exists == 'false'
+#        run: npm run build
+#
+#      - name: Publish to GitHub Packages
+#        if: steps.check_version_website.outputs.exists == 'false'
+#        run: npm publish
+#        env:
+#          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#
+#      - name: Skip publish (already exists)
+#        if: steps.check_version_website.outputs.exists == 'true'
+#        run: |
+#          node -e "const pkg=require('./package.json'); const name=pkg.name.startsWith('@')?pkg.name:'@theoliverlear/'+pkg.name; console.log('Skipped publish: '+name+'@' + pkg.version + ' already exists')"
+#
+#      - name: Output published package info
+#        if: steps.check_version_website.outputs.exists == 'false'
+#        run: |
+#          node -e "const pkg=require('./package.json'); const name=pkg.name.startsWith('@')?pkg.name:'@theoliverlear/'+pkg.name; console.log('Published '+name+'@' + pkg.version)"
+
+name: Release Publish
 
 on:
-  release:
-    types: [published]
   workflow_dispatch:
     inputs:
       package:
-        description: 'Package to publish (default: desktop-styles)'
+        description: "Package to publish (desktop-styles, crypto-trader-website, all)"
         required: false
-        default: 'desktop-styles'
+        default: 'all'
+  release:
+    types: [published]
 
 jobs:
   publish-desktop-styles:
-    name: Publish desktop-styles to GitHub Packages
-    if: ${{ github.event_name == 'release' || github.event.inputs.package == 'desktop-styles' || github.event.inputs.package == '' }}
-    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'release' || github.event.inputs.package == 'all' || github.event.inputs.package == 'desktop-styles' || github.event.inputs.package == '' }}
+    uses: theoliverlear/Sigwarth-Software-Suite/.github/workflows/release-package.yml@master
     permissions:
       contents: read
       packages: write
-    defaults:
-      run:
-        working-directory: Crypto-Trader-Library/Desktop-Library/Desktop-Styles
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    with:
+      package_name: '@theoliverlear/desktop-styles'
+      package_dir: 'Crypto-Trader-Library/Desktop-Library/Desktop-Styles'
+      scss_package: true
+      node_version: '20'
+    secrets: inherit
 
-      - name: Use Node.js 20.x
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@theoliverlear'
-
-      - name: Verify package files exist
-        run: |
-          test -f package.json
-          test -f index.scss
-
-      - name: Install (no-op for SCSS-only)
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci || npm i
-          else
-            npm i --ignore-scripts --no-audit --no-fund || true
-          fi
-
-      - name: Check if version already published
-        id: check_version
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          node -e "const fs=require('fs'); const {execSync}=require('child_process'); const pkg=require('./package.json'); const v=pkg.version; const name=pkg.name.startsWith('@')?pkg.name:'@theoliverlear/'+pkg.name; let exists=false; try{execSync('npm view '+name+'@'+v+' version',{stdio:'ignore'}); exists=true;}catch(e){exists=false;} const out=process.env.GITHUB_OUTPUT; if(out){fs.appendFileSync(out,'exists='+exists+'\n');} if(exists){console.log('Version '+name+'@'+v+' already exists on registry. Skipping publish.');}"
-
-      - name: Publish to GitHub Packages
-        if: steps.check_version.outputs.exists == 'false'
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Skip publish (already exists)
-        if: steps.check_version.outputs.exists == 'true'
-        run: |
-          node -e "const pkg=require('./package.json'); const name=pkg.name.startsWith('@')?pkg.name:'@theoliverlear/'+pkg.name; console.log('Skipped publish: '+name+'@' + pkg.version + ' already exists')"
-
-      - name: Output published package info
-        if: steps.check_version.outputs.exists == 'false'
-        run: |
-          node -e "const pkg=require('./package.json'); const name=pkg.name.startsWith('@')?pkg.name:'@theoliverlear/'+pkg.name; console.log('Published '+name+'@' + pkg.version)"
-
-  publish-website:
-    name: Publish crypto-trader-website to GitHub Packages
-    if: ${{ github.event_name == 'release' || github.event.inputs.package == 'website' || github.event.inputs.package == 'crypto-trader-website' || github.event.inputs.package == '' }}
-    runs-on: ubuntu-latest
+  publish-crypto-trader-website:
+    if: ${{ github.event_name == 'release' || github.event.inputs.package == 'all' || github.event.inputs.package == 'crypto-trader-website' }}
+    uses: theoliverlear/Sigwarth-Software-Suite/.github/workflows/release-package.yml@master
     permissions:
       contents: read
       packages: write
-    defaults:
-      run:
-        working-directory: Crypto-Trader-Website
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Use Node.js 20.x
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@theoliverlear'
-
-      - name: Verify package files exist
-        run: |
-          test -f package.json
-          test -f index.js
-
-      - name: Install dependencies
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci || npm i
-          else
-            npm i --ignore-scripts --no-audit --no-fund || true
-          fi
-
-      - name: Check if version already published
-        id: check_version_website
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          node -e "const fs=require('fs'); const {execSync}=require('child_process'); const pkg=require('./package.json'); const v=pkg.version; const name=pkg.name.startsWith('@')?pkg.name:'@theoliverlear/'+pkg.name; let exists=false; try{execSync('npm view '+name+'@'+v+' version',{stdio:'ignore'}); exists=true;}catch(e){exists=false;} const out=process.env.GITHUB_OUTPUT; if(out){fs.appendFileSync(out,'exists='+exists+'\n');} if(exists){console.log('Version '+name+'@'+v+' already exists on registry. Skipping publish.');}"
-
-      - name: Build package
-        if: steps.check_version_website.outputs.exists == 'false'
-        run: npm run build
-
-      - name: Publish to GitHub Packages
-        if: steps.check_version_website.outputs.exists == 'false'
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Skip publish (already exists)
-        if: steps.check_version_website.outputs.exists == 'true'
-        run: |
-          node -e "const pkg=require('./package.json'); const name=pkg.name.startsWith('@')?pkg.name:'@theoliverlear/'+pkg.name; console.log('Skipped publish: '+name+'@' + pkg.version + ' already exists')"
-
-      - name: Output published package info
-        if: steps.check_version_website.outputs.exists == 'false'
-        run: |
-          node -e "const pkg=require('./package.json'); const name=pkg.name.startsWith('@')?pkg.name:'@theoliverlear/'+pkg.name; console.log('Published '+name+'@' + pkg.version)"
+    with:
+      package_name: '@theoliverlear/crypto-trader-website'
+      package_dir: 'Crypto-Trader-Website'
+      scss_package: false
+      build_script: 'npm run build'
+      dist_dir: 'dist'
+      node_version: '20'
+    secrets: inherit
