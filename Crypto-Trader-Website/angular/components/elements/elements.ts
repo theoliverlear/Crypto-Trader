@@ -69,6 +69,9 @@ import {
 import {
     PaperModePromoComponent
 } from "./element-group-promo/paper-mode-promo/paper-mode-promo.component";
+import {
+    HomeAnchorComponent
+} from "./element-group-nav/home-anchor/home-anchor.component";
 
 export const elements = [
     AuthConsoleComponent,
@@ -80,6 +83,7 @@ export const elements = [
     ChartComponent,
     ContentStripeComponent,
     CurrencyWalletComponent,
+    HomeAnchorComponent,
     LiveChartComponent,
     NavBarComponent,
     NavBarItemComponent,
