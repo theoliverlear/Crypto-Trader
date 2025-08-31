@@ -102,6 +102,7 @@
     "@angular/platform-browser": "^18.2.2",
     "@angular/platform-browser-dynamic": "^18.2.2",
     "@angular/router": "^18.2.2",
+    "@angular/cdk": "^18.2.13",
     "@ngtools/webpack": "^18.2.2",
     "@popperjs/core": "^2.11.8",
     "@stomp/stompjs": "^7.0.0",
