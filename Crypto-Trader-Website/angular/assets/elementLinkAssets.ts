@@ -5,12 +5,25 @@ import {
     ElementLink,
 } from "@theoliverlear/angular-suite";
 
+export const homeElementLink = new ElementLink('/',
+    TargetType.SELF,
+    false
+);
+
 export const navBarHomeLink = new TextElementLink('',
     TargetType.SELF,
     false,
     'Home',
     TagType.H4
 );
+
+export const navBarCurrenciesLink = new TextElementLink('/currencies',
+    TargetType.SELF,
+    false,
+    'Currencies',
+    TagType.H4,
+)
+
 export const navBarPortfolioLink = new TextElementLink('/portfolio',
     TargetType.SELF,
     false,
