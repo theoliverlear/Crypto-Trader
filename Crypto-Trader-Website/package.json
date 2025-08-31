@@ -16,6 +16,9 @@
   ],
   "sideEffects": false,
   "scripts": {
+    "prebuild": "node scripts/generate-env.mjs",
+    "prestart": "node scripts/generate-env.mjs",
+    "pretest": "node scripts/generate-env.mjs",
     "start": "ng serve",
     "serve": "ng serve",
     "build": "ng build --configuration production",
