@@ -1,6 +1,7 @@
 package org.cryptotrader.api.controller;
 //=================================-Imports-==================================
 import jakarta.servlet.http.HttpSession;
+import org.cryptotrader.api.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,6 @@ import org.cryptotrader.entity.portfolio.PortfolioAsset;
 import org.cryptotrader.entity.portfolio.PortfolioAssetHistory;
 import org.cryptotrader.entity.portfolio.PortfolioHistory;
 import org.cryptotrader.entity.user.ProductUser;
-import org.cryptotrader.api.service.CryptoTraderService;
 import org.cryptotrader.api.service.PortfolioService;
 
 import java.util.List;
@@ -28,13 +28,13 @@ public class PortfolioController {
     //============================-Variables-=================================
     private ProductUser currentUser;
     private Portfolio portfolio = new Portfolio();
-    private CryptoTraderService cryptoTraderService;
+    private SessionService sessionService;
     private PortfolioService portfolioService;
     //===========================-Constructors-===============================
     @Autowired
-    public PortfolioController(CryptoTraderService cryptoTraderService,
+    public PortfolioController(SessionService sessionService,
                                PortfolioService portfolioService) {
-        this.cryptoTraderService = cryptoTraderService;
+        this.sessionService = sessionService;
         this.portfolioService = portfolioService;
     }
     //=============================-Methods-==================================
@@ -54,11 +54,11 @@ public class PortfolioController {
     //-------------------------Is-Empty-Portfolio-----------------------------
     @RequestMapping("/empty")
     public ResponseEntity<HasPortfolioResponse> emptyPortfolio(HttpSession session) {
-        boolean userInSession = this.cryptoTraderService.userInSession(session);
+        boolean userInSession = this.sessionService.userInSession(session);
         if (!userInSession) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        Optional<ProductUser> possibleSessionUser = this.cryptoTraderService.getUserFromSession(session);
+        Optional<ProductUser> possibleSessionUser = this.sessionService.getUserFromSession(session);
         if (possibleSessionUser.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -73,11 +73,11 @@ public class PortfolioController {
     //------------------------Get-Portfolio-History---------------------------
     @RequestMapping("/history/get")
     public ResponseEntity<List<PortfolioHistory>> getPortfolioHistory(HttpSession session) {
-        boolean userInSession = this.cryptoTraderService.userInSession(session);
+        boolean userInSession = this.sessionService.userInSession(session);
         if (!userInSession) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        Optional<ProductUser> possibleSessionUser = this.cryptoTraderService.getUserFromSession(session);
+        Optional<ProductUser> possibleSessionUser = this.sessionService.getUserFromSession(session);
         if (possibleSessionUser.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }

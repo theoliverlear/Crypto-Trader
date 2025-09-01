@@ -1,6 +1,7 @@
 package org.cryptotrader.api.controller;
 //=================================-Imports-==================================
 import jakarta.servlet.http.HttpSession;
+import org.cryptotrader.api.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,15 +27,15 @@ import java.util.Optional;
 @RequestMapping("/api/account")
 public class AccountController {
     //============================-Variables-=================================
-    private CryptoTraderService cryptoTraderService;
+    private SessionService sessionService;
     private ProfilePictureService profilePictureService;
     private ProductUserService productUserService;
     //===========================-Constructors-===============================
     @Autowired
-    public AccountController(CryptoTraderService cryptoTraderService,
+    public AccountController(SessionService sessionService,
                              ProfilePictureService profilePictureService,
                              ProductUserService productUserService) {
-        this.cryptoTraderService = cryptoTraderService;
+        this.sessionService = sessionService;
         this.profilePictureService = profilePictureService;
         this.productUserService = productUserService;
     }
@@ -44,11 +45,11 @@ public class AccountController {
     @RequestMapping("/image/upload")
     public ResponseEntity<OperationSuccessfulResponse> uploadProfilePicture(@RequestParam("file") MultipartFile file,
                                                                             HttpSession session) {
-        boolean userInSession = this.cryptoTraderService.userInSession(session);
+        boolean userInSession = this.sessionService.userInSession(session);
         if (!userInSession) {
             return new ResponseEntity<>(new OperationSuccessfulResponse(false), HttpStatus.UNAUTHORIZED);
         }
-        Optional<ProductUser> possibleSessionUser = this.cryptoTraderService.getUserFromSession(session);
+        Optional<ProductUser> possibleSessionUser = this.sessionService.getUserFromSession(session);
         if (possibleSessionUser.isEmpty()) {
             return new ResponseEntity<>(new OperationSuccessfulResponse(false), HttpStatus.UNAUTHORIZED);
         }

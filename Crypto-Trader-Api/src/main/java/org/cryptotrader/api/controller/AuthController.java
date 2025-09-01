@@ -1,6 +1,7 @@
 package org.cryptotrader.api.controller;
 
 import jakarta.servlet.http.HttpSession;
+import org.cryptotrader.api.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +19,16 @@ import org.cryptotrader.api.service.CryptoTraderService;
 @RequestMapping("/api/authorize")
 public class AuthController {
     private AuthService authService;
-    private CryptoTraderService cryptoTraderService;
+    private SessionService sessionService;
     @Autowired
     public AuthController(AuthService authService,
-                          CryptoTraderService cryptoTraderService) {
+                          SessionService sessionService) {
         this.authService = authService;
-        this.cryptoTraderService = cryptoTraderService;
+        this.sessionService = sessionService;
     }
     @RequestMapping("/signup")
     public ResponseEntity<AuthResponse> signup(@RequestBody UserRequest userRequest, HttpSession session) {
-        boolean userInSession = this.cryptoTraderService.userInSession(session);
+        boolean userInSession = this.sessionService.userInSession(session);
         if (userInSession) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AuthResponse(AuthStatus.UNAUTHORIZED.isAuthorized));
         } else {
@@ -37,7 +38,7 @@ public class AuthController {
     }
     @RequestMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody UserRequest userRequest, HttpSession session) {
-        boolean userInSession = this.cryptoTraderService.userInSession(session);
+        boolean userInSession = this.sessionService.userInSession(session);
         if (userInSession) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AuthResponse(AuthStatus.UNAUTHORIZED.isAuthorized));
         } else {
@@ -47,7 +48,7 @@ public class AuthController {
     }
     @RequestMapping("/isloggedin")
     public ResponseEntity<AuthResponse> isLoggedIn(HttpSession session) {
-        boolean userInSession = this.cryptoTraderService.userInSession(session);
+        boolean userInSession = this.sessionService.userInSession(session);
         if (userInSession) {
             return ResponseEntity.ok(new AuthResponse(AuthStatus.AUTHORIZED.isAuthorized));
         } else {
@@ -56,9 +57,9 @@ public class AuthController {
     }
     @RequestMapping("/logout")
     public ResponseEntity<AuthResponse> logout(HttpSession session) {
-        boolean userInSession = this.cryptoTraderService.userInSession(session);
+        boolean userInSession = this.sessionService.userInSession(session);
         if (userInSession) {
-            this.cryptoTraderService.removeSessionUser(session);
+            this.sessionService.removeSessionUser(session);
             return ResponseEntity.ok(new AuthResponse(AuthStatus.UNAUTHORIZED.isAuthorized));
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AuthResponse(AuthStatus.UNAUTHORIZED.isAuthorized));
