@@ -42,6 +42,11 @@
             <artifactId>api-repositories</artifactId>
             <version>0.0.4</version>
         </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>api-services</artifactId>
+            <version>0.0.1</version>
+        </dependency>
     </dependencies>
 
     <build>
