@@ -14,8 +14,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @EntityScan(basePackages = "org.cryptotrader.entity")
 @ComponentScan(basePackages = {
+        "org.cryptotrader.component",
+        "org.cryptotrader.data",
         "org.cryptotrader.api",
-        "org.cryptotrader.component"
 })
 @EnableJpaRepositories(basePackages = {
         "org.cryptotrader.repository"
