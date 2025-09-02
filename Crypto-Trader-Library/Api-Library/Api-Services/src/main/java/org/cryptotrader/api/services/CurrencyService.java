@@ -55,29 +55,7 @@ public class CurrencyService {
         this.snapshotService = snapshotService;
         this.currencyJsonGenerator = currencyJsonGenerator;
     }
-    //============================-Methods-===================================
 
-    //--------------------------Save-Currencies-------------------------------
-    @Scheduled(fixedRate = 5000)
-    public void saveCurrencies() {
-        try {
-            log.info("Updating currencies...");
-            Map<String, Currency> currencies = this.currencyDataRetriever.getUpdatedCurrencies();
-            for (Currency currency : SupportedCurrencies.SUPPORTED_CURRENCIES) {
-                Currency previousCurrency = Currency.from(currency);
-                String currencyCode = currency.getCurrencyCode();
-                Currency updatedCurrency = currencies.get(currencyCode);
-                currency.setValue(updatedCurrency.getValue());
-                this.saveCurrency(currency);
-                this.saveUniqueCurrencyIfNew(currency, previousCurrency, updatedCurrency);
-            }
-            this.snapshotService.saveSnapshot(currencies);
-        } catch (NullPointerException exception) {
-            log.error("Failed to update currencies. Regenerating JSON. Error: ", exception);
-            this.currencyJsonGenerator.generateAndSave();
-            SupportedCurrencies.loadCurrenciesFromJson();
-        }
-    }
 
     public DisplayCurrencyResponse toCurrencyValueResponse(Currency currency) {
         return new DisplayCurrencyResponse(currency.getName(),
@@ -107,12 +85,7 @@ public class CurrencyService {
     public List<String> getAllCurrencyCodes() {
         return this.currencyRepository.findAllCurrencyCodes();
     }
-
-
-    public void buildMarketSnapshots(boolean fullRefresh) {
-        this.backfiller.buildSnapshots(fullRefresh);
-    }
-
+    
     public void saveCurrencyIfNew(Currency currency, Currency previousCurrency, Currency updatedCurrency) {
         if (this.hasCurrencyChanged(previousCurrency, updatedCurrency)) {
             this.saveCurrency(currency);
