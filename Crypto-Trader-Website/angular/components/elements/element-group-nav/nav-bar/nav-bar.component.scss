@@ -21,8 +21,7 @@ nav-bar {
         @extend %fill-container;
         .nav-items-div {
             @include flex(space-between, center, row);
-            width: 48%;
+            width: 55%;
         }
-
     }
 }
