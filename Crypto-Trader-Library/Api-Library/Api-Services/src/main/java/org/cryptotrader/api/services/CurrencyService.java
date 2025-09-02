@@ -2,7 +2,7 @@ package org.cryptotrader.api.services;
 //=================================-Imports-==================================
 
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.api.services.MarketSnapshotService;
+import org.cryptotrader.api.services.models.MarketSnapshotOperations;
 import org.cryptotrader.comm.response.DisplayCurrencyListResponse;
 import org.cryptotrader.comm.response.DisplayCurrencyResponse;
 import org.cryptotrader.comm.response.TimeValueResponse;
@@ -15,13 +15,11 @@ import org.cryptotrader.repository.CurrencyRepository;
 import org.cryptotrader.repository.UniqueCurrencyHistoryRepository;
 import org.cryptotrader.repository.UniqueCurrencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -33,7 +31,7 @@ public class CurrencyService {
     private final UniqueCurrencyHistoryRepository uniqueCurrencyHistoryRepository;
     private final CurrencyDataRetriever currencyDataRetriever;
     private final MarketSnapshotsBackfiller backfiller;
-    private final MarketSnapshotService snapshotService;
+    private final MarketSnapshotOperations snapshotService;
     private final CurrencyJsonGenerator currencyJsonGenerator;
 
     //===========================-Constructors-===============================
@@ -44,7 +42,7 @@ public class CurrencyService {
                            UniqueCurrencyHistoryRepository uniqueCurrencyHistoryRepository,
                            CurrencyDataRetriever currencyDataRetriever,
                            MarketSnapshotsBackfiller backfiller,
-                           MarketSnapshotService snapshotService,
+                           MarketSnapshotOperations snapshotService,
                            CurrencyJsonGenerator currencyJsonGenerator) {
         this.currencyRepository = currencyRepository;
         this.currencyHistoryRepository = currencyHistoryRepository;
