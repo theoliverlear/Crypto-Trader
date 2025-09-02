@@ -55,7 +55,6 @@ public class PortfolioService {
     //============================-Methods-===================================
 
     //--------------------------Trade-Portfolios------------------------------
-    @Async("taskExecutor")
     @Scheduled(fixedRate = 2000)
     public synchronized void tradePortfolios() {
         this.cryptoTrader.getTraders().clear();
