@@ -14,4 +14,5 @@ open module org.cryptotrader.api.services {
     requires org.slf4j;
     
     exports org.cryptotrader.api.services;
+    exports org.cryptotrader.api.services.models;
 }
