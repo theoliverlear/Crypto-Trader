@@ -1,17 +1,17 @@
-package org.cryptotrader.api.controller;
+package org.cryptotrader.data.controller;
 
 import org.cryptotrader.api.services.TrainingSessionService;
+import org.cryptotrader.comm.request.TrainingSessionRequest;
+import org.cryptotrader.comm.response.OperationSuccessfulResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.cryptotrader.comm.request.TrainingSessionRequest;
-import org.cryptotrader.comm.response.OperationSuccessfulResponse;
 
 @RestController
-@RequestMapping("/api/training-session")
+@RequestMapping("/data/training-session")
 public class TrainingSessionController {
     private final TrainingSessionService trainingSessionService;
 

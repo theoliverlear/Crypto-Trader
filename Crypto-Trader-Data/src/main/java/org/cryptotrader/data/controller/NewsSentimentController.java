@@ -1,6 +1,8 @@
-package org.cryptotrader.api.controller;
+package org.cryptotrader.data.controller;
 
 import org.cryptotrader.api.services.NewsSentimentService;
+import org.cryptotrader.comm.request.NewsSentimentRequest;
+import org.cryptotrader.comm.response.OperationSuccessfulResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,11 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.cryptotrader.comm.request.NewsSentimentRequest;
-import org.cryptotrader.comm.response.OperationSuccessfulResponse;
 
 @RestController
-@RequestMapping("/api/news-sentiment")
+@RequestMapping("/data/news-sentiment")
 public class NewsSentimentController {
     private final NewsSentimentService newsSentimentService;
     

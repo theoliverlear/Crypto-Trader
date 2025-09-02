@@ -1,6 +1,7 @@
-package org.cryptotrader.api.config;
+package org.cryptotrader.data.config;
 
 import org.cryptotrader.api.services.CurrencyService;
+import org.cryptotrader.data.service.CurrencyHarvesterService;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +13,7 @@ public class BackfillerConfig {
 
     //------------------------Snapshots-Cli-Runner----------------------------
     @Bean
-    CommandLineRunner snapshotsCliRunner(CurrencyService currencyService,
+    CommandLineRunner snapshotsCliRunner(CurrencyHarvesterService currencyService,
                                          ApplicationArguments args) {
         return commandLineArgs -> {
             if (args.containsOption("buildSnapshots")) {
