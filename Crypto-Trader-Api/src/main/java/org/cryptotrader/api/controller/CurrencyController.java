@@ -36,20 +36,4 @@ public class CurrencyController {
             return new ResponseEntity<>(new AssetValueResponse(assetValue), HttpStatus.OK);
         }
     }
-
-    @GetMapping("/all")
-    public ResponseEntity<DisplayCurrencyListResponse> getAll() {
-        return new ResponseEntity<>(this.currencyService.getCurrencyValuesResponse(), HttpStatus.OK);
-    }
-
-    @GetMapping("/history/{code}")
-    public ResponseEntity<List<TimeValueResponse>> getHistory(@PathVariable("code") String code,
-                                                              @RequestParam(value = "hours", defaultValue = "24") int hours,
-                                                              @RequestParam(value = "intervalSeconds", defaultValue = "60") int intervalSeconds) {
-        List<TimeValueResponse> history = this.currencyService.getCurrencyHistory(code, hours, intervalSeconds);
-        if (history == null || history.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(history, HttpStatus.OK);
-    }
 }
