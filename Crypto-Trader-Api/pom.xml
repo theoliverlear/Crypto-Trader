@@ -3,7 +3,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-
     <name>Crypto-Trader-Api</name>
     <description>Spring Boot REST API for the Crypto Trader platform.</description>
     <artifactId>crypto-trader-api</artifactId>
@@ -19,8 +18,6 @@
     </properties>
 
     <dependencies>
-        <!-- Junit is a unit testing framework for Java -->
-
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-library</artifactId>
@@ -124,11 +121,16 @@
             <artifactId>crypto-trader-testing</artifactId>
             <version>0.0.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-logging</artifactId>
+            <version>0.0.1</version>
+            <scope>runtime</scope>
+        </dependency>
 
     </dependencies>
     <build>
         <plugins>
-            <!-- Ensure Lombok annotations are processed (@Slf4j, @RequiredArgsConstructor, etc.) -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
@@ -143,7 +145,6 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-            <!-- ... existing code ... -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -165,7 +166,6 @@
                 </configuration>
             </plugin>
         </plugins>
-
     </build>
     <repositories>
         <repository>
