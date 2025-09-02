@@ -10,6 +10,7 @@ open module org.cryptotrader.api.models {
     requires spring.context;
     requires spring.security.crypto;
     requires spring.web;
+    requires org.hibernate.orm.core;
 
     exports org.cryptotrader.entity;
     exports org.cryptotrader.entity.currency;
@@ -24,6 +25,7 @@ open module org.cryptotrader.api.models {
     exports org.cryptotrader.entity.prediction;
     exports org.cryptotrader.entity.prediction.builder;
     exports org.cryptotrader.entity.prediction.builder.models;
+    exports org.cryptotrader.entity.trade;
     exports org.cryptotrader.entity.training;
     exports org.cryptotrader.entity.training.specs;
     exports org.cryptotrader.entity.training.builder;
@@ -32,6 +34,7 @@ open module org.cryptotrader.api.models {
     exports org.cryptotrader.entity.user.admin;
     exports org.cryptotrader.entity.user.builder;
     exports org.cryptotrader.entity.user.builder.models;
+    exports org.cryptotrader.entity.vendor;
 
     exports org.cryptotrader.model;
     exports org.cryptotrader.model.http;
