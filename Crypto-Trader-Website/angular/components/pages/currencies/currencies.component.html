@@ -1,1 +1,4 @@
 <!-- currencies.component.html -->
+<ng-container (error)="onError($event)">
+    <display-currency *ngFor="let currency of currencies.currencies" [currency]="currency"/>
+</ng-container>
