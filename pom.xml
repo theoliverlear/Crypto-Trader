@@ -52,6 +52,7 @@
         <module>Crypto-Trader-Version</module>
         <module>Crypto-Trader-Engine</module>
         <module>Crypto-Trader-Data</module>
+        <module>Crypto-Trader-Logging</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
