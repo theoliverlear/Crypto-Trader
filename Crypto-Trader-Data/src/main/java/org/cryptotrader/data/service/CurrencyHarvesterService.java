@@ -2,9 +2,7 @@ package org.cryptotrader.data.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.api.services.CurrencyService;
-import org.cryptotrader.api.services.MarketSnapshotService;
-import org.cryptotrader.comm.response.DisplayCurrencyListResponse;
-import org.cryptotrader.comm.response.TimeValueResponse;
+import org.cryptotrader.api.services.models.MarketSnapshotOperations;
 import org.cryptotrader.component.CurrencyDataRetriever;
 import org.cryptotrader.component.CurrencyJsonGenerator;
 import org.cryptotrader.component.MarketSnapshotsBackfiller;
@@ -17,9 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -32,7 +27,7 @@ public class CurrencyHarvesterService {
     private final UniqueCurrencyHistoryRepository uniqueCurrencyHistoryRepository;
     private final CurrencyDataRetriever currencyDataRetriever;
     private final MarketSnapshotsBackfiller backfiller;
-    private final MarketSnapshotService snapshotService;
+    private final MarketSnapshotOperations snapshotService;
     private final CurrencyJsonGenerator currencyJsonGenerator;
     private final CurrencyService currencyService;
 
@@ -44,7 +39,7 @@ public class CurrencyHarvesterService {
                                     UniqueCurrencyHistoryRepository uniqueCurrencyHistoryRepository,
                                     CurrencyDataRetriever currencyDataRetriever,
                                     MarketSnapshotsBackfiller backfiller,
-                                    MarketSnapshotService snapshotService,
+                                    MarketSnapshotOperations snapshotService,
                                     CurrencyJsonGenerator currencyJsonGenerator,
                                     CurrencyService currencyService) {
         this.currencyRepository = currencyRepository;
