@@ -15,6 +15,8 @@
 | Crypto-Trader-Analysis | v.v.v   |
 | Crypto-Trader-Api      | v.v.v   |
 | Crypto-Trader-Assets   | v.v.v   |
+| Crypto-Trader-Data     | v.v.v   |
+| Crypto-Trader-Engine   | v.v.v   |
 | Crypto-Trader-Library  | v.v.v   |
 | Api-Library            | v.v.v   |
 | Api-Communication      | v.v.v   |
@@ -65,6 +67,16 @@
 - Bullet
 
 ### [Crypto Trader Assets](Crypto-Trader-Assets)
+- Bullet
+- Bullet
+- Bullet
+
+### [Crypto Trader Data](Crypto-Trader-Data)
+- Bullet
+- Bullet
+- Bullet
+
+### [Crypto Trader Engine](Crypto-Trader-Engine)
 - Bullet
 - Bullet
 - Bullet
