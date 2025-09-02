@@ -1,4 +1,4 @@
-module org.cryptotrader.data {
+open module org.cryptotrader.data {
     requires spring.boot.autoconfigure;
     requires spring.context;
     requires spring.data.jpa;
@@ -12,4 +12,14 @@ module org.cryptotrader.data {
     requires org.cryptotrader.api.communication;
     requires java.sql;
     requires spring.web;
+    requires org.slf4j;
+    requires spring.core;
+    requires spring.aop;
+    requires spring.tx;
+    
+    exports org.cryptotrader.data;
+    exports org.cryptotrader.data.adapter;
+    exports org.cryptotrader.data.config;
+    exports org.cryptotrader.data.controller;
+    exports org.cryptotrader.data.service;
 }
