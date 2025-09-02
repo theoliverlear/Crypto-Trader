@@ -53,3 +53,8 @@ export const aiStarIcon: ImageAsset = {
     src: getIconImagePath('ai_star_icon.svg'),
     alt: 'AI Star Icon'
 };
+
+export const defaultCurrencyIcon: ImageAsset = {
+    src: getIconImagePath('default_currency_icon.png'),
+    alt: 'Default Currency Icon'
+};
