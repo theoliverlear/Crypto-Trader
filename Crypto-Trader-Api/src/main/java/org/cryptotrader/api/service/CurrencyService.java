@@ -1,10 +1,10 @@
 package org.cryptotrader.api.service;
 //=================================-Imports-==================================
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.comm.response.CurrencyValueResponse;
-import org.cryptotrader.comm.response.CurrencyValuesListResponse;
+import org.cryptotrader.comm.response.DisplayCurrencyListResponse;
+import org.cryptotrader.comm.response.DisplayCurrencyResponse;
+import org.cryptotrader.comm.response.TimeValueResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.cryptotrader.component.CurrencyJsonGenerator;
@@ -16,6 +16,8 @@ import org.cryptotrader.repository.CurrencyRepository;
 import org.cryptotrader.repository.UniqueCurrencyHistoryRepository;
 import org.cryptotrader.repository.UniqueCurrencyRepository;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +56,6 @@ public class CurrencyService {
     //============================-Methods-===================================
 
     //--------------------------Save-Currencies-------------------------------
-    @Async("taskExecutor")
     @Scheduled(fixedRate = 5000)
     public void saveCurrencies() {
         try {
@@ -76,19 +77,27 @@ public class CurrencyService {
         }
     }
 
-    public CurrencyValueResponse toCurrencyValueResponse(Currency currency) {
-        return new CurrencyValueResponse(currency.getName(),
-                                         currency.getCurrencyCode(),
-                                         currency.getValue());
+    public DisplayCurrencyResponse toCurrencyValueResponse(Currency currency) {
+        return new DisplayCurrencyResponse(currency.getName(),
+                currency.getCurrencyCode(),
+                currency.getValue());
     }
 
-    public CurrencyValuesListResponse getCurrencyValuesResponse() {
-        List<Currency> currencies = this.getAllCurrencies();
-        return new CurrencyValuesListResponse(currencies.stream()
-                                                        .map(this::toCurrencyValueResponse)
-                                                        .toList());
+    public DisplayCurrencyListResponse getCurrencyValuesResponse() {
+        List<Currency> currencies = this.getTopTenCurrencies();
+        // sort by price desc
+        currencies.sort((currencyOne, currencyTwo) -> {
+            return Double.compare(currencyTwo.getValue(), currencyOne.getValue());
+        });
+        return new DisplayCurrencyListResponse(currencies.stream()
+                .map(this::toCurrencyValueResponse)
+                .toList());
     }
 
+    public List<Currency> getTopTenCurrencies() {
+        return this.currencyRepository.findTop10ByOrderByValueDesc();
+    }
+    
     public List<Currency> getAllCurrencies() {
         return this.currencyRepository.findAll();
     }
@@ -154,5 +163,32 @@ public class CurrencyService {
     }
     public boolean existsInUniqueCurrencyHistoryTable(String currencyCode) {
         return this.uniqueCurrencyHistoryRepository.existsByCurrencyCurrencyCode(currencyCode);
+    }
+
+    public List<TimeValueResponse> getCurrencyHistory(String currencyCode, int hours) {
+        return this.getCurrencyHistory(currencyCode, hours, 60);
+    }
+
+    public List<TimeValueResponse> getCurrencyHistory(String currencyCode, int hours, int intervalSeconds) {
+        if (intervalSeconds <= 0) {
+            intervalSeconds = 60;
+        }
+        LocalDateTime since = LocalDateTime.now().minusHours(hours);
+        List<Object[]> rows = this.currencyHistoryRepository.findDownsampledHistory(currencyCode, since, intervalSeconds);
+        return rows.stream()
+                .map(record -> {
+                    Object time = record[0];
+                    String isoTime;
+                    if (time instanceof Timestamp timestamp) {
+                        isoTime = timestamp.toLocalDateTime().toString();
+                    } else if (time instanceof LocalDateTime dateTime) {
+                        isoTime = dateTime.toString();
+                    } else {
+                        isoTime = String.valueOf(time);
+                    }
+                    double valueAtTime = ((Number) record[1]).doubleValue();
+                    return new TimeValueResponse(isoTime, valueAtTime);
+                })
+                .toList();
     }
 }
