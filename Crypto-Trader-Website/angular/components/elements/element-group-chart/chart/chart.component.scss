@@ -3,5 +3,7 @@
 
 
 chart {
-
+    @extend %soft-border-radius;
+    border: $thinnest-border solid $pure-white;
+    background-color: lightblue;
 }
