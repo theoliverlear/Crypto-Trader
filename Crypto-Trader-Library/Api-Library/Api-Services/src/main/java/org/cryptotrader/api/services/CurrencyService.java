@@ -1,20 +1,22 @@
-package org.cryptotrader.api.service;
+package org.cryptotrader.api.services;
 //=================================-Imports-==================================
+
 import lombok.extern.slf4j.Slf4j;
+import org.cryptotrader.api.services.MarketSnapshotService;
 import org.cryptotrader.comm.response.DisplayCurrencyListResponse;
 import org.cryptotrader.comm.response.DisplayCurrencyResponse;
 import org.cryptotrader.comm.response.TimeValueResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
+import org.cryptotrader.component.CurrencyDataRetriever;
 import org.cryptotrader.component.CurrencyJsonGenerator;
 import org.cryptotrader.component.MarketSnapshotsBackfiller;
 import org.cryptotrader.entity.currency.*;
-import org.cryptotrader.component.CurrencyDataRetriever;
 import org.cryptotrader.repository.CurrencyHistoryRepository;
 import org.cryptotrader.repository.CurrencyRepository;
 import org.cryptotrader.repository.UniqueCurrencyHistoryRepository;
 import org.cryptotrader.repository.UniqueCurrencyRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;

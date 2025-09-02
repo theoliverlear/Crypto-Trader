@@ -1,4 +1,4 @@
-package org.cryptotrader.api.service;
+package org.cryptotrader.api.services;
 
 import jakarta.servlet.http.HttpSession;
 import org.cryptotrader.entity.user.ProductUser;

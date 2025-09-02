@@ -1,8 +1,5 @@
-package org.cryptotrader.api.service;
+package org.cryptotrader.api.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 import org.cryptotrader.comm.request.UserRequest;
 import org.cryptotrader.comm.response.AuthResponse;
 import org.cryptotrader.entity.portfolio.Portfolio;
@@ -11,6 +8,9 @@ import org.cryptotrader.entity.user.SafePassword;
 import org.cryptotrader.entity.user.User;
 import org.cryptotrader.model.http.AuthStatus;
 import org.cryptotrader.model.http.PayloadStatusResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {

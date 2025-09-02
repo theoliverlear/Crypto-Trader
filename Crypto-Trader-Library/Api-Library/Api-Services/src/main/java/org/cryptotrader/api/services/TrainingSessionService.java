@@ -1,12 +1,12 @@
-package org.cryptotrader.api.service;
+package org.cryptotrader.api.services;
 
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.entity.training.builder.TrainingSessionBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.cryptotrader.comm.request.TrainingSessionRequest;
 import org.cryptotrader.entity.training.TrainingSession;
+import org.cryptotrader.entity.training.builder.TrainingSessionBuilder;
 import org.cryptotrader.repository.TrainingSessionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j

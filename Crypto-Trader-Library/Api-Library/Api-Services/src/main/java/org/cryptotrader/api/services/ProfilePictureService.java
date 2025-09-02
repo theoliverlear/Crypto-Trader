@@ -1,10 +1,11 @@
-package org.cryptotrader.api.service;
+package org.cryptotrader.api.services;
 //=================================-Imports-==================================
+
+import org.cryptotrader.entity.user.ProfilePicture;
+import org.cryptotrader.repository.ProfilePictureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.cryptotrader.entity.user.ProfilePicture;
-import org.cryptotrader.repository.ProfilePictureRepository;
 
 import java.util.Optional;
 

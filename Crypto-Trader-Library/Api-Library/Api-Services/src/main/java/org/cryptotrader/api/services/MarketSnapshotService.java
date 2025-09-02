@@ -1,12 +1,12 @@
-package org.cryptotrader.api.service;
+package org.cryptotrader.api.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.cryptotrader.entity.currency.Currency;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.cryptotrader.entity.currency.Currency;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

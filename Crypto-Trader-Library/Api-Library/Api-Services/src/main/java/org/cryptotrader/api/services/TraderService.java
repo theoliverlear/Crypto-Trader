@@ -1,4 +1,4 @@
-package org.cryptotrader.api.service;
+package org.cryptotrader.api.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

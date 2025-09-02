@@ -1,11 +1,12 @@
-package org.cryptotrader.api.service;
+package org.cryptotrader.api.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.cryptotrader.api.services.CurrencyService;
 import org.cryptotrader.comm.request.PricePredictionRequest;
 import org.cryptotrader.entity.currency.Currency;
 import org.cryptotrader.entity.prediction.PricePrediction;
 import org.cryptotrader.repository.PricePredictionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 
 @Service

@@ -1,11 +1,12 @@
-package org.cryptotrader.api.service;
+package org.cryptotrader.api.services;
 //=================================-Imports-==================================
+
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.cryptotrader.entity.user.ProductUser;
 import org.cryptotrader.entity.user.User;
 import org.cryptotrader.repository.ProductUserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
