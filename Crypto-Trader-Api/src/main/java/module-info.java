@@ -44,6 +44,7 @@ open module org.cryptotrader.api {
     requires spring.webmvc;
     requires org.cryptotrader.api.models;
     requires org.cryptotrader.api.communication;
+    requires org.cryptotrader.api.services;
 
     exports org.cryptotrader.api;
 }
