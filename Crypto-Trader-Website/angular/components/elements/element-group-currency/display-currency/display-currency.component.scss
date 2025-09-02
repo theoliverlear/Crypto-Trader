@@ -1,0 +1,40 @@
+// display-currency.component.scss
+@use "../../../../styles/globals" as *;
+
+display-currency {
+    @include flex(center, center, row);
+    width: 80%;
+    min-height: $ten-percent;
+    padding: $one-percent;
+    background-color: $alabaster-stone;
+    margin: $half-percent 0;
+    @extend %soft-border-radius;
+    .image-code-div {
+        @include flex(center, center, column);
+        background-color: lightblue;
+        padding: $half-percent;
+        @extend %soft-border-radius;
+        ss-img {
+            @include square-size($six-percent);
+            padding: $half-percent;
+            background-color: $alabaster-stone;
+            @extend %circle-border-radius;
+        }
+    }
+    .display-currency-title {
+        @include flex(center, center, column);
+        flex: 1;
+        .display-currency-name {
+            //font-size: calc($h4-font-size * 1.25);
+            @extend %soft-text-shadow;
+        }
+        .currency-action-buttons-div {
+            @include flex(space-around, center, row);
+            margin: $half-percent 0;
+            width: 80%;
+            ss-button {
+                min-width: 4ch;
+            }
+        }
+    }
+}
