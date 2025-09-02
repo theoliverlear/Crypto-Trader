@@ -2,6 +2,7 @@ package org.cryptotrader.api.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.cryptotrader.api.services.models.MarketSnapshotOperations;
 import org.cryptotrader.entity.currency.Currency;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class MarketSnapshotService {
+public class MarketSnapshotService implements MarketSnapshotOperations {
     //============================-Constants-=================================
     private static final String[] DEFAULT_COLUMNS = { "last_updated" };
     //============================-Variables-=================================
