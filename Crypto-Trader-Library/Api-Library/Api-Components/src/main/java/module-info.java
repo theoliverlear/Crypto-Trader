@@ -1,4 +1,4 @@
-module org.cryptotrader.api.components {
+open module org.cryptotrader.api.components {
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires static lombok;
@@ -14,6 +14,5 @@ module org.cryptotrader.api.components {
     requires spring.jdbc;
 
     exports org.cryptotrader.component;
-
-    opens org.cryptotrader.component to spring.core;
+    exports org.cryptotrader.component.config;
 }
