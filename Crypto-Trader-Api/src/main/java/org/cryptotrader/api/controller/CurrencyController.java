@@ -1,5 +1,6 @@
 package org.cryptotrader.api.controller;
 
+import org.cryptotrader.api.services.CurrencyService;
 import org.cryptotrader.comm.response.DisplayCurrencyListResponse;
 import org.cryptotrader.comm.response.TimeValueResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.cryptotrader.comm.request.AssetValueRequest;
 import org.cryptotrader.comm.response.AssetValueResponse;
 import org.cryptotrader.entity.currency.Currency;
-import org.cryptotrader.api.service.CurrencyService;
 
 import java.util.List;
 

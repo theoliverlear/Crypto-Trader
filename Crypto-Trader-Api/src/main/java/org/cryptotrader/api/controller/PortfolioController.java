@@ -1,7 +1,8 @@
 package org.cryptotrader.api.controller;
 //=================================-Imports-==================================
 import jakarta.servlet.http.HttpSession;
-import org.cryptotrader.api.service.SessionService;
+import org.cryptotrader.api.services.PortfolioService;
+import org.cryptotrader.api.services.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,6 @@ import org.cryptotrader.entity.portfolio.PortfolioAsset;
 import org.cryptotrader.entity.portfolio.PortfolioAssetHistory;
 import org.cryptotrader.entity.portfolio.PortfolioHistory;
 import org.cryptotrader.entity.user.ProductUser;
-import org.cryptotrader.api.service.PortfolioService;
 
 import java.util.List;
 import java.util.Optional;

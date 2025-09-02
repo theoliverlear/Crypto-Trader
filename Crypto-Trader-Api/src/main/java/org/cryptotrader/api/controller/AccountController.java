@@ -1,7 +1,9 @@
 package org.cryptotrader.api.controller;
 //=================================-Imports-==================================
 import jakarta.servlet.http.HttpSession;
-import org.cryptotrader.api.service.SessionService;
+import org.cryptotrader.api.services.ProductUserService;
+import org.cryptotrader.api.services.ProfilePictureService;
+import org.cryptotrader.api.services.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,9 +18,6 @@ import org.cryptotrader.comm.response.HasProfilePictureResponse;
 import org.cryptotrader.comm.response.OperationSuccessfulResponse;
 import org.cryptotrader.entity.user.ProductUser;
 import org.cryptotrader.entity.user.ProfilePicture;
-import org.cryptotrader.api.service.CryptoTraderService;
-import org.cryptotrader.api.service.ProfilePictureService;
-import org.cryptotrader.api.service.ProductUserService;
 
 import java.io.IOException;
 import java.util.Optional;

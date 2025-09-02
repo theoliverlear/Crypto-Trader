@@ -1,5 +1,6 @@
 package org.cryptotrader.api.controller;
 
+import org.cryptotrader.api.services.PricePredictionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.cryptotrader.comm.request.PricePredictionRequest;
 import org.cryptotrader.comm.response.PredictionIdResponse;
-import org.cryptotrader.api.service.PricePredictionService;
 
 @RestController
 @RequestMapping("/api/predictions")

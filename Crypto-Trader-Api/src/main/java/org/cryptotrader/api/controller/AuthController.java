@@ -1,7 +1,8 @@
 package org.cryptotrader.api.controller;
 
 import jakarta.servlet.http.HttpSession;
-import org.cryptotrader.api.service.SessionService;
+import org.cryptotrader.api.services.AuthService;
+import org.cryptotrader.api.services.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +13,6 @@ import org.cryptotrader.comm.request.UserRequest;
 import org.cryptotrader.comm.response.AuthResponse;
 import org.cryptotrader.model.http.AuthStatus;
 import org.cryptotrader.model.http.PayloadStatusResponse;
-import org.cryptotrader.api.service.AuthService;
-import org.cryptotrader.api.service.CryptoTraderService;
 
 @RestController
 @RequestMapping("/api/authorize")
