@@ -19,4 +19,6 @@ public interface CurrencyRepository extends JpaRepository<Currency, Long> {
 
     @Query("SELECT c.currencyCode FROM Currency c ORDER BY c.currencyCode ASC")
     List<String> findAllCurrencyCodes();
+    
+    List<Currency> findTop10ByOrderByValueDesc();
 }
