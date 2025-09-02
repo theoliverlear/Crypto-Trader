@@ -18,6 +18,7 @@
         <module>Api-Library/Api-Communication</module>
         <module>Api-Library/Api-Models</module>
         <module>Api-Library/Api-Repositories</module>
+        <module>Api-Library/Api-Services</module>
         <module>Desktop-Library</module>
         <module>Desktop-Library/Desktop-Components</module>
         <module>Version-Library</module>
