@@ -50,6 +50,8 @@
         <module>Crypto-Trader-Assets</module>
         <module>Crypto-Trader-Testing</module>
         <module>Crypto-Trader-Version</module>
+        <module>Crypto-Trader-Engine</module>
+        <module>Crypto-Trader-Data</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
