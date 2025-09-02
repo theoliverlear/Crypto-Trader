@@ -72,6 +72,9 @@ import {
 import {
     HomeAnchorComponent
 } from "./element-group-nav/home-anchor/home-anchor.component";
+import {
+    DisplayCurrencyComponent
+} from "./element-group-currency/display-currency/display-currency.component";
 
 export const elements = [
     AuthConsoleComponent,
@@ -83,6 +86,7 @@ export const elements = [
     ChartComponent,
     ContentStripeComponent,
     CurrencyWalletComponent,
+    DisplayCurrencyComponent,
     HomeAnchorComponent,
     LiveChartComponent,
     NavBarComponent,
@@ -101,5 +105,5 @@ export const elements = [
     TierPromoComponent,
     TierPromoStripeComponent,
     TraderEventBubbleComponent,
-    TransparencyPromoComponent
+    TransparencyPromoComponent,
 ]
