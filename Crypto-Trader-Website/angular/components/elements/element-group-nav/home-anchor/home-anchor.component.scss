@@ -8,7 +8,7 @@ home-anchor {
     box-shadow: none;
     transition: box-shadow, 0.3s;
     @extend %soft-border-radius;
-    background-color: $alabaster-stone;
+    background-color: add-alpha(lightblue, 0.7);
     padding: $quarter-percent;
     &:hover {
         cursor: pointer;
