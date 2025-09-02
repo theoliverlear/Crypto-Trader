@@ -123,4 +123,11 @@
         color: $absolute-black;
         text-align: center;
     }
+
+    subtitle {
+        @include flex(center, center, row);
+        color: $absolute-black;
+        font-style: italic;
+        text-align: center;
+    }
 }
