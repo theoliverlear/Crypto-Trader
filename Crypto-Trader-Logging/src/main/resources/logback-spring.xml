@@ -2,10 +2,16 @@
     <!-- Spring Boot color and exception converters since base.xml is not included -->
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
     <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+
+    <springProperty scope="context" name="ct_console_pattern" source="cryptotrader.logging.console-pattern"/>
+    <springProperty scope="context" name="ct_file_pattern" source="cryptotrader.logging.file-pattern"/>
+    <springProperty scope="context" name="ct_error_file_pattern" source="cryptotrader.logging.error-file-pattern"/>
+    <springProperty scope="context" name="ct_exception_word" source="cryptotrader.logging.exception-conversion-word"/>
+
     <!-- Single concise, colorful console appender without PID/app name/thread -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%clr(%d{HH:mm:ss}){faint} %clr(%5p) %clr(%logger{36}){cyan} %clr(-){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</pattern>
+            <pattern>${ct_console_pattern:-%clr(%d{HH:mm:ss}){faint} %clr(%5p) %clr(%logger{36}){cyan} %clr(-){faint} %m%n${ct_exception_word:-${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}}</pattern>
         </encoder>
     </appender>
 
@@ -18,7 +24,7 @@
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder>
-            <pattern>%date %-5level %logger{36} - %msg%n</pattern>
+            <pattern>${ct_file_pattern:-%date %-5level %logger{36} - %msg%n}</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>TRACE</level>
@@ -34,7 +40,7 @@
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder>
-            <pattern>%date %-5level %logger{36} - %msg%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</pattern>
+            <pattern>${ct_error_file_pattern:-%date %-5level %logger{36} - %msg%n${ct_exception_word:-${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}}</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>ERROR</level>
