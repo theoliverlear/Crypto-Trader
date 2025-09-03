@@ -1,4 +1,4 @@
-module org.cryptotrader.api.communication {
+open module org.cryptotrader.api.communication {
     exports org.cryptotrader.comm.request;
     exports org.cryptotrader.comm.response;
 
