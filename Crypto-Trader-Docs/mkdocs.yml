@@ -32,5 +32,5 @@ nav:
   - API (Full Width): api.html
   - API (Prose): api.md
   - Crypto Trader API: crypto-trader-api.md
-  - Code Reference (Dokka, API): code-ref/crypto-trader-api/index.md
+  - Code Reference (Dokka, API): code-ref/crypto-trader-api/index.html
   - Code Reference (Javadoc HTML): javadoc/index.html
