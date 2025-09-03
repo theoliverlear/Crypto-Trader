@@ -2,7 +2,9 @@
 
 The full OpenAPI specification for Crypto Trader is embedded below.
 
-<div id="redoc"></div>
+<div class="fullwidth">
+  <div id="redoc"></div>
+</div>
 
 <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
 <script>
