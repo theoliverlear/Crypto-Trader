@@ -26,7 +26,6 @@ jobs:
           cache: 'maven'
 
       - name: Start API (docs profile) in background
-        working-directory: Crypto-Trader-Api
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_ACTOR: ${{ github.actor }}
@@ -44,13 +43,14 @@ jobs:
           X_SECRET: ${{ secrets.X_SECRET }}
           REPO_NAME: ${{ secrets.REPO_NAME }}
           APP_NAME: ${{ secrets.APP_NAME }}
+        working-directory: .
         run: |
-          nohup mvn -B -N -s ../.github/maven-settings.xml -DskipTests \
-            -Dspring-boot.run.main-class=org.cryptotrader.api.CryptoTraderApiApplication \
+          nohup mvn -B -s .github/maven-settings.xml -DskipTests \
+            -pl Crypto-Trader-Api -am \
             -Dspring-boot.run.profiles=docs \
             -Dspring-boot.run.arguments=--server.port=18080 \
-            spring-boot:run > ../api.log 2>&1 &
-          echo $! > ../api.pid
+            spring-boot:run > api.log 2>&1 &
+          echo $! > api.pid
 
       - name: Wait for API to be ready
         working-directory: Crypto-Trader-Api
@@ -73,9 +73,9 @@ jobs:
         run: mvn -B -s .github/maven-settings.xml -DskipTests -Ddocs.skipOpenapi=false -f Crypto-Trader-Docs/pom.xml -N verify
 
       - name: Stop API
+        working-directory: .
         run: |
-          if [ -f api.pid ]; then kill $(cat api.pid) || true; fi
-          pkill -f 'spring-boot:run' || true
+          if [ -f api.pid ]; then kill "$(cat api.pid)" || true; fi
 
       - name: Set up Python
         uses: actions/setup-python@v5
