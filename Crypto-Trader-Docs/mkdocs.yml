@@ -13,10 +13,11 @@ theme:
       primary: blue
       accent: indigo
   features:
-    - content.code.copy
+    - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.top
     - navigation.sections
-    - palette.toggle
+    - content.code.copy
 
 extra_css:
   - stylesheets/extra.css
@@ -31,4 +32,5 @@ nav:
   - API (Full Width): api.html
   - API (Prose): api.md
   - Crypto Trader API: crypto-trader-api.md
-  - Code Reference: javadoc/index.html
+  - Code Reference (Dokka, API): code-ref/crypto-trader-api/index.md
+  - Code Reference (Javadoc HTML): javadoc/index.html
