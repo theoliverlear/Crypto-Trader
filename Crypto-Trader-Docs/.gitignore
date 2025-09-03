@@ -1,0 +1,31 @@
+# Build outputs
+/target/
+/site/
+
+# Generated documentation staged by build (ignore all staged reference outputs by default)
+# Keep specific placeholder files tracked so nav links always work.
+/docs/reference/**
+!/docs/reference/Api/README.md
+!/docs/reference/Api/api/index.md
+!/docs/reference/Admin/README.md
+!/docs/reference/Admin/api/index.md
+!/docs/reference/Assets/README.md
+!/docs/reference/Assets/api/index.md
+!/docs/reference/Data/README.md
+!/docs/reference/Data/api/index.md
+!/docs/reference/Engine/README.md
+!/docs/reference/Engine/api/index.md
+!/docs/reference/Library/README.md
+!/docs/reference/Library/api/index.md
+!/docs/reference/Logging/README.md
+!/docs/reference/Logging/api/index.md
+!/docs/reference/Testing/README.md
+!/docs/reference/Testing/api/index.md
+!/docs/reference/Version/README.md
+!/docs/reference/Version/api/index.md
+
+# OpenAPI spec generated during build
+/docs/openapi.yaml
+
+# MkDocs local build cache (if any)
+/.cache/
