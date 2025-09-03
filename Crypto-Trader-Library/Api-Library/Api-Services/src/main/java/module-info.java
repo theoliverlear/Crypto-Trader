@@ -10,9 +10,11 @@ open module org.cryptotrader.api.services {
     requires spring.jdbc;
     requires spring.tx;
     requires spring.web;
+    requires spring.boot.autoconfigure;
     requires tomcat.embed.core;
     requires org.slf4j;
     
     exports org.cryptotrader.api.services;
     exports org.cryptotrader.api.services.models;
+    exports org.cryptotrader.api.services.config;
 }
