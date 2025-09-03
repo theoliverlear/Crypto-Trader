@@ -13,3 +13,4 @@ markdown_extensions:
 nav:
   - Home: index.md
   - API: crypto-trader-api.md
+  - API Docs: api.md
