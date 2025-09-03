@@ -234,6 +234,25 @@
                     <useModulePath>false</useModulePath>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.jetbrains.dokka</groupId>
+                <artifactId>dokka-maven-plugin</artifactId>
+                <version>1.9.20</version>
+                <executions>
+                    <execution>
+                        <id>dokka-gfm</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>javadoc</goal>
+                        </goals>
+                        <configuration>
+                            <outputDir>${project.basedir}/../Crypto-Trader-Docs/docs/code-ref/${project.artifactId}</outputDir>
+                            <failOnWarning>false</failOnWarning>
+                            <cacheRoot>${project.build.directory}/dokka-cache</cacheRoot>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <repositories>
