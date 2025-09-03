@@ -1,13 +1,34 @@
-/* Make the content area wider */
-.md-main__inner {
-    max-width: 1200px; /* default ~800px */
+/* Wider overall grid so content isn't cramped */
+.md-grid {
+    max-width: 120rem;
+}         /* Material default is ~61rem */
+.md-content {
+    max-width: none;
 }
 
-/* Optional: wider tables and code blocks */
+/* Optional: let specific pages go edge-to-edge */
+.md-typeset .fullwidth {
+    margin-right: calc(50% - 50vw);
+    margin-left:  calc(50% - 50vw);
+}
+
+/* Define a local fallback and avoid the build warning about --md-header-height */
+:root { --ct-header-height: 3.2rem; }
+
+/* Make embedded API UIs fill the viewport minus the header */
+#redoc, .swagger-ui, .redoc-wrap, .api-embed {
+    min-height: calc(100vh - var(--md-header-height, var(--ct-header-height)));
+}
+
+/* Make tables and code blocks breathe */
 .md-typeset table {
     width: 100%;
 }
 .md-typeset pre {
-    white-space: pre-wrap;
-    word-break: break-word;
+    white-space: pre-wrap; word-break: break-word;
+}
+
+/* Slightly wider inner content area for prose pages too */
+.md-main__inner {
+    max-width: 1400px;
 }
