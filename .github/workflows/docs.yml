@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  packages: read
   pages: write
   id-token: write
 
@@ -17,17 +18,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Java (21 LTS)
+      - name: Set up Java (23)
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '21'
+          java-version: '23'
           cache: 'maven'
 
       - name: Start API (docs profile) in background
         working-directory: Crypto-Trader-Api
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
         run: |
-          nohup mvn -B -DskipTests \
+          nohup mvn -B -N -s ../.github/maven-settings.xml -DskipTests \
             -Dspring-boot.run.main-class=org.cryptotrader.api.CryptoTraderApiApplication \
             -Dspring-boot.run.profiles=docs \
             -Dspring-boot.run.arguments=--server.port=18080 \
@@ -52,7 +56,10 @@ jobs:
           exit 1
 
       - name: Build docs module (generate OpenAPI + copy to docs)
-        run: mvn -B -DskipTests -f Crypto-Trader-Docs/pom.xml verify
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+        run: mvn -B -s .github/maven-settings.xml -DskipTests -f Crypto-Trader-Docs/pom.xml -N verify
 
       - name: Stop API
         run: |
