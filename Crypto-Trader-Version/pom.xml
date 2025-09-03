@@ -99,6 +99,44 @@
             <version>2.0.13</version>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages - Crypto-Trader</name>
+            <url>https://maven.pkg.github.com/theoliverlear/Crypto-Trader</url>
+        </repository>
+    </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
+        <repository>
+            <id>gh-crypto-trader</id>
+            <name>GitHub Packages - Crypto-Trader</name>
+            <url>https://maven.pkg.github.com/theoliverlear/Crypto-Trader</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>gh-sigwarth-suite</id>
+            <name>GitHub Packages - Sigwarth-Software-Suite</name>
+            <url>https://maven.pkg.github.com/theoliverlear/Sigwarth-Software-Suite</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <build>
         <plugins>
             <plugin>
