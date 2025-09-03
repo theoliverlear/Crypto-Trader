@@ -20,9 +20,12 @@ import org.cryptotrader.component.CurrencyJsonGenerator;
 @EnableJpaRepositories(basePackages = {
         "org.cryptotrader.repository"
 })
-public class CryptoTraderApplication {
+public class CryptoTraderApiApplication {
     public static void main(String[] args) {
-        CurrencyJsonGenerator.standalone().generateAndSave();
-        SpringApplication.run(CryptoTraderApplication.class, args);
+        String activeProfiles = System.getProperty("spring.profiles.active", "");
+        if (!activeProfiles.contains("docs")) {
+            CurrencyJsonGenerator.standalone().generateAndSave();
+        }
+        SpringApplication.run(CryptoTraderApiApplication.class, args);
     }
 }
