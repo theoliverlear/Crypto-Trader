@@ -29,8 +29,35 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - API (Full Width): api.html
-  - API (Prose): api.md
-  - Crypto Trader API: crypto-trader-api.md
-  - Code Reference (Dokka, API): code-ref/crypto-trader-api/index.html
-  - Code Reference (Javadoc HTML): javadoc/index.html
+  - Guides:
+      - Guides: guides/index.md
+  - API:
+      - OpenAPI: api/index.md
+  - Reference:
+      - Api:
+          - README: reference/Api/README.md
+          - API Reference: reference/Api/api/index.md
+      - Admin:
+          - README: reference/Admin/README.md
+          - API Reference: reference/Admin/api/index.md
+      - Assets:
+          - README: reference/Assets/README.md
+          - API Reference: reference/Assets/api/index.md
+      - Data:
+          - README: reference/Data/README.md
+          - API Reference: reference/Data/api/index.md
+      - Engine:
+          - README: reference/Engine/README.md
+          - API Reference: reference/Engine/api/index.md
+      - Library:
+          - README: reference/Library/README.md
+          - API Reference: reference/Library/api/index.md
+      - Logging:
+          - README: reference/Logging/README.md
+          - API Reference: reference/Logging/api/index.md
+      - Testing:
+          - README: reference/Testing/README.md
+          - API Reference: reference/Testing/api/index.md
+      - Version:
+          - README: reference/Version/README.md
+          - API Reference: reference/Version/api/index.md
