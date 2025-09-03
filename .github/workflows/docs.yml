@@ -79,6 +79,9 @@ jobs:
         run: |
           if [ -f api.pid ]; then kill "$(cat api.pid)" || true; fi
 
+      - name: Build (runs verify -> javadoc -> copy)
+        run: mvn -B -DskipTests verify
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
