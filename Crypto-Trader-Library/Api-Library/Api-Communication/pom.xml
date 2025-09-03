@@ -13,7 +13,7 @@
     <artifactId>api-communication</artifactId>
     <name>Api-Communication</name>
     <description>API communication contracts (DTOs) and supporting utilities for Crypto Trader.</description>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <packaging>jar</packaging>
 
     <properties>
