@@ -100,6 +100,7 @@
                         <configuration>
                             <target>
                                 <property name="staging.dir" value="${project.build.directory}/staging/reference"/>
+                                <property name="repo.root" location="${project.basedir}/.."/>
                                 <mkdir dir="${staging.dir}"/>
 
                                 <!-- Api module -->
@@ -107,9 +108,9 @@
                                 <echo file="${staging.dir}/Api/README.md"># Api&#10;&#10;This module does not have a README.md yet.</echo>
                                 <mkdir dir="${staging.dir}/Api/api"/>
                                 <echo file="${staging.dir}/Api/api/index.md"># API Reference&#10;&#10;Generated Dokka output not found for this module yet.</echo>
-                                <copy file="${project.parent.basedir}/Crypto-Trader-Api/README.md" tofile="${staging.dir}/Api/README.md" overwrite="true" failonerror="false"/>
+                                <copy file="${repo.root}/Crypto-Trader-Api/README.md" tofile="${staging.dir}/Api/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Api/api" overwrite="true" failonerror="false">
-                                    <fileset dir="${project.parent.basedir}/Crypto-Trader-Api/target/dokka-gfm" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Api/target/dokka-gfm" erroronmissingdir="false"/>
                                 </copy>
 
                                 <!-- Admin module -->
@@ -117,9 +118,9 @@
                                 <echo file="${staging.dir}/Admin/README.md"># Admin&#10;&#10;This module does not have a README.md yet.</echo>
                                 <mkdir dir="${staging.dir}/Admin/api"/>
                                 <echo file="${staging.dir}/Admin/api/index.md"># API Reference&#10;&#10;Generated Dokka output not found for this module yet.</echo>
-                                <copy file="${project.parent.basedir}/Crypto-Trader-Admin/README.md" tofile="${staging.dir}/Admin/README.md" overwrite="true" failonerror="false"/>
+                                <copy file="${repo.root}/Crypto-Trader-Admin/README.md" tofile="${staging.dir}/Admin/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Admin/api" overwrite="true" failonerror="false">
-                                    <fileset dir="${project.parent.basedir}/Crypto-Trader-Admin/target/dokka-gfm" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Admin/target/dokka-gfm" erroronmissingdir="false"/>
                                 </copy>
 
                                 <!-- Assets module -->
@@ -127,9 +128,9 @@
                                 <echo file="${staging.dir}/Assets/README.md"># Assets&#10;&#10;This module does not have a README.md yet.</echo>
                                 <mkdir dir="${staging.dir}/Assets/api"/>
                                 <echo file="${staging.dir}/Assets/api/index.md"># API Reference&#10;&#10;Generated Dokka output not found for this module yet.</echo>
-                                <copy file="${project.parent.basedir}/Crypto-Trader-Assets/README.md" tofile="${staging.dir}/Assets/README.md" overwrite="true" failonerror="false"/>
+                                <copy file="${repo.root}/Crypto-Trader-Assets/README.md" tofile="${staging.dir}/Assets/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Assets/api" overwrite="true" failonerror="false">
-                                    <fileset dir="${project.parent.basedir}/Crypto-Trader-Assets/target/dokka-gfm" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Assets/target/dokka-gfm" erroronmissingdir="false"/>
                                 </copy>
 
                                 <!-- Data module -->
@@ -137,9 +138,9 @@
                                 <echo file="${staging.dir}/Data/README.md"># Data&#10;&#10;This module does not have a README.md yet.</echo>
                                 <mkdir dir="${staging.dir}/Data/api"/>
                                 <echo file="${staging.dir}/Data/api/index.md"># API Reference&#10;&#10;Generated Dokka output not found for this module yet.</echo>
-                                <copy file="${project.parent.basedir}/Crypto-Trader-Data/README.md" tofile="${staging.dir}/Data/README.md" overwrite="true" failonerror="false"/>
+                                <copy file="${repo.root}/Crypto-Trader-Data/README.md" tofile="${staging.dir}/Data/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Data/api" overwrite="true" failonerror="false">
-                                    <fileset dir="${project.parent.basedir}/Crypto-Trader-Data/target/dokka-gfm" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Data/target/dokka-gfm" erroronmissingdir="false"/>
                                 </copy>
 
                                 <!-- Engine module -->
@@ -147,9 +148,9 @@
                                 <echo file="${staging.dir}/Engine/README.md"># Engine&#10;&#10;This module does not have a README.md yet.</echo>
                                 <mkdir dir="${staging.dir}/Engine/api"/>
                                 <echo file="${staging.dir}/Engine/api/index.md"># API Reference&#10;&#10;Generated Dokka output not found for this module yet.</echo>
-                                <copy file="${project.parent.basedir}/Crypto-Trader-Engine/README.md" tofile="${staging.dir}/Engine/README.md" overwrite="true" failonerror="false"/>
+                                <copy file="${repo.root}/Crypto-Trader-Engine/README.md" tofile="${staging.dir}/Engine/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Engine/api" overwrite="true" failonerror="false">
-                                    <fileset dir="${project.parent.basedir}/Crypto-Trader-Engine/target/dokka-gfm" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Engine/target/dokka-gfm" erroronmissingdir="false"/>
                                 </copy>
 
                                 <!-- Library module -->
@@ -157,9 +158,9 @@
                                 <echo file="${staging.dir}/Library/README.md"># Library&#10;&#10;This module does not have a README.md yet.</echo>
                                 <mkdir dir="${staging.dir}/Library/api"/>
                                 <echo file="${staging.dir}/Library/api/index.md"># API Reference&#10;&#10;Generated Dokka output not found for this module yet.</echo>
-                                <copy file="${project.parent.basedir}/Crypto-Trader-Library/README.md" tofile="${staging.dir}/Library/README.md" overwrite="true" failonerror="false"/>
+                                <copy file="${repo.root}/Crypto-Trader-Library/README.md" tofile="${staging.dir}/Library/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Library/api" overwrite="true" failonerror="false">
-                                    <fileset dir="${project.parent.basedir}/Crypto-Trader-Library/target/dokka-gfm" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/target/dokka-gfm" erroronmissingdir="false"/>
                                 </copy>
 
                                 <!-- Logging module -->
@@ -167,9 +168,9 @@
                                 <echo file="${staging.dir}/Logging/README.md"># Logging&#10;&#10;This module does not have a README.md yet.</echo>
                                 <mkdir dir="${staging.dir}/Logging/api"/>
                                 <echo file="${staging.dir}/Logging/api/index.md"># API Reference&#10;&#10;Generated Dokka output not found for this module yet.</echo>
-                                <copy file="${project.parent.basedir}/Crypto-Trader-Logging/README.md" tofile="${staging.dir}/Logging/README.md" overwrite="true" failonerror="false"/>
+                                <copy file="${repo.root}/Crypto-Trader-Logging/README.md" tofile="${staging.dir}/Logging/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Logging/api" overwrite="true" failonerror="false">
-                                    <fileset dir="${project.parent.basedir}/Crypto-Trader-Logging/target/dokka-gfm" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Logging/target/dokka-gfm" erroronmissingdir="false"/>
                                 </copy>
 
                                 <!-- Testing module -->
@@ -177,9 +178,9 @@
                                 <echo file="${staging.dir}/Testing/README.md"># Testing&#10;&#10;This module does not have a README.md yet.</echo>
                                 <mkdir dir="${staging.dir}/Testing/api"/>
                                 <echo file="${staging.dir}/Testing/api/index.md"># API Reference&#10;&#10;Generated Dokka output not found for this module yet.</echo>
-                                <copy file="${project.parent.basedir}/Crypto-Trader-Testing/README.md" tofile="${staging.dir}/Testing/README.md" overwrite="true" failonerror="false"/>
+                                <copy file="${repo.root}/Crypto-Trader-Testing/README.md" tofile="${staging.dir}/Testing/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Testing/api" overwrite="true" failonerror="false">
-                                    <fileset dir="${project.parent.basedir}/Crypto-Trader-Testing/target/dokka-gfm" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Testing/target/dokka-gfm" erroronmissingdir="false"/>
                                 </copy>
 
                                 <!-- Version module -->
@@ -187,9 +188,9 @@
                                 <echo file="${staging.dir}/Version/README.md"># Version&#10;&#10;This module does not have a README.md yet.</echo>
                                 <mkdir dir="${staging.dir}/Version/api"/>
                                 <echo file="${staging.dir}/Version/api/index.md"># API Reference&#10;&#10;Generated Dokka output not found for this module yet.</echo>
-                                <copy file="${project.parent.basedir}/Crypto-Trader-Version/README.md" tofile="${staging.dir}/Version/README.md" overwrite="true" failonerror="false"/>
+                                <copy file="${repo.root}/Crypto-Trader-Version/README.md" tofile="${staging.dir}/Version/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Version/api" overwrite="true" failonerror="false">
-                                    <fileset dir="${project.parent.basedir}/Crypto-Trader-Version/target/dokka-gfm" erroronmissingdir="false"/>
+                                    <fileset dir="${repo.root}/Crypto-Trader-Version/target/dokka-gfm" erroronmissingdir="false"/>
                                 </copy>
                             </target>
                         </configuration>
