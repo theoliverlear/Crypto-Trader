@@ -1,5 +1,6 @@
 site_name: Crypto Trader Docs
 site_url: https://theoliverlear.github.io/Crypto-Trader/
+
 theme:
   name: material
   palette:
@@ -16,13 +17,17 @@ theme:
     - navigation.top
     - navigation.sections
     - palette.toggle
+
 extra_css:
   - stylesheets/extra.css
+
 markdown_extensions:
   - admonition
   - toc:
       permalink: true
+
 nav:
   - Home: index.md
-  - API: crypto-trader-api.md
-  - API Docs: api.md
+  - API (Full Width): api.html
+  - API (Prose): api.md
+  - Code Reference (Javadoc): javadoc/index.html
