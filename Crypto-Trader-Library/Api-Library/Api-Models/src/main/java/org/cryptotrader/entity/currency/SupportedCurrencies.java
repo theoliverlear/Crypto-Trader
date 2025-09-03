@@ -20,7 +20,11 @@ public class SupportedCurrencies {
     public static final Currency BITCOIN = new Currency("Bitcoin", "BTC");
     //==========================-Static-Actions-==============================
     static {
-        loadCurrenciesFromJson();
+        if (Boolean.parseBoolean(System.getProperty("cryptotrader.loadCurrencies", "false"))) {
+            loadCurrenciesFromJson();
+        } else {
+            log.debug("SupportedCurrencies static load skipped (cryptotrader.loadCurrencies=false).");
+        }
     }
     public static void loadCurrenciesFromJson() {
         ObjectMapper objectMapper = new ObjectMapper();
