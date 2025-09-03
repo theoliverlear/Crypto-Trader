@@ -14,6 +14,12 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 import java.util.List;
 
+/**
+ * Auto-configuration class for setting up OpenAPI documentation for the
+ * Crypto Trader Docs application.
+ *
+ * @author theoliverlear - Oliver Lear Sigwarth
+ */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(DispatcherServlet.class)
 @ConditionalOnProperty(prefix = "docs.autoconfigure", name = "enabled", havingValue = "true", matchIfMissing = true)
