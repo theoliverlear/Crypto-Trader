@@ -23,8 +23,12 @@ import org.cryptotrader.component.CurrencyJsonGenerator;
 })
 public class CryptoTraderApiApplication {
     public static void main(String[] args) {
+        // Detect 'docs' profile both from standard Spring property and from Spring Boot Maven plugin property
         String activeProfiles = System.getProperty("spring.profiles.active", "");
-        if (!activeProfiles.contains("docs")) {
+        String bootRunProfiles = System.getProperty("spring-boot.run.profiles", "");
+        String combinedProfiles = (activeProfiles + "," + bootRunProfiles).toLowerCase();
+        if (!combinedProfiles.contains("docs")) {
+            // Only generate currencies outside of docs profile
             CurrencyJsonGenerator.standalone().generateAndSave();
         }
         SpringApplication.run(CryptoTraderApiApplication.class, args);
