@@ -15,21 +15,15 @@ import org.cryptotrader.component.CurrencyJsonGenerator;
 @EnableScheduling
 @EntityScan(basePackages = "org.cryptotrader.entity")
 @ComponentScan(basePackages = {
-        "org.cryptotrader.api"
+        "org.cryptotrader.api",
+        "org.cryptotrader.component",
 }, excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "org\\.cryptotrader\\.component\\.config\\.HttpClientConfig"))
 @EnableJpaRepositories(basePackages = {
         "org.cryptotrader.repository"
 })
 public class CryptoTraderApiApplication {
     public static void main(String[] args) {
-        // Detect 'docs' profile both from standard Spring property and from Spring Boot Maven plugin property
-        String activeProfiles = System.getProperty("spring.profiles.active", "");
-        String bootRunProfiles = System.getProperty("spring-boot.run.profiles", "");
-        String combinedProfiles = (activeProfiles + "," + bootRunProfiles).toLowerCase();
-        if (!combinedProfiles.contains("docs")) {
-            // Only generate currencies outside of docs profile
-            CurrencyJsonGenerator.standalone().generateAndSave();
-        }
+        System.setProperty("cryptotrader.loadCurrencies", "false");
         SpringApplication.run(CryptoTraderApiApplication.class, args);
     }
 }
