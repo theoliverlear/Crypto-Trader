@@ -84,27 +84,130 @@
                 </executions>
             </plugin>
 
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>3.1.0</version>
                 <executions>
+                    <!-- Stage module READMEs and Dokka outputs into target/staging/reference -->
                     <execution>
-                        <id>copy-javadoc-into-docs-module</id>
-                        <phase>package</phase>
+                        <id>stage-reference</id>
+                        <phase>verify</phase>
                         <goals>
                             <goal>run</goal>
                         </goals>
                         <configuration>
                             <target>
-                                <mkdir dir="${project.basedir}/docs/javadoc"/>
-                                <!-- First copy API module Javadoc (fallback) -->
-                                <copy todir="${project.basedir}/docs/javadoc" overwrite="true" failonerror="false">
-                                    <fileset dir="${project.parent.basedir}/Crypto-Trader-Api/target/site/apidocs" erroronmissingdir="false"/>
+                                <property name="staging.dir" value="${project.build.directory}/staging/reference"/>
+                                <mkdir dir="${staging.dir}"/>
+
+                                <!-- Api module -->
+                                <mkdir dir="${staging.dir}/Api"/>
+                                <echo file="${staging.dir}/Api/README.md"># Api&#10;&#10;This module does not have a README.md yet.</echo>
+                                <mkdir dir="${staging.dir}/Api/api"/>
+                                <echo file="${staging.dir}/Api/api/index.md"># API Reference&#10;&#10;Generated Dokka output not found for this module yet.</echo>
+                                <copy file="${project.parent.basedir}/Crypto-Trader-Api/README.md" tofile="${staging.dir}/Api/README.md" overwrite="true" failonerror="false"/>
+                                <copy todir="${staging.dir}/Api/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${project.parent.basedir}/Crypto-Trader-Api/target/dokka-gfm" erroronmissingdir="false"/>
                                 </copy>
-                                <!-- Then copy aggregated Javadoc to override if it exists -->
-                                <copy todir="${project.basedir}/docs/javadoc" overwrite="true" failonerror="false">
-                                    <fileset dir="${project.parent.basedir}/target/site/apidocs" erroronmissingdir="false"/>
+
+                                <!-- Admin module -->
+                                <mkdir dir="${staging.dir}/Admin"/>
+                                <echo file="${staging.dir}/Admin/README.md"># Admin&#10;&#10;This module does not have a README.md yet.</echo>
+                                <mkdir dir="${staging.dir}/Admin/api"/>
+                                <echo file="${staging.dir}/Admin/api/index.md"># API Reference&#10;&#10;Generated Dokka output not found for this module yet.</echo>
+                                <copy file="${project.parent.basedir}/Crypto-Trader-Admin/README.md" tofile="${staging.dir}/Admin/README.md" overwrite="true" failonerror="false"/>
+                                <copy todir="${staging.dir}/Admin/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${project.parent.basedir}/Crypto-Trader-Admin/target/dokka-gfm" erroronmissingdir="false"/>
+                                </copy>
+
+                                <!-- Assets module -->
+                                <mkdir dir="${staging.dir}/Assets"/>
+                                <echo file="${staging.dir}/Assets/README.md"># Assets&#10;&#10;This module does not have a README.md yet.</echo>
+                                <mkdir dir="${staging.dir}/Assets/api"/>
+                                <echo file="${staging.dir}/Assets/api/index.md"># API Reference&#10;&#10;Generated Dokka output not found for this module yet.</echo>
+                                <copy file="${project.parent.basedir}/Crypto-Trader-Assets/README.md" tofile="${staging.dir}/Assets/README.md" overwrite="true" failonerror="false"/>
+                                <copy todir="${staging.dir}/Assets/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${project.parent.basedir}/Crypto-Trader-Assets/target/dokka-gfm" erroronmissingdir="false"/>
+                                </copy>
+
+                                <!-- Data module -->
+                                <mkdir dir="${staging.dir}/Data"/>
+                                <echo file="${staging.dir}/Data/README.md"># Data&#10;&#10;This module does not have a README.md yet.</echo>
+                                <mkdir dir="${staging.dir}/Data/api"/>
+                                <echo file="${staging.dir}/Data/api/index.md"># API Reference&#10;&#10;Generated Dokka output not found for this module yet.</echo>
+                                <copy file="${project.parent.basedir}/Crypto-Trader-Data/README.md" tofile="${staging.dir}/Data/README.md" overwrite="true" failonerror="false"/>
+                                <copy todir="${staging.dir}/Data/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${project.parent.basedir}/Crypto-Trader-Data/target/dokka-gfm" erroronmissingdir="false"/>
+                                </copy>
+
+                                <!-- Engine module -->
+                                <mkdir dir="${staging.dir}/Engine"/>
+                                <echo file="${staging.dir}/Engine/README.md"># Engine&#10;&#10;This module does not have a README.md yet.</echo>
+                                <mkdir dir="${staging.dir}/Engine/api"/>
+                                <echo file="${staging.dir}/Engine/api/index.md"># API Reference&#10;&#10;Generated Dokka output not found for this module yet.</echo>
+                                <copy file="${project.parent.basedir}/Crypto-Trader-Engine/README.md" tofile="${staging.dir}/Engine/README.md" overwrite="true" failonerror="false"/>
+                                <copy todir="${staging.dir}/Engine/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${project.parent.basedir}/Crypto-Trader-Engine/target/dokka-gfm" erroronmissingdir="false"/>
+                                </copy>
+
+                                <!-- Library module -->
+                                <mkdir dir="${staging.dir}/Library"/>
+                                <echo file="${staging.dir}/Library/README.md"># Library&#10;&#10;This module does not have a README.md yet.</echo>
+                                <mkdir dir="${staging.dir}/Library/api"/>
+                                <echo file="${staging.dir}/Library/api/index.md"># API Reference&#10;&#10;Generated Dokka output not found for this module yet.</echo>
+                                <copy file="${project.parent.basedir}/Crypto-Trader-Library/README.md" tofile="${staging.dir}/Library/README.md" overwrite="true" failonerror="false"/>
+                                <copy todir="${staging.dir}/Library/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${project.parent.basedir}/Crypto-Trader-Library/target/dokka-gfm" erroronmissingdir="false"/>
+                                </copy>
+
+                                <!-- Logging module -->
+                                <mkdir dir="${staging.dir}/Logging"/>
+                                <echo file="${staging.dir}/Logging/README.md"># Logging&#10;&#10;This module does not have a README.md yet.</echo>
+                                <mkdir dir="${staging.dir}/Logging/api"/>
+                                <echo file="${staging.dir}/Logging/api/index.md"># API Reference&#10;&#10;Generated Dokka output not found for this module yet.</echo>
+                                <copy file="${project.parent.basedir}/Crypto-Trader-Logging/README.md" tofile="${staging.dir}/Logging/README.md" overwrite="true" failonerror="false"/>
+                                <copy todir="${staging.dir}/Logging/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${project.parent.basedir}/Crypto-Trader-Logging/target/dokka-gfm" erroronmissingdir="false"/>
+                                </copy>
+
+                                <!-- Testing module -->
+                                <mkdir dir="${staging.dir}/Testing"/>
+                                <echo file="${staging.dir}/Testing/README.md"># Testing&#10;&#10;This module does not have a README.md yet.</echo>
+                                <mkdir dir="${staging.dir}/Testing/api"/>
+                                <echo file="${staging.dir}/Testing/api/index.md"># API Reference&#10;&#10;Generated Dokka output not found for this module yet.</echo>
+                                <copy file="${project.parent.basedir}/Crypto-Trader-Testing/README.md" tofile="${staging.dir}/Testing/README.md" overwrite="true" failonerror="false"/>
+                                <copy todir="${staging.dir}/Testing/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${project.parent.basedir}/Crypto-Trader-Testing/target/dokka-gfm" erroronmissingdir="false"/>
+                                </copy>
+
+                                <!-- Version module -->
+                                <mkdir dir="${staging.dir}/Version"/>
+                                <echo file="${staging.dir}/Version/README.md"># Version&#10;&#10;This module does not have a README.md yet.</echo>
+                                <mkdir dir="${staging.dir}/Version/api"/>
+                                <echo file="${staging.dir}/Version/api/index.md"># API Reference&#10;&#10;Generated Dokka output not found for this module yet.</echo>
+                                <copy file="${project.parent.basedir}/Crypto-Trader-Version/README.md" tofile="${staging.dir}/Version/README.md" overwrite="true" failonerror="false"/>
+                                <copy todir="${staging.dir}/Version/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${project.parent.basedir}/Crypto-Trader-Version/target/dokka-gfm" erroronmissingdir="false"/>
+                                </copy>
+                            </target>
+                        </configuration>
+                    </execution>
+
+                    <!-- Copy staged reference into docs/reference -->
+                    <execution>
+                        <id>copy-reference-into-docs</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <delete dir="${project.basedir}/docs/reference" quiet="true"/>
+                                <mkdir dir="${project.basedir}/docs/reference"/>
+                                <copy todir="${project.basedir}/docs/reference" overwrite="true" failonerror="false">
+                                    <fileset dir="${project.build.directory}/staging/reference" erroronmissingdir="false"/>
                                 </copy>
                             </target>
                         </configuration>
@@ -132,6 +235,30 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.3.2</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${project.basedir}/docs/reference</directory>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                        <fileset>
+                            <directory>${project.build.directory}/staging</directory>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                        <fileset>
+                            <directory>${project.basedir}/docs</directory>
+                            <includes>
+                                <include>openapi.yaml</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
             </plugin>
 
             <plugin>
