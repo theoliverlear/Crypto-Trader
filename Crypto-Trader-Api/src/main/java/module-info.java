@@ -42,9 +42,6 @@ open module org.cryptotrader.api {
     
     requires org.cryptotrader.test;
     requires spring.webmvc;
-    requires org.cryptotrader.api.models;
-    requires org.cryptotrader.api.communication;
-    requires org.cryptotrader.api.services;
     requires io.swagger.v3.oas.annotations;
     requires org.cryptotrader.docs;
 
