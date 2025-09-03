@@ -26,20 +26,31 @@ jobs:
 
       - name: Start API (docs profile) in background
         run: |
-          nohup mvn -B -DskipTests -pl Crypto-Trader-Api -Dspring-boot.run.profiles=docs -Dspring-boot.run.arguments=--server.port=18080 spring-boot:run > api.log 2>&1 &
+          nohup mvn -B -DskipTests \
+            -pl Crypto-Trader-Api \
+            -Dspring-boot.run.main-class=org.cryptotrader.api.CryptoTraderApiApplication \
+            -Dspring-boot.run.profiles=docs \
+            -Dspring-boot.run.arguments=--server.port=18080 \
+            spring-boot:run > api.log 2>&1 &
 
       - name: Wait for API to be ready
         run: |
-          for i in {1..30}; do
+          for i in {1..90}; do
             if curl -fsS http://localhost:18080/actuator/health > /dev/null; then
               echo "API is up";
+              ready=1
               break;
             fi;
             sleep 2;
           done
+          if [ -z "$ready" ]; then
+            echo "API failed to start; printing api.log:"
+            sed -n '1,400p' api.log || true
+            exit 1
+          fi
 
       - name: Build docs module (generate OpenAPI + copy to docs)
-        run: mvn -B -DskipTests -pl :crypto-trader-docs -am verify
+        run: mvn -B -DskipTests -f Crypto-Trader-Docs/pom.xml -N verify
 
       - name: Stop API
         run: pkill -f 'spring-boot:run' || true
