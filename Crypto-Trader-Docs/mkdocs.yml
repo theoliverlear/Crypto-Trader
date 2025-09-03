@@ -2,10 +2,22 @@ site_name: Crypto Trader Docs
 site_url: https://theoliverlear.github.io/Crypto-Trader/
 theme:
   name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: indigo
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: indigo
   features:
-    - navigation.instant
     - content.code.copy
-    - search.highlight
+    - navigation.top
+    - navigation.sections
+    - palette.toggle
+extra_css:
+  - stylesheets/extra.css
 markdown_extensions:
   - admonition
   - toc:
