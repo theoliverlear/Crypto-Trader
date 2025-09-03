@@ -235,18 +235,18 @@
                 <version>1.9.20</version>
                 <executions>
                     <execution>
-                        <id>dokka-gfm</id>
+                        <id>dokka-html</id>
                         <phase>verify</phase>
                         <goals>
                             <goal>dokka</goal>
                         </goals>
                         <configuration>
-                            <outputDir>${project.build.directory}/dokka-gfm</outputDir>
+                            <outputDir>${project.build.directory}/dokka-html</outputDir>
                             <cacheRoot>${project.build.directory}/dokka-cache</cacheRoot>
                             <dokkaPlugins>
                                 <plugin>
                                     <groupId>org.jetbrains.dokka</groupId>
-                                    <artifactId>gfm-plugin</artifactId>
+                                    <artifactId>html-plugin</artifactId>
                                     <version>1.9.20</version>
                                 </plugin>
                                 <plugin>
