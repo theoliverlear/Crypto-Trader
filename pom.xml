@@ -53,6 +53,7 @@
         <module>Crypto-Trader-Engine</module>
         <module>Crypto-Trader-Data</module>
         <module>Crypto-Trader-Logging</module>
+        <module>Crypto-Trader-Docs</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -62,6 +63,8 @@
         <assertj.version>3.25.3</assertj.version>
         <mockito.version>5.11.0</mockito.version>
         <testcontainers.version>1.20.1</testcontainers.version>
+        <!-- Default main class for generating OpenAPI docs; can be overridden with -Ddocs.mainClass=... -->
+        <docs.mainClass>org.cryptotrader.api.CryptoTraderApiApplication</docs.mainClass>
     </properties>
 
     <dependencyManagement>
@@ -100,6 +103,14 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <dependencies>
         <!-- Ensure all modules have JUnit 5 on the test classpath for IDE 'Run All Tests' -->
