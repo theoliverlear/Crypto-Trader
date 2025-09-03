@@ -92,6 +92,10 @@ jobs:
         working-directory: Crypto-Trader-Docs
         run: mkdocs build --strict --site-dir site
 
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
