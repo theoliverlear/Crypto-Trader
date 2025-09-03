@@ -95,7 +95,7 @@ public class PortfolioController {
         List<PortfolioAssetHistory> portfolioAssetHistory = this.portfolioService.getPortfolioAssetHistory(this.portfolio);
         return ResponseEntity.ok(portfolioAssetHistory);
     }
-    @RequestMapping("/history/get/asset/{currencyName}")
+    @GetMapping("/history/get/asset/{currencyName}")
     public ResponseEntity<List<PortfolioAssetHistory>> getPortfolioAssetHistoryByCurrency(@PathVariable String currencyName) {
         return null;
     }
