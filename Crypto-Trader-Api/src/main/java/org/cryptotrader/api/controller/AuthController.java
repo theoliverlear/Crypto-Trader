@@ -6,9 +6,7 @@ import org.cryptotrader.api.services.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.cryptotrader.comm.request.UserRequest;
 import org.cryptotrader.comm.response.AuthResponse;
 import org.cryptotrader.model.http.AuthStatus;
@@ -25,7 +23,7 @@ public class AuthController {
         this.authService = authService;
         this.sessionService = sessionService;
     }
-    @RequestMapping("/signup")
+    @PostMapping("/signup")
     public ResponseEntity<AuthResponse> signup(@RequestBody UserRequest userRequest, HttpSession session) {
         boolean userInSession = this.sessionService.userInSession(session);
         if (userInSession) {
@@ -35,7 +33,7 @@ public class AuthController {
             return ResponseEntity.status(signupResponse.getStatus()).body(signupResponse.getPayload());
         }
     }
-    @RequestMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody UserRequest userRequest, HttpSession session) {
         boolean userInSession = this.sessionService.userInSession(session);
         if (userInSession) {
@@ -45,7 +43,8 @@ public class AuthController {
             return ResponseEntity.status(signupResponse.getStatus()).body(signupResponse.getPayload());
         }
     }
-    @RequestMapping("/isloggedin")
+    // TODO: Refactor to use HttpServletRequest to verify session.
+    @GetMapping("/isloggedin")
     public ResponseEntity<AuthResponse> isLoggedIn(HttpSession session) {
         boolean userInSession = this.sessionService.userInSession(session);
         if (userInSession) {
@@ -54,7 +53,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse(AuthStatus.UNAUTHORIZED.isAuthorized));
         }
     }
-    @RequestMapping("/logout")
+    @GetMapping("/logout")
     public ResponseEntity<AuthResponse> logout(HttpSession session) {
         boolean userInSession = this.sessionService.userInSession(session);
         if (userInSession) {

@@ -6,10 +6,7 @@ import org.cryptotrader.api.services.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.cryptotrader.comm.request.PortfolioAssetRequest;
 import org.cryptotrader.comm.response.AssetValueResponse;
 import org.cryptotrader.comm.response.HasPortfolioResponse;
@@ -40,19 +37,19 @@ public class PortfolioController {
     //=============================-Methods-==================================
 
     //---------------------------Get-Portfolio--------------------------------
-    @RequestMapping("/get")
+    @GetMapping("/get")
     public ResponseEntity<Portfolio> getPortfolio() {
         this.portfolio = this.portfolioService.getPortfolioByUserId(this.currentUser.getId());
         return ResponseEntity.ok(this.portfolio);
     }
     //------------------------Add-Portfolio-Asset-----------------------------
-    @RequestMapping("/add")
+    @PostMapping("/add")
     public ResponseEntity<String> addPortfolioAsset(@RequestBody PortfolioAssetRequest portfolioAssetRequest) {
         this.portfolioService.addAssetToPortfolio(this.portfolio, portfolioAssetRequest);
         return ResponseEntity.ok("Asset added to portfolio");
     }
     //-------------------------Is-Empty-Portfolio-----------------------------
-    @RequestMapping("/empty")
+    @GetMapping("/empty")
     public ResponseEntity<HasPortfolioResponse> emptyPortfolio(HttpSession session) {
         boolean userInSession = this.sessionService.userInSession(session);
         if (!userInSession) {
@@ -71,7 +68,7 @@ public class PortfolioController {
         }
     }
     //------------------------Get-Portfolio-History---------------------------
-    @RequestMapping("/history/get")
+    @GetMapping("/history/get")
     public ResponseEntity<List<PortfolioHistory>> getPortfolioHistory(HttpSession session) {
         boolean userInSession = this.sessionService.userInSession(session);
         if (!userInSession) {
@@ -83,13 +80,14 @@ public class PortfolioController {
         }
         ProductUser sessionUser = possibleSessionUser.get();
         Portfolio portfolio = this.portfolioService.getPortfolioByUserId(sessionUser.getId());
+        // TODO: Replace with a DTO.
         List<PortfolioHistory> portfolioHistory = this.portfolioService.getPortfolioHistory(portfolio);
         if (portfolioHistory.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return ResponseEntity.ok(portfolioHistory);
     }
-    @RequestMapping("/history/get/asset")
+    @GetMapping("/history/get/asset")
     public ResponseEntity<List<PortfolioAssetHistory>> getPortfolioAssetHistory(HttpSession session) {
         ProductUser sessionUser = (ProductUser) session.getAttribute("user");
         this.currentUser = sessionUser;
@@ -102,7 +100,7 @@ public class PortfolioController {
         return null;
     }
     //------------------------Get-Portfolio-Profit----------------------------
-    @RequestMapping("/history/profit")
+    @GetMapping("/history/profit")
     public ResponseEntity<AssetValueResponse> getPortfolioProfit() {
         this.portfolio = this.portfolioService.getPortfolioByUserId(this.currentUser.getId());
         double profit = this.portfolioService.getPortfolioProfit(this.portfolio);
@@ -110,7 +108,7 @@ public class PortfolioController {
         return ResponseEntity.ok(profitResponse);
     }
     //------------------Get-Portfolio-Profit-By-Currency----------------------
-    @RequestMapping("/history/profit/{currencyName}")
+    @GetMapping("/history/profit/{currencyName}")
     public ResponseEntity<AssetValueResponse> getPortfolioProfitByCurrency(@PathVariable String currencyName) {
         this.portfolio = this.portfolioService.getPortfolioByUserId(this.currentUser.getId());
         PortfolioAsset portfolioAsset = this.portfolioService.getPortfolioAssetByCurrencyName(this.portfolio, currencyName);
