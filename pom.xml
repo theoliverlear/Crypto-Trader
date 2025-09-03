@@ -202,6 +202,7 @@
                             <goal>aggregate</goal>
                         </goals>
                         <configuration>
+                            <skip>true</skip>
                             <failOnError>false</failOnError>
                             <additionalJOptions>
                                 <additionalJOption>--allow-script-in-comments</additionalJOption>
