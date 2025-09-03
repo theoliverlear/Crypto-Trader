@@ -12,7 +12,7 @@
 
     <artifactId>crypto-trader-data</artifactId>
     <name>Crypto-Trader-Data</name>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <description>
         The core data harvester and manager for Crypto-Trader.
     </description>
@@ -130,7 +130,7 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-logging</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.2</version>
         </dependency>
 
     </dependencies>

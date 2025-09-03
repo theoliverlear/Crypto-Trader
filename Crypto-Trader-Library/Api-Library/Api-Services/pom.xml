@@ -12,7 +12,7 @@
 
     <artifactId>api-services</artifactId>
     <name>Api-Services</name>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>
@@ -142,7 +142,7 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-logging</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.2</version>
             <scope>runtime</scope>
         </dependency>
 

@@ -12,7 +12,7 @@
 
     <artifactId>crypto-trader-engine</artifactId>
     <name>Crypto-Trader-Engine</name>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <description>
         The core trading and asset manipulation engine for Crypto-Trader.
     </description>
@@ -129,7 +129,7 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-logging</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.2</version>
             <scope>runtime</scope>
         </dependency>
 
