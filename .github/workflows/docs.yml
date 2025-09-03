@@ -25,13 +25,13 @@ jobs:
           cache: 'maven'
 
       - name: Start API (docs profile) in background
+        working-directory: Crypto-Trader-Api
         run: |
           nohup mvn -B -DskipTests \
-            -pl Crypto-Trader-Api \
             -Dspring-boot.run.main-class=org.cryptotrader.api.CryptoTraderApiApplication \
             -Dspring-boot.run.profiles=docs \
             -Dspring-boot.run.arguments=--server.port=18080 \
-            spring-boot:run > api.log 2>&1 &
+            spring-boot:run > ../api.log 2>&1 &
 
       - name: Wait for API to be ready
         run: |
