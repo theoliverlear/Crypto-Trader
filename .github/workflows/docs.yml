@@ -27,6 +27,9 @@ jobs:
           java-version: '23'
           cache: 'maven'
 
+      - name: Build all modules (install to local repo)
+        run: mvn -B -s .github/maven-settings.xml -DskipTests -U clean install
+
       - name: Start API (docs profile) in background
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
