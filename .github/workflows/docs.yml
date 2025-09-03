@@ -17,43 +17,47 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Java
+      - name: Set up Java (21 LTS)
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '23'
+          java-version: '21'
           cache: 'maven'
 
       - name: Start API (docs profile) in background
         working-directory: Crypto-Trader-Api
         run: |
-          nohup mvn -B -N -DskipTests \
+          nohup mvn -B -DskipTests \
             -Dspring-boot.run.main-class=org.cryptotrader.api.CryptoTraderApiApplication \
             -Dspring-boot.run.profiles=docs \
             -Dspring-boot.run.arguments=--server.port=18080 \
             spring-boot:run > ../api.log 2>&1 &
+          echo $! > ../api.pid
 
       - name: Wait for API to be ready
         run: |
-          for i in {1..90}; do
-            if curl -fsS http://localhost:18080/actuator/health > /dev/null; then
-              echo "API is up";
-              ready=1
-              break;
-            fi;
-            sleep 2;
+          for i in {1..150}; do
+            if curl -fsS http://localhost:18080/actuator/health >/dev/null; then
+              echo "API is up"
+              exit 0
+            fi
+            if [ -f api.pid ] && ! ps -p $(cat api.pid) >/dev/null 2>&1; then
+              echo "API process exited early"
+              break
+            fi
+            sleep 2
           done
-          if [ -z "$ready" ]; then
-            echo "API failed to start; printing api.log:"
-            sed -n '1,400p' api.log || true
-            exit 1
-          fi
+          echo "API failed to start; printing full api.log:"
+          tail -n +1 api.log || true
+          exit 1
 
       - name: Build docs module (generate OpenAPI + copy to docs)
-        run: mvn -B -DskipTests -f Crypto-Trader-Docs/pom.xml -N verify
+        run: mvn -B -DskipTests -f Crypto-Trader-Docs/pom.xml verify
 
       - name: Stop API
-        run: pkill -f 'spring-boot:run' || true
+        run: |
+          if [ -f api.pid ]; then kill $(cat api.pid) || true; fi
+          pkill -f 'spring-boot:run' || true
 
       - name: Set up Python
         uses: actions/setup-python@v5
