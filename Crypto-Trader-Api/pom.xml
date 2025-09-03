@@ -23,7 +23,21 @@
             <artifactId>api-library</artifactId>
             <version>0.0.4</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>api-models</artifactId>
+            <version>0.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>api-repositories</artifactId>
+            <version>0.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>api-communication</artifactId>
+            <version>0.0.3</version>
+        </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-services</artifactId>
