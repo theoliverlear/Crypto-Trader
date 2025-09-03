@@ -125,6 +125,7 @@
                     <release>23</release>
                     <useModulePath>false</useModulePath>
                     <excludes>
+                        <exclude>module-info.java</exclude>
                         <exclude>**/module-info.java</exclude>
                     </excludes>
                     <annotationProcessorPaths>
@@ -141,6 +142,7 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+
             <!-- ... existing code ... -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
