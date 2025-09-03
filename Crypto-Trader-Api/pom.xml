@@ -243,12 +243,24 @@
                         <id>dokka-gfm</id>
                         <phase>verify</phase>
                         <goals>
-                            <goal>javadoc</goal>
+                            <goal>dokka</goal>
                         </goals>
                         <configuration>
-                            <outputDir>${project.basedir}/../Crypto-Trader-Docs/docs/code-ref/${project.artifactId}</outputDir>
-                            <failOnWarning>false</failOnWarning>
+                            <outputDir>${project.build.directory}/dokka-gfm</outputDir>
                             <cacheRoot>${project.build.directory}/dokka-cache</cacheRoot>
+                            <dokkaPlugins>
+                                <plugin>
+                                    <groupId>org.jetbrains.dokka</groupId>
+                                    <artifactId>gfm-plugin</artifactId>
+                                    <version>1.9.20</version>
+                                </plugin>
+                                <plugin>
+                                    <groupId>org.jetbrains.dokka</groupId>
+                                    <artifactId>kotlin-as-java-plugin</artifactId>
+                                    <version>1.9.20</version>
+                                </plugin>
+                            </dokkaPlugins>
+                            <failOnWarning>false</failOnWarning>
                         </configuration>
                     </execution>
                 </executions>
