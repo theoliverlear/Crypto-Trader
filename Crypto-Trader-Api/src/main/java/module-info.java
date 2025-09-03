@@ -45,6 +45,8 @@ open module org.cryptotrader.api {
     requires org.cryptotrader.api.models;
     requires org.cryptotrader.api.communication;
     requires org.cryptotrader.api.services;
+    requires org.cryptotrader.api.components;
+    requires org.cryptotrader.api.repositories;
     requires io.swagger.v3.oas.annotations;
     requires org.cryptotrader.docs;
 
