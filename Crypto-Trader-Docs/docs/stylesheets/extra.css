@@ -13,7 +13,20 @@
 }
 
 /* Define CSS variables to avoid runtime errors and control header height */
-:root { --md-header-height: 3.2rem; --ct-header-height: 3.2rem; }
+:root { 
+  --md-header-height: 3.2rem; 
+  --ct-header-height: 3.2rem;
+  /* Material theme fallbacks to keep ReDoc readable */
+  --md-default-bg-color: #ffffff;
+  --md-default-fg-color: #111111;
+  --md-code-bg-color: rgba(127,127,127,0.1);
+}
+/* Dark scheme overrides */
+[data-md-color-scheme="slate"] {
+  --md-default-bg-color: #0f0f0f;
+  --md-default-fg-color: #e0e0e0;
+  --md-code-bg-color: rgba(255,255,255,0.08);
+}
 
 /* Make embedded API UIs fill the viewport minus the header */
 #redoc, .swagger-ui, .redoc-wrap, .api-embed {
@@ -31,4 +44,35 @@
 /* Slightly wider inner content area for prose pages too */
 .md-main__inner {
     max-width: 1400px;
+}
+
+/* ReDoc styling: align with Material theme (light + dark) */
+#redoc, .redoc-wrap {
+    background: var(--md-default-bg-color, #ffffff);
+    color: var(--md-default-fg-color, #111111);
+}
+[data-md-color-scheme="slate"] #redoc,
+[data-md-color-scheme="slate"] .redoc-wrap {
+    background: var(--md-default-bg-color, #0f0f0f);
+    color: var(--md-default-fg-color, #e0e0e0);
+}
+
+/* Prevent overlap and give breathing room under sticky header */
+#redoc { padding-top: 0.5rem; }
+
+/* Make ReDoc sidebar wider on desktop */
+@media (min-width: 960px) {
+  .redoc-wrap .menu-content {
+      flex: 0 0 320px;
+      max-width: 420px;
+  }
+}
+
+/* Ensure Markdown inside ReDoc inherits readable colors */
+.redoc-markdown, .redoc-markdown h1, .redoc-markdown h2, .redoc-markdown h3,
+.redoc-markdown p, .redoc-markdown code, .redoc-markdown pre {
+    color: var(--md-default-fg-color, #111111);
+}
+.redoc-markdown pre, .redoc-markdown code {
+    background: var(--md-code-bg-color, rgba(127, 127, 127, 0.1));
 }
