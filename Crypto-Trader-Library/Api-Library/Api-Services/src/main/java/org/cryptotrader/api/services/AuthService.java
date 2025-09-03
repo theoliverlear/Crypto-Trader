@@ -40,7 +40,9 @@ public class AuthService {
             user.setPortfolio(portfolio);
             this.productUserService.saveUser(user);
             this.portfolioService.savePortfolio(portfolio);
-            this.portfolioService.addPortfolioToTraders(portfolio);
+            // TODO: Replace with event publishing or other method of talking
+            //       between modules.
+//            this.portfolioService.addPortfolioToTraders(portfolio);
             return new PayloadStatusResponse<>(new AuthResponse(AuthStatus.AUTHORIZED.isAuthorized), HttpStatus.OK);
         }
     }
