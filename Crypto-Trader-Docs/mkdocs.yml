@@ -36,7 +36,7 @@ nav:
   - Reference:
       - Api:
           - README: reference/Api/README.md
-          - API Reference: reference/Api/api/index.md
+          - API Reference: reference/Api/api/crypto-trader-api/index.md
       - Admin:
           - README: reference/Admin/README.md
           - API Reference: reference/Admin/api/index.md
