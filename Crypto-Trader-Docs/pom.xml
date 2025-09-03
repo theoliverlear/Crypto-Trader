@@ -15,8 +15,8 @@
     <version>0.0.1</version>
 
     <properties>
-        <maven.compiler.source>23</maven.compiler.source>
-        <maven.compiler.target>23</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Docs properties can be overridden via -D on CLI (inherited docs.mainClass from parent) -->
         <docs.openapi.filename>openapi</docs.openapi.filename>
