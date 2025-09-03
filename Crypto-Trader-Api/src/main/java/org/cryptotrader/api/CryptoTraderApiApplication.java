@@ -16,7 +16,7 @@ import org.cryptotrader.component.CurrencyJsonGenerator;
 @EntityScan(basePackages = "org.cryptotrader.entity")
 @ComponentScan(basePackages = {
         "org.cryptotrader.api"
-}, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = org.cryptotrader.component.config.HttpClientConfig.class))
+}, excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "org\\.cryptotrader\\.component\\.config\\.HttpClientConfig"))
 @EnableJpaRepositories(basePackages = {
         "org.cryptotrader.repository"
 })
