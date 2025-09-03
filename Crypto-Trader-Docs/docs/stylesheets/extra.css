@@ -12,8 +12,8 @@
     margin-left:  calc(50% - 50vw);
 }
 
-/* Define a local fallback and avoid the build warning about --md-header-height */
-:root { --ct-header-height: 3.2rem; }
+/* Define CSS variables to avoid runtime errors and control header height */
+:root { --md-header-height: 3.2rem; --ct-header-height: 3.2rem; }
 
 /* Make embedded API UIs fill the viewport minus the header */
 #redoc, .swagger-ui, .redoc-wrap, .api-embed {
