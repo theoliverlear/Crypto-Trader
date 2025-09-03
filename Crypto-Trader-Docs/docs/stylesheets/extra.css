@@ -1,0 +1,13 @@
+/* Make the content area wider */
+.md-main__inner {
+    max-width: 1200px; /* default ~800px */
+}
+
+/* Optional: wider tables and code blocks */
+.md-typeset table {
+    width: 100%;
+}
+.md-typeset pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
