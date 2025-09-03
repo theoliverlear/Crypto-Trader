@@ -53,20 +53,17 @@ jobs:
           echo $! > ../api.pid
 
       - name: Wait for API to be ready
+        working-directory: Crypto-Trader-Api
         run: |
-          for i in {1..150}; do
-            if curl -fsS http://localhost:18080/actuator/health >/dev/null; then
-              echo "API is up"
-              exit 0
-            fi
-            if [ -f api.pid ] && ! ps -p $(cat api.pid) >/dev/null 2>&1; then
-              echo "API process exited early"
-              break
-            fi
+          for i in {1..90}; do
+            if curl -fsS http://localhost:18080/v3/api-docs.yaml >/dev/null; then
+              echo "API docs are up"; exit 0; fi
+            if [ -f ../api.pid ] && ! ps -p $(cat ../api.pid) >/dev/null 2>&1; then
+              echo "API process exited early"; break; fi
             sleep 2
           done
           echo "API failed to start; printing full api.log:"
-          tail -n +1 api.log || true
+          tail -n +1 ../api.log || true
           exit 1
 
       - name: Build docs module (generate OpenAPI + copy to docs)
