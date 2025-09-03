@@ -1,4 +1,4 @@
-package org.cryptotrader.api.config;
+package org.cryptotrader.api.services.config;
 
 import org.cryptotrader.api.services.PricePredictionService;
 import org.cryptotrader.entity.prediction.PricePredictionLookup;
