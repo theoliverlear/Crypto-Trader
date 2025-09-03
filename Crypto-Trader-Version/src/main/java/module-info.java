@@ -1,4 +1,4 @@
-module org.cryptotrader.version {
+open module org.cryptotrader.version {
     requires static lombok;
     requires org.jdom2;
     requires org.slf4j;
@@ -10,7 +10,6 @@ module org.cryptotrader.version {
     requires com.sigwarthsoftware.openai;
     requires com.sigwarthsoftware.changelog;
     requires org.apache.httpcomponents.httpclient;
-
 
     exports org.cryptotrader.version;
     exports org.cryptotrader.version.script;
