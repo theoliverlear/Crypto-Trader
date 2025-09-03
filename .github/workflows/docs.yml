@@ -46,7 +46,7 @@ jobs:
         working-directory: .
         run: |
           nohup mvn -B -s .github/maven-settings.xml -DskipTests \
-            -pl Crypto-Trader-Api -am \
+            -f Crypto-Trader-Api/pom.xml -am \
             -Dspring-boot.run.profiles=docs \
             -Dspring-boot.run.arguments=--server.port=18080 \
             spring-boot:run > api.log 2>&1 &
