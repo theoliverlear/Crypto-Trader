@@ -1,22 +1,15 @@
 package org.cryptotrader.api.controller;
 
 import org.cryptotrader.api.services.CurrencyService;
-import org.cryptotrader.comm.response.DisplayCurrencyListResponse;
-import org.cryptotrader.comm.response.TimeValueResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.cryptotrader.comm.request.AssetValueRequest;
 import org.cryptotrader.comm.response.AssetValueResponse;
 import org.cryptotrader.entity.currency.Currency;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/currency")
