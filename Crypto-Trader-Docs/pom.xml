@@ -23,6 +23,8 @@
         <docs.openapi.format>yaml</docs.openapi.format>
         <docs.openapi.outputDir>${project.build.directory}</docs.openapi.outputDir>
         <docs.site.specPath>${project.basedir}/docs/openapi.yaml</docs.site.specPath>
+        <!-- Default to skipping OpenAPI generation unless explicitly enabled (CI that doesn't start API) -->
+        <docs.skipOpenapi>true</docs.skipOpenapi>
     </properties>
 
     <pluginRepositories>
@@ -75,8 +77,8 @@
                             <apiDocsUrl>http://localhost:18080/v3/api-docs.yaml</apiDocsUrl>
                             <outputFileName>${docs.openapi.filename}.${docs.openapi.format}</outputFileName>
                             <outputDir>${docs.openapi.outputDir}</outputDir>
-                            <skip>false</skip>
-                            <failOnError>true</failOnError>
+                            <skip>${docs.skipOpenapi}</skip>
+                            <failOnError>false</failOnError>
                         </configuration>
                     </execution>
                 </executions>
@@ -90,6 +92,7 @@
                         <id>move-openapi-into-docs</id>
                         <phase>verify</phase>
                         <configuration>
+                            <skip>${docs.skipOpenapi}</skip>
                             <target>
                                 <mkdir dir="${project.basedir}/docs"/>
                                 <copy file="${project.build.directory}/${docs.openapi.filename}.${docs.openapi.format}"
