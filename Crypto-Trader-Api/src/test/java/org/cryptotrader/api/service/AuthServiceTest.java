@@ -1,5 +1,8 @@
 package org.cryptotrader.api.service;
 
+import org.cryptotrader.api.services.AuthService;
+import org.cryptotrader.api.services.PortfolioService;
+import org.cryptotrader.api.services.ProductUserService;
 import org.cryptotrader.comm.request.UserRequest;
 import org.cryptotrader.comm.response.AuthResponse;
 import org.cryptotrader.model.http.PayloadStatusResponse;
