@@ -26,12 +26,10 @@ import java.util.List;
 @Slf4j
 public class PortfolioService {
     //============================-Variables-=================================
-    private List<Portfolio> allUsersPortfolios;
     private PortfolioRepository portfolioRepository;
     private PortfolioAssetRepository portfolioAssetRepository;
     private PortfolioHistoryRepository portfolioHistoryRepository;
     private PortfolioAssetHistoryRepository portfolioAssetHistoryRepository;
-    private CryptoTrader cryptoTrader;
     private CurrencyService currencyService;
     //===========================-Constructors-===============================
     @Autowired
@@ -40,67 +38,15 @@ public class PortfolioService {
                             PortfolioHistoryRepository portfolioHistoryRepository,
                             PortfolioAssetHistoryRepository portfolioAssetHistoryRepository,
                             CurrencyService currencyService) {
-        this.cryptoTrader = new CryptoTrader();
         this.currencyService = currencyService;
         this.portfolioRepository = portfolioRepository;
         this.portfolioAssetRepository = portfolioAssetRepository;
         this.portfolioHistoryRepository = portfolioHistoryRepository;
         this.portfolioAssetHistoryRepository = portfolioAssetHistoryRepository;
-        this.allUsersPortfolios = new ArrayList<>();
-        this.allUsersPortfolios = this.getAllPortfolios();
-        if (this.allUsersPortfolios != null) {
-            for (Portfolio portfolio : this.allUsersPortfolios) {
-                System.out.println(portfolio);
-                this.cryptoTrader.addTrader(new Trader(portfolio));
-            }
-        }
     }
     //============================-Methods-===================================
 
-    //--------------------------Trade-Portfolios------------------------------
-    @Scheduled(fixedRate = 2000)
-    public synchronized void tradePortfolios() {
-        this.cryptoTrader.getTraders().clear();
-        this.allUsersPortfolios = this.getAllPortfolios();
-        this.cryptoTrader.addAllPortfolios(this.allUsersPortfolios);
-        if (!this.cryptoTrader.isEmpty()) {
-            this.triggerAllTraders();
-            log.info("Traders found. Trades are being be made.");
-        } else {
-            log.info("No traders found. No trades will be made.");
-        }
-    }
-    public void triggerAllTraders() {
-        for (Trader trader : this.cryptoTrader.getTraders()) {
-            Portfolio previousPortfolio = Portfolio.from(trader.getPortfolio());
-            System.out.println(previousPortfolio);
-            // TODO: Reimplement using TradingEngine interface.
-//            for (AssetTrader assetTrader : trader.getAssetTraders()) {
-//                PortfolioAsset previousAsset = PortfolioAsset.from(assetTrader.getAsset());
-//                boolean tradeOccurred = assetTrader.trade();
-//                assetTrader.getAsset().updateValues();
-//                trader.getPortfolio().updateValues();
-//                if (!previousAsset.equals(assetTrader.getAsset())) {
-//                    PortfolioAssetHistory portfolioAssetHistory = new PortfolioAssetHistory(assetTrader.getAsset(), tradeOccurred);
-//                    PortfolioAssetHistory previousPortfolioAssetHistory = this.getLatestPortfolioAssetHistory(assetTrader.getAsset());
-//                    this.setPortfolioValueChange(previousPortfolioAssetHistory, portfolioAssetHistory);
-//                    assetTrader.getAsset().addPortfolioAssetHistory(portfolioAssetHistory);
-//                    PortfolioHistory previousPortfolioHistory = this.getLatestPortfolioHistory(trader.getPortfolio());
-//                    PortfolioHistory portfolioHistory = new PortfolioHistory(trader.getPortfolio(), tradeOccurred);
-//                    if (previousPortfolioHistory != null) {
-//                        portfolioHistory.calculateValueChange(previousPortfolioHistory);
-//                    } else {
-//                        portfolioHistory.setValueChange(0);
-//                    }
-//                    trader.getPortfolio().addPortfolioHistory(portfolioHistory);
-//                    this.savePortfolioAsset(assetTrader.getAsset());
-//                    this.savePortfolio(trader.getPortfolio());
-//                    this.savePortfolioAssetHistory(portfolioAssetHistory);
-//                    this.savePortfolioHistory(portfolioHistory);
-//                }
-//            }
-        }
-    }
+
     private void setPortfolioValueChange(PortfolioAssetHistory previousPortfolioAssetHistory, PortfolioAssetHistory portfolioAssetHistory) {
         if (previousPortfolioAssetHistory != null) {
             portfolioAssetHistory.calculateValueChange(previousPortfolioAssetHistory);
@@ -126,10 +72,7 @@ public class PortfolioService {
     public void savePortfolioHistory(PortfolioHistory portfolioHistory) {
         this.portfolioHistoryRepository.save(portfolioHistory);
     }
-    //----------------------Add-Portfolio-To-Traders--------------------------
-    public void addPortfolioToTraders(Portfolio portfolio) {
-        this.cryptoTrader.addTrader(new Trader(portfolio));
-    }
+
     //---------------------------Save-Portfolio-------------------------------
     public void savePortfolio(Portfolio portfolio) {
         this.portfolioRepository.save(portfolio);
