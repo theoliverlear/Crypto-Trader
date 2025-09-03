@@ -6,7 +6,7 @@
     <name>Crypto-Trader-Api</name>
     <description>Spring Boot REST API for the Crypto Trader platform.</description>
     <artifactId>crypto-trader-api</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
