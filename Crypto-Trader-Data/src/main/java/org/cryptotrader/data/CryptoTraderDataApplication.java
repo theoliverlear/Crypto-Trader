@@ -23,6 +23,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 })
 public class CryptoTraderDataApplication {
     public static void main(String[] args) {
+        System.setProperty("cryptotrader.loadCurrencies", "true");
         CurrencyJsonGenerator.standalone().generateAndSave();
         SpringApplication.run(CryptoTraderDataApplication.class, args);
     }
