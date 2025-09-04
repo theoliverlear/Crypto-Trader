@@ -23,6 +23,15 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class CryptoTraderEngineApplication {
     public static void main(String[] args) {
         // TODO: Require health check of Crypto-Trader-Data before launch.
+
+        boolean tradingEnabled = Boolean.parseBoolean(
+                System.getProperty("cryptotrader.engine.trading.enabled",
+                        System.getenv().getOrDefault("CRYPTO_TRADER_ENGINE_TRADING_ENABLED", "true"))
+        );
+
+        if (!tradingEnabled) {
+            System.setProperty("spring.task.scheduling.enabled", "false");
+        }
         SpringApplication.run(CryptoTraderEngineApplication.class, args);
     }
 }
