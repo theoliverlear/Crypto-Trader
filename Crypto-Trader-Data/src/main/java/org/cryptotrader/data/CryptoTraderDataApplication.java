@@ -23,13 +23,17 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 })
 public class CryptoTraderDataApplication {
     public static void main(String[] args) {
-        boolean loadCurrencies = Boolean.parseBoolean(
-                System.getProperty("cryptotrader.loadCurrencies",
-                        System.getenv().getOrDefault("CRYPTO_TRADER_LOAD_CURRENCIES", "true"))
-        );
+        boolean loadCurrencies = shouldLoadCurrencies();
         if (loadCurrencies) {
             CurrencyJsonGenerator.standalone().generateAndSave();
         }
         SpringApplication.run(CryptoTraderDataApplication.class, args);
+    }
+
+    private static boolean shouldLoadCurrencies() {
+        String loadCurrenciesEnv = System.getenv().getOrDefault("CRYPTO_TRADER_LOAD_CURRENCIES", "true");
+        String loadCurrenciesSetting = System.getProperty("cryptotrader.loadCurrencies", loadCurrenciesEnv);
+        boolean loadCurrencies = Boolean.parseBoolean(loadCurrenciesSetting);
+        return loadCurrencies;
     }
 }
