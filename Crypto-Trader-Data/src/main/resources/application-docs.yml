@@ -1,0 +1,36 @@
+server:
+  port: 18080
+spring:
+  main:
+    web-application-type: servlet
+    lazy-initialization: true
+  task:
+    scheduling:
+      enabled: false
+  datasource:
+    url: jdbc:h2:mem:docs;DB_CLOSE_DELAY=-1
+    username: sa
+    password: 
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  flyway:
+    enabled: false
+  liquibase:
+    enabled: false
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
+      - org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      enabled: true
+      probes:
+        enabled: true
