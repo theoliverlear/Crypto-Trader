@@ -1,57 +1,82 @@
-# Crypto Trader — API Module
-## The engine behind live prices, smart trading, and market intelligence
+﻿# Crypto Trader — API Module
+## Core backend for identity, portfolios, and platform orchestration
 
 ---
 
-Crypto‑Trader‑Api keeps your Crypto Trader experience fast, fresh, and reliable. It gathers real‑time prices, coordinates automated trading, tracks your portfolio, and brings in predictions and news sentiment so you can act with confidence.
+Crypto‑Trader‑Api is the core web backend that signs users in, manages accounts
+and portfolios, serves profile media, exposes WebSocket endpoints, and glues 
+the platform together. It provides the stable, session‑aware API that the UI 
+and internal tools rely on — while heavy data and trading workloads run in the
+Data and Engine modules.
 
-Important: Past results and backtests do not guarantee future performance. Always start in paper mode. Liability is your own.
+Important: Past results and backtests do not guarantee future performance. 
+Always start in paper mode. Liability is your own.
+
+Note on scope changes: Market harvesting, news/sentiment ingestion, and 
+prediction exchange now live in `Crypto‑Trader‑Data`. The live trading loop
+runs in `Crypto‑Trader‑Engine`. This module focuses on the application API 
+(identity, accounts, portfolios, and orchestration).
 
 ## ⭐️ What it does
-- Live prices and market snapshots
-  - Keeps prices up to date around the clock and takes periodic “snapshots” of the market for analysis and charts.
-- Automated trading coordinator
-  - Runs the trading loop for each portfolio, following the strategy you choose and the guardrails you set.
-- Portfolio tracking and insights
-  - Records history so you can see value changes, P&L, and trends over time.
-- Price predictions (ML) integration
-  - Connects to the Analysis service to fetch model predictions and to record training runs.
-- News and sentiment signals
-  - Accepts harvested news/sentiment so strategies can react to more than just price.
-- Account media
-  - Securely stores and serves profile pictures for signed‑in users.
+- Identity and sessions (`/api/authorize/...`)
+  - `POST /api/authorize/signup`, `POST /api/authorize/login`, 
+    `GET /api/authorize/isloggedin`, `GET /api/authorize/logout` using 
+    session‑based auth.
+- Accounts and profile media (`/api/account/...`)
+  - Upload and serve user profile pictures; check if a user has a profile
+    image (`/image/upload`, `/get/{id}/profile-picture`, 
+    `/get/{id}/has-profile-picture`).
+- Portfolio management and insights (`/api/portfolio/...`)
+  - Portfolio presence, history, and profit endpoints (e.g., `/history/get`, 
+    `/history/profit`, `/empty`).
+- Currency utilities (`/api/currency/value`)
+  - Calculate asset value for a currency and share count. Disabled in docs 
+    profile via `@Profile("!docs")`.
+- Real‑time gateway (WebSocket)
+  - Trader WebSocket endpoint at `/websocket/trader` for live UI updates.
+- OpenAPI + Actuator
+  - Live API docs (Springdoc) and health/metrics endpoints for observability.
+- Platform glue
+  - Uses shared API models, services, repositories, and components to 
+    coordinate with Data/Engine without duplicating responsibilities.
 
 ## ✅ Why it matters
-- Always‑on updates: the platform watches markets 24/7 so you don’t have to.
-- Consistent execution: trading routines run on schedule, even during volatile moments.
-- Clear picture: your portfolio value and history stay current and visible.
-- Smarter signals: predictions and sentiment help filter noise.
-- Built to scale: designed to handle many currencies and portfolios.
-
-## 🚀 How it works at a glance
-1. Collects the latest prices and saves clean market snapshots.
-2. Orchestrates portfolio trading based on your chosen strategies and limits.
-3. Records portfolio history to surface profit, drawdown, and value changes.
-4. Talks to the Analysis module to train models and fetch price predictions.
-5. Receives news/sentiment data from a harvester service to enrich signals.
+- One trusted backend for users, sessions, portfolios, and UI actions.
+- Clear separation of concerns: Api handles application flows; Data handles 
+  heavy data; Engine executes trades.
+- Stable contracts and session semantics for a consistent product experience.
 
 ## 🔗 Where it fits in the platform
-- Powers the Crypto Trader web app with fresh data and actions.
-- Works with the Analysis module for machine learning.
-- Stores structured data in PostgreSQL.
-- Runs background jobs to keep everything current.
+- Front‑end and tools call Api for authentication, accounts, portfolios, and
+  real‑time updates.
+- Reads/writes structured entities in PostgreSQL via JPA.
+- Collaborates with:
+  - Data — for market snapshots, histories, predictions, and sentiment
+    (internal calls/DTOs).
+  - Engine — for executing strategies under guardrails.
 
 ## 🔒 Safety, privacy, and control
-- Start in paper mode and set limits for position size, loss, and exposure.
-- Account media and user actions are session‑protected.
-- Keys and sensitive settings are secured in the wider platform.
+- Session‑protected endpoints safeguard user actions and media.
+- Follow least‑privilege principles; never log secrets.
+- Read and respect the LICENSE; you are responsible for outcomes.
 
 ## 🛠️ Technology at a glance
-- Java + Spring Boot, PostgreSQL, and background scheduling.
-- Built for reliability and maintainability.
+- Language & runtime: Java 23
+- Frameworks: Spring Boot (Web, Security, Data JPA, JDBC, WebSocket,
+  Web Services), Actuator, Springdoc OpenAPI, Thymeleaf
+- Persistence: PostgreSQL (primary), H2 (runtime/dev)
+- Logging & tooling: Logback, JUnit Jupiter, Maven, Dokka/Javadoc
+- Shared libraries: `api‑library` (models, components, repositories, services,
+  communication)
+
+## 📝 Conventions
+- Evolve HTTP contracts additively; keep DTOs backward‑compatible when 
+  possible.
+- Keep endpoints session‑aware when operating on user resources.
+- Use backticks for inline code and endpoint examples in docs.
 
 ## ❓ Questions or help
-Email Oliver Lear Sigwarth (@theoliverlear): sigwarthsoftware@gmail.com
+Email Oliver Lear Sigwarth (@theoliverlear): `sigwarthsoftware@gmail.com`
 
 ## 📄 License
-See LICENSE.md in the repository root.
+See `LICENSE.md` in the repository root.
