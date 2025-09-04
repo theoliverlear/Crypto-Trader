@@ -8,6 +8,17 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+
+/**
+ * Main entry point for the CryptoTrader Engine application. This class
+ * initializes and configures the Spring Boot application with support for
+ * asynchronous processing, scheduling, JPA repositories, and entity scanning.
+ * Additionally, it provides mechanisms to enable or disable trading based on
+ * external configuration through environment variables or system properties.
+ *
+ * @author theoliverlear - Oliver Lear Sigwarth
+ * @see org.springframework.boot.autoconfigure.SpringBootApplication
+ */
 @SpringBootApplication
 @EnableAsync
 @EnableScheduling
@@ -23,15 +34,21 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class CryptoTraderEngineApplication {
     public static void main(String[] args) {
         // TODO: Require health check of Crypto-Trader-Data before launch.
-
-        boolean tradingEnabled = Boolean.parseBoolean(
-                System.getProperty("cryptotrader.engine.trading.enabled",
-                        System.getenv().getOrDefault("CRYPTO_TRADER_ENGINE_TRADING_ENABLED", "true"))
-        );
-
+        boolean tradingEnabled = isTradingEnabled();
         if (!tradingEnabled) {
-            System.setProperty("spring.task.scheduling.enabled", "false");
+            disableTrading();
         }
         SpringApplication.run(CryptoTraderEngineApplication.class, args);
+    }
+
+    private static void disableTrading() {
+        System.setProperty("spring.task.scheduling.enabled", "false");
+    }
+
+    private static boolean isTradingEnabled() {
+        String tradingEnabledEnv = System.getenv().getOrDefault("CRYPTO_TRADER_ENGINE_TRADING_ENABLED", "true");
+        String tradingEnabledProperty = System.getProperty("cryptotrader.engine.trading.enabled", tradingEnabledEnv);
+        boolean tradingEnabled = Boolean.parseBoolean(tradingEnabledProperty);
+        return tradingEnabled;
     }
 }
