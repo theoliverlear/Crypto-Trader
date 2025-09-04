@@ -24,7 +24,11 @@ import org.cryptotrader.component.CurrencyJsonGenerator;
 })
 public class CryptoTraderApiApplication {
     public static void main(String[] args) {
-        System.setProperty("cryptotrader.loadCurrencies", "false");
+        blockCurrencyLoading();
         SpringApplication.run(CryptoTraderApiApplication.class, args);
+    }
+
+    private static void blockCurrencyLoading() {
+        System.setProperty("cryptotrader.loadCurrencies", "false");
     }
 }
