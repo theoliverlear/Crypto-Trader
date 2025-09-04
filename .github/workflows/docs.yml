@@ -28,7 +28,13 @@ jobs:
           cache: 'maven'
 
       - name: Build all modules (install to local repo)
-        run: mvn -B -s .github/maven-settings.xml -DskipTests -U clean install
+        run: mvn -B -s .github/maven-settings.xml -DskipTests org.jetbrains.dokka:dokka-maven-plugin:1.9.20:dokka
+
+      - name: Build docs module (generate OpenAPI + copy to docs)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+        run: mvn -B -s .github/maven-settings.xml -DskipTests -Ddocs.skipOpenapi=false -f Crypto-Trader-Docs/pom.xml -N verify
 
       - name: Start API (docs profile) in background
         env:
