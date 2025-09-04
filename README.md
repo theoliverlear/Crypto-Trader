@@ -65,18 +65,21 @@ Crypto Trader is built on a durable, modern, and proven stack:
   and scale.
 
 ## 📚 Documentation
-Your fastest path from idea to live trading is in our docs. Explore step-by-step guides, live API references, and full module documentation.
+Your fastest path from idea to live trading is in our docs. Explore
+step-by-step guides, live API references, and full module documentation.
 
-- Start here: Guides — onboarding, connecting an exchange, paper trading, and going live.
-  - https://theoliverlear.github.io/Crypto-Trader/
-  - Guides index: https://theoliverlear.github.io/Crypto-Trader/guides/
+- Start here: Guides — onboarding, connecting an exchange, paper trading, and
+  going live.
+    - [Crypto Trader Home](https://theoliverlear.github.io/Crypto-Trader/)
+    - [Guides index](https://theoliverlear.github.io/Crypto-Trader/guides/)
 - APIs you can build on:
-  - CT API (application API): https://theoliverlear.github.io/Crypto-Trader/api/
-  - Data API (market and data services): https://theoliverlear.github.io/Crypto-Trader/data/
-  - Engine API (strategy execution): https://theoliverlear.github.io/Crypto-Trader/engine/
+    - [CT API (application API)](https://theoliverlear.github.io/Crypto-Trader/api/)
+    - [Data API (market and data services)](https://theoliverlear.github.io/Crypto-Trader/data/)
+    - [Engine API (strategy execution)](https://theoliverlear.github.io/Crypto-Trader/engine/)
 - Deep dives and references (per module):
-  - Api • Admin • Assets • Data • Engine • Library • Logging • Testing • Version
-  - Reference hub: https://theoliverlear.github.io/Crypto-Trader/reference/
+    - Api • Admin • Assets • Data • Engine • Library • Logging • Testing •
+      Version
+    - [Reference hub](https://theoliverlear.github.io/Crypto-Trader/reference/)
 
 Quick start (docs):
 1. Read the Getting Started guide and run in paper mode.
