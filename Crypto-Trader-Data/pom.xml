@@ -29,6 +29,11 @@
             <artifactId>api-library</artifactId>
             <version>0.0.4</version>
         </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>api-services</artifactId>
+            <version>0.0.2</version>
+        </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -131,6 +136,12 @@
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-logging</artifactId>
             <version>0.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.2.224</version>
+            <scope>runtime</scope>
         </dependency>
 
     </dependencies>
