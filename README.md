@@ -64,6 +64,28 @@ Crypto Trader is built on a durable, modern, and proven stack:
 - Plus a range of supporting libraries and services designed for reliability
   and scale.
 
+## 📚 Documentation
+Your fastest path from idea to live trading is in our docs. Explore step-by-step guides, live API references, and full module documentation.
+
+- Start here: Guides — onboarding, connecting an exchange, paper trading, and going live.
+  - https://theoliverlear.github.io/Crypto-Trader/
+  - Guides index: https://theoliverlear.github.io/Crypto-Trader/guides/
+- APIs you can build on:
+  - CT API (application API): https://theoliverlear.github.io/Crypto-Trader/api/
+  - Data API (market and data services): https://theoliverlear.github.io/Crypto-Trader/data/
+  - Engine API (strategy execution): https://theoliverlear.github.io/Crypto-Trader/engine/
+- Deep dives and references (per module):
+  - Api • Admin • Assets • Data • Engine • Library • Logging • Testing • Version
+  - Reference hub: https://theoliverlear.github.io/Crypto-Trader/reference/
+
+Quick start (docs):
+1. Read the Getting Started guide and run in paper mode.
+2. Connect an exchange with read-only or small limits.
+3. Pick a plan (Free/Pro/Elite), set guardrails, and monitor results.
+
+Tip: Always begin in paper mode and set strict limits before funding. See 
+“Safety, privacy, and control” above.
+
 ## ❓ Questions or help
 Email Oliver Lear Sigwarth (@theoliverlear): [sigwarthsoftware@gmail.com](mailto:sigwarthsoftware@gmail.com)
 
