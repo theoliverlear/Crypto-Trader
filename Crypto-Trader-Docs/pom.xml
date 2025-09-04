@@ -304,9 +304,13 @@
                         <configuration>
                             <skip>${docs.skipOpenapi}</skip>
                             <target>
-                                <mkdir dir="${project.basedir}/docs"/>
-                                <copy file="${project.build.directory}/${docs.openapi.filename}.${docs.openapi.format}"
-                                      tofile="${docs.site.specPath}" overwrite="true"/>
+                                <mkdir dir="${project.basedir}/docs/api"/>
+                                <copy file="${project.build.directory}/${docs.openapi.api.file}.${docs.openapi.format}"
+                                      tofile="${project.basedir}/docs/api/${docs.openapi.api.file}.${docs.openapi.format}" overwrite="true"/>
+                                <copy file="${project.build.directory}/${docs.openapi.data.file}.${docs.openapi.format}"
+                                      tofile="${project.basedir}/docs/api/${docs.openapi.data.file}.${docs.openapi.format}" overwrite="true"/>
+                                <copy file="${project.build.directory}/${docs.openapi.engine.file}.${docs.openapi.format}"
+                                      tofile="${project.basedir}/docs/api/${docs.openapi.engine.file}.${docs.openapi.format}" overwrite="true"/>
                             </target>
                         </configuration>
                         <goals>
@@ -316,7 +320,6 @@
                 </executions>
             </plugin>
 
-            <!-- Clean staged outputs and generated artifacts in docs -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
@@ -334,7 +337,7 @@
                         <fileset>
                             <directory>${project.basedir}/docs</directory>
                             <includes>
-                                <include>openapi.yaml</include>
+                                <include>api/openapi-*.yaml</include>
                             </includes>
                         </fileset>
                     </filesets>
