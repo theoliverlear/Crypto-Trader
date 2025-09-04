@@ -20,16 +20,12 @@ import java.io.IOException;
 import java.util.Optional;
 
 /**
- * The AccountController class provides RESTful endpoints for managing user
- * accounts, including functionality for uploading and retrieving profile
- * pictures, and checking if a user has a profile picture.
+ * REST endpoints for account management.
  *
- * @see org.cryptotrader.api.services.ProfilePictureService
- * @see org.cryptotrader.api.services.ProductUserService
- * @see org.cryptotrader.api.services.SessionService
- * @see org.cryptotrader.entity.user.ProfilePicture
- * @see org.cryptotrader.entity.user.ProductUser
- * @author theoliverlear - Oliver Lear Sigwarth
+ * @see ProfilePictureService
+ * @see ProductUserService
+ * @see SessionService
+ * @author Oliver Lear Sigwarth
  */
 @RestController
 @RequestMapping("/api/account")
@@ -38,6 +34,14 @@ public class AccountController {
     private SessionService sessionService;
     private ProfilePictureService profilePictureService;
     private ProductUserService productUserService;
+    /**
+     * REST endpoints for account management.
+     *
+     * @see ProfilePictureService
+     * @see ProductUserService
+     * @see SessionService
+     * @author Oliver Lear Sigwarth (theoliverlear)
+     */
     //===========================-Constructors-===============================
     @Autowired
     public AccountController(SessionService sessionService,
@@ -49,6 +53,24 @@ public class AccountController {
     }
     //=============================-Methods-==================================
 
+    /**
+     * Handles uploading profile pictures for authenticated users.
+     *
+     * @param file image file uploaded by the user; must be a valid
+     *             {@link MultipartFile}
+     * @param session current HTTP session for user authentication and
+     *                session validation
+     * @return {@link ResponseEntity} with {@link OperationSuccessfulResponse};
+     *         HTTP status {@code 200 OK} if upload succeeds,
+     *         {@code 401 UNAUTHORIZED} if the session is invalid or unauthenticated,
+     *         or {@code 500 INTERNAL_SERVER_ERROR} on I/O issues
+     * @see ProductUser
+     * @see ProfilePicture
+     * @see SessionService#userInSession(HttpSession)
+     * @see ProfilePictureService#saveProfilePicture(ProfilePicture)
+     * @see ProductUserService#saveUser(ProductUser)
+     * @author Oliver Lear Sigwarth (theoliverlear)
+     */
     //----------------------------Upload-Image--------------------------------
     @PostMapping("/image/upload")
     public ResponseEntity<OperationSuccessfulResponse> uploadProfilePicture(@RequestParam("file") MultipartFile file,
@@ -79,9 +101,31 @@ public class AccountController {
             return new ResponseEntity<>(new OperationSuccessfulResponse(false), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    
+    /**
+     * Verifies if a user has a profile picture based on their ID.
+     *
+     * @param id user ID as a string path variable
+     * @return {@link ResponseEntity} containing a {@link HasProfilePictureResponse}
+     *         with the {@code hasProfilePicture} flag set to {@code true} if the
+     *         user has a profile picture, or {@code false} otherwise
+     * @throws NumberFormatException if the provided {@code id} is not a valid
+     *         numeric value
+     * @see HasProfilePictureResponse
+     * @see ResponseEntity
+     * @see ProfilePictureService#existsByUserId(Long)
+     * @author Oliver Lear Sigwarth (theoliverlear)
+     */
     @GetMapping("/get/{id}/has-profile-picture")
     public ResponseEntity<HasProfilePictureResponse> hasProfilePicture(@PathVariable String id) {
-        boolean hasProfilePicture = this.profilePictureService.existsByUserId(Long.parseLong(id));
+        long userId;
+        try {
+            userId = Long.parseLong(id);
+        } catch (NumberFormatException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        boolean hasProfilePicture = this.profilePictureService.existsByUserId(userId);
         return ResponseEntity.ok(new HasProfilePictureResponse(hasProfilePicture));
     }
     
@@ -100,8 +144,6 @@ public class AccountController {
      *
      * @see org.cryptotrader.entity.user.ProfilePicture
      * @see org.springframework.http.ResponseEntity
-     *
-     * @author theoliverlear - Oliver Lear Sigwarth
      */
     @Transactional
     @GetMapping("/get/{id}/profile-picture")
@@ -118,4 +160,3 @@ public class AccountController {
         }
     }
 }
-
