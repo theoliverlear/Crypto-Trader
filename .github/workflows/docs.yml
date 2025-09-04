@@ -28,7 +28,7 @@ jobs:
           cache: 'maven'
 
       - name: Build all modules (install to local repo)
-        run: mvn -B -s .github/maven-settings.xml -DskipTests org.jetbrains.dokka:dokka-maven-plugin:1.9.20:dokka
+        run: mvn -B -s .github/maven-settings.xml -DskipTests -U clean install
 
       - name: Generate Dokka for all modules
         run: mvn -B -s .github/maven-settings.xml -DskipTests org.jetbrains.dokka:dokka-maven-plugin:1.9.20:dokka
