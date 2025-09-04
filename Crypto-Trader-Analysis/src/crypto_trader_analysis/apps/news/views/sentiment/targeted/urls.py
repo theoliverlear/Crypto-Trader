@@ -1,6 +1,6 @@
 from django.urls import path
 
-from apps.news.views.sentiment.targeted.date_targeted_sentiment_harvest_view import \
+from src.crypto_trader_analysis.apps.news.views.sentiment.targeted.date_targeted_sentiment_harvest_view import \
     DateTargetedSentimentHarvestView
 
 urlpatterns = [
