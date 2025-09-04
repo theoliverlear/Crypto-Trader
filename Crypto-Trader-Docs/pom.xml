@@ -246,7 +246,7 @@
                             <target>
                                 <delete failonerror="false">
                                     <fileset dir="${project.basedir}/docs/reference">
-                                        <include>**/api/index.md</include>
+                                        <include name="**/api/index.md"/>
                                     </fileset>
                                 </delete>
                             </target>
