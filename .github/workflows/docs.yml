@@ -79,7 +79,7 @@ jobs:
           nohup mvn -B -s .github/maven-settings.xml -DskipTests \
             -f Crypto-Trader-Data/pom.xml -am \
             -Dspring-boot.run.profiles=docs \
-            -Dspring-boot.run.arguments=--server.port=18081 \
+            -Dspring-boot.run.arguments="--server.port=18081 --cryptotrader.loadCurrencies=false" \
             spring-boot:run > data.log 2>&1 &
           echo $! > data.pid
 
@@ -88,7 +88,7 @@ jobs:
           nohup mvn -B -s .github/maven-settings.xml -DskipTests \
             -f Crypto-Trader-Engine/pom.xml -am \
             -Dspring-boot.run.profiles=docs \
-            -Dspring-boot.run.arguments=--server.port=18082 \
+            -Dspring-boot.run.arguments="--server.port=18082 --cryptotrader.engine.trading.enabled=false" \
             spring-boot:run > engine.log 2>&1 &
           echo $! > engine.pid
 
