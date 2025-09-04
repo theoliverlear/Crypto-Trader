@@ -35,31 +35,30 @@ nav:
   - Data API: data/index.md
   - Engine API: engine/index.md
   - References:
-    - Reference:
-      - Api:
-        - README: reference/Api/README.md
-        - Complete Docs: reference/Api/api/index.html
-      - Admin:
-        - README: reference/Admin/README.md
-        - Complete Docs: reference/Admin/api/index.html
-      - Assets:
-        - README: reference/Assets/README.md
-        - Complete Docs: reference/Assets/api/index.html
-      - Data:
-        - README: reference/Data/README.md
-        - Complete Docs: reference/Data/api/index.html
-      - Engine:
-        - README: reference/Engine/README.md
-        - Complete Docs: reference/Engine/api/index.html
-      - Library:
-        - README: reference/Library/README.md
-        - Complete Docs: reference/Library/api/index.html
-      - Logging:
-        - README: reference/Logging/README.md
-        - Complete Docs: reference/Logging/api/index.html
-      - Testing:
-        - README: reference/Testing/README.md
-        - Complete Docs: reference/Testing/api/index.html
-      - Version:
-        - README: reference/Version/README.md
-        - Complete Docs: reference/Version/api/index.html
+    - Api:
+      - README: reference/Api/README.md
+      - Complete Docs: reference/Api/api/index.html
+    - Admin:
+      - README: reference/Admin/README.md
+      - Complete Docs: reference/Admin/api/index.html
+    - Assets:
+      - README: reference/Assets/README.md
+      - Complete Docs: reference/Assets/api/index.html
+    - Data:
+      - README: reference/Data/README.md
+      - Complete Docs: reference/Data/api/index.html
+    - Engine:
+      - README: reference/Engine/README.md
+      - Complete Docs: reference/Engine/api/index.html
+    - Library:
+      - README: reference/Library/README.md
+      - Complete Docs: reference/Library/api/index.html
+    - Logging:
+      - README: reference/Logging/README.md
+      - Complete Docs: reference/Logging/api/index.html
+    - Testing:
+      - README: reference/Testing/README.md
+      - Complete Docs: reference/Testing/api/index.html
+    - Version:
+      - README: reference/Version/README.md
+      - Complete Docs: reference/Version/api/index.html
