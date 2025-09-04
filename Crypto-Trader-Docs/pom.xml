@@ -3,6 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
@@ -18,12 +19,13 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- Docs properties can be overridden via -D on CLI (inherited docs.mainClass from parent) -->
+
+        <!-- Docs properties can be overridden via -D on CLI -->
         <docs.openapi.filename>openapi</docs.openapi.filename>
         <docs.openapi.format>yaml</docs.openapi.format>
         <docs.openapi.outputDir>${project.build.directory}</docs.openapi.outputDir>
         <docs.site.specPath>${project.basedir}/docs/api/openapi.yaml</docs.site.specPath>
-        <!-- Default to skipping OpenAPI generation unless explicitly enabled (CI that doesn't start API) -->
+        <!-- Default to skipping OpenAPI generation unless explicitly enabled -->
         <docs.skipOpenapi>true</docs.skipOpenapi>
     </properties>
 
@@ -47,7 +49,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
-        <!-- For @Conditional annotations, Environment, etc. pulled via spring-context transitively from autoconfigure; keep explicit if JPMS needs it -->
+        <!-- For @Conditional annotations, Environment, etc. -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
@@ -62,6 +64,7 @@
 
     <build>
         <plugins>
+            <!-- Generate OpenAPI from a running API instance -->
             <plugin>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-maven-plugin</artifactId>
@@ -84,7 +87,7 @@
                 </executions>
             </plugin>
 
-
+            <!-- Stage per-module READMEs and Dokka outputs, then copy into docs/reference and remove placeholder index.md files -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -231,9 +234,28 @@
                             </target>
                         </configuration>
                     </execution>
+
+                    <!-- Remove placeholder index.md so MkDocs serves Dokka index.html directly -->
+                    <execution>
+                        <id>remove-iframe-index-md</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <delete failonerror="false">
+                                    <fileset dir="${project.basedir}/docs/reference">
+                                        <include>**/api/index.md</include>
+                                    </fileset>
+                                </delete>
+                            </target>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
+            <!-- Copy generated OpenAPI into docs/api/openapi.yaml -->
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>3.1.0</version>
@@ -256,6 +278,7 @@
                 </executions>
             </plugin>
 
+            <!-- Clean staged outputs and generated artifacts in docs -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
@@ -280,7 +303,9 @@
                 </configuration>
             </plugin>
 
+            <!-- Package docs as a distributable zip -->
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.7.1</version>
                 <executions>
