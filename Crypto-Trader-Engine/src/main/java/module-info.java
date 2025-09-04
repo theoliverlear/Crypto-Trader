@@ -8,6 +8,9 @@ open module org.cryptotrader.engine {
     requires org.cryptotrader.api.services;
     requires spring.beans;
     requires org.cryptotrader.api.models;
+    requires spring.security.config;
+    requires spring.security.crypto;
+    requires spring.security.web;
 
     exports org.cryptotrader.engine;
     exports org.cryptotrader.engine.services;

@@ -16,7 +16,10 @@ open module org.cryptotrader.data {
     requires spring.core;
     requires spring.aop;
     requires spring.tx;
-    
+    requires spring.security.config;
+    requires spring.security.crypto;
+    requires spring.security.web;
+
     exports org.cryptotrader.data;
     exports org.cryptotrader.data.adapter;
     exports org.cryptotrader.data.config;
