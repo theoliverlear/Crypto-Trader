@@ -31,8 +31,9 @@ nav:
   - Home: index.md
   - Guides:
       - Guides: guides/index.md
-  - API:
-      - OpenAPI: api/index.md
+  - CT API: api/index.md
+  - Data API: data/index.md
+  - Engine API: engine/index.md
   - References:
     - Reference:
       - Api:
