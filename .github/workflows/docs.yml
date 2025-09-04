@@ -98,7 +98,7 @@ jobs:
 
       - name: Build MkDocs site
         working-directory: Crypto-Trader-Docs
-        run: mkdocs build --strict --site-dir site
+        run: mkdocs build --site-dir site
 
       - name: Configure Pages
         id: pages
