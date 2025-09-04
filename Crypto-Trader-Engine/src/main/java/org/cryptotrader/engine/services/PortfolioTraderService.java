@@ -6,6 +6,7 @@ import org.cryptotrader.entity.portfolio.Portfolio;
 import org.cryptotrader.model.trade.CryptoTrader;
 import org.cryptotrader.model.trade.Trader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@ConditionalOnProperty(name = "cryptotrader.engine.trading.enabled", havingValue = "true", matchIfMissing = true)
 @Slf4j
 public class PortfolioTraderService {
     private PortfolioService portfolioService;
