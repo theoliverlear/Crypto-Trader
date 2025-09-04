@@ -34,30 +34,32 @@ nav:
   - API:
       - OpenAPI: api/index.md
   - Reference:
+    - OpenAPI: api/index.md
+    - Reference:
       - Api:
-          - README: reference/Api/README.md
-          - API Reference: reference/Api/api/index.md
+        - README: reference/Api/README.md
+        - Complete Docs: reference/Api/api/index.html
       - Admin:
-          - README: reference/Admin/README.md
-          - API Reference: reference/Admin/api/index.md
+        - README: reference/Admin/README.md
+        - Complete Docs: reference/Admin/api/index.html
       - Assets:
-          - README: reference/Assets/README.md
-          - API Reference: reference/Assets/api/index.md
+        - README: reference/Assets/README.md
+        - Complete Docs: reference/Assets/api/index.html
       - Data:
-          - README: reference/Data/README.md
-          - API Reference: reference/Data/api/index.md
+        - README: reference/Data/README.md
+        - Complete Docs: reference/Data/api/index.html
       - Engine:
-          - README: reference/Engine/README.md
-          - API Reference: reference/Engine/api/index.md
+        - README: reference/Engine/README.md
+        - Complete Docs: reference/Engine/api/index.html
       - Library:
-          - README: reference/Library/README.md
-          - API Reference: reference/Library/api/index.md
+        - README: reference/Library/README.md
+        - Complete Docs: reference/Library/api/index.html
       - Logging:
-          - README: reference/Logging/README.md
-          - API Reference: reference/Logging/api/index.md
+        - README: reference/Logging/README.md
+        - Complete Docs: reference/Logging/api/index.html
       - Testing:
-          - README: reference/Testing/README.md
-          - API Reference: reference/Testing/api/index.md
+        - README: reference/Testing/README.md
+        - Complete Docs: reference/Testing/api/index.html
       - Version:
-          - README: reference/Version/README.md
-          - API Reference: reference/Version/api/index.md
+        - README: reference/Version/README.md
+        - Complete Docs: reference/Version/api/index.html
