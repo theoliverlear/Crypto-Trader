@@ -89,6 +89,23 @@ Quick start (docs):
 Tip: Always begin in paper mode and set strict limits before funding. See 
 “Safety, privacy, and control” above.
 
+## 🧩 Modules at a glance
+| Module                              | Purpose                                                                                           |
+|-------------------------------------|---------------------------------------------------------------------------------------------------|
+| [Api](Crypto-Trader-Api/)           | Core backend for identity, portfolios, and platform orchestration.                                |
+| [Admin](Crypto-Trader-Admin/)       | Desktop portal for secure operations: monitoring, logs, user controls, and kill‑switches.         |
+| [Assets](Crypto-Trader-Assets/)     | Inward‑facing, curated assets and loaders powering a consistent UI.                               |
+| [Data](Crypto-Trader-Data/)         | Data backbone harvesting prices, ingesting sentiment, and serving a high‑throughput internal API. |
+| [Engine](Crypto-Trader-Engine/)     | Execution core that turns signals into live trades under strict guardrails.                       |
+| [Analysis](Crypto-Trader-Analysis/) | Machine learning and market analytics engine for training and price predictions.                  |
+| [Library](Crypto-Trader-Library/)   | Shared contracts and building blocks (models, components, services) used across modules.          |
+| [Logging](Crypto-Trader-Logging/)   | Structured observability toolkit for consistent, actionable logs.                                 |
+| [Testing](Crypto-Trader-Testing/)   | Shared test toolkit with assertions, fixtures, and containerized environments.                    |
+| [Version](Crypto-Trader-Version/)   | Versioning and release intelligence for coordinated, traceable releases.                          |
+| [Website](Crypto-Trader-Website/)   | Public site for brand, story, and a gateway to documentation.                                     |
+| [Docs](Crypto-Trader-Docs/)         | Documentation site and build system for guides, API refs, and module references.                  |
+
+
 ## ❓ Questions or help
 Email Oliver Lear Sigwarth (@theoliverlear): [sigwarthsoftware@gmail.com](mailto:sigwarthsoftware@gmail.com)
 
