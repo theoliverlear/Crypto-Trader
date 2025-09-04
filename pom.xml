@@ -110,6 +110,17 @@
             <name>Maven Central</name>
             <url>https://repo.maven.apache.org/maven2</url>
         </pluginRepository>
+        <pluginRepository>
+            <id>jetbrains-dokka</id>
+            <name>JetBrains Dokka Repository</name>
+            <url>https://maven.pkg.jetbrains.space/kotlin/p/dokka/maven</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
     </pluginRepositories>
 
     <dependencies>
@@ -229,6 +240,17 @@
         <repository>
             <id>central</id>
             <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
+        <repository>
+            <id>jetbrains-dokka</id>
+            <name>JetBrains Dokka Repository</name>
+            <url>https://maven.pkg.jetbrains.space/kotlin/p/dokka/maven</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
         <repository>
             <id>gh-crypto-trader</id>
