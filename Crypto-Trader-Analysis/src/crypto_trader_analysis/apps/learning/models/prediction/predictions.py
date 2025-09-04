@@ -109,7 +109,7 @@ def predict_and_send(target_currency: str = 'BTC',
 
 def send_prediction_to_server(prediction: Prediction) -> Optional[int]:
     try:
-        response = requests.post("http://localhost:8080/api/predictions/add", json=prediction.to_json(), verify=False)
+        response = requests.post("http://localhost:8085/data/predictions/add", json=prediction.to_json(), verify=False)
         print(f"[{prediction.currency_code}] Status: {response.status_code} - {response.text}")
         payload: dict = response.json()
         return int(payload.get("predictionId"))
