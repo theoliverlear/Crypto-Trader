@@ -120,6 +120,80 @@ jobs:
           if [ -f data.pid ]; then kill "$(cat data.pid)" || true; fi
           if [ -f engine.pid ]; then kill "$(cat engine.pid)" || true; fi
 
+      - name: Run tests with coverage (aggregate)
+        run: mvn -B -ntp -Pcoverage -DskipITs=true -DfailIfNoTests=false clean verify
+
+      - name: Set up .NET (for ReportGenerator)
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Install ReportGenerator
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
+      - name: Generate pretty coverage dashboard
+        env:
+          PATH: $HOME/.dotnet/tools:${{ env.PATH }}
+        run: |
+          reportgenerator \
+            -reports:target/site/jacoco-aggregate/jacoco.xml \
+            -targetdir:target/site/coverage-aggregate \
+            -reporttypes:"Html;HtmlChart;Badges" \
+            -sourcedirs:.
+          
+      - name: Generate per-module coverage (pretty)
+        env:
+          PATH: $HOME/.dotnet/tools:${{ env.PATH }}
+        run: |
+          MODULES=(
+            "Crypto-Trader-Api"
+            "Crypto-Trader-Admin"
+            "Crypto-Trader-Assets"
+            "Crypto-Trader-Data"
+            "Crypto-Trader-Docs"
+            "Crypto-Trader-Engine"
+            "Crypto-Trader-Logging"
+            "Crypto-Trader-Testing"
+            "Crypto-Trader-Version"
+            "Crypto-Trader-Library/Api-Library/Api-Services"
+            "Crypto-Trader-Library/Api-Library/Api-Repositories"
+            "Crypto-Trader-Library/Api-Library/Api-Components"
+            "Crypto-Trader-Library/Api-Library/Api-Communication"
+            "Crypto-Trader-Library/Api-Library/Api-Config"
+            "Crypto-Trader-Library/Api-Library/Api-Models"
+          )
+
+          for M in "${MODULES[@]}"; do
+            XML="$M/target/site/jacoco/jacoco.xml"
+            if [ -f "$XML" ]; then
+              if [ -x "$HOME/.dotnet/tools/reportgenerator" ]; then
+                reportgenerator \
+                  -reports:"$XML" \
+                  -targetdir:"$M/target/site/coverage" \
+                  -reporttypes:"Html;HtmlChart;Badges" \
+                  -sourcedirs:"$M/src/main/java"
+                SRC_DIR="$M/target/site/coverage"
+              else
+                SRC_DIR="$M/target/site/jacoco"
+              fi
+
+              MOD_NAME=$(basename "$M" | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z0-9-_')
+              mkdir -p "Crypto-Trader-Docs/docs/coverage/$MOD_NAME"
+              cp -r "$SRC_DIR/"* "Crypto-Trader-Docs/docs/coverage/$MOD_NAME/"
+              if [ -f "Crypto-Trader-Docs/docs/coverage/$MOD_NAME/index.htm" ] && [ ! -f "Crypto-Trader-Docs/docs/coverage/$MOD_NAME/index.html" ]; then
+                cp "Crypto-Trader-Docs/docs/coverage/$MOD_NAME/index.htm" "Crypto-Trader-Docs/docs/coverage/$MOD_NAME/index.html"
+              fi
+            fi
+          done
+
+      - name: Copy coverage into docs
+        run: |
+          mkdir -p Crypto-Trader-Docs/docs/coverage
+          cp -r target/site/coverage-aggregate/* Crypto-Trader-Docs/docs/coverage/
+          if [ -f Crypto-Trader-Docs/docs/coverage/index.htm ] && [ ! -f Crypto-Trader-Docs/docs/coverage/index.html ]; then
+            cp Crypto-Trader-Docs/docs/coverage/index.htm Crypto-Trader-Docs/docs/coverage/index.html
+          fi
+
       - name: Build (runs verify -> javadoc -> copy)
         run: mvn -B -DskipTests verify
 
