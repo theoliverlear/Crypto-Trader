@@ -2,6 +2,12 @@
   "$schema": "node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
+  "cli": {
+    "cache": {
+      "enabled": true,
+      "path": ".angular/cache"
+    }
+  },
   "projects": {
     "crypto-trader": {
       "root": "",
@@ -135,6 +141,9 @@
             "buildTarget": "crypto-trader:build"
           },
           "configurations": {
+            "hmr": {
+              "hmr": true
+            },
             "production": {
               "buildTarget": "crypto-trader:build:production"
             },
