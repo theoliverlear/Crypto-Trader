@@ -211,6 +211,7 @@
                 <version>3.2.5</version>
                 <configuration>
                     <useModulePath>false</useModulePath>
+                    <argLine>${argLine} -Dfile.encoding=UTF-8</argLine>
                     <!-- Hard-disable the Vintage engine when running tests via Maven -->
                     <systemPropertyVariables>
                         <junit.platform.excludeEngines>vintage</junit.platform.excludeEngines>
