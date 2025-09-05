@@ -137,10 +137,12 @@ jobs:
       - name: Generate pretty coverage dashboard
         run: |
           reportgenerator \
-            -reports:target/site/jacoco-aggregate/jacoco.xml \
+            -reports:"**/target/site/jacoco/jacoco.xml;target/site/jacoco-aggregate/jacoco.xml" \
             -targetdir:target/site/coverage-aggregate \
             -reporttypes:"Html;HtmlChart;Badges" \
-            -sourcedirs:.
+            -sourcedirs:. \
+            -classdirectories:"**/target/classes" \
+            -assemblymode:MergeByClass
           
       - name: Generate per-module coverage (pretty)
         run: |
