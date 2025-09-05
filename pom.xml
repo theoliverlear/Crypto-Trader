@@ -65,6 +65,10 @@
         <testcontainers.version>1.20.1</testcontainers.version>
         <!-- Default main class for generating OpenAPI docs; can be overridden with -Ddocs.mainClass=... -->
         <docs.mainClass>org.cryptotrader.api.CryptoTraderApiApplication</docs.mainClass>
+        <argLine/>
+        <jacoco.version>0.8.12</jacoco.version>
+        <surefire.version>3.2.5</surefire.version>
+        <failsafe.version>3.2.5</failsafe.version>
     </properties>
 
     <dependencyManagement>
@@ -160,23 +164,37 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.2.5</version>
+                    <version>${surefire.version}</version>
                     <configuration>
                         <useModulePath>false</useModulePath>
+                        <argLine>${argLine} -Dfile.encoding=UTF-8</argLine>
                         <systemPropertyVariables>
                             <junit.platform.excludeEngines>vintage</junit.platform.excludeEngines>
                         </systemPropertyVariables>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${failsafe.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco.version}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
+
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
                     <useModulePath>false</useModulePath>
+                    <argLine>${argLine} -Dfile.encoding=UTF-8</argLine>
                     <systemPropertyVariables>
                         <junit.platform.excludeEngines>vintage</junit.platform.excludeEngines>
                     </systemPropertyVariables>
@@ -291,4 +309,152 @@
             </snapshots>
         </repository>
     </repositories>
+
+    <profiles>
+        <profile>
+            <id>coverage</id>
+            <properties>
+                <skipITs>true</skipITs>
+                <failsafe.skipITs>true</failsafe.skipITs>
+                <surefire.skipAfterFailureCount>1</surefire.skipAfterFailureCount>
+                <surefire.forkedProcessTimeoutInSeconds>180</surefire.forkedProcessTimeoutInSeconds>
+                <failsafe.forkedProcessTimeoutInSeconds>180</failsafe.forkedProcessTimeoutInSeconds>
+                <maven.test.failure.ignore>false</maven.test.failure.ignore>
+                <failIfNoTests>false</failIfNoTests>
+            </properties>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-surefire-plugin</artifactId>
+                            <version>${surefire.version}</version>
+                            <configuration>
+                                <skipAfterFailureCount>1</skipAfterFailureCount>
+                                <forkedProcessTimeoutInSeconds>180</forkedProcessTimeoutInSeconds>
+                                <useModulePath>false</useModulePath>
+                                <argLine>${argLine} -Dfile.encoding=UTF-8</argLine>
+                                <systemPropertyVariables>
+                                    <junit.platform.excludeEngines>vintage</junit.platform.excludeEngines>
+                                    <logging.level.root>WARN</logging.level.root>
+                                    <spring.main.banner-mode>off</spring.main.banner-mode>
+                                </systemPropertyVariables>
+                                <failIfNoTests>false</failIfNoTests>
+                            </configuration>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-failsafe-plugin</artifactId>
+                            <version>${failsafe.version}</version>
+                            <configuration>
+                                <forkedProcessTimeoutInSeconds>180</forkedProcessTimeoutInSeconds>
+                                <skipITs>true</skipITs>
+                            </configuration>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.jacoco</groupId>
+                            <artifactId>jacoco-maven-plugin</artifactId>
+                            <version>${jacoco.version}</version>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+                <plugins>
+                    <!-- Per-module JaCoCo: instrument during tests and generate per-module reports before package -->
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>${jacoco.version}</version>
+                        <inherited>true</inherited>
+                        <executions>
+                            <execution>
+                                <id>prepare-agent</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>report</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
+                                    <formats>
+                                        <format>HTML</format>
+                                        <format>XML</format>
+                                    </formats>
+                                    <!-- Minimal excludes: generated sources, DTOs, and config/bootstrap classes -->
+                                    <excludes>
+                                        <exclude>**/generated/**</exclude>
+                                        <exclude>**/dto/**</exclude>
+                                        <exclude>**/*Config.class</exclude>
+                                        <exclude>**/*Application.class</exclude>
+                                    </excludes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Aggregate JaCoCo report at parent -->
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>${jacoco.version}</version>
+                        <inherited>false</inherited>
+                        <executions>
+                            <execution>
+                                <id>report-aggregate</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>report-aggregate</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.directory}/site/jacoco-aggregate</outputDirectory>
+                                    <formats>
+                                        <format>HTML</format>
+                                        <format>XML</format>
+                                    </formats>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>include-its</id>
+            <activation>
+                <property>
+                    <name>includeITs</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <properties>
+                <skipITs>false</skipITs>
+                <failsafe.skipITs>false</failsafe.skipITs>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <version>${failsafe.version}</version>
+                        <configuration>
+                            <forkedProcessTimeoutInSeconds>180</forkedProcessTimeoutInSeconds>
+                            <skipITs>false</skipITs>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>integration-tests</id>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
