@@ -131,9 +131,10 @@ jobs:
       - name: Install ReportGenerator
         run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
+      - name: Add .NET global tools to PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
       - name: Generate pretty coverage dashboard
-        env:
-          PATH: $HOME/.dotnet/tools:${{ env.PATH }}
         run: |
           reportgenerator \
             -reports:target/site/jacoco-aggregate/jacoco.xml \
@@ -142,8 +143,6 @@ jobs:
             -sourcedirs:.
           
       - name: Generate per-module coverage (pretty)
-        env:
-          PATH: $HOME/.dotnet/tools:${{ env.PATH }}
         run: |
           MODULES=(
             "Crypto-Trader-Api"
