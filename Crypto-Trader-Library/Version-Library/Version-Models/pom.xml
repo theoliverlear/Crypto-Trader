@@ -90,6 +90,7 @@
                 <version>3.2.5</version>
                 <configuration>
                     <useModulePath>false</useModulePath>
+                    <argLine>${argLine} -Dfile.encoding=UTF-8</argLine>
                 </configuration>
             </plugin>
             <plugin>
