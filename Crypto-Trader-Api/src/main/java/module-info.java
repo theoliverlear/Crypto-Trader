@@ -54,5 +54,4 @@ open module org.cryptotrader.api {
     exports org.cryptotrader.api.config;
     exports org.cryptotrader.api.controller;
     exports org.cryptotrader.api.controller.websocket;
-    exports org.cryptotrader.api.convert;
 }
