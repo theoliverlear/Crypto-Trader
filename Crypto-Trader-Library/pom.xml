@@ -16,6 +16,7 @@
         <module>Api-Library</module>
         <module>Api-Library/Api-Components</module>
         <module>Api-Library/Api-Communication</module>
+        <module>Api-Library/Api-Config</module>
         <module>Api-Library/Api-Models</module>
         <module>Api-Library/Api-Repositories</module>
         <module>Api-Library/Api-Services</module>
