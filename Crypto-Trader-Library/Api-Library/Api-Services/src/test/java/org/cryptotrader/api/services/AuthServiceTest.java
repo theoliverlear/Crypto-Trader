@@ -12,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
@@ -46,8 +47,17 @@ public class AuthServiceTest extends CryptoTraderTest {
     }
 
     @Test
+    @DisplayName("Constructor should instantiate object")
+    public void constructor_InstantiatesAuthService_WhenValidArgumentsProvided() {
+        ProductUserService productUserService = Mockito.mock(ProductUserService.class);
+        PortfolioService portfolioService = Mockito.mock(PortfolioService.class);
+        AuthService authService = new AuthService(productUserService, portfolioService);
+        assertNotNull(authService);
+    }
+    
+    @Test
     @DisplayName("Should sign up users with valid requests")
-    public void shouldSignUpUsersWithValidRequests() {
+    public void signup_SignUpUsers_WithValidRequests() {
         when(this.productUserService.userExistsByUsername("Ollie")).thenReturn(false);
         AuthResponse expectedResponse = new AuthResponse(true);
         PayloadStatusResponse<AuthResponse> actualResponse = this.authService.signup(this.userRequest);
@@ -58,7 +68,7 @@ public class AuthServiceTest extends CryptoTraderTest {
     
     @Test
     @DisplayName("Should not sign up existing users")
-    public void shouldNotSignUpExistingUsers() {
+    public void signup_NotSignUp_WhenUserExists() {
         when(this.productUserService.userExistsByUsername("Ollie")).thenReturn(true);
         AuthResponse expectedResponse = new AuthResponse(false);
         PayloadStatusResponse<AuthResponse> actualResponse = this.authService.signup(this.userRequest);
@@ -68,7 +78,7 @@ public class AuthServiceTest extends CryptoTraderTest {
     
     @Test
     @DisplayName("Should login users with valid requests")
-    public void shouldLoginUsersWithValidRequests() {
+    public void login_LoginUsers_WithValidRequests() {
         when(this.productUserService.getUserByUsername("Ollie")).thenReturn(this.user);
         AuthResponse expectedResponse = new AuthResponse(true);
         when(this.productUserService.comparePassword(this.user, this.userRequest.getPassword())).thenReturn(true);
@@ -80,7 +90,7 @@ public class AuthServiceTest extends CryptoTraderTest {
     
     @Test
     @DisplayName("Should not login users with invalid requests")
-    public void shouldNotLoginUsersWithInvalidRequests() {
+    public void login_NotLoginUsers_WithInvalidRequests() {
         when(this.productUserService.getUserByUsername("Ollie")).thenReturn(null);
         AuthResponse expectedResponse = new AuthResponse(false);
         PayloadStatusResponse<AuthResponse> actualResponse = this.authService.login(this.userRequest);
@@ -89,8 +99,8 @@ public class AuthServiceTest extends CryptoTraderTest {
     }
     
     @Test
-    @DisplayName("Should not login users with invalid passwords")
-    public void shouldNotLoginUsersWithInvalidPasswords() {
+    @DisplayName("Should not login users with mismatched passwords")
+    public void login_NotLoginUsers_WithMismatchedPasswords() {
         when(this.productUserService.getUserByUsername("Ollie")).thenReturn(this.user);
         AuthResponse expectedResponse = new AuthResponse(false);
         when(this.productUserService.comparePassword(this.user, this.userRequest.getPassword())).thenReturn(false);
