@@ -107,7 +107,14 @@ jobs:
           tail -n +1 data.log || true
           tail -n +1 engine.log || true
           exit 1
-
+      - name: Snapshot OpenAPI specs into docs
+        run: |
+          mkdir -p Crypto-Trader-Docs/docs/api
+          curl -fsS http://localhost:18080/v3/api-docs.yaml -o Crypto-Trader-Docs/docs/api/openapi-api.yaml
+          curl -fsS http://localhost:18081/v3/api-docs.yaml -o Crypto-Trader-Docs/docs/api/openapi-data.yaml
+          curl -fsS http://localhost:18082/v3/api-docs.yaml -o Crypto-Trader-Docs/docs/api/openapi-engine.yaml
+          ls -lah Crypto-Trader-Docs/docs/api
+      
       - name: Build docs module (generate OpenAPI + copy to docs)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
