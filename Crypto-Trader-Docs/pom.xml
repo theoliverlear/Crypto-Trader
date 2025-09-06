@@ -367,12 +367,12 @@
                             <directory>${project.build.directory}/staging</directory>
                             <followSymlinks>false</followSymlinks>
                         </fileset>
-                        <fileset>
-                            <directory>${project.basedir}/docs</directory>
-                            <includes>
-                                <include>api/openapi-*.yaml</include>
-                            </includes>
-                        </fileset>
+<!--                        <fileset>-->
+<!--                            <directory>${project.basedir}/docs</directory>-->
+<!--                            <includes>-->
+<!--                                <include>api/openapi-*.yaml</include>-->
+<!--                            </includes>-->
+<!--                        </fileset>-->
                     </filesets>
                 </configuration>
             </plugin>
