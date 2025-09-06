@@ -215,8 +215,6 @@
           </plugin>
         </plugins>
       </pluginManagement>
-
-      <!-- >>> EXECUTIONS LIVE HERE (they will run + be inherited) <<< -->
       <plugins>
           <plugin>
               <groupId>org.jetbrains.dokka</groupId>
@@ -226,7 +224,6 @@
               <configuration>
                   <outputDir>${project.build.directory}/dokka-html</outputDir>
                   <dokkaPlugins>
-                      <!-- optional: base plugin provides HTML theme -->
                       <plugin>
                           <groupId>org.jetbrains.dokka</groupId>
                           <artifactId>dokka-base</artifactId>
@@ -235,13 +232,10 @@
                   </dokkaPlugins>
               </configuration>
           </plugin>
-        <!-- Unit tests -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
         </plugin>
-
-        <!-- Integration tests -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
@@ -255,13 +249,10 @@
             </execution>
           </executions>
         </plugin>
-
-        <!-- JaCoCo for children + aggregate in parent -->
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
           <executions>
-            <!-- Attach agent for UTs in children -->
             <execution>
               <id>jacoco-prepare-ut</id>
               <goals><goal>prepare-agent</goal></goals>
@@ -269,8 +260,6 @@
                 <destFile>${jacoco.ut.exec}</destFile>
               </configuration>
             </execution>
-
-            <!-- Attach agent for ITs in children -->
             <execution>
               <id>jacoco-prepare-it</id>
               <goals><goal>prepare-agent-integration</goal></goals>
@@ -278,8 +267,6 @@
                 <destFile>${jacoco.it.exec}</destFile>
               </configuration>
             </execution>
-
-            <!-- Per-module UT report -->
             <execution>
               <id>jacoco-report-ut</id>
               <phase>verify</phase>
@@ -293,8 +280,6 @@
                 </formats>
               </configuration>
             </execution>
-
-            <!-- Per-module IT report -->
             <execution>
               <id>jacoco-report-it</id>
               <phase>verify</phase>
@@ -308,8 +293,6 @@
                 </formats>
               </configuration>
             </execution>
-
-            <!-- Parent-only aggregate (UT + IT across reactor) -->
             <execution>
               <id>jacoco-aggregate</id>
               <phase>verify</phase>
@@ -388,16 +371,11 @@
             </build>
 
             <properties>
-                <!-- Default: skip integration tests for coverage (we only need unit for docs) -->
                 <skipITs>true</skipITs>
                 <maven.test.skip>false</maven.test.skip>
                 <failIfNoTests>false</failIfNoTests>
-
-                <!-- Timeouts and quick-exit defaults -->
                 <surefire.skipAfterFailureCount>1</surefire.skipAfterFailureCount>
                 <surefire.forkedProcessTimeoutInSeconds>180</surefire.forkedProcessTimeoutInSeconds>
-
-                <!-- Quiet Spring logs during tests (optional; adjust if you prefer logback-test.xml) -->
                 <spring.test.log.level>WARN</spring.test.log.level>
             </properties>
         </profile>
