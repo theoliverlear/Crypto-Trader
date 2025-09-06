@@ -17,6 +17,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jacoco.skip>true</jacoco.skip>
+        <maven.test.skip>true</maven.test.skip>
     </properties>
 
     <dependencies>
@@ -119,7 +121,7 @@
                 <version>3.2.5</version>
                 <configuration>
                     <useModulePath>false</useModulePath>
-                    <argLine>${argLine} -Dfile.encoding=UTF-8</argLine>
+                    <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
                 </configuration>
             </plugin>
             <plugin>

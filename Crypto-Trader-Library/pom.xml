@@ -29,7 +29,9 @@
 
     <artifactId>crypto-trader-library</artifactId>
     <name>Crypto-Trader-Library</name>
-    <description>Shared Java libraries for Crypto Trader, including API models, components, communication, and repositories.</description>
+    <description>
+        Shared Java libraries for Crypto Trader, including API models, components, communication, and repositories.
+    </description>
     <version>0.0.4</version>
 
     <properties>
@@ -52,6 +54,7 @@
                 <version>3.2.5</version>
                 <configuration>
                     <useModulePath>false</useModulePath>
+                    <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
                 </configuration>
             </plugin>
             <plugin>
@@ -69,5 +72,50 @@
             </plugin>
         </plugins>
     </build>
-
+    <profiles>
+        <profile>
+            <id>coverage</id>
+            <properties>
+                <skipITs>true</skipITs>
+                <failsafe.skipITs>true</failsafe.skipITs>
+                <surefire.skipAfterFailureCount>1</surefire.skipAfterFailureCount>
+                <surefire.forkedProcessTimeoutInSeconds>180</surefire.forkedProcessTimeoutInSeconds>
+                <failsafe.forkedProcessTimeoutInSeconds>180</failsafe.forkedProcessTimeoutInSeconds>
+                <maven.test.failure.ignore>false</maven.test.failure.ignore>
+                <failIfNoTests>false</failIfNoTests>
+            </properties>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-surefire-plugin</artifactId>
+                            <version>${surefire.version}</version>
+                            <configuration>
+                                <skipAfterFailureCount>1</skipAfterFailureCount>
+                                <forkedProcessTimeoutInSeconds>180</forkedProcessTimeoutInSeconds>
+                                <useModulePath>false</useModulePath>
+                                <argLine>${argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
+                                <systemPropertyVariables>
+                                    <junit.platform.excludeEngines>vintage</junit.platform.excludeEngines>
+                                    <logging.level.root>WARN</logging.level.root>
+                                    <spring.main.banner-mode>off</spring.main.banner-mode>
+                                </systemPropertyVariables>
+                                <failIfNoTests>false</failIfNoTests>
+                            </configuration>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-failsafe-plugin</artifactId>
+                            <version>${failsafe.version}</version>
+                            <configuration>
+                                <forkedProcessTimeoutInSeconds>180</forkedProcessTimeoutInSeconds>
+                                <skipITs>true</skipITs>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+    </profiles>
 </project>

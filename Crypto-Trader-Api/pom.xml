@@ -149,6 +149,7 @@
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-testing</artifactId>
             <version>0.0.3</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
@@ -219,7 +220,7 @@
                 <version>3.2.5</version>
                 <configuration>
                     <useModulePath>false</useModulePath>
-                    <argLine>${argLine} -Dfile.encoding=UTF-8</argLine>
+                    <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
                 </configuration>
             </plugin>
             <plugin>
@@ -234,6 +235,7 @@
                             <goal>dokka</goal>
                         </goals>
                         <configuration>
+                            <skip>${skipDokka}</skip>
                             <outputDir>${project.build.directory}/dokka-html</outputDir>
                             <cacheRoot>${project.build.directory}/dokka-cache</cacheRoot>
                             <dokkaPlugins>

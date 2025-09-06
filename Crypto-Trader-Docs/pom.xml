@@ -290,14 +290,7 @@
                             </target>
                         </configuration>
                     </execution>
-                </executions>
-            </plugin>
 
-            <!-- Copy generated OpenAPI into docs/api/openapi.yaml -->
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
                     <execution>
                         <id>move-openapi-into-docs</id>
                         <phase>verify</phase>

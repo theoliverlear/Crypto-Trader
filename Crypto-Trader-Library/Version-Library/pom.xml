@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>version-library</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <name>Version-Library</name>
     <description>Parent POM aggregating version management libraries and models for Crypto Trader.</description>
     <version>0.0.2</version>
@@ -34,6 +34,7 @@
                 <version>3.2.5</version>
                 <configuration>
                     <useModulePath>false</useModulePath>
+                    <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
                 </configuration>
             </plugin>
             <plugin>

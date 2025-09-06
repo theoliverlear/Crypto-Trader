@@ -140,6 +140,11 @@
             <artifactId>slf4j-api</artifactId>
             <version>2.0.13</version>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>23.0.0</version>
+        </dependency>
 
     </dependencies>
     <build>
@@ -189,7 +194,7 @@
                 <version>3.2.5</version>
                 <configuration>
                     <useModulePath>false</useModulePath>
-                    <argLine>${argLine} -Dfile.encoding=UTF-8</argLine>
+                    <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
                     <systemPropertyVariables>
                         <junit.platform.excludeEngines>vintage</junit.platform.excludeEngines>
                     </systemPropertyVariables>
