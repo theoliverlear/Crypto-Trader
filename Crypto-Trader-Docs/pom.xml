@@ -25,6 +25,7 @@
         <docs.openapi.format>yaml</docs.openapi.format>
         <docs.openapi.outputDir>${project.build.directory}</docs.openapi.outputDir>
         <docs.site.specPath>${project.basedir}/docs/api/openapi.yaml</docs.site.specPath>
+        <docs.openapi.outputDir>${project.basedir}/docs/api</docs.openapi.outputDir>
         <!-- Default to skipping OpenAPI generation unless explicitly enabled -->
         <docs.skipOpenapi>true</docs.skipOpenapi>
 
