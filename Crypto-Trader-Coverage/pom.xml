@@ -131,7 +131,6 @@
 
     <build>
         <plugins>
-            <!-- This module does not run tests; it only aggregates reports -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -158,10 +157,6 @@
                                 <format>XML</format>
                                 <format>HTML</format>
                             </formats>
-                            <!-- Optional: narrow to only these dependencies (defaults usually OK) -->
-                            <!-- <includes>
-                              <include>org.cryptotrader:*</include>
-                            </includes> -->
                         </configuration>
                     </execution>
                 </executions>
