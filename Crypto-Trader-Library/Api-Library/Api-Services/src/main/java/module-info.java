@@ -13,6 +13,7 @@ open module org.cryptotrader.api.services {
     requires spring.boot.autoconfigure;
     requires tomcat.embed.core;
     requires org.slf4j;
+    requires kotlin.stdlib;
     
     exports org.cryptotrader.api.services;
     exports org.cryptotrader.api.services.models;

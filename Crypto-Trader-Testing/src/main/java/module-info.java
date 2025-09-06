@@ -4,7 +4,7 @@ module org.cryptotrader.test {
     requires org.slf4j;
 
     requires org.junit.jupiter.api;
-    
+    requires kotlin.stdlib;
     requires spring.beans;
     requires spring.context;
     requires spring.web;

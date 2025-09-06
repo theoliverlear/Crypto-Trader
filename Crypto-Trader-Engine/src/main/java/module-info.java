@@ -11,6 +11,7 @@ open module org.cryptotrader.engine {
     requires spring.security.config;
     requires spring.security.crypto;
     requires spring.security.web;
+    requires kotlin.stdlib;
 
     exports org.cryptotrader.engine;
     exports org.cryptotrader.engine.services;

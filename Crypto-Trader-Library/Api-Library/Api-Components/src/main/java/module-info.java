@@ -12,6 +12,7 @@ open module org.cryptotrader.api.components {
     requires spring.core;
     requires spring.web;
     requires spring.jdbc;
+    requires kotlin.stdlib;
 
     exports org.cryptotrader.component;
     exports org.cryptotrader.component.config;

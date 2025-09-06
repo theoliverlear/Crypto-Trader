@@ -1,5 +1,5 @@
 open module org.cryptotrader.api {
-
+    requires kotlin.stdlib;
     requires org.cryptotrader.api.library;
     
     requires spring.boot;
@@ -40,7 +40,6 @@ open module org.cryptotrader.api {
     requires tomcat.embed.core;
     requires tomcat.embed.websocket;
     
-    requires org.cryptotrader.test;
     requires spring.webmvc;
     requires org.cryptotrader.api.models;
     requires org.cryptotrader.api.communication;

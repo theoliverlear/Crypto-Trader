@@ -1,7 +1,7 @@
 open module org.cryptotrader.api.models {
     requires static com.fasterxml.jackson.annotation;
     requires static jakarta.persistence;
-
+    requires kotlin.stdlib;
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires static lombok;

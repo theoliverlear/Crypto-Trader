@@ -3,6 +3,7 @@ module org.cryptotrader.version.model {
     requires org.jdom2;
     requires org.slf4j;
     requires java.xml;
+    requires kotlin.stdlib;
 
     exports org.cryptotrader.version.model.config;
     exports org.cryptotrader.version.model.dependency;

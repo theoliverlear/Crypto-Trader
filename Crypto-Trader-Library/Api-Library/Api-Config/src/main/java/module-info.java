@@ -1,4 +1,5 @@
 open module org.cryptotrader.api.config {
+    requires kotlin.stdlib;
     requires spring.boot.autoconfigure;
     requires spring.context;
     requires spring.data.jpa;
