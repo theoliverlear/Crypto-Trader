@@ -78,13 +78,56 @@
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-maven-plugin</artifactId>
                 <version>1.5</version>
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>generate-openapi-api</id>-->
+<!--                        <phase>verify</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>generate</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <apiDocsUrl>${docs.openapi.api.url}</apiDocsUrl>-->
+<!--                            <outputFileName>${docs.openapi.api.file}.${docs.openapi.format}</outputFileName>-->
+<!--                            <outputDir>${docs.openapi.outputDir}</outputDir>-->
+<!--                            <skip>${docs.skipOpenapi}</skip>-->
+<!--                            <failOnError>false</failOnError>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                    &lt;!&ndash; ... existing code ... &ndash;&gt;-->
+<!--                    <execution>-->
+<!--                        <id>generate-openapi-data</id>-->
+<!--                        <phase>verify</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>generate</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <apiDocsUrl>${docs.openapi.data.url}</apiDocsUrl>-->
+<!--                            <outputFileName>${docs.openapi.data.file}.${docs.openapi.format}</outputFileName>-->
+<!--                            <outputDir>${docs.openapi.outputDir}</outputDir>-->
+<!--                            <skip>${docs.skipOpenapi}</skip>-->
+<!--                            <failOnError>false</failOnError>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                    <execution>-->
+<!--                        <id>generate-openapi-engine</id>-->
+<!--                        <phase>verify</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>generate</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <apiDocsUrl>${docs.openapi.engine.url}</apiDocsUrl>-->
+<!--                            <outputFileName>${docs.openapi.engine.file}.${docs.openapi.format}</outputFileName>-->
+<!--                            <outputDir>${docs.openapi.outputDir}</outputDir>-->
+<!--                            <skip>${docs.skipOpenapi}</skip>-->
+<!--                            <failOnError>false</failOnError>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
                 <executions>
                     <execution>
                         <id>generate-openapi-api</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
+                        <phase>generate-resources</phase>
+                        <goals><goal>generate</goal></goals>
                         <configuration>
                             <apiDocsUrl>${docs.openapi.api.url}</apiDocsUrl>
                             <outputFileName>${docs.openapi.api.file}.${docs.openapi.format}</outputFileName>
@@ -93,13 +136,11 @@
                             <failOnError>false</failOnError>
                         </configuration>
                     </execution>
-                    <!-- ... existing code ... -->
+
                     <execution>
                         <id>generate-openapi-data</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
+                        <phase>generate-resources</phase>
+                        <goals><goal>generate</goal></goals>
                         <configuration>
                             <apiDocsUrl>${docs.openapi.data.url}</apiDocsUrl>
                             <outputFileName>${docs.openapi.data.file}.${docs.openapi.format}</outputFileName>
@@ -108,12 +149,11 @@
                             <failOnError>false</failOnError>
                         </configuration>
                     </execution>
+
                     <execution>
                         <id>generate-openapi-engine</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
+                        <phase>generate-resources</phase>
+                        <goals><goal>generate</goal></goals>
                         <configuration>
                             <apiDocsUrl>${docs.openapi.engine.url}</apiDocsUrl>
                             <outputFileName>${docs.openapi.engine.file}.${docs.openapi.format}</outputFileName>
@@ -291,25 +331,25 @@
                         </configuration>
                     </execution>
 
-                    <execution>
-                        <id>move-openapi-into-docs</id>
-                        <phase>verify</phase>
-                        <configuration>
-                            <skip>${docs.skipOpenapi}</skip>
-                            <target>
-                                <mkdir dir="${project.basedir}/docs/api"/>
-                                <copy file="${project.build.directory}/${docs.openapi.api.file}.${docs.openapi.format}"
-                                      tofile="${project.basedir}/docs/api/${docs.openapi.api.file}.${docs.openapi.format}" overwrite="true"/>
-                                <copy file="${project.build.directory}/${docs.openapi.data.file}.${docs.openapi.format}"
-                                      tofile="${project.basedir}/docs/api/${docs.openapi.data.file}.${docs.openapi.format}" overwrite="true"/>
-                                <copy file="${project.build.directory}/${docs.openapi.engine.file}.${docs.openapi.format}"
-                                      tofile="${project.basedir}/docs/api/${docs.openapi.engine.file}.${docs.openapi.format}" overwrite="true"/>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
+<!--                    <execution>-->
+<!--                        <id>move-openapi-into-docs</id>-->
+<!--                        <phase>verify</phase>-->
+<!--                        <configuration>-->
+<!--                            <skip>${docs.skipOpenapi}</skip>-->
+<!--                            <target>-->
+<!--                                <mkdir dir="${project.basedir}/docs/api"/>-->
+<!--                                <copy file="${project.build.directory}/${docs.openapi.api.file}.${docs.openapi.format}"-->
+<!--                                      tofile="${project.basedir}/docs/api/${docs.openapi.api.file}.${docs.openapi.format}" overwrite="true"/>-->
+<!--                                <copy file="${project.build.directory}/${docs.openapi.data.file}.${docs.openapi.format}"-->
+<!--                                      tofile="${project.basedir}/docs/api/${docs.openapi.data.file}.${docs.openapi.format}" overwrite="true"/>-->
+<!--                                <copy file="${project.build.directory}/${docs.openapi.engine.file}.${docs.openapi.format}"-->
+<!--                                      tofile="${project.basedir}/docs/api/${docs.openapi.engine.file}.${docs.openapi.format}" overwrite="true"/>-->
+<!--                            </target>-->
+<!--                        </configuration>-->
+<!--                        <goals>-->
+<!--                            <goal>run</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
                 </executions>
             </plugin>
 
