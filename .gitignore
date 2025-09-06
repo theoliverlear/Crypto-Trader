@@ -7,5 +7,5 @@
 /crpto-trader.iml
 /CryptoTraderAnalysis/.idea/
 /*.iml
-
+/.run
 /Crypto-Trader-Api/src/main/resources/ssl/keystore.p12
