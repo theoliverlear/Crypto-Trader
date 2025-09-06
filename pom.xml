@@ -54,6 +54,7 @@
         <module>Crypto-Trader-Data</module>
         <module>Crypto-Trader-Logging</module>
         <module>Crypto-Trader-Docs</module>
+        <module>Crypto-Trader-Coverage</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -66,9 +67,24 @@
         <!-- Default main class for generating OpenAPI docs; can be overridden with -Ddocs.mainClass=... -->
         <docs.mainClass>org.cryptotrader.api.CryptoTraderApiApplication</docs.mainClass>
         <argLine/>
+        <surefireArgLine/>
         <jacoco.version>0.8.12</jacoco.version>
         <surefire.version>3.2.5</surefire.version>
         <failsafe.version>3.2.5</failsafe.version>
+        <skipDokka>false</skipDokka>
+        <skipJavadoc>true</skipJavadoc>
+        <surefire.forkedProcessTimeoutInSeconds>180</surefire.forkedProcessTimeoutInSeconds>
+        <surefire.skipAfterFailureCount>1</surefire.skipAfterFailureCount>
+        <!-- Coverage thresholds (defaults allow build to pass; enable enforcement with -Dcoverage.check.skip=false) -->
+        <coverage.check.skip>true</coverage.check.skip>
+        <coverage.line.min>0.00</coverage.line.min>
+        <coverage.branch.min>0.00</coverage.branch.min>
+        <coverage.instruction.min>0.00</coverage.instruction.min>
+        
+        <!-- JaCoCo defaults -->
+        <jacoco.skip>false</jacoco.skip>
+        <jacoco.ut.exec>${project.build.directory}/jacoco.exec</jacoco.ut.exec>
+        <jacoco.it.exec>${project.build.directory}/jacoco-it.exec</jacoco.it.exec>
     </properties>
 
     <dependencyManagement>
@@ -156,110 +172,143 @@
             <version>1.10.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>1.9.20</version>
+        </dependency>
     </dependencies>
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${surefire.version}</version>
-                    <configuration>
-                        <useModulePath>false</useModulePath>
-                        <argLine>${argLine} -Dfile.encoding=UTF-8</argLine>
-                        <systemPropertyVariables>
-                            <junit.platform.excludeEngines>vintage</junit.platform.excludeEngines>
-                        </systemPropertyVariables>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>${failsafe.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${jacoco.version}</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+      <!-- Keep versions/config in pluginManagement if you want, but no executions there -->
+      <pluginManagement>
         <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>${surefire.version}</version>
+            <configuration>
+              <useModulePath>false</useModulePath>
+              <argLine>@{argLine}</argLine>
+              <systemPropertyVariables>
+                <junit.platform.excludeEngines>vintage</junit.platform.excludeEngines>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
 
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>${failsafe.version}</version>
+            <configuration>
+              <argLine>@{argLine}</argLine>
+            </configuration>
+          </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
-                <configuration>
-                    <useModulePath>false</useModulePath>
-                    <argLine>${argLine} -Dfile.encoding=UTF-8</argLine>
-                    <systemPropertyVariables>
-                        <junit.platform.excludeEngines>vintage</junit.platform.excludeEngines>
-                    </systemPropertyVariables>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
-                <configuration>
-                    <release>${maven.compiler.release}</release>
-                    <skip>false</skip>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>3.1.2</version>
-                <inherited>false</inherited>
-                <configuration>
-                    <skip>false</skip>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.7.0</version>
-                <inherited>false</inherited>
-                <executions>
-                    <execution>
-                        <id>aggregate-javadoc</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>aggregate</goal>
-                        </goals>
-                        <configuration>
-                            <skip>true</skip>
-                            <failOnError>false</failOnError>
-                            <additionalJOptions>
-                                <additionalJOption>--allow-script-in-comments</additionalJOption>
-                                <additionalJOption>-Xdoclint:none</additionalJOption>
-                            </additionalJOptions>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.jetbrains.dokka</groupId>
-                <artifactId>dokka-maven-plugin</artifactId>
-                <version>1.9.20</version>
-                <inherited>true</inherited>
-                <configuration>
-                    <outputDir>${project.build.directory}/dokka-html</outputDir>
-                    <dokkaPlugins>
-                        <!-- optional: base plugin provides HTML theme -->
-                        <plugin>
-                            <groupId>org.jetbrains.dokka</groupId>
-                            <artifactId>dokka-base</artifactId>
-                            <version>1.9.20</version>
-                        </plugin>
-                    </dokkaPlugins>
-                </configuration>
-            </plugin>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>${jacoco.version}</version>
+            <configuration>
+              <skip>${jacoco.skip}</skip>
+            </configuration>
+          </plugin>
         </plugins>
+      </pluginManagement>
+
+      <!-- >>> EXECUTIONS LIVE HERE (they will run + be inherited) <<< -->
+      <plugins>
+        <!-- Unit tests -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+        </plugin>
+
+        <!-- Integration tests -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>integration-tests</id>
+              <goals>
+                <goal>integration-test</goal>
+                <goal>verify</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <!-- JaCoCo for children + aggregate in parent -->
+        <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <executions>
+            <!-- Attach agent for UTs in children -->
+            <execution>
+              <id>jacoco-prepare-ut</id>
+              <goals><goal>prepare-agent</goal></goals>
+              <configuration>
+                <destFile>${jacoco.ut.exec}</destFile>
+              </configuration>
+            </execution>
+
+            <!-- Attach agent for ITs in children -->
+            <execution>
+              <id>jacoco-prepare-it</id>
+              <goals><goal>prepare-agent-integration</goal></goals>
+              <configuration>
+                <destFile>${jacoco.it.exec}</destFile>
+              </configuration>
+            </execution>
+
+            <!-- Per-module UT report -->
+            <execution>
+              <id>jacoco-report-ut</id>
+              <phase>verify</phase>
+              <goals><goal>report</goal></goals>
+              <configuration>
+                <dataFile>${jacoco.ut.exec}</dataFile>
+                <outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
+                <formats>
+                  <format>XML</format>
+                  <format>HTML</format>
+                </formats>
+              </configuration>
+            </execution>
+
+            <!-- Per-module IT report -->
+            <execution>
+              <id>jacoco-report-it</id>
+              <phase>verify</phase>
+              <goals><goal>report-integration</goal></goals>
+              <configuration>
+                <dataFile>${jacoco.it.exec}</dataFile>
+                <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
+                <formats>
+                  <format>XML</format>
+                  <format>HTML</format>
+                </formats>
+              </configuration>
+            </execution>
+
+            <!-- Parent-only aggregate (UT + IT across reactor) -->
+            <execution>
+              <id>jacoco-aggregate</id>
+              <phase>verify</phase>
+              <inherited>false</inherited>
+              <goals><goal>report-aggregate</goal></goals>
+              <configuration>
+                <outputDirectory>${project.reporting.outputDirectory}/jacoco-aggregate</outputDirectory>
+                <formats>
+                  <format>XML</format>
+                  <format>HTML</format>
+                </formats>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
     </build>
 
     <distributionManagement>
@@ -313,114 +362,27 @@
     <profiles>
         <profile>
             <id>coverage</id>
-            <properties>
-                <skipITs>true</skipITs>
-                <failsafe.skipITs>true</failsafe.skipITs>
-                <surefire.skipAfterFailureCount>1</surefire.skipAfterFailureCount>
-                <surefire.forkedProcessTimeoutInSeconds>180</surefire.forkedProcessTimeoutInSeconds>
-                <failsafe.forkedProcessTimeoutInSeconds>180</failsafe.forkedProcessTimeoutInSeconds>
-                <maven.test.failure.ignore>false</maven.test.failure.ignore>
-                <failIfNoTests>false</failIfNoTests>
-            </properties>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
             <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-surefire-plugin</artifactId>
-                            <version>${surefire.version}</version>
-                            <configuration>
-                                <skipAfterFailureCount>1</skipAfterFailureCount>
-                                <forkedProcessTimeoutInSeconds>180</forkedProcessTimeoutInSeconds>
-                                <useModulePath>false</useModulePath>
-                                <argLine>${argLine} -Dfile.encoding=UTF-8</argLine>
-                                <systemPropertyVariables>
-                                    <junit.platform.excludeEngines>vintage</junit.platform.excludeEngines>
-                                    <logging.level.root>WARN</logging.level.root>
-                                    <spring.main.banner-mode>off</spring.main.banner-mode>
-                                </systemPropertyVariables>
-                                <failIfNoTests>false</failIfNoTests>
-                            </configuration>
-                        </plugin>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-failsafe-plugin</artifactId>
-                            <version>${failsafe.version}</version>
-                            <configuration>
-                                <forkedProcessTimeoutInSeconds>180</forkedProcessTimeoutInSeconds>
-                                <skipITs>true</skipITs>
-                            </configuration>
-                        </plugin>
-                        <plugin>
-                            <groupId>org.jacoco</groupId>
-                            <artifactId>jacoco-maven-plugin</artifactId>
-                            <version>${jacoco.version}</version>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
                 <plugins>
-                    <!-- Per-module JaCoCo: instrument during tests and generate per-module reports before package -->
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>${jacoco.version}</version>
-                        <inherited>true</inherited>
-                        <executions>
-                            <execution>
-                                <id>prepare-agent</id>
-                                <phase>initialize</phase>
-                                <goals>
-                                    <goal>prepare-agent</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>report</id>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>report</goal>
-                                </goals>
-                                <configuration>
-                                    <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
-                                    <formats>
-                                        <format>HTML</format>
-                                        <format>XML</format>
-                                    </formats>
-                                    <!-- Minimal excludes: generated sources, DTOs, and config/bootstrap classes -->
-                                    <excludes>
-                                        <exclude>**/generated/**</exclude>
-                                        <exclude>**/dto/**</exclude>
-                                        <exclude>**/*Config.class</exclude>
-                                        <exclude>**/*Application.class</exclude>
-                                    </excludes>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <!-- Aggregate JaCoCo report at parent -->
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>${jacoco.version}</version>
-                        <inherited>false</inherited>
-                        <executions>
-                            <execution>
-                                <id>report-aggregate</id>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>report-aggregate</goal>
-                                </goals>
-                                <configuration>
-                                    <outputDirectory>${project.build.directory}/site/jacoco-aggregate</outputDirectory>
-                                    <formats>
-                                        <format>HTML</format>
-                                        <format>XML</format>
-                                    </formats>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
                 </plugins>
             </build>
+
+            <properties>
+                <!-- Default: skip integration tests for coverage (we only need unit for docs) -->
+                <skipITs>true</skipITs>
+                <maven.test.skip>false</maven.test.skip>
+                <failIfNoTests>false</failIfNoTests>
+
+                <!-- Timeouts and quick-exit defaults -->
+                <surefire.skipAfterFailureCount>1</surefire.skipAfterFailureCount>
+                <surefire.forkedProcessTimeoutInSeconds>180</surefire.forkedProcessTimeoutInSeconds>
+
+                <!-- Quiet Spring logs during tests (optional; adjust if you prefer logback-test.xml) -->
+                <spring.test.log.level>WARN</spring.test.log.level>
+            </properties>
         </profile>
         <profile>
             <id>include-its</id>
@@ -443,6 +405,7 @@
                         <configuration>
                             <forkedProcessTimeoutInSeconds>180</forkedProcessTimeoutInSeconds>
                             <skipITs>false</skipITs>
+                            <argLine>${surefireArgLine} ${argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
                         </configuration>
                         <executions>
                             <execution>
