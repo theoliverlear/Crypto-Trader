@@ -218,6 +218,23 @@
 
       <!-- >>> EXECUTIONS LIVE HERE (they will run + be inherited) <<< -->
       <plugins>
+          <plugin>
+              <groupId>org.jetbrains.dokka</groupId>
+              <artifactId>dokka-maven-plugin</artifactId>
+              <version>1.9.20</version>
+              <inherited>true</inherited>
+              <configuration>
+                  <outputDir>${project.build.directory}/dokka-html</outputDir>
+                  <dokkaPlugins>
+                      <!-- optional: base plugin provides HTML theme -->
+                      <plugin>
+                          <groupId>org.jetbrains.dokka</groupId>
+                          <artifactId>dokka-base</artifactId>
+                          <version>1.9.20</version>
+                      </plugin>
+                  </dokkaPlugins>
+              </configuration>
+          </plugin>
         <!-- Unit tests -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
