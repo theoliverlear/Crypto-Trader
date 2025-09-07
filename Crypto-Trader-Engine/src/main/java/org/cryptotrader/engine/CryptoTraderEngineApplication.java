@@ -1,14 +1,18 @@
 package org.cryptotrader.engine;
 
 import org.cryptotrader.health.models.CryptoTraderService;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.stereotype.Component;
 
 import static org.cryptotrader.health.ServiceStatusChecker.isServiceAlive;
 
@@ -37,13 +41,6 @@ import static org.cryptotrader.health.ServiceStatusChecker.isServiceAlive;
 })
 public class CryptoTraderEngineApplication {
     public static void main(String[] args) {
-        boolean dataServiceAvailable = isServiceAlive(CryptoTraderService.DATA);
-        boolean isDocsProfile = System.getProperty("spring-boot.run.profiles").contains("docs");
-        if (!dataServiceAvailable && !isDocsProfile) {
-            String serviceMessage = "Crypto-Trader-Data service is not available. " +
-                                    "Please start it before launching Crypto-Trader-Engine.";
-            throw new RuntimeException(serviceMessage);
-        }
         boolean tradingEnabled = isTradingEnabled();
         if (!tradingEnabled) {
             disableTrading();
@@ -60,5 +57,19 @@ public class CryptoTraderEngineApplication {
         String tradingEnabledProperty = System.getProperty("cryptotrader.engine.trading.enabled", tradingEnabledEnv);
         boolean tradingEnabled = Boolean.parseBoolean(tradingEnabledProperty);
         return tradingEnabled;
+    }
+
+    @Component
+    @Profile("!docs")
+    static class EngineStartupVerifier implements ApplicationRunner {
+        @Override
+        public void run(ApplicationArguments args) {
+            boolean dataServiceAvailable = isServiceAlive(CryptoTraderService.DATA);
+            if (!dataServiceAvailable) {
+                throw new IllegalStateException(
+                                "Crypto-Trader-Data service is not available. " +
+                                "Please start it before launching Crypto-Trader-Engine.");
+            }
+        }
     }
 }
