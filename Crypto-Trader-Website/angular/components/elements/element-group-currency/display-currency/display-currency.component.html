@@ -1,17 +1,19 @@
 <!-- display-currency.component.html -->
 <ng-container>
-    <div class="image-code-div">
-        <ss-img [imageAsset]="imageAsset"/>
-        <ss-title [tagType]="TagType.H4" [text]="currency.currencyCode"/>
-    </div>
-    <div class="display-currency-title">
-        <ss-title class="display-currency-name"
-                  [tagType]="TagType.H3"
-                  [text]="currency.currencyName"/>
-        <subtitle [tagType]="TagType.H4" [text]="getCurrencyPrice()"/>
-        <div class="currency-action-buttons-div">
-            <ss-button [text]="'Buy'" [size]="ElementSize.SMALL"/>
-            <ss-button [text]="'Sell'" [size]="ElementSize.SMALL"/>
+    <div class="display-action-div">
+        <div class="image-code-div">
+            <ss-img [imageAsset]="imageAsset"/>
+            <ss-title [tagType]="TagType.H4" [text]="currency.currencyCode"/>
+        </div>
+        <div class="display-currency-title">
+            <ss-title class="display-currency-name"
+                      [tagType]="TagType.H3"
+                      [text]="currency.currencyName"/>
+            <subtitle [tagType]="TagType.H4" [text]="getCurrencyPrice()"/>
+            <div class="currency-action-buttons-div">
+                <ss-button [text]="'Buy'" [size]="ElementSize.SMALL"/>
+                <ss-button [text]="'Sell'" [size]="ElementSize.SMALL"/>
+            </div>
         </div>
     </div>
 
