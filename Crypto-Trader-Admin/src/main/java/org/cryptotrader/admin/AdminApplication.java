@@ -27,6 +27,7 @@ public class AdminApplication extends Application {
 
     @Override
     public void init() {
+        System.setProperty("spring.aop.proxy-target-class", "false");
         this.applicationContext = new SpringApplicationBuilder(SpringBootConfig.class)
                                       .headless(false)
                                       .run();
