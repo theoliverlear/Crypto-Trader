@@ -11,6 +11,9 @@ tier-promo {
     ss-title {
         margin: $quarter-percent;
     }
+    ss-paragraph {
+        max-width: $twenty-percent;
+    }
     ss-img {
         @include square-size($six-percent);
         background-color: $muted-blue-half-opacity;
