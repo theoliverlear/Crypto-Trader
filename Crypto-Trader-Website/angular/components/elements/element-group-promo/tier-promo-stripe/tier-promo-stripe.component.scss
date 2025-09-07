@@ -2,10 +2,15 @@
 @use "../../../../styles/globals" as *;
 
 tier-promo-stripe {
-    @include flex(center, center, row);
-    background-color: lightgray;
+    @include flex(center, center, column);
+    .tier-promos {
+        @include flex(center, center, row);
+    }
+    //background-color: lightgray;
+    //background-color: add-alpha($sunbeam-yellow, 0.2);
+    background-color: add-alpha($muted-blue, 0.2);
     width: 100%;
     padding: $one-percent 0;
     margin: $one-half-percent 0;
-    @extend %simple-box-shadow;
+    //@extend %simple-box-shadow;
 }
