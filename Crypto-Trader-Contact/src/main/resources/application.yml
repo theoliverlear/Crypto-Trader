@@ -1,0 +1,21 @@
+server:
+  port: 8087
+logging:
+  level.org.springframework.mail: DEBUG
+  level.org.eclipse.angus.mail: DEBUG
+spring:
+  application:
+    name: crypto-trader-contact
+  mail:
+    host: smtp.mail.us-east-1.awsapps.com
+    port: 465
+    username: contact@sscryptotrader.com
+    password: ${WORKMAIL_PW}
+    properties:
+      mail:
+        smtp:
+          from: contact@sscryptotrader.com
+          auth: true
+          ssl:
+            enable: true
+    default-encoding: UTF-8
