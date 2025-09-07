@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.cryptotrader.version.model.config.ConfigFileType;
 import org.cryptotrader.version.model.dependency.type.PomDependency;
-import org.cryptotrader.version.model.module.CryptoTraderModules;
+import org.cryptotrader.version.model.module.ModuleLibrary;
 import org.cryptotrader.version.model.module.type.Pom;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -31,7 +31,7 @@ public class PomElement {
         this.path = path;
         this.parent = resolveParent();
     }
-    
+
     public String textFromNamespace(String name) {
         Element child = this.baseElement.getChild(name, this.baseElement.getNamespace());
         if (child == null) {
@@ -48,7 +48,7 @@ public class PomElement {
         }
         return this.getParent().map(parent -> parent.textFromNamespace(name)).orElse("");
     }
-    
+
     public String directText(String name) {
         Element child = this.baseElement.getChild(name, this.baseElement.getNamespace());
         if (child == null) {
@@ -82,7 +82,7 @@ public class PomElement {
         PomElement parentElement = possibleParent.get();
         Path modulePath = Path.of(parentElement.getModulePath());
         ConfigFileType fileType = ConfigFileType.POM;
-        CryptoTraderModules module = CryptoTraderModules.resolveFromPath(modulePath);
+        ModuleLibrary module = ModuleLibrary.resolveFromPath(modulePath);
         return new Pom(module, modulePath, fileType, coords);
     }
 
@@ -92,7 +92,7 @@ public class PomElement {
         if (child == null) child = element.getChild(name);
         return child == null ? "" : (child.getText() == null ? "" : child.getText());
     }
-    
+
     private Optional<PomElement> resolveParent() {
         Element parentElement = this.baseElement.getChild("parent", this.baseElement.getNamespace());
         if (parentElement == null) parentElement = this.baseElement.getChild("parent", MAVEN_NAMESPACE);
@@ -142,14 +142,14 @@ public class PomElement {
         String artifactId = this.directText("artifactId");
         String version = this.directText("version");
         String groupId = this.directText("groupId");
-        CryptoTraderModules module = CryptoTraderModules.resolveFromPath(modulePath);
+        ModuleLibrary module = ModuleLibrary.resolveFromPath(modulePath);
         PomDependency moduleDependency = new PomDependency(name, version, groupId, artifactId);
         return new Pom(module, modulePath, fileType, moduleDependency);
     }
 
     public String getModulePath() {
         String modulePath = this.path.toString();
-        modulePath = modulePath.replace("..", "Crypto-Trader");
+        modulePath = modulePath.replace("..", System.getenv("REPO_NAME"));
         modulePath = modulePath.replace("\\pom.xml", "");
         return modulePath;
     }
