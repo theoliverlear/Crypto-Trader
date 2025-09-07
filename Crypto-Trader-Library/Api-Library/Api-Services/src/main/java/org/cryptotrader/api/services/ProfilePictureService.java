@@ -3,6 +3,7 @@ package org.cryptotrader.api.services;
 
 import org.cryptotrader.entity.user.ProfilePicture;
 import org.cryptotrader.repository.ProfilePictureRepository;
+import org.cryptotrader.api.services.models.ProfilePictureOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
-public class ProfilePictureService {
+public class ProfilePictureService implements ProfilePictureOperations {
     //============================-Variables-=================================
     private ProfilePictureRepository profilePictureRepository;
     //===========================-Constructors-===============================
