@@ -43,7 +43,7 @@ open module org.cryptotrader.admin {
     exports org.cryptotrader.admin;
     exports org.cryptotrader.admin.controller;
     exports org.cryptotrader.admin.event;
-//    exports org.cryptotrader.admin.component;
+    exports org.cryptotrader.admin.component;
     exports org.cryptotrader.admin.route;
     exports org.cryptotrader.admin.ui;
     exports org.cryptotrader.admin.models;
