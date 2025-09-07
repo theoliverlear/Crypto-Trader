@@ -8,7 +8,7 @@
         }
         a {
             text-align: center;
-            @extend %fill-container;
+            //@extend %fill-container;
         }
     }
 
@@ -16,7 +16,6 @@
         @include flex(center, center, row);
         box-sizing: border-box;
         position: relative;
-        @include flex(center, center, row);
         border-radius: simplest-calc(0.5);
         transition: background-color, box-shadow, transform, 0.3s;
         padding: simplest-calc(0.5) simplest-calc(1);
@@ -24,6 +23,7 @@
         flex-basis: $ten-percent;
         h1, h2, h3, h4, h5, h6 {
             min-width: 11ch;
+            max-height: 2ch;
             color: $pure-white;
             @extend %soft-text-shadow;
         }
@@ -112,10 +112,12 @@
         @include flex(center, center, column);
         color: $neutral-black;
         //background-color: $alabaster-stone;
-        background-image: radial-gradient($alabaster-stone, $pure-white);
-        border: $light-charcoal $thin-border solid;
+        //background-image: radial-gradient($alabaster-stone, $pure-white);
+        background-color: add-alpha($pure-white, 0.8);
+        //border: $light-charcoal $thin-border solid;
         padding: $half-percent $one-percent;
-        @extend %soft-border-radius;
+        //@extend %soft-border-radius;
+        border-radius: $quarter-percent;
     }
 
     ss-title {
