@@ -57,6 +57,7 @@
         <module>Crypto-Trader-Coverage</module>
         <module>Crypto-Trader-Health</module>
         <module>Crypto-Trader-Mobile</module>
+        <module>Crypto-Trader-Contact</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -218,6 +219,21 @@
         </plugins>
       </pluginManagement>
       <plugins>
+          <plugin>
+              <groupId>org.jetbrains.kotlin</groupId>
+              <artifactId>kotlin-maven-plugin</artifactId>
+              <version>2.1.0</version>
+              <executions>
+                  <execution>
+                      <id>test-compile</id>
+                      <phase>test-compile</phase>
+                      <goals><goal>test-compile</goal></goals>
+                      <configuration>
+                          <jdkHome>${env.JAVA_HOME}</jdkHome>
+                      </configuration>
+                  </execution>
+              </executions>
+          </plugin>
           <plugin>
               <groupId>org.jetbrains.dokka</groupId>
               <artifactId>dokka-maven-plugin</artifactId>
