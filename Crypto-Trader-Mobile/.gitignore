@@ -1,0 +1,7 @@
+# Ignore machine-specific Android SDK config
+local.properties
+
+# (Optional) Typical Gradle/Android build outputs
+build/
+.gradle/
+*.hprof
