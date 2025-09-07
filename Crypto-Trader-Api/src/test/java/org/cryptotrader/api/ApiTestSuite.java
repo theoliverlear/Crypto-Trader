@@ -5,4 +5,4 @@ import org.junit.platform.suite.api.Suite;
 
 @Suite
 @SelectPackages({"org.cryptotrader.api"})
-public class CryptoTraderApiTestSuite { }
+public class ApiTestSuite { }
