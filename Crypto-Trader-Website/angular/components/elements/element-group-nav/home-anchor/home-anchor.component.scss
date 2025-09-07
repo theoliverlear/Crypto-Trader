@@ -6,16 +6,17 @@ home-anchor {
     position: absolute;
     @include square-size(calc($three-half-percent + $quarter-percent));
     box-shadow: none;
-    transition: box-shadow, 0.3s;
+    transition: scale, 0.3s;
     @extend %soft-border-radius;
-    background-color: add-alpha(lightblue, 0.7);
+    //background-color: add-alpha($alabaster-stone, 0.7);
     padding: $quarter-percent;
     &:hover {
         cursor: pointer;
-        box-shadow: $blue-gray $quarter-percent $quarter-percent 0 0;
+        //box-shadow: $blue-gray $quarter-percent $quarter-percent 0 0;
     }
     &:active {
         box-shadow: none;
-        transform: translate($quarter-percent, $quarter-percent);
+        //transform: translate($quarter-percent, $quarter-percent);
+        scale: 0.9;
     }
 }
