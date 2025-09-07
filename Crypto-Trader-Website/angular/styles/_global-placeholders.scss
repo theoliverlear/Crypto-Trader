@@ -9,3 +9,9 @@
 %nav-bar-padding-top {
     padding-top: $four-percent;
 }
+
+%transparent-text {
+    -webkit-text-stroke: 2px add-alpha($charcoal, 0.1);
+    color: add-alpha($pure-white, 1);
+    text-decoration: underline;
+}
