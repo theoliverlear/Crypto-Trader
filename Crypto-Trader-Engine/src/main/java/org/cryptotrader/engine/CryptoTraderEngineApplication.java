@@ -1,12 +1,16 @@
 package org.cryptotrader.engine;
 
+import org.cryptotrader.health.models.CryptoTraderService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+
+import static org.cryptotrader.health.ServiceStatusChecker.isServiceAlive;
 
 
 /**
@@ -27,13 +31,18 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         "org.cryptotrader.component",
         "org.cryptotrader.engine",
         "org.cryptotrader.api",
-})
+}, excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "org\\.cryptotrader\\.component\\.config\\.HttpClientConfig"))
 @EnableJpaRepositories(basePackages = {
         "org.cryptotrader.repository"
 })
 public class CryptoTraderEngineApplication {
     public static void main(String[] args) {
-        // TODO: Require health check of Crypto-Trader-Data before launch.
+        boolean dataServiceAvailable = isServiceAlive(CryptoTraderService.DATA);
+        if (!dataServiceAvailable) {
+            String serviceMessage = "Crypto-Trader-Data service is not available. " +
+                                    "Please start it before launching Crypto-Trader-Engine.";
+            throw new RuntimeException(serviceMessage);
+        }
         boolean tradingEnabled = isTradingEnabled();
         if (!tradingEnabled) {
             disableTrading();
