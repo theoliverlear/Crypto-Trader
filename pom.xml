@@ -55,6 +55,7 @@
         <module>Crypto-Trader-Logging</module>
         <module>Crypto-Trader-Docs</module>
         <module>Crypto-Trader-Coverage</module>
+        <module>Crypto-Trader-Health</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

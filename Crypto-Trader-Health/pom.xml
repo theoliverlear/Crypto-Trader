@@ -68,6 +68,11 @@
                 <version>3.13.0</version>
                 <configuration>
                     <release>23</release>
+                    <useModulePath>false</useModulePath>
+                    <excludes>
+                        <exclude>module-info.java</exclude>
+                        <exclude>**/module-info.java</exclude>
+                    </excludes>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
