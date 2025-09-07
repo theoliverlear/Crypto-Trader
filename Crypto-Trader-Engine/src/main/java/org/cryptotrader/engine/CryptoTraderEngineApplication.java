@@ -35,7 +35,7 @@ import static org.cryptotrader.health.ServiceStatusChecker.isServiceAlive;
         "org.cryptotrader.component",
         "org.cryptotrader.engine",
         "org.cryptotrader.api",
-}, excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "org\\.cryptotrader\\.component\\.config\\.HttpClientConfig"))
+})
 @EnableJpaRepositories(basePackages = {
         "org.cryptotrader.repository"
 })

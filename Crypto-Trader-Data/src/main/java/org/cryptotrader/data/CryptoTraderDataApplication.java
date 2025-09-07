@@ -18,7 +18,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         "org.cryptotrader.component",
         "org.cryptotrader.data",
         "org.cryptotrader.api",
-}, excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "org\\.cryptotrader\\.component\\.config\\.HttpClientConfig"))
+})
 @EnableJpaRepositories(basePackages = {
         "org.cryptotrader.repository"
 })
