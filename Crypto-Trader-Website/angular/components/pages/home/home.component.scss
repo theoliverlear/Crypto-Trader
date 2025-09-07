@@ -3,12 +3,16 @@
 
 home {
     .intro-text-div {
-        @include flex(space-around, center, row);
+        @include flex(space-around, center, column);
         ss-paragraph {
             width: 60%;
+            background-color: add-alpha($muted-blue, 0.015);
+            margin: $half-percent;
         }
         ss-anchor {
-            box-shadow: $sunbeam-yellow simplest-calc(0.25) simplest-calc(0.25) 0 0;
+            //box-shadow: $sunbeam-yellow simplest-calc(0.25) simplest-calc(0.25) 0 0;
+            background-color: add-alpha($sunbeam-yellow, 0.5);
+            max-height: $three-half-percent;
         }
     }
     .intro-stripe {
