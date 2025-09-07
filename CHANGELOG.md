@@ -15,20 +15,26 @@
 | Crypto-Trader-Analysis | v.v.v   |
 | Crypto-Trader-Api      | v.v.v   |
 | Crypto-Trader-Assets   | v.v.v   |
+| Crypto-Trader-Coverage | v.v.v   |
 | Crypto-Trader-Data     | v.v.v   |
+| Crypto-Trader-Docs     | v.v.v   |
 | Crypto-Trader-Engine   | v.v.v   |
+| Crypto-Trader-Health   | v.v.v   |
 | Crypto-Trader-Library  | v.v.v   |
 | Api-Library            | v.v.v   |
 | Api-Communication      | v.v.v   |
 | Api-Components         | v.v.v   |
 | Api-Models             | v.v.v   |
 | Api-Repositories       | v.v.v   |
+| Api-Services           | v.v.v   |
 | Desktop-Library        | v.v.v   |
 | Desktop-Components     | v.v.v   |
 | Desktop-Styles         | v.v.v   |     
 | Externals-Library      | v.v.v   |
 | Version-Library        | v.v.v   |
 | Version-Models         | v.v.v   |
+| Crypto-Trader-Logging  | v.v.v   |
+| Crypto-Trader-Mobile   | v.v.v   |
 | Crypto-Trader-Testing  | v.v.v   |
 | Crypto-Trader-Version  | v.v.v   |
 | Crypto-Trader-Website  | v.v.v   |
@@ -71,12 +77,27 @@
 - Bullet
 - Bullet
 
+### [Crypto Trader Coverage](Crypto-Trader-Coverage)
+- Bullet
+- Bullet
+- Bullet
+
 ### [Crypto Trader Data](Crypto-Trader-Data)
 - Bullet
 - Bullet
 - Bullet
 
+### [Crypto Trader Docs](Crypto-Trader-Docs)
+- Bullet
+- Bullet
+- Bullet
+
 ### [Crypto Trader Engine](Crypto-Trader-Engine)
+- Bullet
+- Bullet
+- Bullet
+
+### [Crypto Trader Health](Crypto-Trader-Health)
 - Bullet
 - Bullet
 - Bullet
@@ -111,6 +132,11 @@
 - Bullet
 - Bullet
 
+### [Api Services](Crypto-Trader-Library/Api-Library/Api-Services)
+- Bullet
+- Bullet
+- Bullet
+
 ### [Desktop Library](Crypto-Trader-Library/Desktop-Library)
 - Bullet
 - Bullet
@@ -131,17 +157,22 @@
 - Bullet
 - Bullet
 
-### [Externals OpenAI](Crypto-Trader-Library/Externals-Library/Externals-OpenAI)
-- Bullet
-- Bullet
-- Bullet
-
 ### [Version Library](Crypto-Trader-Library/Version-Library)
 - Bullet
 - Bullet
 - Bullet
 
 ### [Version Models](Crypto-Trader-Library/Version-Library/Version-Models)
+- Bullet
+- Bullet
+- Bullet
+
+### [Crypto Trader Logging](Crypto-Trader-Logging)
+- Bullet
+- Bullet
+- Bullet
+
+### [Crypto Trader Mobile](Crypto-Trader-Mobile)
 - Bullet
 - Bullet
 - Bullet
@@ -167,4 +198,3 @@
 - Bullet
 - Bullet
 - Bullet
-
