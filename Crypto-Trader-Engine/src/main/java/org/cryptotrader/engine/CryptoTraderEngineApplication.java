@@ -38,7 +38,7 @@ import static org.cryptotrader.health.ServiceStatusChecker.isServiceAlive;
 public class CryptoTraderEngineApplication {
     public static void main(String[] args) {
         boolean dataServiceAvailable = isServiceAlive(CryptoTraderService.DATA);
-        boolean isDocsProfile = System.getProperty("spring.profiles.active").contains("docs");
+        boolean isDocsProfile = System.getProperty("spring-boot.run.profiles").contains("docs");
         if (!dataServiceAvailable && !isDocsProfile) {
             String serviceMessage = "Crypto-Trader-Data service is not available. " +
                                     "Please start it before launching Crypto-Trader-Engine.";
