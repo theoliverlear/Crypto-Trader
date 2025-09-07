@@ -10,9 +10,9 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         List<PomElement> allPoms = PomParser.getAllPoms();
-        allPoms.forEach(pom -> {
-            System.out.println(pom + "\n");
+        allPoms.forEach(pomElement -> {
+            System.out.println(pomElement.getPom().getModuleDependency().getName());
         });
-        System.out.println(PomValidator.cryptoTraderParentMatches());
+        System.out.println("All match: " + PomValidator.allMatch());
     }
 }
