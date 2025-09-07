@@ -1,12 +1,7 @@
 package org.cryptotrader.version.script;
 
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.version.model.dependency.type.PomDependency;
 import org.cryptotrader.version.model.element.PomElement;
-import org.cryptotrader.version.model.module.CryptoTraderModules;
-import org.cryptotrader.version.model.module.Module;
-import org.cryptotrader.version.model.config.ConfigFileType;
-import org.cryptotrader.version.model.module.type.Pom;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -21,7 +16,6 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -32,8 +26,6 @@ public class PomParser {
         List<PomElement> modules;
         List<Path> pomPaths = getPomPaths();
         modules = pomPaths.stream().map(PomParser::getPom).collect(Collectors.toList());
-        // remove nulls
-        modules = modules.stream().filter(Objects::nonNull).collect(Collectors.toList());
         return modules;
     }
 
