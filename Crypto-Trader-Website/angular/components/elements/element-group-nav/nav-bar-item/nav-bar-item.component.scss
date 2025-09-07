@@ -10,27 +10,31 @@ nav-bar-item {
     position: relative;
     @include flex(center, center, row);
     border-radius: simplest-calc(0.5);
-    transition: background-color, box-shadow, transform, 0.3s;
+    transition: background-color, box-shadow, scale, 0.3s;
     padding: simplest-calc(0.5) simplest-calc(1);
     //background: radial-gradient(circle, $muted-blue, $blue-gray);
-    background-color: $muted-blue;
+    //background-color: $charcoal;
+    //border: $light-charcoal $thinnest-border solid;
+    box-shadow: add-alpha($light-charcoal, 0.5) 0 0 $quarter-percent simplest-calc(0.001);
     flex-basis: $ten-percent;
     h4 {
-        font-size: calc($h4-font-size * 0.85);
+        font-size: calc($h4-font-size * 0.65);
         min-width: 9ch;
-        color: $pure-white;
-        @extend %soft-text-shadow;
+        //color: $pure-white;
+        //color: $sunbeam-yellow;
+        color: $neutral-black;
     }
     &:hover {
         //background-color: $almost-white;
         $box-shadow-size: simplest-calc(0.25);
-        box-shadow: $blue-gray $box-shadow-size $box-shadow-size 0 0;
+        box-shadow: add-alpha($light-charcoal, 0.25) 0 0 $half-percent simplest-calc(0.005);
         cursor: pointer;
     }
 
     &:active {
         box-shadow: none;
-        $top-and-right: simplest-calc(0.25);
-        transform: translate($top-and-right, $top-and-right);
+        scale: 0.9;
+        //$top-and-right: simplest-calc(0.25);
+        //transform: translate($top-and-right, $top-and-right);
     }
 }
