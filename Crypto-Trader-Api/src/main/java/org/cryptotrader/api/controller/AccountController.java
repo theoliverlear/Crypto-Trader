@@ -2,7 +2,7 @@ package org.cryptotrader.api.controller;
 //=================================-Imports-==================================
 import jakarta.servlet.http.HttpSession;
 import org.cryptotrader.api.services.ProductUserService;
-import org.cryptotrader.api.services.ProfilePictureService;
+import org.cryptotrader.api.services.models.ProfilePictureOperations;
 import org.cryptotrader.api.services.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,7 @@ import java.util.Optional;
 /**
  * REST endpoints for account management.
  *
- * @see ProfilePictureService
+ * @see ProfilePictureOperations
  * @see ProductUserService
  * @see SessionService
  * @author Oliver Lear Sigwarth
@@ -32,12 +32,12 @@ import java.util.Optional;
 public class AccountController {
     //============================-Variables-=================================
     private SessionService sessionService;
-    private ProfilePictureService profilePictureService;
+    private ProfilePictureOperations profilePictureService;
     private ProductUserService productUserService;
     /**
      * REST endpoints for account management.
      *
-     * @see ProfilePictureService
+     * @see ProfilePictureOperations
      * @see ProductUserService
      * @see SessionService
      * @author Oliver Lear Sigwarth (theoliverlear)
@@ -45,7 +45,7 @@ public class AccountController {
     //===========================-Constructors-===============================
     @Autowired
     public AccountController(SessionService sessionService,
-                             ProfilePictureService profilePictureService,
+                             ProfilePictureOperations profilePictureService,
                              ProductUserService productUserService) {
         this.sessionService = sessionService;
         this.profilePictureService = profilePictureService;
@@ -67,7 +67,7 @@ public class AccountController {
      * @see ProductUser
      * @see ProfilePicture
      * @see SessionService#userInSession(HttpSession)
-     * @see ProfilePictureService#saveProfilePicture(ProfilePicture)
+     * @see ProfilePictureOperations#saveProfilePicture(ProfilePicture)
      * @see ProductUserService#saveUser(ProductUser)
      * @author Oliver Lear Sigwarth (theoliverlear)
      */
@@ -114,7 +114,7 @@ public class AccountController {
      *         numeric value
      * @see HasProfilePictureResponse
      * @see ResponseEntity
-     * @see ProfilePictureService#existsByUserId(Long)
+     * @see ProfilePictureOperations#existsByUserId(Long)
      * @author Oliver Lear Sigwarth (theoliverlear)
      */
     @GetMapping("/get/{id}/has-profile-picture")
