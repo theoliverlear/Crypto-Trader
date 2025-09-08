@@ -1,7 +1,7 @@
 @file:JvmName("DataPointFetcher")
 package org.cryptotrader.admin.component
 
-import org.cryptotrader.admin.models.ChartDataPoint
+import org.cryptotrader.admin.model.ChartDataPoint
 import org.cryptotrader.api.services.CurrencyService
 import org.cryptotrader.comm.response.TimeValueResponse
 import org.springframework.beans.factory.annotation.Autowired
