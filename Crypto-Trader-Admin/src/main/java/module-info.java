@@ -46,5 +46,5 @@ open module org.cryptotrader.admin {
     exports org.cryptotrader.admin.component;
     exports org.cryptotrader.admin.route;
     exports org.cryptotrader.admin.ui;
-    exports org.cryptotrader.admin.models;
+    exports org.cryptotrader.admin.model;
 }
