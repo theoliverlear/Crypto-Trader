@@ -239,12 +239,16 @@
                 <executions>
                     <execution>
                         <id>compile</id>
-                        <phase>compile</phase>
+                        <phase>process-sources</phase>
                         <goals>
                             <goal>compile</goal>
                         </goals>
                         <configuration>
                             <jdkHome>${env.JAVA_HOME}</jdkHome>
+                            <sourceDirs>
+                                <sourceDir>${project.basedir}/src/main/java</sourceDir>
+                                <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+                            </sourceDirs>
                         </configuration>
                     </execution>
                     <execution>
@@ -255,6 +259,10 @@
                         </goals>
                         <configuration>
                             <jdkHome>${env.JAVA_HOME}</jdkHome>
+                            <sourceDirs>
+                                <sourceDir>${project.basedir}/src/test/java</sourceDir>
+                                <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
+                            </sourceDirs>
                         </configuration>
                     </execution>
                 </executions>
