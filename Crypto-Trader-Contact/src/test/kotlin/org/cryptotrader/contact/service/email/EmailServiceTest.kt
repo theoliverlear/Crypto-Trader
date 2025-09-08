@@ -2,8 +2,11 @@ package org.cryptotrader.contact.service.email
 
 import com.icegreen.greenmail.util.GreenMail
 import com.icegreen.greenmail.util.ServerSetup
-import org.assertj.core.api.Assertions
-import org.cryptotrader.contact.comm.email.response.EmailResponse
+import org.assertj.core.api.Assertions.*
+import org.cryptotrader.contact.comm.email.request.EmailRequest
+import org.cryptotrader.contact.natives.normalized
+import org.cryptotrader.contact.service.email.template.Template
+import org.cryptotrader.contact.service.email.template.getExpectedWelcomeHtml
 import org.cryptotrader.test.CryptoTraderTest
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -48,18 +51,22 @@ class EmailServiceTest @Autowired constructor(
 
     @Test
     fun `Should send email with valid request`() {
-        val response = EmailResponse(
+        val request = EmailRequest(
+            "test@local",
             "Testing Crypto Trader",
             "Hello from Spring Boot in Kotlin",
-            "test@local"
+            Template.WELCOME
         )
-        this.emailService.send(response)
+        this.emailService.send(request)
         val messages = greenMail.receivedMessages
-        Assertions.assertThat(messages).hasSize(1)
-        Assertions.assertThat(messages[0].subject).isEqualTo("Testing Crypto Trader")
-        Assertions.assertThat(messages[0].allRecipients[0].toString()).isEqualTo("test@local")
-        Assertions.assertThat(messages[0].content.toString()).isEqualTo(
-            "Hello from Spring Boot in Kotlin"
+        assertThat(messages).hasSize(1)
+        assertThat(messages[0].subject).isEqualTo("Testing Crypto Trader")
+        assertThat(messages[0].allRecipients[0].toString()).isEqualTo("test@local")
+        assertThat(messages[0].content.toString().normalized()).isEqualTo(
+            getExpectedWelcomeHtml(
+                "Testing Crypto Trader",
+                "Hello from Spring Boot in Kotlin".normalized()
+            ).normalized()
         )
     }
 }
