@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.admin.component.DataPointFetcher;
-import org.cryptotrader.admin.models.ChartDataPoint;
+import org.cryptotrader.admin.model.ChartDataPoint;
 import org.cryptotrader.desktop.component.ComponentLoader;
 import org.cryptotrader.desktop.component.config.SpringContext;
 import org.springframework.beans.factory.annotation.Autowired;
