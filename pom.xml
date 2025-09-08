@@ -56,7 +56,6 @@
         <module>Crypto-Trader-Docs</module>
         <module>Crypto-Trader-Coverage</module>
         <module>Crypto-Trader-Health</module>
-        <module>Crypto-Trader-Mobile</module>
         <module>Crypto-Trader-Contact</module>
     </modules>
     <properties>
