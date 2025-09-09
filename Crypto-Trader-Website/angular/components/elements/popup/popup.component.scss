@@ -3,5 +3,10 @@
 
 
 popup {
-
+    ss-title {
+        background-color: $light-charcoal;
+        @extend %soft-border-radius;
+        padding: $half-percent $one-percent;
+        color: $pure-white;
+    }
 }
