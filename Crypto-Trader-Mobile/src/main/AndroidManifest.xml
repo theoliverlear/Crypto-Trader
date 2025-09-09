@@ -3,6 +3,7 @@
     package="org.cryptotrader.mobile">
 
     <application
+        android:name=".CryptoTraderMobileApplication"
         android:label="Crypto Trader"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
