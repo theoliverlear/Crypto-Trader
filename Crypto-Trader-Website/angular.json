@@ -43,6 +43,8 @@
               }
             ],
             "styles": [
+              "node_modules/@theoliverlear/angular-suite/styles/_globals.scss",
+              "node_modules/@theoliverlear/styles-suite/index.scss",
               "angular/components/app/app.component.scss",
               "angular/components/elements/content-stripe/content-stripe.component.scss",
               "angular/components/elements/element-group-auth/auth-console-login-section/auth-console-login-section.component.scss",
@@ -86,6 +88,8 @@
             "fileReplacements": [],
             "stylePreprocessorOptions": {
               "includePaths": [
+                "node_modules/@theoliverlear/styles-suite/index.scss",
+                "node_modules/@theoliverlear/angular-suite/styles",
                 "angular/styles"
               ]
             },
