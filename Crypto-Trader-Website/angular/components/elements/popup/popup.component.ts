@@ -1,7 +1,6 @@
 // popup.component.ts 
 import {Component, Input} from "@angular/core";
 import {AuthPopup, TagType} from "@theoliverlear/angular-suite";
-import {NgIf} from "@angular/common";
 
 type PossibleAuthPopup = AuthPopup | null;
 
@@ -17,6 +16,11 @@ export class PopupComponent {
         
     }
 
+    shouldDisplay(): boolean {
+        let isNoneMessage: boolean = (this.popupMessage as AuthPopup) !== AuthPopup.NONE;
+        return this.popupMessage && isNoneMessage
+    }
+    
     protected readonly TagType = TagType;
     protected readonly AuthPopup = AuthPopup;
 }
