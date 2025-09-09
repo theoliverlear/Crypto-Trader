@@ -32,10 +32,12 @@
         <docs.openapi.api.url>http://localhost:18080/v3/api-docs.yaml</docs.openapi.api.url>
         <docs.openapi.data.url>http://localhost:18081/v3/api-docs.yaml</docs.openapi.data.url>
         <docs.openapi.engine.url>http://localhost:18082/v3/api-docs.yaml</docs.openapi.engine.url>
+        <docs.openapi.contact.url>http://localhost:18083/v3/api-docs.yaml</docs.openapi.contact.url>
 
         <docs.openapi.api.file>openapi-api</docs.openapi.api.file>
         <docs.openapi.data.file>openapi-data</docs.openapi.data.file>
         <docs.openapi.engine.file>openapi-engine</docs.openapi.engine.file>
+        <docs.openapi.contact.file>openapi-contact</docs.openapi.contact.file>
 
     </properties>
 
