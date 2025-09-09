@@ -34,6 +34,7 @@ nav:
   - CT API: api/index.md
   - Data API: data/index.md
   - Engine API: engine/index.md
+  - Contact API: contact/index.md
   - References:
     - Api:
       - README: reference/Api/README.md
@@ -44,6 +45,9 @@ nav:
     - Assets:
       - README: reference/Assets/README.md
       - Complete Docs: reference/Assets/api/index.html
+    - Contact:
+      - README: reference/Contact/README.md
+      - Complete Docs: reference/Contact/api/index.html
     - Data:
       - README: reference/Data/README.md
       - Complete Docs: reference/Data/api/index.html
