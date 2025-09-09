@@ -91,6 +91,15 @@ jobs:
             -Dspring-boot.run.arguments="--server.port=18082 --cryptotrader.engine.trading.enabled=false" \
             spring-boot:run > engine.log 2>&1 &
           echo $! > engine.pid
+          
+      - name: Start Contact (docs profile) in background
+        run: |
+          nohup mvn -B -s .github/maven-settings.xml -DskipTests \
+            -f Crypto-Trader-Contact/pom.xml -am \
+            -Dspring-boot.run.profiles=docs \
+            -Dspring-boot.run.arguments="--server.port=18083 --cryptotrader.engine.trading.enabled=false" \
+            spring-boot:run > engine.log 2>&1 &
+          echo $! > engine.pid
 
       - name: Wait for APIs to be ready
         run: |
@@ -98,6 +107,7 @@ jobs:
             A=$(curl -fsS http://localhost:18080/v3/api-docs.yaml >/dev/null && echo ok || echo no)
             D=$(curl -fsS http://localhost:18081/v3/api-docs.yaml >/dev/null && echo ok || echo no)
             E=$(curl -fsS http://localhost:18082/v3/api-docs.yaml >/dev/null && echo ok || echo no)
+            C=$(curl -fsS http://localhost:18083/v3/api-docs.yaml >/dev/null && echo ok || echo no)
             if [ "$A" = ok ] && [ "$D" = ok ] && [ "$E" = ok ]; then
               echo "All APIs are up"; exit 0; fi
             sleep 2
@@ -106,6 +116,7 @@ jobs:
           tail -n +1 api.log || true
           tail -n +1 data.log || true
           tail -n +1 engine.log || true
+          tail -n +1 contact.log || true
           exit 1
       
       - name: Build docs module (generate OpenAPI + copy to docs)
