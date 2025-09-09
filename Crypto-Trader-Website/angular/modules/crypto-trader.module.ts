@@ -1,40 +1,37 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA} from "@angular/core";
-import {AppComponent} from "../components/app/app.component";
-import {elements} from "../components/elements/elements";
-import {directives} from "../directives/directives";
-import {pages} from "../components/pages/pages";
 import {BrowserModule} from "@angular/platform-browser";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FormsModule} from "@angular/forms";
 import {AppRouting} from "./routing/app-routing.module";
 import {RouterOutlet} from "@angular/router";
-import {NgOptimizedImage} from "@angular/common";
+import {CommonModule, NgOptimizedImage} from "@angular/common";
 import {HttpClientModule, provideHttpClient, withFetch} from "@angular/common/http";
 import {services} from "../services/services";
 import {BaseChartDirective} from "ng2-charts";
 import {
-    AngularSuiteModule,
-    SubtitleComponent
+    AngularSuiteModule
 } from "@theoliverlear/angular-suite";
+import {AppComponent} from "../components/app/app.component";
+import {directives} from "../directives/directives";
+import {elements} from "../components/elements/elements";
+import {pages} from "../components/pages/pages";
 
 @NgModule({
     declarations: [
         AppComponent,
         ...elements,
-        ...directives,
         ...pages,
     ],
     imports: [
+        CommonModule,
         BrowserModule,
         BrowserAnimationsModule,
         FormsModule,
         AppRouting,
         RouterOutlet,
-        NgOptimizedImage,
         HttpClientModule,
         BaseChartDirective,
-        AngularSuiteModule,
-        SubtitleComponent
+        AngularSuiteModule
     ],
     providers: [
         ...services,
@@ -42,7 +39,7 @@ import {
     ],
     bootstrap: [AppComponent],
     exports: [],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
+    schemas: []
 })
 export class CryptoTraderModule {
     constructor() {
