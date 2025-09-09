@@ -4,6 +4,7 @@ import {filter, map, mergeMap} from "rxjs";
 
 @Component({
     selector: 'app',
+    standalone: false,
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
