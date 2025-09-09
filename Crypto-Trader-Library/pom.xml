@@ -25,6 +25,8 @@
         <module>Version-Library</module>
         <module>Version-Library/Version-Models</module>
         <module>Externals-Library</module>
+        <module>Contact-Library</module>
+        <module>Contact-Library/Contact-Models</module>
     </modules>
 
     <artifactId>crypto-trader-library</artifactId>
