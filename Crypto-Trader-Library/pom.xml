@@ -27,6 +27,7 @@
         <module>Externals-Library</module>
         <module>Contact-Library</module>
         <module>Contact-Library/Contact-Models</module>
+        <module>Contact-Library/Contact-Repositories</module>
     </modules>
 
     <artifactId>crypto-trader-library</artifactId>
