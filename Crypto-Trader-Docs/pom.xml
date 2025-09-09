@@ -165,6 +165,19 @@
                             <failOnError>false</failOnError>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>generate-openapi-contact</id>
+                        <phase>generate-resources</phase>
+                        <goals><goal>generate</goal></goals>
+                        <configuration>
+                            <apiDocsUrl>${docs.openapi.contact.url}</apiDocsUrl>
+                            <outputFileName>${docs.openapi.contact.file}.${docs.openapi.format}</outputFileName>
+                            <outputDir>${docs.openapi.outputDir}</outputDir>
+                            <skip>${docs.skipOpenapi}</skip>
+                            <failOnError>false</failOnError>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
