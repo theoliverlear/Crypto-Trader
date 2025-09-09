@@ -7,4 +7,7 @@ auth-console {
     @include flex(center, center, column);
     width: $thirty-percent;
     z-index: 0;
+    ss-button {
+        max-height: $three-half-percent;
+    }
 }
