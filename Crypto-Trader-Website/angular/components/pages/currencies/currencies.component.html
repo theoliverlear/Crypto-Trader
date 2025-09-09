@@ -1,4 +1,6 @@
 <!-- currencies.component.html -->
 <ng-container (error)="onError($event)">
-    <display-currency *ngFor="let currency of currencies.currencies" [currency]="currency"/>
+    @for (currency of currencies.currencies; track currency.currencyCode) {
+        <display-currency [currency]="currency"/>
+    }
 </ng-container>
