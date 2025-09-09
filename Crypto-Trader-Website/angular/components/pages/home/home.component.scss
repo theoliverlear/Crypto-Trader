@@ -17,11 +17,12 @@ home {
     }
     .intro-stripe {
         @include flex(space-around, center, row);
+        background-color: transparent;
+        background-image: linear-gradient(to right, $muted-blue 50%, $blue-gray);
         .title-text-div {
             @include flex(center, center, column);
-            width: 50%;
+            //width: 50%;
             padding: $one-percent 0;
-
             ss-title {
                 //align-self: flex-start;
                 //margin-right: $fifteen-percent;
@@ -36,6 +37,12 @@ home {
         }
         ss-img {
             @include square-size($eight-percent);
+        }
+    }
+
+    .intro-text-div {
+        .intro-paragraph {
+            margin: $one-percent 0;
         }
     }
 }
