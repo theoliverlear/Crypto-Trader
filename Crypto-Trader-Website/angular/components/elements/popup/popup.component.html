@@ -1,6 +1,7 @@
 <!-- popup.component.html -->
 <ng-container>
-    <h5>
-        {{ popupMessage }}
-    </h5>
+    @if (shouldDisplay()) {
+        <ss-title [tagType]="TagType.H3"
+                  [text]="popupMessage"/>
+    }
 </ng-container>
