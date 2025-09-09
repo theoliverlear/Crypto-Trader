@@ -37,10 +37,17 @@
                 <executions>
                     <execution>
                         <id>compile</id>
-                        <phase>compile</phase>
+                        <phase>process-sources</phase>
                         <goals>
                             <goal>compile</goal>
                         </goals>
+                        <configuration>
+                            <jdkHome>${env.JAVA_HOME}</jdkHome>
+                            <jvmTarget>21</jvmTarget>
+                            <sourceDirs>
+                                <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+                            </sourceDirs>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>test-compile</id>
@@ -71,6 +78,7 @@
                 <version>3.13.0</version>
                 <configuration>
                     <release>23</release>
+                    <useModulePath>true</useModulePath>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
