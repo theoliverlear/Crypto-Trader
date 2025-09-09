@@ -6,6 +6,7 @@ import {ButtonText, ElementSize} from "@theoliverlear/angular-suite";
 
 @Component({
     selector: 'auth-console-login-section',
+    standalone: false,
     templateUrl: './auth-console-login-section.component.html',
     styleUrls: ['./auth-console-login-section.component.scss']
 })

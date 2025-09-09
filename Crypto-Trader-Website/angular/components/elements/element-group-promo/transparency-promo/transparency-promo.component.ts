@@ -6,6 +6,7 @@ import {TagType} from "@theoliverlear/angular-suite";
 
 @Component({
     selector: 'transparency-promo',
+    standalone: false,
     templateUrl: './transparency-promo.component.html',
     styleUrls: ['./transparency-promo.component.scss']
 })

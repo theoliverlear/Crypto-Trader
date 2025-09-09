@@ -5,6 +5,7 @@ import {InputType} from "@theoliverlear/angular-suite"
 
 @Component({
     selector: 'auth-input',
+    standalone: false,
     templateUrl: './auth-input.component.html',
     styleUrls: ['./auth-input.component.scss']
 })

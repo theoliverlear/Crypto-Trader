@@ -7,8 +7,16 @@ tier-promo-stripe {
         @include flex(center, center, row);
     }
     //background-color: lightgray;
+    background-color: add-alpha($sunbeam-yellow, 0.5);
     //background-color: add-alpha($sunbeam-yellow, 0.2);
-    background-color: add-alpha($muted-blue, 0.2);
+    //background-color: add-alpha($muted-blue, 0.2);
+    //background-image: radial-gradient(circle, add-alpha($sunbeam-yellow, 0.5),  $alabaster-stone);
+    //$white-sunbeam-gradient: radial-gradient(circle, lightgray,
+    //        add-alpha($sunbeam-yellow, 0.5),
+    //        $alabaster-stone);
+    //background-image: $white-sunbeam-gradient;
+    //background-size: 100% 200%;
+    //background-position: 0 0;
     width: 100%;
     padding: $one-percent 0;
     margin: $one-half-percent 0;

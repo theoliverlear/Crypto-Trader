@@ -24,6 +24,7 @@ import {
 
 @Component({
     selector: 'display-currency',
+    standalone: false,
     templateUrl: './display-currency.component.html',
     styleUrls: ['./display-currency.component.scss']
 })

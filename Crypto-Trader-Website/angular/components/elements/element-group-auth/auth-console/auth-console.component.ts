@@ -3,6 +3,7 @@ import {AuthPopup, AuthType} from "@theoliverlear/angular-suite";
 
 @Component({
     selector: 'auth-console',
+    standalone: false,
     templateUrl: './auth-console.component.html',
     styleUrls: ['./auth-console.component.scss']
 })

@@ -11,6 +11,7 @@ import {TagType} from "@theoliverlear/angular-suite";
 
 @Component({
     selector: 'tier-promo',
+    standalone: false,
     templateUrl: './tier-promo.component.html',
     styleUrls: ['./tier-promo.component.scss']
 })

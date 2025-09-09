@@ -10,6 +10,7 @@ import {
 
 @Component({
     selector: 'currencies',
+    standalone: false,
     templateUrl: './currencies.component.html',
     styleUrls: ['./currencies.component.scss']
 })

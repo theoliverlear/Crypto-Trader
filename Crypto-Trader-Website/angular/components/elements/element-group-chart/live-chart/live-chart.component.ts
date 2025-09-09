@@ -3,6 +3,7 @@ import {ChartType} from "./models/ChartType";
 
 @Component({
     selector: 'live-chart',
+    standalone: false,
     templateUrl: './live-chart.component.html',
     styleUrls: ['./live-chart.component.scss']
 })

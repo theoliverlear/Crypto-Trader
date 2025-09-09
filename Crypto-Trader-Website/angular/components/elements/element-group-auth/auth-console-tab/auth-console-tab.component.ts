@@ -10,6 +10,7 @@ import {AuthType} from "@theoliverlear/angular-suite";
 
 @Component({
     selector: 'auth-console-tab',
+    standalone: false,
     templateUrl: './auth-console-tab.component.html',
     styleUrls: ['./auth-console-tab.component.scss']
 })

@@ -11,6 +11,7 @@ import {
 
 @Component({
     selector: 'nav-bar',
+    standalone: false,
     templateUrl: './nav-bar.component.html',
     styleUrls: ['./nav-bar.component.scss']
 })

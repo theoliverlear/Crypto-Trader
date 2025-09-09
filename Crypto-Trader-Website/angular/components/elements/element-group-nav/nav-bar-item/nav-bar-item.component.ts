@@ -6,6 +6,7 @@ import {
 
 @Component({
     selector: 'nav-bar-item',
+    standalone: false,
     templateUrl: './nav-bar-item.component.html',
     styleUrls: ['./nav-bar-item.component.scss']
 })

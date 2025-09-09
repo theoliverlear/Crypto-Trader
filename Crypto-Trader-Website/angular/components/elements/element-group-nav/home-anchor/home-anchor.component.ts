@@ -9,7 +9,8 @@ import {
 @Component({
     selector: 'home-anchor',
     templateUrl: './home-anchor.component.html',
-    styleUrls: ['./home-anchor.component.scss']
+    styleUrls: ['./home-anchor.component.scss'],
+    standalone: false
 })
 export class HomeAnchorComponent {
     constructor() {

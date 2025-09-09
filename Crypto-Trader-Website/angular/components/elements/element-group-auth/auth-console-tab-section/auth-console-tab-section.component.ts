@@ -4,6 +4,7 @@ import {AuthType, AuthPopup} from "@theoliverlear/angular-suite";
 
 @Component({
     selector: 'auth-console-tab-section',
+    standalone: false,
     templateUrl: './auth-console-tab-section.component.html',
     styleUrls: ['./auth-console-tab-section.component.scss']
 })

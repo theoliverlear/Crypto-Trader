@@ -17,6 +17,7 @@ export type Margin = {
 }
 @Component({
     selector: 'chart',
+    standalone: false,
     templateUrl: './chart.component.html',
     styleUrls: ['./chart.component.scss']
 })

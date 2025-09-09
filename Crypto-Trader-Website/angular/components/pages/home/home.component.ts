@@ -6,8 +6,9 @@ import {TagType, ElementSize} from "@theoliverlear/angular-suite";
 
 @Component({
   selector: 'home',
+  standalone: false,
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
     
