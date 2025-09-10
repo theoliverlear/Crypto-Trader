@@ -6,21 +6,28 @@ import org.cryptotrader.api.library.entity.portfolio.Portfolio;
 import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.api.library.entity.user.SafePassword;
 import org.cryptotrader.api.library.entity.user.User;
+import org.cryptotrader.api.library.events.UserRegisteredEvent;
+import org.cryptotrader.api.library.events.publisher.UserEventsPublisher;
 import org.cryptotrader.api.library.model.http.AuthStatus;
 import org.cryptotrader.api.library.model.http.PayloadStatusResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class AuthService {
     private ProductUserService productUserService;
     private PortfolioService portfolioService;
+    private UserEventsPublisher userEventsPublisher;
     @Autowired
     public AuthService(ProductUserService productUserService,
-                       PortfolioService portfolioService) {
+                       PortfolioService portfolioService,
+                       UserEventsPublisher userEventsPublisher) {
         this.productUserService = productUserService;
         this.portfolioService = portfolioService;
+        this.userEventsPublisher = userEventsPublisher;
     }
     public PayloadStatusResponse<AuthResponse> signup(UserRequest userRequest) {
         String username = userRequest.getUsername();
@@ -40,6 +47,7 @@ public class AuthService {
             user.setPortfolio(portfolio);
             this.productUserService.saveUser(user);
             this.portfolioService.savePortfolio(portfolio);
+            this.userEventsPublisher.publishUserRegisteredEvent(new UserRegisteredEvent(user, LocalDateTime.now()));
             // TODO: Replace with event publishing or other method of talking
             //       between modules.
 //            this.portfolioService.addPortfolioToTraders(portfolio);
