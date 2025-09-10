@@ -1,12 +1,12 @@
 package org.cryptotrader.api.controller;
 //=================================-Imports-==================================
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.api.services.PortfolioService;
-import org.cryptotrader.api.services.ProductUserService;
+import org.cryptotrader.api.library.services.PortfolioService;
+import org.cryptotrader.api.library.services.ProductUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.cryptotrader.entity.user.User;
+import org.cryptotrader.api.library.entity.user.User;
 
 @RestController
 @RequestMapping("/api/user")

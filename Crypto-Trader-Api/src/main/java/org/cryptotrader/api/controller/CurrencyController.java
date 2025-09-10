@@ -1,6 +1,6 @@
 package org.cryptotrader.api.controller;
 
-import org.cryptotrader.api.services.CurrencyService;
+import org.cryptotrader.api.library.services.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.cryptotrader.comm.request.AssetValueRequest;
-import org.cryptotrader.comm.response.AssetValueResponse;
-import org.cryptotrader.entity.currency.Currency;
+import org.cryptotrader.api.library.comm.request.AssetValueRequest;
+import org.cryptotrader.api.library.comm.response.AssetValueResponse;
+import org.cryptotrader.api.library.entity.currency.Currency;
 
 @RestController
 @Profile("!docs")

@@ -1,20 +1,20 @@
 package org.cryptotrader.api.controller;
 //=================================-Imports-==================================
 import jakarta.servlet.http.HttpSession;
-import org.cryptotrader.api.services.PortfolioService;
-import org.cryptotrader.api.services.SessionService;
+import org.cryptotrader.api.library.services.PortfolioService;
+import org.cryptotrader.api.library.services.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.cryptotrader.comm.request.PortfolioAssetRequest;
-import org.cryptotrader.comm.response.AssetValueResponse;
-import org.cryptotrader.comm.response.HasPortfolioResponse;
-import org.cryptotrader.entity.portfolio.Portfolio;
-import org.cryptotrader.entity.portfolio.PortfolioAsset;
-import org.cryptotrader.entity.portfolio.PortfolioAssetHistory;
-import org.cryptotrader.entity.portfolio.PortfolioHistory;
-import org.cryptotrader.entity.user.ProductUser;
+import org.cryptotrader.api.library.comm.request.PortfolioAssetRequest;
+import org.cryptotrader.api.library.comm.response.AssetValueResponse;
+import org.cryptotrader.api.library.comm.response.HasPortfolioResponse;
+import org.cryptotrader.api.library.entity.portfolio.Portfolio;
+import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset;
+import org.cryptotrader.api.library.entity.portfolio.PortfolioAssetHistory;
+import org.cryptotrader.api.library.entity.portfolio.PortfolioHistory;
+import org.cryptotrader.api.library.entity.user.ProductUser;
 
 import java.util.List;
 import java.util.Optional;

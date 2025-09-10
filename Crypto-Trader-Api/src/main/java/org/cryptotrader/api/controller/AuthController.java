@@ -1,27 +1,39 @@
 package org.cryptotrader.api.controller;
 
 import jakarta.servlet.http.HttpSession;
-import org.cryptotrader.api.services.AuthService;
-import org.cryptotrader.api.services.SessionService;
+import org.cryptotrader.api.library.events.UserRegisteredEvent;
+import org.cryptotrader.api.library.events.publisher.UserEventsPublisher;
+import org.cryptotrader.api.library.services.AuthService;
+import org.cryptotrader.api.library.services.ProductUserService;
+import org.cryptotrader.api.library.services.SessionService;
+import org.cryptotrader.api.library.entity.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.cryptotrader.comm.request.UserRequest;
-import org.cryptotrader.comm.response.AuthResponse;
-import org.cryptotrader.model.http.AuthStatus;
-import org.cryptotrader.model.http.PayloadStatusResponse;
+import org.cryptotrader.api.library.comm.request.UserRequest;
+import org.cryptotrader.api.library.comm.response.AuthResponse;
+import org.cryptotrader.api.library.model.http.AuthStatus;
+import org.cryptotrader.api.library.model.http.PayloadStatusResponse;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/authorize")
 public class AuthController {
     private AuthService authService;
     private SessionService sessionService;
+    private UserEventsPublisher userEventsPublisher;
+    private ProductUserService productUserService;
     @Autowired
     public AuthController(AuthService authService,
-                          SessionService sessionService) {
+                          SessionService sessionService,
+                          UserEventsPublisher userEventsPublisher,
+                          ProductUserService productUserService) {
         this.authService = authService;
         this.sessionService = sessionService;
+        this.userEventsPublisher = userEventsPublisher;
+        this.productUserService = productUserService;
     }
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> signup(@RequestBody UserRequest userRequest, HttpSession session) {
@@ -30,6 +42,10 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AuthResponse(AuthStatus.UNAUTHORIZED.isAuthorized));
         } else {
             PayloadStatusResponse<AuthResponse> signupResponse = this.authService.signup(userRequest);
+            if (signupResponse.getPayload().isAuthorized()) {
+                User possibleUser = this.productUserService.getUserByUsername(userRequest.getUsername());
+                this.userEventsPublisher.publishUserRegisteredEvent(new UserRegisteredEvent(possibleUser, LocalDateTime.now()));
+            }
             return ResponseEntity.status(signupResponse.getStatus()).body(signupResponse.getPayload());
         }
     }
