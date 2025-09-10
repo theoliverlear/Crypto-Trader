@@ -30,7 +30,7 @@ import static org.cryptotrader.health.ServiceStatusChecker.isServiceAlive;
 @SpringBootApplication
 @EnableAsync
 @EnableScheduling
-@EntityScan(basePackages = "org.cryptotrader.entity")
+@EntityScan(basePackages = "org.cryptotrader.api.library.entity")
 @ComponentScan(basePackages = {
         "org.cryptotrader.api.library.component",
         "org.cryptotrader.engine",
