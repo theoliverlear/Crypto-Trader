@@ -5,6 +5,7 @@ open module org.cryptotrader.api.library.services {
     requires org.cryptotrader.api.library.components;
     requires org.cryptotrader.api.library.models;
     requires org.cryptotrader.api.library.repositories;
+    requires org.cryptotrader.api.library.events;
     requires spring.beans;
     requires spring.context;
     requires spring.jdbc;
