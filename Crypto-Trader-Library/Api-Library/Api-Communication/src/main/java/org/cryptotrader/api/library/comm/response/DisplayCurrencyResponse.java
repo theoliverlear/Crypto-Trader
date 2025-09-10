@@ -1,4 +1,4 @@
-package org.cryptotrader.comm.response;
+package org.cryptotrader.api.library.comm.response;
 
 import lombok.Getter;
 import lombok.Setter;

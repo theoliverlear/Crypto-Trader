@@ -1,4 +1,4 @@
-package org.cryptotrader.comm.request;
+package org.cryptotrader.api.library.comm.request;
 //=================================-Imports-==================================
 import lombok.Data;
 
