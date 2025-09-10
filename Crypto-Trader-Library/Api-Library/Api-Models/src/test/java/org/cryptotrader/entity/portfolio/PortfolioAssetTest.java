@@ -1,6 +1,7 @@
 package org.cryptotrader.entity.portfolio;
 
-import org.cryptotrader.entity.currency.Currency;
+import org.cryptotrader.api.library.entity.currency.Currency;
+import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset;
 import org.cryptotrader.test.CryptoTraderTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
