@@ -1,4 +1,4 @@
-package org.cryptotrader.component;
+package org.cryptotrader.api.library.component;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

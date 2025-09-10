@@ -1,4 +1,4 @@
-package org.cryptotrader.component;
+package org.cryptotrader.api.library.component;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

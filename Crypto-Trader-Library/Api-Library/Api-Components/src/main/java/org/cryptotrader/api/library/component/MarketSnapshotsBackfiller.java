@@ -1,4 +1,4 @@
-package org.cryptotrader.component;
+package org.cryptotrader.api.library.component;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
