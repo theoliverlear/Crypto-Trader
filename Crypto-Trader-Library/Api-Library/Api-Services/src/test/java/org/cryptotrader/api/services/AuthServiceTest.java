@@ -1,5 +1,6 @@
 package org.cryptotrader.api.services;
 
+import org.cryptotrader.api.library.events.publisher.UserEventsPublisher;
 import org.cryptotrader.api.library.services.AuthService;
 import org.cryptotrader.api.library.services.PortfolioService;
 import org.cryptotrader.api.library.services.ProductUserService;
@@ -32,6 +33,9 @@ public class AuthServiceTest extends CryptoTraderTest {
     @Mock
     private PortfolioService portfolioService;
     
+    @Mock
+    private UserEventsPublisher userEventsPublisher;
+    
     private UserRequest userRequest;
     
     private ProductUser user;
@@ -54,7 +58,8 @@ public class AuthServiceTest extends CryptoTraderTest {
     public void constructor_InstantiatesAuthService_WhenValidArgumentsProvided() {
         ProductUserService productUserService = Mockito.mock(ProductUserService.class);
         PortfolioService portfolioService = Mockito.mock(PortfolioService.class);
-        AuthService authService = new AuthService(productUserService, portfolioService);
+        UserEventsPublisher userEventsPublisher = Mockito.mock(UserEventsPublisher.class);
+        AuthService authService = new AuthService(productUserService, portfolioService, userEventsPublisher);
         assertNotNull(authService);
     }
     
