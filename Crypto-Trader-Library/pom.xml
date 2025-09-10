@@ -17,6 +17,7 @@
         <module>Api-Library/Api-Components</module>
         <module>Api-Library/Api-Communication</module>
         <module>Api-Library/Api-Config</module>
+        <module>Api-Library/Api-Events</module>
         <module>Api-Library/Api-Models</module>
         <module>Api-Library/Api-Repositories</module>
         <module>Api-Library/Api-Services</module>
@@ -28,6 +29,10 @@
         <module>Contact-Library</module>
         <module>Contact-Library/Contact-Models</module>
         <module>Contact-Library/Contact-Repositories</module>
+        <module>Admin-Library</module>
+        <module>Admin-Library/Admin-Events</module>
+        <module>Admin-Library/Admin-Models</module>
+        <module>Contact-Library/Contact-Events</module>
     </modules>
 
     <artifactId>crypto-trader-library</artifactId>
