@@ -1,8 +1,11 @@
 server:
   port: 8087
+
 logging:
-  level.org.springframework.mail: DEBUG
-  level.org.eclipse.angus.mail: DEBUG
+  level:
+    org.springframework.mail: DEBUG
+    org.eclipse.angus.mail: DEBUG
+
 spring:
   application:
     name: crypto-trader-contact
@@ -20,31 +23,34 @@ spring:
             enable: true
     default-encoding: UTF-8
   cloud:
+    function:
+      definition: userRegistered
+      sanitization:
+        enabled: false
     stream:
+      function:
+        sanitizing:
+          enabled: false
       defaultBinder: kafka
       bindings:
-        # Outbound (publisher example)
-        exampleEvent-out-0:
-          destination: ct.example.v1
-          contentType: application/json
-
-        # Inbound (subscriber example)
         userRegistered-in-0:
           destination: ct.user.registered.v1
-          group: ${spring.application.name}
-          contentType: application/json
-        exampleEvent-in-0:
-          destination: ct.example.v1
           group: ${spring.application.name}
           contentType: application/json
       kafka:
         binder:
           brokers: localhost:9092
         bindings:
-          exampleEvent-in-0:
+          userRegistered-in-0:
             consumer:
               enableDlq: true
-              dlqName: ct.example.v1.DLT
+              dlqName: ct.user.registered.v1.DLT
+  function:
+    sanitizing:
+      enabled: false
 
 management:
-  endpoints.web.exposure.include: health,info
+  endpoints:
+    web:
+      exposure:
+        include: health,info
