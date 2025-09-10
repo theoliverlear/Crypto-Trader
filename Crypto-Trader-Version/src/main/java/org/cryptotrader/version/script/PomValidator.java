@@ -1,9 +1,9 @@
 package org.cryptotrader.version.script;
 
-import org.cryptotrader.version.model.element.PomElement;
-import org.cryptotrader.version.model.element.PomPair;
-import org.cryptotrader.version.model.module.ModuleLibrary;
-import org.cryptotrader.version.model.module.type.Pom;
+import org.cryptotrader.version.library.model.element.PomElement;
+import org.cryptotrader.version.library.model.element.PomPair;
+import org.cryptotrader.version.library.model.module.ModuleLibrary;
+import org.cryptotrader.version.library.model.module.type.Pom;
 
 import java.util.Arrays;
 import java.util.List;

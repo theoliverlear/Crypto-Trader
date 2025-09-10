@@ -1,6 +1,6 @@
 package org.cryptotrader.version;
 
-import org.cryptotrader.version.model.element.PomElement;
+import org.cryptotrader.version.library.model.element.PomElement;
 import org.cryptotrader.version.script.PomParser;
 import org.cryptotrader.version.script.PomValidator;
 

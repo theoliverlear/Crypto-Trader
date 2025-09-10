@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import org.cryptotrader.version.model.dependency.Dependency;
+import org.cryptotrader.version.library.model.dependency.Dependency;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

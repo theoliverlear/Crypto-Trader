@@ -1,7 +1,7 @@
 package org.cryptotrader.version.script;
 
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.version.model.element.PomElement;
+import org.cryptotrader.version.library.model.element.PomElement;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;

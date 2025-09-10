@@ -1,7 +1,7 @@
 package org.cryptotrader.version.library.model.module;
 
 import lombok.*;
-import org.cryptotrader.version.model.config.ConfigFileType;
+import org.cryptotrader.version.library.model.config.ConfigFileType;
 
 import java.nio.file.Path;
 

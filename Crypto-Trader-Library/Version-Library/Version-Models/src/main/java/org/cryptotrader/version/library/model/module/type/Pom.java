@@ -4,11 +4,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import org.cryptotrader.version.model.config.ConfigFileType;
-import org.cryptotrader.version.model.dependency.type.PomDependency;
-import org.cryptotrader.version.model.module.ModuleLibrary;
-import org.cryptotrader.version.model.module.ProgramModule;
-import org.cryptotrader.version.model.module.ProgramModuleDescendent;
+import org.cryptotrader.version.library.model.config.ConfigFileType;
+import org.cryptotrader.version.library.model.dependency.type.PomDependency;
+import org.cryptotrader.version.library.model.module.ModuleLibrary;
+import org.cryptotrader.version.library.model.module.ProgramModule;
+import org.cryptotrader.version.library.model.module.ProgramModuleDescendent;
 
 import java.nio.file.Path;
 
