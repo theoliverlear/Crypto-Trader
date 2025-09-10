@@ -1,4 +1,4 @@
-open module org.cryptotrader.api.models {
+open module org.cryptotrader.api.library.models {
     requires static com.fasterxml.jackson.annotation;
     requires static jakarta.persistence;
     requires kotlin.stdlib;
@@ -12,31 +12,31 @@ open module org.cryptotrader.api.models {
     requires spring.web;
     requires org.hibernate.orm.core;
 
-    exports org.cryptotrader.entity;
-    exports org.cryptotrader.entity.currency;
-    exports org.cryptotrader.entity.currency.builder;
-    exports org.cryptotrader.entity.currency.builder.models;
-    exports org.cryptotrader.entity.news;
-    exports org.cryptotrader.entity.news.builder;
-    exports org.cryptotrader.entity.news.builder.models;
-    exports org.cryptotrader.entity.portfolio;
-    exports org.cryptotrader.entity.portfolio.builder;
-    exports org.cryptotrader.entity.portfolio.builder.models;
-    exports org.cryptotrader.entity.prediction;
-    exports org.cryptotrader.entity.prediction.builder;
-    exports org.cryptotrader.entity.prediction.builder.models;
-    exports org.cryptotrader.entity.trade;
-    exports org.cryptotrader.entity.training;
-    exports org.cryptotrader.entity.training.specs;
-    exports org.cryptotrader.entity.training.builder;
-    exports org.cryptotrader.entity.training.builder.models;
-    exports org.cryptotrader.entity.user;
-    exports org.cryptotrader.entity.user.admin;
-    exports org.cryptotrader.entity.user.builder;
-    exports org.cryptotrader.entity.user.builder.models;
-    exports org.cryptotrader.entity.vendor;
+    exports org.cryptotrader.api.library.entity;
+    exports org.cryptotrader.api.library.entity.currency;
+    exports org.cryptotrader.api.library.entity.currency.builder;
+    exports org.cryptotrader.api.library.entity.currency.builder.models;
+    exports org.cryptotrader.api.library.entity.news;
+    exports org.cryptotrader.api.library.entity.news.builder;
+    exports org.cryptotrader.api.library.entity.news.builder.models;
+    exports org.cryptotrader.api.library.entity.portfolio;
+    exports org.cryptotrader.api.library.entity.portfolio.builder;
+    exports org.cryptotrader.api.library.entity.portfolio.builder.models;
+    exports org.cryptotrader.api.library.entity.prediction;
+    exports org.cryptotrader.api.library.entity.prediction.builder;
+    exports org.cryptotrader.api.library.entity.prediction.builder.models;
+    exports org.cryptotrader.api.library.entity.trade;
+    exports org.cryptotrader.api.library.entity.training;
+    exports org.cryptotrader.api.library.entity.training.specs;
+    exports org.cryptotrader.api.library.entity.training.builder;
+    exports org.cryptotrader.api.library.entity.training.builder.models;
+    exports org.cryptotrader.api.library.entity.user;
+    exports org.cryptotrader.api.library.entity.user.admin;
+    exports org.cryptotrader.api.library.entity.user.builder;
+    exports org.cryptotrader.api.library.entity.user.builder.models;
+    exports org.cryptotrader.api.library.entity.vendor;
 
-    exports org.cryptotrader.model;
-    exports org.cryptotrader.model.http;
-    exports org.cryptotrader.model.trade;
+    exports org.cryptotrader.api.library.model;
+    exports org.cryptotrader.api.library.model.http;
+    exports org.cryptotrader.api.library.model.trade;
 }
