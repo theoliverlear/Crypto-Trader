@@ -1,16 +1,17 @@
 package org.cryptotrader.data.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.api.services.CurrencyService;
-import org.cryptotrader.api.services.models.MarketSnapshotOperations;
-import org.cryptotrader.component.CurrencyDataRetriever;
-import org.cryptotrader.component.CurrencyJsonGenerator;
-import org.cryptotrader.component.MarketSnapshotsBackfiller;
-import org.cryptotrader.entity.currency.*;
-import org.cryptotrader.repository.CurrencyHistoryRepository;
-import org.cryptotrader.repository.CurrencyRepository;
-import org.cryptotrader.repository.UniqueCurrencyHistoryRepository;
-import org.cryptotrader.repository.UniqueCurrencyRepository;
+import org.cryptotrader.api.library.entity.currency.Currency;
+import org.cryptotrader.api.library.entity.currency.SupportedCurrencies;
+import org.cryptotrader.api.library.services.CurrencyService;
+import org.cryptotrader.api.library.services.models.MarketSnapshotOperations;
+import org.cryptotrader.api.library.component.CurrencyDataRetriever;
+import org.cryptotrader.api.library.component.CurrencyJsonGenerator;
+import org.cryptotrader.api.library.component.MarketSnapshotsBackfiller;
+import org.cryptotrader.api.library.repository.CurrencyHistoryRepository;
+import org.cryptotrader.api.library.repository.CurrencyRepository;
+import org.cryptotrader.api.library.repository.UniqueCurrencyHistoryRepository;
+import org.cryptotrader.api.library.repository.UniqueCurrencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;

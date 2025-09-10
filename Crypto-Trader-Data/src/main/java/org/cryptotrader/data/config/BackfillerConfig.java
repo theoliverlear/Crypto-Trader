@@ -1,6 +1,5 @@
 package org.cryptotrader.data.config;
 
-import org.cryptotrader.api.services.CurrencyService;
 import org.cryptotrader.data.service.CurrencyHarvesterService;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.CommandLineRunner;

@@ -1,10 +1,10 @@
 package org.cryptotrader.data.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.api.services.NewsSentimentService;
-import org.cryptotrader.component.NewsSentimentHarvesterClient;
-import org.cryptotrader.entity.news.NewsSentiment;
-import org.cryptotrader.repository.NewsSentimentRepository;
+import org.cryptotrader.api.library.services.NewsSentimentService;
+import org.cryptotrader.api.library.component.NewsSentimentHarvesterClient;
+import org.cryptotrader.api.library.entity.news.NewsSentiment;
+import org.cryptotrader.api.library.repository.NewsSentimentRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

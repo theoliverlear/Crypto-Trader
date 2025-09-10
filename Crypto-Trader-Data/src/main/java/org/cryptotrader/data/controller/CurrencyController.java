@@ -1,9 +1,8 @@
 package org.cryptotrader.data.controller;
 
-import org.cryptotrader.api.services.CurrencyService;
-import org.cryptotrader.comm.response.DisplayCurrencyListResponse;
-import org.cryptotrader.comm.response.TimeValueResponse;
-import org.cryptotrader.data.service.CurrencyHarvesterService;
+import org.cryptotrader.api.library.services.CurrencyService;
+import org.cryptotrader.api.library.comm.response.DisplayCurrencyListResponse;
+import org.cryptotrader.api.library.comm.response.TimeValueResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;

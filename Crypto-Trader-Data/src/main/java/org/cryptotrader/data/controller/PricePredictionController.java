@@ -1,8 +1,8 @@
 package org.cryptotrader.data.controller;
 
-import org.cryptotrader.api.services.PricePredictionService;
-import org.cryptotrader.comm.request.PricePredictionRequest;
-import org.cryptotrader.comm.response.PredictionIdResponse;
+import org.cryptotrader.api.library.services.PricePredictionService;
+import org.cryptotrader.api.library.comm.request.PricePredictionRequest;
+import org.cryptotrader.api.library.comm.response.PredictionIdResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
