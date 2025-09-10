@@ -1,11 +1,16 @@
 package org.cryptotrader.api.controller;
 
 import jakarta.servlet.http.HttpSession;
+import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.api.library.services.AuthService;
 import org.cryptotrader.api.library.services.SessionService;
+import org.cryptotrader.api.library.services.ProductUserService;
+import org.cryptotrader.api.library.events.publisher.UserEventsPublisher;
 import org.cryptotrader.api.library.comm.request.UserRequest;
 import org.cryptotrader.api.library.comm.response.AuthResponse;
 import org.cryptotrader.api.library.model.http.PayloadStatusResponse;
+import org.cryptotrader.api.library.entity.user.User;
+import org.cryptotrader.api.library.entity.user.SafePassword;
 import org.cryptotrader.test.CryptoTraderTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,6 +35,12 @@ public class AuthControllerTest extends CryptoTraderTest {
     @Mock
     private SessionService sessionService;
     
+    @Mock
+    private ProductUserService productUserService;
+
+    @Mock
+    private UserEventsPublisher userEventsPublisher;
+
     @Mock
     private HttpSession httpSession;
     
@@ -57,6 +68,7 @@ public class AuthControllerTest extends CryptoTraderTest {
     public void signup_SignUp_UsersNotInSession() {
         when(this.sessionService.userInSession(this.httpSession)).thenReturn(false);
         when(this.authService.signup(this.userRequest)).thenReturn(new PayloadStatusResponse<>(new AuthResponse(true), HttpStatus.OK));
+        when(this.productUserService.getUserByUsername("Ollie")).thenReturn(new ProductUser("Ollie", new SafePassword("password")));
         ResponseEntity<AuthResponse> signupResponse = this.authController.signup(this.userRequest, this.httpSession);
         verify(this.sessionService).userInSession(this.httpSession);
         verify(this.authService).signup(this.userRequest);
