@@ -1,0 +1,32 @@
+server:
+  port: 8085
+  
+spring:
+  cloud:
+    stream:
+      function:
+        sanitizing:
+          enabled: false
+      defaultBinder: kafka
+      bindings: # Outbound (publisher example)
+              exampleEvent-out-0:
+                destination: ct.example.v1
+                contentType: application/json
+      
+              # Inbound (subscriber example)
+              exampleEvent-in-0:
+                destination: ct.example.v1
+                group: ${spring.application.name}
+                contentType: application/json
+      kafka:
+        binder:
+          brokers: localhost:9092
+        bindings:
+          exampleEvent-in-0:
+            consumer:
+              enableDlq: true
+              dlqName: ct.example.v1.DLT
+  application:
+    name: crypto-trader-data
+management:
+  endpoints.web.exposure.include: health,info
