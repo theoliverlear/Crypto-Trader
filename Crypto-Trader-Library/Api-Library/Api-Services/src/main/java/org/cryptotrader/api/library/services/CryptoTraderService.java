@@ -1,4 +1,4 @@
-package org.cryptotrader.api.services;
+package org.cryptotrader.api.library.services;
 //=================================-Imports-==================================
 import org.springframework.stereotype.Service;
 

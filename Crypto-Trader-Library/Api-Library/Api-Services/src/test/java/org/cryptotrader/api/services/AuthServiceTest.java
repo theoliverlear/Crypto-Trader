@@ -1,10 +1,13 @@
 package org.cryptotrader.api.services;
 
-import org.cryptotrader.comm.request.UserRequest;
-import org.cryptotrader.comm.response.AuthResponse;
-import org.cryptotrader.entity.user.SafePassword;
-import org.cryptotrader.entity.user.User;
-import org.cryptotrader.model.http.PayloadStatusResponse;
+import org.cryptotrader.api.library.services.AuthService;
+import org.cryptotrader.api.library.services.PortfolioService;
+import org.cryptotrader.api.library.services.ProductUserService;
+import org.cryptotrader.api.library.comm.request.UserRequest;
+import org.cryptotrader.api.library.comm.response.AuthResponse;
+import org.cryptotrader.api.library.entity.user.SafePassword;
+import org.cryptotrader.api.library.entity.user.User;
+import org.cryptotrader.api.library.model.http.PayloadStatusResponse;
 import org.cryptotrader.test.CryptoTraderTest;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;

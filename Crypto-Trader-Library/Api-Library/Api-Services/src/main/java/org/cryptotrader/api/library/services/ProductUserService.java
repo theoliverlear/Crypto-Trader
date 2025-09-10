@@ -1,10 +1,10 @@
-package org.cryptotrader.api.services;
+package org.cryptotrader.api.library.services;
 //=================================-Imports-==================================
 
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.entity.user.ProductUser;
-import org.cryptotrader.entity.user.User;
-import org.cryptotrader.repository.ProductUserRepository;
+import org.cryptotrader.api.library.entity.user.ProductUser;
+import org.cryptotrader.api.library.entity.user.User;
+import org.cryptotrader.api.library.repository.ProductUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,7 @@ public class ProductUserService {
         return this.productUserRepository.existsByUsername(username);
     }
     //------------------------Get-User-By-Username----------------------------
-    public User getUserByUsername(String username) {
+    public ProductUser getUserByUsername(String username) {
         return this.productUserRepository.getUserByUsername(username);
     }
     //--------------------------Compare-Password------------------------------

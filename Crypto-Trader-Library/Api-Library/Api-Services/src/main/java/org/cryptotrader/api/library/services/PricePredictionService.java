@@ -1,10 +1,9 @@
-package org.cryptotrader.api.services;
+package org.cryptotrader.api.library.services;
 
-import org.cryptotrader.api.services.CurrencyService;
-import org.cryptotrader.comm.request.PricePredictionRequest;
-import org.cryptotrader.entity.currency.Currency;
-import org.cryptotrader.entity.prediction.PricePrediction;
-import org.cryptotrader.repository.PricePredictionRepository;
+import org.cryptotrader.api.library.comm.request.PricePredictionRequest;
+import org.cryptotrader.api.library.entity.currency.Currency;
+import org.cryptotrader.api.library.entity.prediction.PricePrediction;
+import org.cryptotrader.api.library.repository.PricePredictionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

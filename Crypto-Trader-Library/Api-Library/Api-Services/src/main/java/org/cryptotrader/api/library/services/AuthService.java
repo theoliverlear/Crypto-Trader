@@ -1,13 +1,13 @@
-package org.cryptotrader.api.services;
+package org.cryptotrader.api.library.services;
 
-import org.cryptotrader.comm.request.UserRequest;
-import org.cryptotrader.comm.response.AuthResponse;
-import org.cryptotrader.entity.portfolio.Portfolio;
-import org.cryptotrader.entity.user.ProductUser;
-import org.cryptotrader.entity.user.SafePassword;
-import org.cryptotrader.entity.user.User;
-import org.cryptotrader.model.http.AuthStatus;
-import org.cryptotrader.model.http.PayloadStatusResponse;
+import org.cryptotrader.api.library.comm.request.UserRequest;
+import org.cryptotrader.api.library.comm.response.AuthResponse;
+import org.cryptotrader.api.library.entity.portfolio.Portfolio;
+import org.cryptotrader.api.library.entity.user.ProductUser;
+import org.cryptotrader.api.library.entity.user.SafePassword;
+import org.cryptotrader.api.library.entity.user.User;
+import org.cryptotrader.api.library.model.http.AuthStatus;
+import org.cryptotrader.api.library.model.http.PayloadStatusResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

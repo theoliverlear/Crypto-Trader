@@ -1,8 +1,8 @@
-package org.cryptotrader.api.services.config;
+package org.cryptotrader.api.library.services.config;
 
-import org.cryptotrader.api.services.PricePredictionService;
-import org.cryptotrader.entity.prediction.PricePredictionLookup;
-import org.cryptotrader.entity.training.builder.TrainingSessionBuilder;
+import org.cryptotrader.api.library.services.PricePredictionService;
+import org.cryptotrader.api.library.entity.prediction.PricePredictionLookup;
+import org.cryptotrader.api.library.entity.training.builder.TrainingSessionBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;

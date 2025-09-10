@@ -1,10 +1,10 @@
-open module org.cryptotrader.api.services {
+open module org.cryptotrader.api.library.services {
     requires java.sql;
     requires static lombok;
-    requires org.cryptotrader.api.communication;
-    requires org.cryptotrader.api.components;
-    requires org.cryptotrader.api.models;
-    requires org.cryptotrader.api.repositories;
+    requires org.cryptotrader.api.library.communication;
+    requires org.cryptotrader.api.library.components;
+    requires org.cryptotrader.api.library.models;
+    requires org.cryptotrader.api.library.repositories;
     requires spring.beans;
     requires spring.context;
     requires spring.jdbc;
@@ -15,7 +15,7 @@ open module org.cryptotrader.api.services {
     requires org.slf4j;
     requires kotlin.stdlib;
     
-    exports org.cryptotrader.api.services;
-    exports org.cryptotrader.api.services.models;
-    exports org.cryptotrader.api.services.config;
+    exports org.cryptotrader.api.library.services.models;
+    exports org.cryptotrader.api.library.services.config;
+    exports org.cryptotrader.api.library.services;
 }

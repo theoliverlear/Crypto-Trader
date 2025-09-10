@@ -1,19 +1,22 @@
-package org.cryptotrader.api.services;
+package org.cryptotrader.api.library.services;
 //=================================-Imports-==================================
 
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.api.services.models.MarketSnapshotOperations;
-import org.cryptotrader.comm.response.DisplayCurrencyListResponse;
-import org.cryptotrader.comm.response.DisplayCurrencyResponse;
-import org.cryptotrader.comm.response.TimeValueResponse;
-import org.cryptotrader.component.CurrencyDataRetriever;
-import org.cryptotrader.component.CurrencyJsonGenerator;
-import org.cryptotrader.component.MarketSnapshotsBackfiller;
-import org.cryptotrader.entity.currency.*;
-import org.cryptotrader.repository.CurrencyHistoryRepository;
-import org.cryptotrader.repository.CurrencyRepository;
-import org.cryptotrader.repository.UniqueCurrencyHistoryRepository;
-import org.cryptotrader.repository.UniqueCurrencyRepository;
+import org.cryptotrader.api.library.entity.currency.Currency;
+import org.cryptotrader.api.library.entity.currency.CurrencyHistory;
+import org.cryptotrader.api.library.entity.currency.UniqueCurrency;
+import org.cryptotrader.api.library.entity.currency.UniqueCurrencyHistory;
+import org.cryptotrader.api.library.services.models.MarketSnapshotOperations;
+import org.cryptotrader.api.library.comm.response.DisplayCurrencyListResponse;
+import org.cryptotrader.api.library.comm.response.DisplayCurrencyResponse;
+import org.cryptotrader.api.library.comm.response.TimeValueResponse;
+import org.cryptotrader.api.library.component.CurrencyDataRetriever;
+import org.cryptotrader.api.library.component.CurrencyJsonGenerator;
+import org.cryptotrader.api.library.component.MarketSnapshotsBackfiller;
+import org.cryptotrader.api.library.repository.CurrencyHistoryRepository;
+import org.cryptotrader.api.library.repository.CurrencyRepository;
+import org.cryptotrader.api.library.repository.UniqueCurrencyHistoryRepository;
+import org.cryptotrader.api.library.repository.UniqueCurrencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

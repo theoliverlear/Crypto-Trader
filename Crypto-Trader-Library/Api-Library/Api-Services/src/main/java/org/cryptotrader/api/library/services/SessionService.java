@@ -1,9 +1,9 @@
-package org.cryptotrader.api.services;
+package org.cryptotrader.api.library.services;
 
 import jakarta.servlet.http.HttpSession;
-import org.cryptotrader.entity.user.ProductUser;
-import org.cryptotrader.entity.user.User;
-import org.cryptotrader.entity.user.admin.AdminUser;
+import org.cryptotrader.api.library.entity.user.ProductUser;
+import org.cryptotrader.api.library.entity.user.User;
+import org.cryptotrader.api.library.entity.user.admin.AdminUser;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

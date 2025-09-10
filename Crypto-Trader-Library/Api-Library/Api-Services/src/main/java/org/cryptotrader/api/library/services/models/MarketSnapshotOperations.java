@@ -1,6 +1,6 @@
-package org.cryptotrader.api.services.models;
+package org.cryptotrader.api.library.services.models;
 
-import org.cryptotrader.entity.currency.Currency;
+import org.cryptotrader.api.library.entity.currency.Currency;
 
 import java.util.Map;
 

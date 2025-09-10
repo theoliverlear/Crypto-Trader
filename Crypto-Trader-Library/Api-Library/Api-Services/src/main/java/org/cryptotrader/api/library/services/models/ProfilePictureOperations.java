@@ -1,6 +1,6 @@
-package org.cryptotrader.api.services.models;
+package org.cryptotrader.api.library.services.models;
 
-import org.cryptotrader.entity.user.ProfilePicture;
+import org.cryptotrader.api.library.entity.user.ProfilePicture;
 
 import java.util.Optional;
 

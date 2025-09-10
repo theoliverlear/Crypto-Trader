@@ -1,25 +1,20 @@
-package org.cryptotrader.api.services;
+package org.cryptotrader.api.library.services;
 //=================================-Imports-==================================
 
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.api.services.CurrencyService;
-import org.cryptotrader.comm.request.PortfolioAssetRequest;
-import org.cryptotrader.entity.currency.Currency;
-import org.cryptotrader.entity.portfolio.Portfolio;
-import org.cryptotrader.entity.portfolio.PortfolioAsset;
-import org.cryptotrader.entity.portfolio.PortfolioAssetHistory;
-import org.cryptotrader.entity.portfolio.PortfolioHistory;
-import org.cryptotrader.model.trade.CryptoTrader;
-import org.cryptotrader.model.trade.Trader;
-import org.cryptotrader.repository.PortfolioAssetHistoryRepository;
-import org.cryptotrader.repository.PortfolioAssetRepository;
-import org.cryptotrader.repository.PortfolioHistoryRepository;
-import org.cryptotrader.repository.PortfolioRepository;
+import org.cryptotrader.api.library.comm.request.PortfolioAssetRequest;
+import org.cryptotrader.api.library.entity.currency.Currency;
+import org.cryptotrader.api.library.entity.portfolio.Portfolio;
+import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset;
+import org.cryptotrader.api.library.entity.portfolio.PortfolioAssetHistory;
+import org.cryptotrader.api.library.entity.portfolio.PortfolioHistory;
+import org.cryptotrader.api.library.repository.PortfolioAssetHistoryRepository;
+import org.cryptotrader.api.library.repository.PortfolioAssetRepository;
+import org.cryptotrader.api.library.repository.PortfolioHistoryRepository;
+import org.cryptotrader.api.library.repository.PortfolioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
