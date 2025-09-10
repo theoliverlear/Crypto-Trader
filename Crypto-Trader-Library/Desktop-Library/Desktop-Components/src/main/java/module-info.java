@@ -1,4 +1,4 @@
-open module org.cryptotrader.desktop.components {
+open module org.cryptotrader.desktop.library.components {
     requires javafx.base;
     requires javafx.fxml;
     requires javafx.graphics;
@@ -9,6 +9,6 @@ open module org.cryptotrader.desktop.components {
     requires org.slf4j;
     requires kotlin.stdlib;
     
-    exports org.cryptotrader.desktop.component;
-    exports org.cryptotrader.desktop.component.config;
+    exports org.cryptotrader.desktop.library.component;
+    exports org.cryptotrader.desktop.library.component.config;
 }
