@@ -1,22 +1,16 @@
-open module org.cryptotrader.api.config {
-    requires kotlin.stdlib;
-    requires spring.boot.autoconfigure;
-    requires spring.context;
-    requires spring.data.jpa;
-    requires spring.boot;
-    requires static lombok;
+open module org.cryptotrader.api.library.config {
+    requires org.apache.httpcomponents.httpclient;
     requires spring.beans;
-    requires java.sql;
-    requires spring.web;
-    requires org.slf4j;
-    requires spring.core;
-    requires spring.aop;
-    requires spring.tx;
+    requires spring.boot.autoconfigure;
+    requires spring.cloud.stream;
+    requires spring.context;
     requires spring.security.config;
     requires spring.security.crypto;
     requires spring.security.web;
+    requires spring.web;
     requires spring.webmvc;
-    requires org.apache.httpcomponents.httpclient;
-
-    exports org.cryptotrader.api.config;
+    requires spring.integration.core;
+    requires spring.messaging;
+    
+    exports org.cryptotrader.api.library.config;
 }

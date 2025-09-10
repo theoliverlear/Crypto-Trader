@@ -1,4 +1,4 @@
-package org.cryptotrader.api.config;
+package org.cryptotrader.api.library.config;
 
 
 import org.springframework.beans.factory.annotation.Value;
