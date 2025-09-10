@@ -1,7 +1,7 @@
-package org.cryptotrader.repository;
+package org.cryptotrader.api.library.repository;
 //=================================-Imports-==================================
 
-import org.cryptotrader.entity.portfolio.PortfolioHistory;
+import org.cryptotrader.api.library.entity.portfolio.PortfolioHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

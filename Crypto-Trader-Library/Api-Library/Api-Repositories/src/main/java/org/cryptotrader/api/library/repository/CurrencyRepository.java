@@ -1,7 +1,7 @@
-package org.cryptotrader.repository;
+package org.cryptotrader.api.library.repository;
 //=================================-Imports-==================================
 
-import org.cryptotrader.entity.currency.Currency;
+import org.cryptotrader.api.library.entity.currency.Currency;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

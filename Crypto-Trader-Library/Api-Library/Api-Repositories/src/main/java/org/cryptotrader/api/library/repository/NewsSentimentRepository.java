@@ -1,6 +1,6 @@
-package org.cryptotrader.repository;
+package org.cryptotrader.api.library.repository;
 
-import org.cryptotrader.entity.news.NewsSentiment;
+import org.cryptotrader.api.library.entity.news.NewsSentiment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
