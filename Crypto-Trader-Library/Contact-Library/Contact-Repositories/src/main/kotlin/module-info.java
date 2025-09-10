@@ -1,5 +1,5 @@
-open module org.cryptotrader.repositories {
-    requires org.cryptotrader.contact.models;
+open module org.cryptotrader.contact.library.repositories {
+    requires org.cryptotrader.contact.library.models;
     requires kotlin.stdlib;
     requires spring.data.jpa;
     requires spring.data.commons;
@@ -8,5 +8,5 @@ open module org.cryptotrader.repositories {
     requires spring.context;
     requires jakarta.persistence;
     
-    exports org.cryptotrader.repository;
+    exports org.cryptotrader.contact.library.repository;
 }

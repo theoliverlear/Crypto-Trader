@@ -1,4 +1,4 @@
-package org.cryptotrader.repository
+package org.cryptotrader.contact.library.repository
 
 import org.cryptotrader.contact.entity.Email
 import org.springframework.data.jpa.repository.JpaRepository
