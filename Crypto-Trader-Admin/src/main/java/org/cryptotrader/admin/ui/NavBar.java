@@ -1,7 +1,6 @@
 package org.cryptotrader.admin.ui;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.desktop.component.ComponentLoader;
@@ -11,8 +10,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.cryptotrader.admin.event.PageNavigationEvent;
-import org.cryptotrader.admin.route.AppPage;
 
 @Slf4j
 @Component

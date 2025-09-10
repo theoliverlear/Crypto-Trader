@@ -1,7 +1,7 @@
 package org.cryptotrader.admin.component
 
 import org.cryptotrader.admin.model.ChartDataPoint
-import org.cryptotrader.api.services.CurrencyService
+import org.cryptotrader.api.library.services.CurrencyService
 import org.cryptotrader.comm.response.TimeValueResponse
 import org.springframework.stereotype.Component
 import java.time.Instant

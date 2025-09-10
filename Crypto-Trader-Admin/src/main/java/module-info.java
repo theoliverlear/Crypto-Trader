@@ -32,12 +32,12 @@ open module org.cryptotrader.admin {
     requires org.cryptotrader.assets;
     requires javafxsvg;
     requires org.scenicview.scenicview;
-    requires org.cryptotrader.desktop.components;
+    requires org.cryptotrader.desktop.library.components;
     
-    requires org.cryptotrader.api.services;
-    requires org.cryptotrader.api.repositories;
-    requires org.cryptotrader.api.models;
-    requires org.cryptotrader.api.communication;
+    requires org.cryptotrader.api.library.services;
+    requires org.cryptotrader.api.library.repositories;
+    requires org.cryptotrader.api.library.models;
+    requires org.cryptotrader.api.library.communication;
     requires spring.data.jpa;
 
     exports org.cryptotrader.admin;

@@ -3,7 +3,6 @@ package org.cryptotrader.admin.ui;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.shape.SVGPath;
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.assets.images.icons.fx.IconImageAssets;
 import org.cryptotrader.desktop.component.ComponentLoader;
