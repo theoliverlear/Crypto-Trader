@@ -1,4 +1,4 @@
-package org.cryptotrader.version.model.dependency;
+package org.cryptotrader.version.library.model.dependency;
 
 import lombok.Data;
 import lombok.Getter;

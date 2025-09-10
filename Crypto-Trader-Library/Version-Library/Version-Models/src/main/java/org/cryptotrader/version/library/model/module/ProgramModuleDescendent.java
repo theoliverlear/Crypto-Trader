@@ -1,4 +1,4 @@
-package org.cryptotrader.version.model.module;
+package org.cryptotrader.version.library.model.module;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

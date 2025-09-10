@@ -1,4 +1,4 @@
-package org.cryptotrader.version.model.element;
+package org.cryptotrader.version.library.model.element;
 
 
 import org.cryptotrader.version.model.module.ModuleLibrary;

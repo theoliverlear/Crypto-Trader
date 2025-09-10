@@ -1,4 +1,4 @@
-package org.cryptotrader.version.model.config;
+package org.cryptotrader.version.library.model.config;
 
 import lombok.Getter;
 import lombok.Setter;

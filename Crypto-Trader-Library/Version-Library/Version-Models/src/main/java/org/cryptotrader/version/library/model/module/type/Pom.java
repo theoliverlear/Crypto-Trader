@@ -1,4 +1,4 @@
-package org.cryptotrader.version.model.module.type;
+package org.cryptotrader.version.library.model.module.type;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
