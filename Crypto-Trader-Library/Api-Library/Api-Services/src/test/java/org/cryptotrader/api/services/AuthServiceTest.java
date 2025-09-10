@@ -6,7 +6,7 @@ import org.cryptotrader.api.library.services.ProductUserService;
 import org.cryptotrader.api.library.comm.request.UserRequest;
 import org.cryptotrader.api.library.comm.response.AuthResponse;
 import org.cryptotrader.api.library.entity.user.SafePassword;
-import org.cryptotrader.api.library.entity.user.User;
+import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.api.library.model.http.PayloadStatusResponse;
 import org.cryptotrader.test.CryptoTraderTest;
 import org.junit.jupiter.api.AfterAll;
@@ -34,14 +34,14 @@ public class AuthServiceTest extends CryptoTraderTest {
     
     private UserRequest userRequest;
     
-    private User user;
+    private ProductUser user;
     
     @BeforeEach
     void setup() {
         SafePassword clientSideHashedPassword = new SafePassword("password");
         String encodedPassword = clientSideHashedPassword.getEncodedPassword();
         this.userRequest = new UserRequest("Ollie", "ollie@ollie.com", encodedPassword);
-        this.user = new User("Ollie", new SafePassword("password"));
+        this.user = new ProductUser("Ollie", new SafePassword("password"));
     }
     
     @AfterAll
