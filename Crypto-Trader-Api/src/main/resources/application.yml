@@ -1,5 +1,6 @@
 server:
   port: 8080
+
 spring:
   application:
     name: crypto-trader-api
@@ -10,8 +11,8 @@ spring:
           max-age: 0s
   devtools:
     restart:
-      poll-interval: 2s
       enabled: false
+      poll-interval: 2s
       additional-paths: "src/main/java,src/main/resources"
       exclude: ""
     livereload:
@@ -35,26 +36,18 @@ spring:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
   cloud:
+    function:
+      sanitization:
+        enabled: false
     stream:
+      function:
+        sanitizing:
+          enabled: false
       defaultBinder: kafka
       bindings:
+        # PRODUCER
         userRegistered-out-0:
           destination: ct.user.registered.v1
-          contentType: application/json
-        contactCreated-out-0:
-          destination: ct.contact.created.v1
-          contentType: application/json
-        contactCreated-in-0:
-          destination: ct.contact.created.v1
-          group: ${spring.application.name}
-          contentType: application/json
-
-        orderFilled-out-0:
-          destination: ct.order.filled.v1
-          contentType: application/json
-        orderFilled-in-0:
-          destination: ct.order.filled.v1
-          group: ${spring.application.name}
           contentType: application/json
       kafka:
         binder:
@@ -68,14 +61,18 @@ spring:
             consumer:
               enableDlq: true
               dlqName: ct.order.filled.v1.DLT
+  function:
+    sanitizing:
+      enabled: false
+
 logging:
   level:
-    org:
-      springframework: INFO
-      springframework.web: INFO
-      springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+    org.springframework: INFO
+    org.springframework.web: INFO
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+
 management:
   endpoints:
     web:
       exposure:
-        include: "health,info"
+        include: health,info
