@@ -1,0 +1,14 @@
+package org.cryptotrader.api.library.events.publisher
+
+import org.cryptotrader.api.library.config.EventPublisher
+import org.cryptotrader.api.library.events.UserRegisteredEvent
+import org.springframework.stereotype.Component
+
+@Component
+class UserEventsPublisher(
+    private val eventPublisher: EventPublisher
+) {
+    fun publishUserRegisteredEvent(registerEvent: UserRegisteredEvent) {
+        this.eventPublisher.publish("userRegistered-out-0", registerEvent)
+    }
+}
