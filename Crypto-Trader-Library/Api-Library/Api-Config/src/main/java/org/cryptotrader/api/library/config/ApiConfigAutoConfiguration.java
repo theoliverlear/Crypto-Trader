@@ -6,6 +6,6 @@ import org.springframework.context.annotation.PropertySource;
 
 @AutoConfiguration
 @PropertySource(value = "classpath:application-defaults.properties", ignoreResourceNotFound = true)
-@Import({CorsConfig.class, HttpClientConfig.class, SecurityConfig.class, EventPublisher.class})
+@Import({ApplicationYamlConfig.class, CorsConfig.class, HttpClientConfig.class, SecurityConfig.class, EventPublisher.class, YamlPropertySourceFactory.class})
 public class ApiConfigAutoConfiguration {
 }

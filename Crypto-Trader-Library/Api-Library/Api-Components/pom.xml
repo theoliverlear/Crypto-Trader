@@ -32,12 +32,10 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-models</artifactId>
-            <version>0.0.5</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.17.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -47,13 +45,11 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.36</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.14</version>
         </dependency>
     </dependencies>
     <build>

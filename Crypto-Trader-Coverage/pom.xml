@@ -25,107 +25,86 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-admin</artifactId>
-            <version>0.0.3</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-api</artifactId>
-            <version>0.0.5</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-assets</artifactId>
-            <version>0.0.3</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-data</artifactId>
-            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-docs</artifactId>
-            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-engine</artifactId>
-            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-library</artifactId>
-            <version>0.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-communication</artifactId>
-            <version>0.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-components</artifactId>
-            <version>0.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-config</artifactId>
-            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-models</artifactId>
-            <version>0.0.5</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-repositories</artifactId>
-            <version>0.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-services</artifactId>
-            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>desktop-library</artifactId>
-            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>desktop-components</artifactId>
-            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>externals-library</artifactId>
-            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>version-library</artifactId>
-            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>version-models</artifactId>
-            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-logging</artifactId>
-            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-testing</artifactId>
-            <version>0.0.3</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-version</artifactId>
-            <version>0.1.0</version>
         </dependency>
     </dependencies>
 

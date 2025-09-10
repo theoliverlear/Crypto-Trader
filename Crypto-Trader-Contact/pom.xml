@@ -16,7 +16,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.code.style>official</kotlin.code.style>
-        <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
+        <kotlin.compiler.jvmTarget>23</kotlin.compiler.jvmTarget>
     </properties>
 
     <repositories>
@@ -26,17 +26,6 @@
         </repository>
     </repositories>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>2024.0.2</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -50,37 +39,30 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-config</artifactId>
-            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-library</artifactId>
-            <version>0.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-models</artifactId>
-            <version>0.0.5</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-repositories</artifactId>
-            <version>0.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-communication</artifactId>
-            <version>0.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-services</artifactId>
-            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-components</artifactId>
-            <version>0.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -126,12 +108,10 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-events</artifactId>
-            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.14</version>
         </dependency>
 
         <dependency>
@@ -152,14 +132,12 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.36</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>contact-events</artifactId>
-            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -186,37 +164,31 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-testing</artifactId>
-            <version>0.0.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-logging</artifactId>
-            <version>0.0.2</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.6.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-docs</artifactId>
-            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-test-junit5</artifactId>
-            <version>2.2.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>
-            <version>2.2.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -225,12 +197,10 @@
         <dependency>
             <groupId>io.github.oshai</groupId>
             <artifactId>kotlin-logging-jvm</artifactId>
-            <version>5.1.0</version>
         </dependency>
         <dependency>
             <groupId>com.icegreen</groupId>
             <artifactId>greenmail</artifactId>
-            <version>2.1.2</version>
             <scope>test</scope>
         </dependency>
         <!-- Optional: better IDE metadata for @ConfigurationProperties -->
@@ -242,17 +212,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-stream-kafka</artifactId>
-        </dependency>
-        <!-- Force Spring Integration core on the classpath with the BOM-managed version to avoid ABI mismatches -->
-        <dependency>
-            <groupId>org.springframework.integration</groupId>
-            <artifactId>spring-integration-core</artifactId>
-            <version>6.2.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.integration</groupId>
-            <artifactId>spring-integration-kafka</artifactId>
-            <version>6.2.4</version>
         </dependency>
     </dependencies>
     

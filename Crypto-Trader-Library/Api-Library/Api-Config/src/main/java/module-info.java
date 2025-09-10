@@ -11,6 +11,9 @@ open module org.cryptotrader.api.library.config {
     requires spring.webmvc;
     requires spring.integration.core;
     requires spring.messaging;
-    
+    requires spring.core;
+    requires spring.boot;
+    requires org.jetbrains.annotations;
+
     exports org.cryptotrader.api.library.config;
 }

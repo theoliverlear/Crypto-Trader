@@ -27,12 +27,10 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-library</artifactId>
-            <version>0.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-services</artifactId>
-            <version>0.0.2</version>
         </dependency>
 
         <dependency>
@@ -80,7 +78,6 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.14</version>
         </dependency>
 
         <dependency>
@@ -101,7 +98,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.36</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
@@ -125,29 +121,24 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-testing</artifactId>
-            <version>0.0.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-logging</artifactId>
-            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>2.2.224</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.6.0</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-config</artifactId>
-            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -206,15 +197,4 @@
             </plugin>
         </plugins>
     </build>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>2024.0.2</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 </project>

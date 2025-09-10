@@ -4,4 +4,5 @@ module org.cryptotrader.api.library {
     requires transitive org.cryptotrader.api.library.components;
     requires transitive org.cryptotrader.api.library.models;
     requires transitive org.cryptotrader.api.library.repositories;
+    requires transitive org.cryptotrader.api.library.events;
 }

@@ -20,32 +20,6 @@
         <maven.compiler.target>23</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>2024.0.2</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>3.3.2</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <!-- Align Spring Integration to avoid StreamBridge/MessageBuilder ABI mismatch at runtime -->
-            <dependency>
-                <groupId>org.springframework.integration</groupId>
-                <artifactId>spring-integration-bom</artifactId>
-                <version>6.2.4</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -59,11 +33,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-stream-kafka</artifactId>
-        </dependency>
-        <!-- Ensure Spring Integration core version is managed by the imported BOM -->
-        <dependency>
-            <groupId>org.springframework.integration</groupId>
-            <artifactId>spring-integration-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -109,7 +78,6 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.14</version>
         </dependency>
 
         <dependency>
@@ -130,7 +98,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.36</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
@@ -154,13 +121,15 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-testing</artifactId>
-            <version>0.0.3</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-reflect</artifactId>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-logging</artifactId>
-            <version>0.0.2</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.jetbrains.kotlin</groupId>
@@ -171,7 +140,6 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>2.2.224</version>
             <scope>runtime</scope>
         </dependency>
     </dependencies>

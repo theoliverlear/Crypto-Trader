@@ -24,24 +24,23 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-communication</artifactId>
-            <version>0.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-components</artifactId>
-            <version>0.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-models</artifactId>
-            <version>0.0.5</version>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-repositories</artifactId>
-            <version>0.0.4</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>api-events</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -87,7 +86,6 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.14</version>
         </dependency>
 
         <dependency>
@@ -108,7 +106,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.36</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
@@ -132,13 +129,11 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-testing</artifactId>
-            <version>0.0.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-logging</artifactId>
-            <version>0.0.2</version>
             <scope>runtime</scope>
         </dependency>
 

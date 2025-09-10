@@ -1,4 +1,4 @@
-package org.cryptotrader.data.config;
+package org.cryptotrader.api.library.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;

@@ -23,7 +23,6 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>contact-models</artifactId>
-            <version>0.0.1</version>
         </dependency>
     </dependencies>
 </project>
