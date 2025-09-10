@@ -41,11 +41,12 @@ open module org.cryptotrader.api {
     requires tomcat.embed.websocket;
     
     requires spring.webmvc;
-    requires org.cryptotrader.api.models;
-    requires org.cryptotrader.api.communication;
-    requires org.cryptotrader.api.services;
-    requires org.cryptotrader.api.components;
-    requires org.cryptotrader.api.repositories;
+    requires org.cryptotrader.api.library.models;
+    requires org.cryptotrader.api.library.communication;
+    requires org.cryptotrader.api.library.services;
+    requires org.cryptotrader.api.library.components;
+    requires org.cryptotrader.api.library.repositories;
+    requires org.cryptotrader.api.library.events;
     requires io.swagger.v3.oas.annotations;
     requires org.cryptotrader.docs;
 
