@@ -1,4 +1,4 @@
-package org.cryptotrader.contact.entity
+package org.cryptotrader.contact.library.entity
 
 enum class CryptoTraderMailer(address: String) {
     CONTACT("contact@sscryptotrader.com"),
