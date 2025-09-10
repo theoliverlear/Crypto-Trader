@@ -1,11 +1,11 @@
 package org.cryptotrader.api.controller;
 
 import jakarta.servlet.http.HttpSession;
-import org.cryptotrader.api.services.AuthService;
-import org.cryptotrader.api.services.SessionService;
-import org.cryptotrader.comm.request.UserRequest;
-import org.cryptotrader.comm.response.AuthResponse;
-import org.cryptotrader.model.http.PayloadStatusResponse;
+import org.cryptotrader.api.library.services.AuthService;
+import org.cryptotrader.api.library.services.SessionService;
+import org.cryptotrader.api.library.comm.request.UserRequest;
+import org.cryptotrader.api.library.comm.response.AuthResponse;
+import org.cryptotrader.api.library.model.http.PayloadStatusResponse;
 import org.cryptotrader.test.CryptoTraderTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
