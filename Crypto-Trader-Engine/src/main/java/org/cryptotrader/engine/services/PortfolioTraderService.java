@@ -1,10 +1,10 @@
 package org.cryptotrader.engine.services;
 
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.api.services.PortfolioService;
-import org.cryptotrader.entity.portfolio.Portfolio;
-import org.cryptotrader.model.trade.CryptoTrader;
-import org.cryptotrader.model.trade.Trader;
+import org.cryptotrader.api.library.services.PortfolioService;
+import org.cryptotrader.api.library.entity.portfolio.Portfolio;
+import org.cryptotrader.api.library.model.trade.CryptoTrader;
+import org.cryptotrader.api.library.model.trade.Trader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;

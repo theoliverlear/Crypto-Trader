@@ -9,8 +9,8 @@ open module org.cryptotrader.engine {
     requires spring.boot;
     requires static lombok;
     requires org.slf4j;
-    requires org.cryptotrader.api.services;
-    requires org.cryptotrader.api.models;
+    requires org.cryptotrader.api.library.services;
+    requires org.cryptotrader.api.library.models;
     requires spring.security.config;
     requires spring.security.crypto;
     requires spring.security.web;

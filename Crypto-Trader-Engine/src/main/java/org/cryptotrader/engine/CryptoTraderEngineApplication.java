@@ -32,12 +32,12 @@ import static org.cryptotrader.health.ServiceStatusChecker.isServiceAlive;
 @EnableScheduling
 @EntityScan(basePackages = "org.cryptotrader.entity")
 @ComponentScan(basePackages = {
-        "org.cryptotrader.component",
+        "org.cryptotrader.api.library.component",
         "org.cryptotrader.engine",
-        "org.cryptotrader.api",
+        "org.cryptotrader.api.library",
 })
 @EnableJpaRepositories(basePackages = {
-        "org.cryptotrader.repository"
+        "org.cryptotrader.api.library.repository"
 })
 public class CryptoTraderEngineApplication {
     public static void main(String[] args) {
