@@ -2,7 +2,7 @@
 
 //=================================-Imports-==================================
 @use "../../../../styles/globals" as *;
-
+@use "../../../../styles/global_fonts" as fonts;
 
 nav-bar-item {
     @include flex(center, center, row);
@@ -12,17 +12,20 @@ nav-bar-item {
     border-radius: simplest-calc(0.5);
     transition: background-color, box-shadow, scale, 0.3s;
     padding: simplest-calc(0.5) simplest-calc(1);
+    background-color: #4074A7;
     //background: radial-gradient(circle, $muted-blue, $blue-gray);
     //background-color: $charcoal;
     //border: $light-charcoal $thinnest-border solid;
     box-shadow: add-alpha($light-charcoal, 0.5) 0 0 $quarter-percent simplest-calc(0.001);
     flex-basis: $ten-percent;
     h4 {
+        font-family: fonts.$google-sans-code-font;
         font-size: calc($h4-font-size * 0.65);
         min-width: 9ch;
         //color: $pure-white;
         //color: $sunbeam-yellow;
-        color: $neutral-black;
+        //color: $neutral-black;
+        color: $pure-white;
     }
     &:hover {
         //background-color: $almost-white;
