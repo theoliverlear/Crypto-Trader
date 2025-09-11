@@ -1,11 +1,8 @@
 <!-- auth-input.component.html -->
 <ng-container>
-    <div class="auth-input-title-div">
-        <h5>
-            {{ authTypeString }}
-        </h5>
-    </div>
+        <ss-title class="auth-input-title" [text]="authTypeString" [tagType]="TagType.H5"/>
     <ss-input
+            [placeholder]="''"
             (inputEvent)="updateInputText($event)"
             [inputType]="getInputType()"/>
 </ng-container>
