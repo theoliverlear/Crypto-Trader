@@ -7,7 +7,9 @@ auth-input {
     width: 100%;
     margin: $one-percent 0;
     @extend %soft-border-radius;
-    .auth-input-title-div {
+    ss-title.auth-input-title {
+        @include flex(flex-start, center, row);
+        text-align: left;
         flex: 1;
         h5 {
            font-size: calc($h5-font-size * 0.9);
