@@ -2,7 +2,7 @@
 <ng-container>
     <content-stripe class="intro-stripe">
         <div class="title-text-div">
-            <ss-title [text]="'Crypto Trader'" [tagType]="TagType.H1"/>
+            <ss-title id="crypto-trader-name-title" [text]="'Crypto Trader'" [tagType]="TagType.H1"/>
 <!--            <subtitle [text]="'100% of the profit is 100% yours.'" [tagType]="TagType.H4"/>-->
             <subtitle [text]="'Right trades, at the right time, every time.'" [tagType]="TagType.H5"/>
         </div>
@@ -10,8 +10,8 @@
     </content-stripe>
     <div class="intro-text-div">
         <ss-paragraph class="intro-paragraph" [text]="cryptoTraderDescription"/>
-        <ss-anchor [elementLink]="getStartedElementLink" [isButton]="true"/>
     </div>
     <tier-promo-stripe/>
+    <ss-anchor [elementLink]="getStartedElementLink" [isButton]="true" class="home-buttons"/>
     <transparency-promo/>
 </ng-container>
