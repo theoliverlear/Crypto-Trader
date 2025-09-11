@@ -21,6 +21,8 @@ open module org.cryptotrader.data {
     requires spring.security.web;
     requires spring.webmvc;
     requires kotlin.stdlib;
+    requires jakarta.xml.bind;
+    requires jakarta.activation;
 
     exports org.cryptotrader.data;
     exports org.cryptotrader.data.adapter;
