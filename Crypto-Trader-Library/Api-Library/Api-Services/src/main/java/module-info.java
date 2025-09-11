@@ -12,7 +12,7 @@ open module org.cryptotrader.api.library.services {
     requires spring.tx;
     requires spring.web;
     requires spring.boot.autoconfigure;
-    requires tomcat.embed.core;
+    requires org.apache.tomcat.embed.core;
     requires org.slf4j;
     requires kotlin.stdlib;
     
