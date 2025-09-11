@@ -177,6 +177,12 @@
                 <version>2.6.0</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.sigwarthsoftware</groupId>
+                <artifactId>spring-boot-websocket</artifactId>
+                <version>0.0.14</version>
+            </dependency>
+
             <!-- JavaFX stack -->
             <dependency>
                 <groupId>org.openjfx</groupId>
