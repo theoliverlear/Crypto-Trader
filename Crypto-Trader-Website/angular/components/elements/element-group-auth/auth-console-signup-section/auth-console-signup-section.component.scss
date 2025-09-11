@@ -6,6 +6,7 @@ $simplest-one-percent: simplest-calc(1);
 $simplest-quarter-percent: simplest-calc(0.25);
 
 auth-console-signup-section {
+    background-color: $pure-white;
     $box-shadow-size: calc(((0.35vh + 0.35vw) / 2) + 0.35em);
     border: $very-thin-border solid black;
     width: 100%;
