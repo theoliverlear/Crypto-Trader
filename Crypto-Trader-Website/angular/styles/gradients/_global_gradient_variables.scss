@@ -1,0 +1,65 @@
+@use "../globals" as globals;
+@use "sass:math";
+
+$light-logo: radial-gradient(
+                114.74% 114.74% at 96.86% 3.84%,
+                #C0ECD7 0%,
+                #6FC164 30%,
+                #3EB98D 60%,
+                #26929D 100%
+);
+
+$light-logo-webkit: -webkit-radial-gradient(
+                114.74% 114.74% at 96.86% 3.84%,
+                #C0ECD7 0%,
+                #6FC164 30%,
+                #3EB98D 60%,
+                #26929D 100%
+);
+
+$regular-logo: radial-gradient(
+                114.74% 114.74% at 96.86% 3.84%,
+                #6FC164 0%,
+                #3EB98D 40%,
+                #26929D 75%,
+                #045267 100%
+);
+
+$regular-logo-webkit: -webkit-radial-gradient(
+                114.74% 114.74% at 96.86% 3.84%,
+                #6FC164 0%,
+                #3EB98D 40%,
+                #26929D 75%,
+                #045267 100%
+);
+
+$prominent-logo: radial-gradient(
+                114.74% 114.74% at 96.86% 3.84%,
+                #26929D 15%,
+                globals.$lime 50%,
+                #03404F 75%,
+                #26929D 85%
+);
+
+$prominent-logo-webkit: -webkit-radial-gradient(
+                114.74% 114.74% at 96.86% 3.84%,
+                #C0ECD7 0%,
+                #3EB98D 50%,
+                #1FA4A7 75%,
+                #03404F 100%
+);
+
+$crypto-logo-stops: (
+        #6FC164  9.3%,
+        #C0ECD7 16.1%,
+        #A4DBC2 20.7%,
+        #3C9E7A 31.4%,
+        #3EB98D 45.4%,
+        #1D5C57 56.8%,
+        #076A64 62.1%,
+        #26929D 81.8%,
+        #073D44 86.8%,
+        #13899D 91.1%,
+        #07718D 94.6%,
+        #045267 100%
+);
