@@ -1,4 +1,5 @@
 import {Component} from "@angular/core";
+import {TagType} from "@theoliverlear/angular-suite";
 
 @Component({
     selector: 'portfolio',
@@ -10,4 +11,6 @@ export class PortfolioComponent {
     constructor() {
 
     }
+
+    protected readonly TagType = TagType;
 }
