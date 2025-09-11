@@ -16,7 +16,18 @@ tier-promo {
     }
     ss-img {
         @include square-size($six-percent);
-        background-color: $muted-blue-half-opacity;
+
+        background-image: radial-gradient(
+                        114.74% 114.74% at 96.86% 3.84%,
+                        #C0ECD7 0%,
+                        #6FC164 30%,
+                        #3EB98D 60%,
+                        #26929D 100%
+        );
+
+        background-repeat: no-repeat;
+        background-size: cover;
+
         padding: $half-percent;
         box-shadow: $blue-gray $quarter-percent $quarter-percent 0 0;
         img {
