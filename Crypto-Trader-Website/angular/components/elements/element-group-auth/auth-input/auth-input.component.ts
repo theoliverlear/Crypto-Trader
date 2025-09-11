@@ -1,7 +1,7 @@
 // auth-input.component.ts 
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {AuthInputType} from "./models/AuthInputType";
-import {InputType} from "@theoliverlear/angular-suite"
+import {InputType, TagType} from "@theoliverlear/angular-suite"
 
 @Component({
     selector: 'auth-input',
@@ -46,4 +46,6 @@ export class AuthInputComponent implements OnInit {
                 return InputType.TEXT;
         }
     }
+
+    protected readonly TagType = TagType;
 }
