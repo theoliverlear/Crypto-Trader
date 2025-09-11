@@ -1,0 +1,28 @@
+spring:
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          max-age: 0s
+  datasource:
+    url: ${PSQL_DB_URL}
+    username: ${PSQL_USER}
+    password: ${PSQL_PW}
+    generate-unique-name: false
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: update
+    show-sql: false
+  aop:
+    proxy-target-class: false
+
+logging:
+  level:
+    org.springframework: INFO
+    org.springframework.web: INFO
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
