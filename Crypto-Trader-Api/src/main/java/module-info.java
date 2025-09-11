@@ -14,7 +14,8 @@ open module org.cryptotrader.api {
     requires spring.data.jpa;
 
     requires jakarta.persistence;
-
+    requires jakarta.xml.bind;
+    requires jakarta.activation;
 
     requires spring.security.config;
     requires spring.security.web;
@@ -37,8 +38,8 @@ open module org.cryptotrader.api {
 
 
     requires static lombok;
-    requires tomcat.embed.core;
-    requires tomcat.embed.websocket;
+    requires org.apache.tomcat.embed.core;
+    requires org.apache.tomcat.embed.websocket;
     
     requires spring.webmvc;
     requires org.cryptotrader.api.library.models;
