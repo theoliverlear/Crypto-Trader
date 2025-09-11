@@ -25,12 +25,18 @@ export class AuthInputComponent implements OnInit {
         this.emitInputText();
     }
     ngOnInit(): void {
+        this.initAuthText();
+    }
+
+    private initAuthText(): void {
         if (this.authInputType !== AuthInputType.AGREED_TERMS) {
             this.authTypeString = this.authInputType + ":";
         } else {
             this.authTypeString = this.authInputType;
         }
+        this.authTypeString = this.authTypeString.toUpperCase();
     }
+
     getInputType() {
         switch (this.authInputType) {
             case AuthInputType.USERNAME:
