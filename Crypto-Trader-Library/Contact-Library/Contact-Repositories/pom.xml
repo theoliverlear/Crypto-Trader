@@ -79,6 +79,10 @@
                 <configuration>
                     <release>23</release>
                     <useModulePath>true</useModulePath>
+                    <includes>
+                        <include>module-info.java</include>
+                        <include>**/module-info.java</include>
+                    </includes>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
