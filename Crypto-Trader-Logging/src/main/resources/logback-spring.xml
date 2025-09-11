@@ -1,27 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false">
-    <!-- Spring Boot color and exception converters since base.xml is not included -->
-    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
-    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="clr" class="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wEx" class="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
 
     <springProperty scope="context" name="ct_console_pattern" source="cryptotrader.logging.console-pattern"/>
     <springProperty scope="context" name="ct_file_pattern" source="cryptotrader.logging.file-pattern"/>
     <springProperty scope="context" name="ct_error_file_pattern" source="cryptotrader.logging.error-file-pattern"/>
     <springProperty scope="context" name="ct_exception_word" source="cryptotrader.logging.exception-conversion-word"/>
 
-    <!-- Single concise, colorful console appender without PID/app name/thread -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>${ct_console_pattern:-%clr(%d{HH:mm:ss}){faint} %clr(%5p) %clr(%logger{36}){cyan} %clr(-){faint} %m%n${ct_exception_word:-${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}}</pattern>
+            <pattern>
+                ${ct_console_pattern:-%clr(%d{HH:mm:ss}){faint} %clr(%5p) %clr(%logger{36}){cyan} %clr(-){faint} %m%n${ct_exception_word:-${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}}
+            </pattern>
         </encoder>
     </appender>
-
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>./logs/bugs.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>./logs/bugs-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>50MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxFileSize>50MB</maxFileSize>
         </rollingPolicy>
         <encoder>
             <pattern>${ct_file_pattern:-%date %-5level %logger{36} - %msg%n}</pattern>
@@ -30,30 +28,33 @@
             <level>TRACE</level>
         </filter>
     </appender>
-
     <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>./logs/errors.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>./logs/errors-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>50MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxFileSize>50MB</maxFileSize>
         </rollingPolicy>
         <encoder>
-            <pattern>${ct_error_file_pattern:-%date %-5level %logger{36} - %msg%n${ct_exception_word:-${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}}</pattern>
+            <pattern>
+                ${ct_error_file_pattern:-%date %-5level %logger{36} - %msg%n${ct_exception_word:-${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}}
+            </pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>ERROR</level>
         </filter>
     </appender>
 
+    <logger name="org.apache.kafka" level="WARN"/>
+    <logger name="org.apache.kafka.clients" level="WARN"/>
+    <logger name="org.apache.kafka.common.metrics" level="WARN"/>
+    <logger name="org.springframework.kafka" level="WARN"/>
+
     <root level="INFO">
-        <appender-ref ref="CONSOLE" />
-        <appender-ref ref="FILE" />
-        <appender-ref ref="ERROR_FILE" />
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="ERROR_FILE"/>
     </root>
 
-    <!-- Enable DEBUG for our packages without duplicating via root -->
     <logger name="org.cryptotrader" level="DEBUG" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
