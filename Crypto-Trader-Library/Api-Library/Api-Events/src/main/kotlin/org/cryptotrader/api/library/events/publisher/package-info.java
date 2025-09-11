@@ -1,1 +1,0 @@
-package org.cryptotrader.api.library.events.publisher;
