@@ -25,3 +25,12 @@ nav-bar {
         }
     }
 }
+@media screen and (min-width: 1000px) {
+    nav-bar {
+        nav {
+            .nav-items-div {
+                width: 41%;
+            }
+        }
+    }
+}
