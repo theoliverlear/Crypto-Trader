@@ -76,11 +76,12 @@
                 <version>3.13.0</version>
                 <configuration>
                     <release>23</release>
-                    <useModulePath>false</useModulePath>
-                    <excludes>
-                        <exclude>module-info.java</exclude>
-                        <exclude>**/module-info.java</exclude>
-                    </excludes>
+                    <useModulePath>true</useModulePath>
+                    <skipMain>true</skipMain>
+                    <includes>
+                        <include>module-info.java</include>
+                        <include>**/module-info.java</include>
+                    </includes>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
@@ -89,6 +90,26 @@
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>compile-module-info</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <skipMain>false</skipMain>
+                            <includes>
+                                <include>module-info.java</include>
+                                <include>**/module-info.java</include>
+                            </includes>
+                            <compilerArgs>
+                                <arg>--patch-module</arg>
+                                <arg>org.cryptotrader.health=${project.build.outputDirectory}</arg>
+                            </compilerArgs>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
