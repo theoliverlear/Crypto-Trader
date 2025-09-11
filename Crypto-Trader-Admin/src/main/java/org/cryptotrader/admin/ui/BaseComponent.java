@@ -2,7 +2,7 @@ package org.cryptotrader.admin.ui;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.HBox;
-import org.cryptotrader.desktop.component.config.SpringContext;
+import org.cryptotrader.desktop.library.component.config.SpringContext;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
