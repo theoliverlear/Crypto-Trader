@@ -61,6 +61,37 @@
             </plugin>
 
             <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <release>23</release>
+                    <useModulePath>true</useModulePath>
+                    <!-- Skip default main compilation to ensure Kotlin compiles first -->
+                    <skipMain>true</skipMain>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>compile-module-info</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <skipMain>false</skipMain>
+                            <includes>
+                                <include>module-info.java</include>
+                                <include>**/module-info.java</include>
+                            </includes>
+                            <compilerArgs>
+                                <arg>--patch-module</arg>
+                                <arg>org.cryptotrader.api.library.events=${project.build.outputDirectory}</arg>
+                            </compilerArgs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
