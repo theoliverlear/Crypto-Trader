@@ -133,6 +133,23 @@ jobs:
           if [ -f contact.pid ]; then kill "$(cat contact.pid)" || true; fi
 
       - name: Run tests with coverage (aggregate)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
+          PSQL_DB_URL: ${{ secrets.PSQL_DB_URL }}
+          PSQL_HOST: ${{ secrets.PSQL_HOST }}
+          PSQL_PW: ${{ secrets.PSQL_PW }}
+          PSQL_USER: ${{ secrets.PSQL_USER }}
+          PYTHONUNBUFFERED: ${{ secrets.PYTHONUNBUFFERED }}
+          WORLDNEWS_API_KEY: ${{ secrets.WORLDNEWS_API_KEY }}
+          X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_SECRET: ${{ secrets.X_SECRET }}
+          REPO_NAME: ${{ secrets.REPO_NAME }}
+          APP_NAME: ${{ secrets.APP_NAME }}
         run: mvn -B -ntp -Pcoverage -DskipITs=true -DfailIfNoTests=false clean verify
 
       - name: Set up .NET (for ReportGenerator)
