@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.cryptotrader.entity.Identifiable;
+import org.cryptotrader.api.library.entity.Identifiable;
 
 @Entity
 @Getter
