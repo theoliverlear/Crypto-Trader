@@ -1,19 +1,22 @@
 // home.component.scss
 @use "../../../styles/globals" as *;
+@use "../../../styles/gradients/global_gradient_placeholders" as *;
+@use "../../../styles/gradients/global_gradient_variables" as *;
+@use "../../../styles/gradients/global_gradient_mixins" as *;
 
 home {
+    ss-anchor.home-buttons {
+        background-color: add-alpha-opaque($sunbeam-yellow, 0.5, $pure-white);
+        max-height: $three-half-percent;
+    }
     .intro-text-div {
         @include flex(space-around, center, column);
         ss-paragraph {
             width: 60%;
-            background-color: add-alpha($muted-blue, 0.015);
+            background-color: add-alpha-opaque($muted-blue, 1 - 0.015, $pure-white);
             margin: $half-percent;
         }
-        ss-anchor {
-            //box-shadow: $sunbeam-yellow simplest-calc(0.25) simplest-calc(0.25) 0 0;
-            background-color: add-alpha($sunbeam-yellow, 0.5);
-            max-height: $three-half-percent;
-        }
+
     }
     .intro-stripe {
         @include flex(space-around, center, row);
@@ -23,10 +26,12 @@ home {
             @include flex(center, center, column);
             //width: 50%;
             padding: $one-percent 0;
-            ss-title {
-                //align-self: flex-start;
-                //margin-right: $fifteen-percent;
-                @extend %soft-text-shadow;
+            ss-title#crypto-trader-name-title {
+                @include gradient-text($regular-logo);
+                text-shadow: add-alpha(black, 0.1) $quarter-percent $quarter-percent;
+                h1 {
+                    font-size: calc($h1-font-size * 1.5);
+                }
             }
 
             subtitle {
@@ -36,7 +41,7 @@ home {
             }
         }
         ss-img {
-            @include square-size($eight-percent);
+            @include square-size($twelve-percent);
         }
     }
 
