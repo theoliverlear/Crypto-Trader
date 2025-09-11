@@ -17,6 +17,11 @@ open module org.cryptotrader.engine {
     requires kotlin.stdlib;
     requires org.cryptotrader.health;
 
+    requires jakarta.xml.bind;
+    requires jakarta.activation;
+    requires org.apache.tomcat.embed.core;
+    requires org.apache.tomcat.embed.websocket;
+
     exports org.cryptotrader.engine;
     exports org.cryptotrader.engine.services;
 }
