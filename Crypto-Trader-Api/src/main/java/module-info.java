@@ -1,7 +1,8 @@
 open module org.cryptotrader.api {
     requires kotlin.stdlib;
     requires org.cryptotrader.api.library;
-    
+    requires com.sigwarthsoftware.springboot.websocket;
+
     requires spring.boot;
     requires spring.boot.autoconfigure;
 
@@ -40,7 +41,7 @@ open module org.cryptotrader.api {
     requires static lombok;
     requires org.apache.tomcat.embed.core;
     requires org.apache.tomcat.embed.websocket;
-    
+
     requires spring.webmvc;
     requires org.cryptotrader.api.library.models;
     requires org.cryptotrader.api.library.communication;
