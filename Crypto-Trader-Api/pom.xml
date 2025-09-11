@@ -19,6 +19,19 @@
 
 
     <dependencies>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.oshai</groupId>
+            <artifactId>kotlin-logging-jvm</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sigwarthsoftware</groupId>
+            <artifactId>spring-boot-websocket</artifactId>
+        </dependency>
         <!-- If your event is a Kotlin data class, you NEED these: -->
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
