@@ -1,4 +1,10 @@
-import {Component, HostListener, Input, ViewChild} from "@angular/core";
+import {
+    Component,
+    HostListener,
+    Input,
+    OnInit,
+    ViewChild
+} from "@angular/core";
 import {
     SsAnchorComponent,
     TextElementLink
@@ -10,12 +16,23 @@ import {
     templateUrl: './nav-bar-item.component.html',
     styleUrls: ['./nav-bar-item.component.scss']
 })
-export class NavBarItemComponent {
+export class NavBarItemComponent implements OnInit {
     @Input() elementLink: TextElementLink;
     @ViewChild(SsAnchorComponent) anchorComponent: SsAnchorComponent;
     constructor() {
 
     }
+    
+    ngOnInit(): void {
+        if (this.elementLink) {
+            this.convertTextToUpper();
+        }
+    }
+
+    private convertTextToUpper() {
+        this.elementLink.text = this.elementLink.text.toUpperCase();
+    }
+
     @HostListener('click')
     onClick() {
         this.anchorComponent.onClick();
