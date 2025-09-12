@@ -151,25 +151,35 @@ jobs:
               echo "[Fallback] Verified non-empty: $OUT ($(wc -c < "$OUT") bytes)"
             fi
           }
-          # For CT API, try alternative port (8080) as a fallback in case the server didn't bind to 18080
-          check_and_fetch_multi() {
-            PRIMARY="$1"; SECONDARY="$2"; OUT="$3"
-            if [ ! -s "$OUT" ]; then
-              echo "[Fallback] Trying primary: $PRIMARY"
-              curl -fsS "$PRIMARY" -o "$OUT" || true
+          # For CT API, try multiple hosts/ports and both yaml and json endpoints to be robust
+          check_and_fetch_from_many() {
+            OUT="$1"; shift
+            if [ -s "$OUT" ]; then
+              echo "[Fallback] Already present: $OUT ($(wc -c < "$OUT") bytes)"; return 0
             fi
-            if [ ! -s "$OUT" ] && [ -n "$SECONDARY" ]; then
-              echo "[Fallback] Trying secondary: $SECONDARY"
-              curl -fsS "$SECONDARY" -o "$OUT" || true
-            fi
+            for URL in "$@"; do
+              echo "[Fallback] Trying: $URL"
+              curl -fsS "$URL" -o "$OUT" && break || true
+            done
             if [ ! -s "$OUT" ]; then
-              echo "::error::OpenAPI spec still missing or empty: $OUT (sources: $PRIMARY, $SECONDARY)" >&2
+              echo "::error::OpenAPI spec still missing or empty: $OUT (tried: $*)" >&2
+              echo "---- api.log (last 200 lines) ----" >&2
+              tail -n 200 api.log >&2 || true
               exit 1
             else
               echo "[Fallback] Verified non-empty: $OUT ($(wc -c < "$OUT") bytes)"
             fi
           }
-          check_and_fetch_multi http://localhost:18080/v3/api-docs.yaml http://localhost:8080/v3/api-docs.yaml Crypto-Trader-Docs/docs/api/openapi-api.yaml
+          check_and_fetch_from_many Crypto-Trader-Docs/docs/api/openapi-api.yaml \
+            http://localhost:18080/v3/api-docs.yaml \
+            http://127.0.0.1:18080/v3/api-docs.yaml \
+            http://[::1]:18080/v3/api-docs.yaml \
+            http://localhost:8080/v3/api-docs.yaml \
+            http://127.0.0.1:8080/v3/api-docs.yaml \
+            http://[::1]:8080/v3/api-docs.yaml \
+            http://localhost:18080/v3/api-docs \
+            http://127.0.0.1:18080/v3/api-docs \
+            http://[::1]:18080/v3/api-docs
           check_and_fetch http://localhost:18081/v3/api-docs.yaml Crypto-Trader-Docs/docs/api/openapi-data.yaml
           check_and_fetch http://localhost:18082/v3/api-docs.yaml Crypto-Trader-Docs/docs/api/openapi-engine.yaml
           check_and_fetch http://localhost:18083/v3/api-docs.yaml Crypto-Trader-Docs/docs/api/openapi-contact.yaml
