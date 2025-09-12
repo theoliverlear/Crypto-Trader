@@ -23,6 +23,9 @@ public class TrainingSessionController {
     
     @RequestMapping("/add")
     public ResponseEntity<OperationSuccessfulResponse> addTrainingSession(@RequestBody TrainingSessionRequest request) {
+        if (request == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         this.trainingSessionService.saveTrainingSession(request);
         return new ResponseEntity<>(new OperationSuccessfulResponse(true), HttpStatus.OK);
     }
