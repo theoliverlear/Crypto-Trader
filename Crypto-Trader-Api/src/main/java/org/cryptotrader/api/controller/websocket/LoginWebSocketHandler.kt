@@ -1,0 +1,22 @@
+package org.cryptotrader.api.controller.websocket
+
+import com.sigwarthsoftware.springboot.websocket.WebSocketHandler
+import io.github.oshai.kotlinlogging.KotlinLogging
+import org.cryptotrader.api.library.comm.request.LoginRequest
+import org.cryptotrader.api.library.comm.request.alias.HttpAuthStatus
+import org.cryptotrader.api.library.comm.response.AuthResponse
+import org.cryptotrader.api.library.services.AuthService
+import org.springframework.stereotype.Component
+
+private val log = KotlinLogging.logger {  }
+
+@Component
+class LoginWebSocketHandler(
+    private val authService: AuthService
+) : WebSocketHandler<LoginRequest, AuthResponse>() {
+    override fun makeResponse(loginRequest: LoginRequest): AuthResponse {
+        log.info { "Login: ${loginRequest.email}" }
+        val response: HttpAuthStatus = this.authService.login(loginRequest)
+        return AuthResponse(response.payload.isAuthorized)
+    }
+}
