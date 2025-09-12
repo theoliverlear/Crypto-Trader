@@ -1,8 +1,8 @@
-package org.cryptotrader.api.services;
+package org.cryptotrader.api.library.services;
 
 import org.junit.platform.suite.api.SelectPackages;
 import org.junit.platform.suite.api.Suite;
 
 @Suite
-@SelectPackages({"org.cryptotrader.api.services"})
+@SelectPackages({"org.cryptotrader.api.library.services"})
 public class ApiServicesTestSuite { }

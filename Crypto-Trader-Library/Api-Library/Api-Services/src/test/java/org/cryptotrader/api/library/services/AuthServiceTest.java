@@ -1,9 +1,6 @@
-package org.cryptotrader.api.services;
+package org.cryptotrader.api.library.services;
 
 import org.cryptotrader.api.library.events.publisher.UserEventsPublisher;
-import org.cryptotrader.api.library.services.AuthService;
-import org.cryptotrader.api.library.services.PortfolioService;
-import org.cryptotrader.api.library.services.ProductUserService;
 import org.cryptotrader.api.library.comm.request.UserRequest;
 import org.cryptotrader.api.library.comm.response.AuthResponse;
 import org.cryptotrader.api.library.entity.user.SafePassword;
