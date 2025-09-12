@@ -24,6 +24,14 @@ public class ProductUserService {
     public boolean userExistsByUsername(String username) {
         return this.productUserRepository.existsByUsername(username);
     }
+    
+    public ProductUser getUserByEmail(String email) {
+        return this.productUserRepository.getUserByEmail(email);
+    }
+    
+    public boolean userExistsByEmail(String email) {
+        return this.productUserRepository.existsByEmail(email);
+    }
     //------------------------Get-User-By-Username----------------------------
     public ProductUser getUserByUsername(String username) {
         return this.productUserRepository.getUserByUsername(username);
