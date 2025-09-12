@@ -5,11 +5,14 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
   packages: read
-  pages: write
-  id-token: write
+  # pages/id-token moved to deploy job
 
 jobs:
   build:
@@ -19,6 +22,7 @@ jobs:
       GITHUB_ACTOR: ${{ github.actor }}
     outputs:
       pages_enabled: ${{ steps.pages.outcome }}
+      site_ready: ${{ steps.verify_site.outputs.site_ready }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,7 +39,6 @@ jobs:
 
       - name: Generate Dokka for all modules
         run: mvn -B -s .github/maven-settings.xml -DskipTests org.jetbrains.dokka:dokka-maven-plugin:1.9.20:dokka
-      
 
       - name: Start API (docs profile) in background
         env:
@@ -76,7 +79,7 @@ jobs:
           echo "API failed to start; printing api.log:"
           tail -n +1 api.log || true
           exit 1
-          
+
       - name: Start Data (docs profile) in background
         run: |
           nohup mvn -B -s .github/maven-settings.xml -DskipTests \
@@ -94,7 +97,7 @@ jobs:
             -Dspring-boot.run.arguments="--server.port=18082 --cryptotrader.engine.trading.enabled=false" \
             spring-boot:run > engine.log 2>&1 &
           echo $! > engine.pid
-          
+
       - name: Start Contact (docs profile) in background
         run: |
           nohup mvn -B -s .github/maven-settings.xml -DskipTests \
@@ -121,7 +124,7 @@ jobs:
           tail -n +1 engine.log || true
           tail -n +1 contact.log || true
           exit 1
-      
+
       - name: Build docs module (generate OpenAPI + copy to docs)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -166,7 +169,6 @@ jobs:
 
       - name: Build single aggregate coverage site
         run: |
-          # Use the aggregate XML from the coverage module
           reportgenerator \
             -reports:"Crypto-Trader-Coverage/target/site/jacoco-aggregate/jacoco.xml" \
             -targetdir:"Crypto-Trader-Docs/docs/coverage" \
@@ -174,7 +176,6 @@ jobs:
             -sourcedirs:. \
             -classdirectories:"**/target/classes" \
             -assemblymode:MergeByClass
-          # Normalize index filename if needed
           if [ -f Crypto-Trader-Docs/docs/coverage/index.htm ] && [ ! -f Crypto-Trader-Docs/docs/coverage/index.html ]; then
             cp Crypto-Trader-Docs/docs/coverage/index.htm Crypto-Trader-Docs/docs/coverage/index.html
           fi
@@ -204,7 +205,21 @@ jobs:
         with:
           enablement: true
 
+      # ✅ Only mark site ready when it actually exists and is non-empty
+      - name: Verify built site is non-empty
+        id: verify_site
+        run: |
+          SITE_DIR="Crypto-Trader-Docs/site"
+          if [ -s "$SITE_DIR/index.html" ] && [ "$(find "$SITE_DIR" -type f | wc -l)" -gt 5 ]; then
+            echo "site_ready=true" >> "$GITHUB_OUTPUT"
+            echo "Site verified."
+          else
+            echo "site_ready=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Site is missing or empty. Skipping upload and deploy."
+          fi
+
       - name: Upload Pages artifact
+        if: ${{ steps.verify_site.outputs.site_ready == 'true' }}
         uses: actions/upload-pages-artifact@v3
         with:
           path: Crypto-Trader-Docs/site
@@ -215,7 +230,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
-    if: needs.build.outputs.pages_enabled == 'success'
+    if: needs.build.result == 'success' && needs.build.outputs.pages_enabled == 'success' && needs.build.outputs.site_ready == 'true'
+    permissions:
+      pages: write
+      id-token: write
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
