@@ -1,4 +1,4 @@
-package org.cryptotrader.model.trade;
+package org.cryptotrader.api.library.trade;
 
 
 import org.cryptotrader.api.library.entity.currency.Currency;

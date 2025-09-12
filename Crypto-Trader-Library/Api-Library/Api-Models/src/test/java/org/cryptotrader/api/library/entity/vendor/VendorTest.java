@@ -1,6 +1,5 @@
-package org.cryptotrader.entity.vendor;
+package org.cryptotrader.api.library.entity.vendor;
 
-import org.cryptotrader.api.library.entity.vendor.Vendor;
 import org.cryptotrader.test.CryptoTraderTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
