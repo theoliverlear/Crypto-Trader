@@ -14,6 +14,9 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_ACTOR: ${{ github.actor }}
     outputs:
       pages_enabled: ${{ steps.pages.outcome }}
     steps:
@@ -134,8 +137,6 @@ jobs:
 
       - name: Run tests with coverage (aggregate)
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_ACTOR: ${{ github.actor }}
           DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
           PSQL_DB_URL: ${{ secrets.PSQL_DB_URL }}
@@ -150,7 +151,7 @@ jobs:
           X_SECRET: ${{ secrets.X_SECRET }}
           REPO_NAME: ${{ secrets.REPO_NAME }}
           APP_NAME: ${{ secrets.APP_NAME }}
-        run: mvn -B -ntp -Pcoverage -DskipITs=true -DfailIfNoTests=false clean verify
+        run: mvn -B -s .github/maven-settings.xml -ntp -Pcoverage -DskipITs=true -DfailIfNoTests=false clean verify
 
       - name: Set up .NET (for ReportGenerator)
         uses: actions/setup-dotnet@v4
@@ -179,7 +180,7 @@ jobs:
           fi
 
       - name: Build (runs verify -> javadoc -> copy)
-        run: mvn -B -DskipTests verify
+        run: mvn -B -s .github/maven-settings.xml -DskipTests verify
 
       - name: Set up Python
         uses: actions/setup-python@v5
