@@ -1,6 +1,8 @@
 package org.cryptotrader.api.controller;
 
 import jakarta.servlet.http.HttpSession;
+import org.cryptotrader.api.library.comm.request.LoginRequest;
+import org.cryptotrader.api.library.comm.request.SignupRequest;
 import org.cryptotrader.api.library.events.UserRegisteredEvent;
 import org.cryptotrader.api.library.events.publisher.UserEventsPublisher;
 import org.cryptotrader.api.library.services.AuthService;
@@ -21,10 +23,10 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/api/authorize")
 public class AuthController {
-    private AuthService authService;
-    private SessionService sessionService;
-    private UserEventsPublisher userEventsPublisher;
-    private ProductUserService productUserService;
+    private final AuthService authService;
+    private final SessionService sessionService;
+    private final UserEventsPublisher userEventsPublisher;
+    private final ProductUserService productUserService;
     @Autowired
     public AuthController(AuthService authService,
                           SessionService sessionService,
@@ -36,26 +38,26 @@ public class AuthController {
         this.productUserService = productUserService;
     }
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> signup(@RequestBody UserRequest userRequest, HttpSession session) {
+    public ResponseEntity<AuthResponse> signup(@RequestBody SignupRequest signupRequest, HttpSession session) {
         boolean userInSession = this.sessionService.userInSession(session);
         if (userInSession) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AuthResponse(AuthStatus.UNAUTHORIZED.isAuthorized));
         } else {
-            PayloadStatusResponse<AuthResponse> signupResponse = this.authService.signup(userRequest);
+            PayloadStatusResponse<AuthResponse> signupResponse = this.authService.signup(signupRequest);
             if (signupResponse.getPayload().isAuthorized()) {
-                User possibleUser = this.productUserService.getUserByUsername(userRequest.getUsername());
+                User possibleUser = this.productUserService.getUserByUsername(signupRequest.getUsername());
                 this.userEventsPublisher.publishUserRegisteredEvent(new UserRegisteredEvent(possibleUser, LocalDateTime.now()));
             }
             return ResponseEntity.status(signupResponse.getStatus()).body(signupResponse.getPayload());
         }
     }
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody UserRequest userRequest, HttpSession session) {
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
         boolean userInSession = this.sessionService.userInSession(session);
         if (userInSession) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AuthResponse(AuthStatus.UNAUTHORIZED.isAuthorized));
         } else {
-            PayloadStatusResponse<AuthResponse> signupResponse = this.authService.login(userRequest);
+            PayloadStatusResponse<AuthResponse> signupResponse = this.authService.login(loginRequest);
             return ResponseEntity.status(signupResponse.getStatus()).body(signupResponse.getPayload());
         }
     }
