@@ -22,7 +22,7 @@ public class LoggingTestWatcher implements TestWatcher {
     @Override
     public void testSuccessful(ExtensionContext context) {
         logTestContext(context);
-        log.info("{}✓ TEST PASSED{}: {}.{}()",
+        log.info("{}[PASS]{}: {}.{}()",
                 GREEN, RESET,
                 getClassName(context),
                 getMethodName(context));
@@ -38,7 +38,7 @@ public class LoggingTestWatcher implements TestWatcher {
     @Override
     public void testFailed(ExtensionContext context, Throwable cause) {
         logTestContext(context);
-        log.error("{}✗ TEST FAILED{}: {}.{}() - {}",
+        log.error("{}[FAIL]{}: {}.{}() - {}",
                 RED, RESET,
                 getClassName(context),
                 getMethodName(context),
@@ -49,7 +49,7 @@ public class LoggingTestWatcher implements TestWatcher {
     @Override
     public void testDisabled(ExtensionContext context, Optional<String> reason) {
         logTestContext(context);
-        log.warn("{}⚠ TEST DISABLED{}: {}.{}() - {}",
+        log.warn("{}[DISABLED]{}: {}.{}() - {}",
                 YELLOW, RESET,
                 getClassName(context),
                 getMethodName(context),
@@ -60,7 +60,7 @@ public class LoggingTestWatcher implements TestWatcher {
     @Override
     public void testAborted(ExtensionContext context, Throwable cause) {
         logTestContext(context);
-        log.warn("{}ℹ TEST ABORTED{}: {}.{}() - {}",
+        log.warn("{}[ABORTED]{}: {}.{}() - {}",
                 BLUE, RESET,
                 getClassName(context),
                 getMethodName(context),
