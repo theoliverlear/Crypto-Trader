@@ -13,14 +13,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/data/predictions")
 public class PricePredictionController {
-    private PricePredictionService pricePredictionService;
+    private final PricePredictionService pricePredictionService;
+
     @Autowired
     public PricePredictionController(PricePredictionService pricePredictionService) {
         this.pricePredictionService = pricePredictionService;
     }
     @RequestMapping("/add")
     public ResponseEntity<PredictionIdResponse> predictions(@RequestBody PricePredictionRequest pricePredictionRequest) {
+        if (pricePredictionRequest == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         Long predictionId = this.pricePredictionService.savePrediction(pricePredictionRequest).getId();
+        if (predictionId == null) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         return new ResponseEntity<>(new PredictionIdResponse(predictionId), HttpStatus.ACCEPTED);
     }
 }
