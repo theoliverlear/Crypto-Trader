@@ -354,13 +354,13 @@
                             <target>
                                 <mkdir dir="${project.basedir}/docs/api"/>
                                 <copy file="${project.build.directory}/${docs.openapi.api.file}.${docs.openapi.format}"
-                                      tofile="${project.basedir}/docs/api/${docs.openapi.api.file}.${docs.openapi.format}" overwrite="true"/>
+                                      tofile="${project.basedir}/docs/api/${docs.openapi.api.file}.${docs.openapi.format}" overwrite="true" failonerror="false"/>
                                 <copy file="${project.build.directory}/${docs.openapi.data.file}.${docs.openapi.format}"
-                                      tofile="${project.basedir}/docs/api/${docs.openapi.data.file}.${docs.openapi.format}" overwrite="true"/>
+                                      tofile="${project.basedir}/docs/api/${docs.openapi.data.file}.${docs.openapi.format}" overwrite="true" failonerror="false"/>
                                 <copy file="${project.build.directory}/${docs.openapi.engine.file}.${docs.openapi.format}"
-                                      tofile="${project.basedir}/docs/api/${docs.openapi.engine.file}.${docs.openapi.format}" overwrite="true"/>
+                                      tofile="${project.basedir}/docs/api/${docs.openapi.engine.file}.${docs.openapi.format}" overwrite="true" failonerror="false"/>
                                 <copy file="${project.build.directory}/${docs.openapi.contact.file}.${docs.openapi.format}"
-                                      tofile="${project.basedir}/docs/api/${docs.openapi.contact.file}.${docs.openapi.format}" overwrite="true"/>
+                                      tofile="${project.basedir}/docs/api/${docs.openapi.contact.file}.${docs.openapi.format}" overwrite="true" failonerror="false"/>
                             </target>
                         </configuration>
                         <goals>
