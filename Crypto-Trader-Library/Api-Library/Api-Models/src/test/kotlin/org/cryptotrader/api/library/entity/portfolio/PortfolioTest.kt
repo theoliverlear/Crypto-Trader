@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.verify
 
+@DisplayName("Portfolio")
 class PortfolioTest : CryptoTraderTest() {
     private lateinit var bitcoinCurrency: Currency
     private lateinit var ethereumCurrency: Currency
@@ -50,5 +51,18 @@ class PortfolioTest : CryptoTraderTest() {
         verify(this.portfolio, Mockito.times(2)).updateValues()
         val expectedValue = bitcoinWalletDollars + expectedEthereumValue
         assertEquals(expectedValue, this.portfolio.totalWorth)
+    }
+
+    @Test
+    @DisplayName("Should return portfolio value correctly")
+    fun getTotalPortfolioWorth_ReturnsValueCorrectly() {
+        val bitcoinWalletDollars = 100.0
+        val testEthereumShares = 10.0
+        val bitcoinAsset = PortfolioAsset(this.bitcoinCurrency, 0.0, bitcoinWalletDollars)
+        val ethereumAsset = PortfolioAsset(this.ethereumCurrency, testEthereumShares, 0.0)
+        val assetsLists: List<PortfolioAsset> = listOf(bitcoinAsset, ethereumAsset)
+        val expectedPortfolioValue = 110.0
+        val actualPortfolioValue = Portfolio.getTotalPortfolioValue(assetsLists)
+        assertEquals(expectedPortfolioValue, actualPortfolioValue)
     }
 }
