@@ -346,25 +346,27 @@
                         </configuration>
                     </execution>
 
-<!--                    <execution>-->
-<!--                        <id>move-openapi-into-docs</id>-->
-<!--                        <phase>verify</phase>-->
-<!--                        <configuration>-->
-<!--                            <skip>${docs.skipOpenapi}</skip>-->
-<!--                            <target>-->
-<!--                                <mkdir dir="${project.basedir}/docs/api"/>-->
-<!--                                <copy file="${project.build.directory}/${docs.openapi.api.file}.${docs.openapi.format}"-->
-<!--                                      tofile="${project.basedir}/docs/api/${docs.openapi.api.file}.${docs.openapi.format}" overwrite="true"/>-->
-<!--                                <copy file="${project.build.directory}/${docs.openapi.data.file}.${docs.openapi.format}"-->
-<!--                                      tofile="${project.basedir}/docs/api/${docs.openapi.data.file}.${docs.openapi.format}" overwrite="true"/>-->
-<!--                                <copy file="${project.build.directory}/${docs.openapi.engine.file}.${docs.openapi.format}"-->
-<!--                                      tofile="${project.basedir}/docs/api/${docs.openapi.engine.file}.${docs.openapi.format}" overwrite="true"/>-->
-<!--                            </target>-->
-<!--                        </configuration>-->
-<!--                        <goals>-->
-<!--                            <goal>run</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
+                    <execution>
+                        <id>move-openapi-into-docs</id>
+                        <phase>verify</phase>
+                        <configuration>
+                            <skip>${docs.skipOpenapi}</skip>
+                            <target>
+                                <mkdir dir="${project.basedir}/docs/api"/>
+                                <copy file="${project.build.directory}/${docs.openapi.api.file}.${docs.openapi.format}"
+                                      tofile="${project.basedir}/docs/api/${docs.openapi.api.file}.${docs.openapi.format}" overwrite="true"/>
+                                <copy file="${project.build.directory}/${docs.openapi.data.file}.${docs.openapi.format}"
+                                      tofile="${project.basedir}/docs/api/${docs.openapi.data.file}.${docs.openapi.format}" overwrite="true"/>
+                                <copy file="${project.build.directory}/${docs.openapi.engine.file}.${docs.openapi.format}"
+                                      tofile="${project.basedir}/docs/api/${docs.openapi.engine.file}.${docs.openapi.format}" overwrite="true"/>
+                                <copy file="${project.build.directory}/${docs.openapi.contact.file}.${docs.openapi.format}"
+                                      tofile="${project.basedir}/docs/api/${docs.openapi.contact.file}.${docs.openapi.format}" overwrite="true"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
 
