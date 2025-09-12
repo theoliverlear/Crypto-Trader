@@ -23,6 +23,9 @@ public class NewsSentimentController {
     
     @PostMapping("/add")
     public ResponseEntity<OperationSuccessfulResponse> add(@RequestBody NewsSentimentRequest request) {
+        if (request == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         this.newsSentimentService.saveFromRequest(request);
         return new ResponseEntity<>(new OperationSuccessfulResponse(true), HttpStatus.OK);
     }
