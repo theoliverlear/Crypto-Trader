@@ -131,6 +131,31 @@ jobs:
           GITHUB_ACTOR: ${{ github.actor }}
         run: mvn -B -s .github/maven-settings.xml -DskipTests -Ddocs.skipOpenapi=false -f Crypto-Trader-Docs/pom.xml -N verify
 
+      - name: "Fallback: fetch OpenAPI specs into docs if empty"
+        run: |
+          set -e
+          mkdir -p Crypto-Trader-Docs/docs/api
+          check_and_fetch() {
+            URL="$1"
+            OUT="$2"
+            # If file is missing or empty, fetch it
+            if [ ! -s "$OUT" ]; then
+              echo "[Fallback] Fetching $URL -> $OUT"
+              curl -fsS "$URL" -o "$OUT" || true
+            fi
+            # Verify non-empty after fetch
+            if [ ! -s "$OUT" ]; then
+              echo "::error::OpenAPI spec still missing or empty: $OUT (source: $URL)" >&2
+              exit 1
+            else
+              echo "[Fallback] Verified non-empty: $OUT ($(wc -c < "$OUT") bytes)"
+            fi
+          }
+          check_and_fetch http://localhost:18080/v3/api-docs.yaml Crypto-Trader-Docs/docs/api/openapi-api.yaml
+          check_and_fetch http://localhost:18081/v3/api-docs.yaml Crypto-Trader-Docs/docs/api/openapi-data.yaml
+          check_and_fetch http://localhost:18082/v3/api-docs.yaml Crypto-Trader-Docs/docs/api/openapi-engine.yaml
+          check_and_fetch http://localhost:18083/v3/api-docs.yaml Crypto-Trader-Docs/docs/api/openapi-contact.yaml
+
       - name: Stop APIs
         run: |
           if [ -f api.pid ]; then kill "$(cat api.pid)" || true; fi
