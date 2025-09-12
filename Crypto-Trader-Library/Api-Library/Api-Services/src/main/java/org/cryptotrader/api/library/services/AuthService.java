@@ -1,5 +1,7 @@
 package org.cryptotrader.api.library.services;
 
+import org.cryptotrader.api.library.comm.request.LoginRequest;
+import org.cryptotrader.api.library.comm.request.SignupRequest;
 import org.cryptotrader.api.library.comm.request.UserRequest;
 import org.cryptotrader.api.library.comm.response.AuthResponse;
 import org.cryptotrader.api.library.entity.portfolio.Portfolio;
@@ -18,9 +20,9 @@ import java.time.LocalDateTime;
 
 @Service
 public class AuthService {
-    private ProductUserService productUserService;
-    private PortfolioService portfolioService;
-    private UserEventsPublisher userEventsPublisher;
+    private final ProductUserService productUserService;
+    private final PortfolioService portfolioService;
+    private final UserEventsPublisher userEventsPublisher;
     @Autowired
     public AuthService(ProductUserService productUserService,
                        PortfolioService portfolioService,
@@ -29,10 +31,10 @@ public class AuthService {
         this.portfolioService = portfolioService;
         this.userEventsPublisher = userEventsPublisher;
     }
-    public PayloadStatusResponse<AuthResponse> signup(UserRequest userRequest) {
-        String username = userRequest.getUsername();
-        String email = userRequest.getEmail();
-        String password = userRequest.getPassword();
+    public PayloadStatusResponse<AuthResponse> signup(SignupRequest signupRequest) {
+        String username = signupRequest.getUsername();
+        String email = signupRequest.getEmail();
+        String password = signupRequest.getPassword();
         boolean userExists = this.productUserService.userExistsByUsername(username);
         if (userExists) {
             return new PayloadStatusResponse<>(new AuthResponse(AuthStatus.UNAUTHORIZED.isAuthorized), HttpStatus.CONFLICT);
@@ -54,10 +56,10 @@ public class AuthService {
             return new PayloadStatusResponse<>(new AuthResponse(AuthStatus.AUTHORIZED.isAuthorized), HttpStatus.OK);
         }
     }
-    public PayloadStatusResponse<AuthResponse> login(UserRequest userRequest) {
-        String username = userRequest.getUsername();
-        String password = userRequest.getPassword();
-        User user = this.productUserService.getUserByUsername(username);
+    public PayloadStatusResponse<AuthResponse> login(LoginRequest loginRequest) {
+        String email = loginRequest.getEmail();
+        String password = loginRequest.getPassword();
+        User user = this.productUserService.getUserByEmail(email);
         if (user == null) {
             return new PayloadStatusResponse<>(new AuthResponse(AuthStatus.UNAUTHORIZED.isAuthorized), HttpStatus.NOT_FOUND);
         } else {
