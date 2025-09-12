@@ -9,8 +9,11 @@ public interface ProductUserRepository extends JpaRepository<ProductUser, Long> 
 
     //------------------------Get-User-By-Username----------------------------
     ProductUser getUserByUsername(String username);
+    
+    ProductUser getUserByEmail(String email);
     //---------------------------Get-User-By-Id-------------------------------
     ProductUser getUserById(Long id);
     //-------------------------Exists-By-Username-----------------------------
     boolean existsByUsername(String username);
+    boolean existsByEmail(String email);
 }
