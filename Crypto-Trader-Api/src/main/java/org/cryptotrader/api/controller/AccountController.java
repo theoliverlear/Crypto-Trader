@@ -142,7 +142,7 @@ public class AccountController {
      *         array with the appropriate HTTP content type if available, or a
      *         404 NOT_FOUND response if no profile picture is found
      *
-     * @see org.cryptotrader.entity.user.ProfilePicture
+     * @see org.cryptotrader.api.library.entity.user.ProfilePicture
      * @see org.springframework.http.ResponseEntity
      */
     @Transactional
