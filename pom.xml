@@ -589,6 +589,7 @@
                         <argLine>@{argLine}</argLine>
                         <systemPropertyVariables>
                             <junit.platform.excludeEngines>vintage</junit.platform.excludeEngines>
+                            <spring.profiles.active>test</spring.profiles.active>
                         </systemPropertyVariables>
                     </configuration>
                 </plugin>
