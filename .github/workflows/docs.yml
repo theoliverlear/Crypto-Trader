@@ -151,7 +151,25 @@ jobs:
               echo "[Fallback] Verified non-empty: $OUT ($(wc -c < "$OUT") bytes)"
             fi
           }
-          check_and_fetch http://localhost:18080/v3/api-docs.yaml Crypto-Trader-Docs/docs/api/openapi-api.yaml
+          # For CT API, try alternative port (8080) as a fallback in case the server didn't bind to 18080
+          check_and_fetch_multi() {
+            PRIMARY="$1"; SECONDARY="$2"; OUT="$3"
+            if [ ! -s "$OUT" ]; then
+              echo "[Fallback] Trying primary: $PRIMARY"
+              curl -fsS "$PRIMARY" -o "$OUT" || true
+            fi
+            if [ ! -s "$OUT" ] && [ -n "$SECONDARY" ]; then
+              echo "[Fallback] Trying secondary: $SECONDARY"
+              curl -fsS "$SECONDARY" -o "$OUT" || true
+            fi
+            if [ ! -s "$OUT" ]; then
+              echo "::error::OpenAPI spec still missing or empty: $OUT (sources: $PRIMARY, $SECONDARY)" >&2
+              exit 1
+            else
+              echo "[Fallback] Verified non-empty: $OUT ($(wc -c < "$OUT") bytes)"
+            fi
+          }
+          check_and_fetch_multi http://localhost:18080/v3/api-docs.yaml http://localhost:8080/v3/api-docs.yaml Crypto-Trader-Docs/docs/api/openapi-api.yaml
           check_and_fetch http://localhost:18081/v3/api-docs.yaml Crypto-Trader-Docs/docs/api/openapi-data.yaml
           check_and_fetch http://localhost:18082/v3/api-docs.yaml Crypto-Trader-Docs/docs/api/openapi-engine.yaml
           check_and_fetch http://localhost:18083/v3/api-docs.yaml Crypto-Trader-Docs/docs/api/openapi-contact.yaml
