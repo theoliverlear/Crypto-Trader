@@ -1,4 +1,4 @@
-package org.cryptotrader.admin.ui;
+package org.cryptotrader.desktop.library.component.ui;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.HBox;
@@ -6,7 +6,7 @@ import org.cryptotrader.desktop.library.component.config.SpringContext;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.cryptotrader.admin.model.Loadable;
+import org.cryptotrader.desktop.library.component.model.Loadable;
 
 import java.io.IOException;
 import java.net.URL;
