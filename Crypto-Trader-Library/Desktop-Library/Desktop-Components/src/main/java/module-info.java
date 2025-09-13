@@ -11,4 +11,6 @@ open module org.cryptotrader.desktop.library.components {
     
     exports org.cryptotrader.desktop.library.component;
     exports org.cryptotrader.desktop.library.component.config;
+    exports org.cryptotrader.desktop.library.component.model;
+    exports org.cryptotrader.desktop.library.component.ui;
 }
