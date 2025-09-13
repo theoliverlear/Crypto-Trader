@@ -8,6 +8,9 @@ open module org.cryptotrader.version {
     requires org.apache.httpcomponents.httpcore;
     requires org.apache.httpcomponents.httpclient;
     requires kotlin.stdlib;
+    requires com.sigwarthsoftware.changelog;
+    requires org.jetbrains.annotations;
+    requires com.sigwarthsoftware.promo;
 
     exports org.cryptotrader.version;
     exports org.cryptotrader.version.script;
