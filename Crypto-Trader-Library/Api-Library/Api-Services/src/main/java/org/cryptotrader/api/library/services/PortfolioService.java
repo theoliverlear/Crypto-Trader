@@ -2,7 +2,7 @@ package org.cryptotrader.api.library.services;
 //=================================-Imports-==================================
 
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.api.library.comm.request.PortfolioAssetRequest;
+import org.cryptotrader.api.library.communication.request.PortfolioAssetRequest;
 import org.cryptotrader.api.library.entity.currency.Currency;
 import org.cryptotrader.api.library.entity.portfolio.Portfolio;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset;

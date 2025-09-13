@@ -1,10 +1,10 @@
 package org.cryptotrader.api.library.services;
 
-import org.cryptotrader.api.library.comm.request.LoginRequest;
-import org.cryptotrader.api.library.comm.request.SignupRequest;
+import org.cryptotrader.api.library.communication.request.LoginRequest;
+import org.cryptotrader.api.library.communication.request.SignupRequest;
 import org.cryptotrader.api.library.events.publisher.UserEventsPublisher;
-import org.cryptotrader.api.library.comm.request.UserRequest;
-import org.cryptotrader.api.library.comm.response.AuthResponse;
+import org.cryptotrader.api.library.communication.request.UserRequest;
+import org.cryptotrader.api.library.communication.response.AuthResponse;
 import org.cryptotrader.api.library.entity.user.SafePassword;
 import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.api.library.model.http.PayloadStatusResponse;

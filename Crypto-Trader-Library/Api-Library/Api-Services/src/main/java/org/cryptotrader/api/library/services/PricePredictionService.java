@@ -1,6 +1,6 @@
 package org.cryptotrader.api.library.services;
 
-import org.cryptotrader.api.library.comm.request.PricePredictionRequest;
+import org.cryptotrader.api.library.communication.request.PricePredictionRequest;
 import org.cryptotrader.api.library.entity.currency.Currency;
 import org.cryptotrader.api.library.entity.prediction.PricePrediction;
 import org.cryptotrader.api.library.repository.PricePredictionRepository;

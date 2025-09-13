@@ -1,7 +1,7 @@
 package org.cryptotrader.api.library.services;
 
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.api.library.comm.request.TrainingSessionRequest;
+import org.cryptotrader.api.library.communication.request.TrainingSessionRequest;
 import org.cryptotrader.api.library.entity.training.TrainingSession;
 import org.cryptotrader.api.library.entity.training.builder.TrainingSessionBuilder;
 import org.cryptotrader.api.library.repository.TrainingSessionRepository;

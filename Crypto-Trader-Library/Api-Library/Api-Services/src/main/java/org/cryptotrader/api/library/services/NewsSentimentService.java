@@ -1,7 +1,7 @@
 package org.cryptotrader.api.library.services;
 
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.api.library.comm.request.NewsSentimentRequest;
+import org.cryptotrader.api.library.communication.request.NewsSentimentRequest;
 import org.cryptotrader.api.library.component.NewsSentimentHarvesterClient;
 import org.cryptotrader.api.library.entity.news.NewsSentiment;
 import org.cryptotrader.api.library.repository.NewsSentimentRepository;
