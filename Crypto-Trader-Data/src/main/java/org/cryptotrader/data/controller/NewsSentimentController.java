@@ -1,8 +1,8 @@
 package org.cryptotrader.data.controller;
 
 import org.cryptotrader.api.library.services.NewsSentimentService;
-import org.cryptotrader.api.library.comm.request.NewsSentimentRequest;
-import org.cryptotrader.api.library.comm.response.OperationSuccessfulResponse;
+import org.cryptotrader.api.library.communication.request.NewsSentimentRequest;
+import org.cryptotrader.api.library.communication.response.OperationSuccessfulResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

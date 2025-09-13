@@ -1,8 +1,8 @@
 package org.cryptotrader.data.controller;
 
 import org.cryptotrader.api.library.services.TrainingSessionService;
-import org.cryptotrader.api.library.comm.request.TrainingSessionRequest;
-import org.cryptotrader.api.library.comm.response.OperationSuccessfulResponse;
+import org.cryptotrader.api.library.communication.request.TrainingSessionRequest;
+import org.cryptotrader.api.library.communication.response.OperationSuccessfulResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
