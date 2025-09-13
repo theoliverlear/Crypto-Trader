@@ -1,4 +1,4 @@
-import {Component, Input} from "@angular/core";
+import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {AuthPopup, AuthType} from "@theoliverlear/angular-suite";
 
 @Component({
@@ -9,13 +9,15 @@ import {AuthPopup, AuthType} from "@theoliverlear/angular-suite";
 })
 export class AuthConsoleComponent {
     @Input() currentAuthType: AuthType = AuthType.SIGN_UP;
-    username: string = "";
-    email: string = "";
-    password: string = "";
-    confirmPassword: string = "";
+    @Output() authPopupEvent: EventEmitter<AuthPopup> = new EventEmitter<AuthPopup>();
     constructor() {
 
     }
+    
+    emitAuthPopup(authPopup: AuthPopup): void {
+        this.authPopupEvent.emit(authPopup);
+    }
+    
     setAuthType(authType: AuthType): void {
         this.currentAuthType = authType;
     }
