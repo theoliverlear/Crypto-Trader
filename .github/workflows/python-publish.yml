@@ -7,6 +7,9 @@ name: Publish Python Package (Crypto-Trader-Analysis)
 on:
   release:
     types: [created]
+  push:
+    tags:
+      - 'v*'
   workflow_dispatch:
 
 jobs:
@@ -42,6 +45,30 @@ jobs:
         run: |
           V=$(python -c "import tomllib; d=tomllib.load(open('Crypto-Trader-Analysis/pyproject.toml','rb')); print(d['project']['version'])")
           echo "version=$V" >> "$GITHUB_OUTPUT"
+
+      - name: Detect tag and compare to project version
+        id: tag_check
+        shell: bash
+        run: |
+          REF="${GITHUB_REF:-${{ github.ref }}}"
+          echo "github.ref=$REF"
+          if [[ "$REF" == refs/tags/* ]]; then
+            TAG="${REF#refs/tags/}"
+            TV="${TAG#v}"
+            echo "is_tag=true" >> "$GITHUB_OUTPUT"
+            echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+            echo "tag_version=$TV" >> "$GITHUB_OUTPUT"
+            if [ "$TV" = "${{ steps.get_version.outputs.version }}" ]; then
+              echo "matches=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "matches=false" >> "$GITHUB_OUTPUT"
+              echo "Warning: Tag version ($TV) does not match pyproject version (${{ steps.get_version.outputs.version }})."
+            fi
+          else
+            echo "is_tag=false" >> "$GITHUB_OUTPUT"
+            echo "tag=" >> "$GITHUB_OUTPUT"
+            echo "tag_version=" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Check if version already exists on PyPI
         id: check_pypi
