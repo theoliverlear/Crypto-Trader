@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.cryptotrader.api.library.comm.request.AssetValueRequest;
-import org.cryptotrader.api.library.comm.response.AssetValueResponse;
+import org.cryptotrader.api.library.communication.request.AssetValueRequest;
+import org.cryptotrader.api.library.communication.response.AssetValueResponse;
 import org.cryptotrader.api.library.entity.currency.Currency;
 
 @RestController

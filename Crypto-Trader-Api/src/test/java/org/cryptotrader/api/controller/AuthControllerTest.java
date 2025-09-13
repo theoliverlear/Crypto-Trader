@@ -6,10 +6,10 @@ import org.cryptotrader.api.library.services.AuthService;
 import org.cryptotrader.api.library.services.SessionService;
 import org.cryptotrader.api.library.services.ProductUserService;
 import org.cryptotrader.api.library.events.publisher.UserEventsPublisher;
-import org.cryptotrader.api.library.comm.request.UserRequest;
-import org.cryptotrader.api.library.comm.response.AuthResponse;
+import org.cryptotrader.api.library.communication.request.SignupRequest;
+import org.cryptotrader.api.library.communication.request.LoginRequest;
+import org.cryptotrader.api.library.communication.response.AuthResponse;
 import org.cryptotrader.api.library.model.http.PayloadStatusResponse;
-import org.cryptotrader.api.library.entity.user.User;
 import org.cryptotrader.api.library.entity.user.SafePassword;
 import org.cryptotrader.test.CryptoTraderTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,18 +44,20 @@ public class AuthControllerTest extends CryptoTraderTest {
     @Mock
     private HttpSession httpSession;
     
-    private UserRequest userRequest;
+    private SignupRequest signupRequest;
+    private LoginRequest loginRequest;
     
     @BeforeEach
     void setup() {
-        this.userRequest = new UserRequest("Ollie", "ollie@ollie.com", "password");
+        this.signupRequest = new SignupRequest("ollie@ollie.com", "Ollie", "password");
+        this.loginRequest = new LoginRequest("ollie@ollie.com", "password");
     }
     
     @Test
     @DisplayName("Should not sign up users in session")
     public void signup_NotSignUp_UsersInSession() {
         when(this.sessionService.userInSession(this.httpSession)).thenReturn(true);
-        ResponseEntity<AuthResponse> signupResponse = this.authController.signup(this.userRequest, this.httpSession);
+        ResponseEntity<AuthResponse> signupResponse = this.authController.signup(this.signupRequest, this.httpSession);
         verify(this.sessionService).userInSession(this.httpSession);
         HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
         AuthResponse expectedResponse = new AuthResponse(false);
@@ -67,11 +69,11 @@ public class AuthControllerTest extends CryptoTraderTest {
     @DisplayName("Should sign up users not in session")
     public void signup_SignUp_UsersNotInSession() {
         when(this.sessionService.userInSession(this.httpSession)).thenReturn(false);
-        when(this.authService.signup(this.userRequest)).thenReturn(new PayloadStatusResponse<>(new AuthResponse(true), HttpStatus.OK));
+        when(this.authService.signup(this.signupRequest)).thenReturn(new PayloadStatusResponse<>(new AuthResponse(true), HttpStatus.OK));
         when(this.productUserService.getUserByUsername("Ollie")).thenReturn(new ProductUser("Ollie", new SafePassword("password")));
-        ResponseEntity<AuthResponse> signupResponse = this.authController.signup(this.userRequest, this.httpSession);
+        ResponseEntity<AuthResponse> signupResponse = this.authController.signup(this.signupRequest, this.httpSession);
         verify(this.sessionService).userInSession(this.httpSession);
-        verify(this.authService).signup(this.userRequest);
+        verify(this.authService).signup(this.signupRequest);
         HttpStatus expectedStatus = HttpStatus.OK;
         AuthResponse expectedResponse = new AuthResponse(true);
         assertEquals(expectedStatus, signupResponse.getStatusCode());
@@ -82,7 +84,7 @@ public class AuthControllerTest extends CryptoTraderTest {
     @DisplayName("Should not login users in session")
     public void login_NotLogin_UsersInSession() {
         when(this.sessionService.userInSession(this.httpSession)).thenReturn(true);
-        ResponseEntity<AuthResponse> loginResponse = this.authController.login(this.userRequest, this.httpSession);
+        ResponseEntity<AuthResponse> loginResponse = this.authController.login(this.loginRequest, this.httpSession);
         verify(this.sessionService).userInSession(this.httpSession);
         HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
         AuthResponse expectedResponse = new AuthResponse(false);
@@ -94,10 +96,10 @@ public class AuthControllerTest extends CryptoTraderTest {
     @DisplayName("Should login users not in session")
     public void login_Login_UsersNotInSession() {
         when(this.sessionService.userInSession(this.httpSession)).thenReturn(false);
-        when(this.authService.login(this.userRequest)).thenReturn(new PayloadStatusResponse<>(new AuthResponse(true), HttpStatus.OK));
-        ResponseEntity<AuthResponse> loginResponse = this.authController.login(this.userRequest, this.httpSession);
+        when(this.authService.login(this.loginRequest)).thenReturn(new PayloadStatusResponse<>(new AuthResponse(true), HttpStatus.OK));
+        ResponseEntity<AuthResponse> loginResponse = this.authController.login(this.loginRequest, this.httpSession);
         verify(this.sessionService).userInSession(this.httpSession);
-        verify(this.authService).login(this.userRequest);
+        verify(this.authService).login(this.loginRequest);
         HttpStatus expectedStatus = HttpStatus.OK;
         AuthResponse expectedResponse = new AuthResponse(true);
         assertEquals(expectedStatus, loginResponse.getStatusCode());

@@ -11,8 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.cryptotrader.api.library.comm.response.HasProfilePictureResponse;
-import org.cryptotrader.api.library.comm.response.OperationSuccessfulResponse;
+import org.cryptotrader.api.library.communication.response.HasProfilePictureResponse;
+import org.cryptotrader.api.library.communication.response.OperationSuccessfulResponse;
 import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.api.library.entity.user.ProfilePicture;
 

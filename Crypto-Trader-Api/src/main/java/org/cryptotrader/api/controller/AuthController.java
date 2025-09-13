@@ -1,8 +1,8 @@
 package org.cryptotrader.api.controller;
 
 import jakarta.servlet.http.HttpSession;
-import org.cryptotrader.api.library.comm.request.LoginRequest;
-import org.cryptotrader.api.library.comm.request.SignupRequest;
+import org.cryptotrader.api.library.communication.request.LoginRequest;
+import org.cryptotrader.api.library.communication.request.SignupRequest;
 import org.cryptotrader.api.library.events.UserRegisteredEvent;
 import org.cryptotrader.api.library.events.publisher.UserEventsPublisher;
 import org.cryptotrader.api.library.services.AuthService;
@@ -13,8 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.cryptotrader.api.library.comm.request.UserRequest;
-import org.cryptotrader.api.library.comm.response.AuthResponse;
+import org.cryptotrader.api.library.communication.response.AuthResponse;
 import org.cryptotrader.api.library.model.http.AuthStatus;
 import org.cryptotrader.api.library.model.http.PayloadStatusResponse;
 

@@ -2,9 +2,9 @@ package org.cryptotrader.api.controller.websocket
 
 import com.sigwarthsoftware.springboot.websocket.WebSocketHandler
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.cryptotrader.api.library.comm.request.SignupRequest
-import org.cryptotrader.api.library.comm.request.alias.HttpAuthStatus
-import org.cryptotrader.api.library.comm.response.AuthResponse
+import org.cryptotrader.api.library.communication.request.SignupRequest
+import org.cryptotrader.api.library.communication.request.alias.HttpAuthStatus
+import org.cryptotrader.api.library.communication.response.AuthResponse
 import org.cryptotrader.api.library.services.AuthService
 import org.springframework.stereotype.Component
 
