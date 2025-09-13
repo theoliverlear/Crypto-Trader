@@ -18,9 +18,9 @@ public class PomValidator {
         List<PomPair> pomPairs = allPoms.stream().map(pomElement -> {
             String name = pomElement.getPom().getModuleDependency().getName();
             // These will likely be important later. Deprecated currently.
-            boolean rootChild = Arrays.asList(ModuleLibrary.cryptoTraderParent).contains(name);
-            boolean libraryChild = Arrays.asList(ModuleLibrary.libraryParent).contains(name);
-            ModuleLibrary libraryModule = ModuleLibrary.modules.stream()
+            boolean rootChild = Arrays.asList(ModuleLibrary.CRYPTO_TRADER_PARENT).contains(name);
+            boolean libraryChild = Arrays.asList(ModuleLibrary.LIBRARY_PARENT).contains(name);
+            ModuleLibrary libraryModule = ModuleLibrary.MODULES.stream()
                     .filter(module -> module.getName().equals(name))
                     .findFirst().orElseThrow(() -> new IllegalStateException("Module not found: " + name));
             return new PomPair(pomElement, libraryModule);
