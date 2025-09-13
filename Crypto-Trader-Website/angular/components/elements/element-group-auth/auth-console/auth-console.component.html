@@ -1,5 +1,9 @@
 <ng-container>
     <auth-console-tab-section (authTypeClicked)="setAuthType($event)"/>
-    <auth-console-signup-section *ngIf="isSignupSection()"/>
-    <auth-console-login-section *ngIf="isLoginSection()"/>
+    @if (isSignupSection()) {
+        <auth-console-signup-section (authPopupEvent)="emitAuthPopup($event)"/>
+    }
+    @if (isLoginSection()) {
+        <auth-console-login-section/>
+    }
 </ng-container>
