@@ -49,54 +49,43 @@
                 <version>2.2.0</version>
                 <executions>
                     <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
+                        <id>kotlin-compile</id>
+                        <phase>process-sources</phase>
+                        <goals><goal>compile</goal></goals>
                         <configuration>
-                            <jdkHome>${env.JAVA_HOME}</jdkHome>
                             <jvmTarget>23</jvmTarget>
+                            <args>
+                                <!-- Bind to JDK 23 APIs while producing stable bytecode -->
+                                <arg>-Xjdk-release=23</arg>
+                            </args>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>test-compile</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>test-compile</goal>
-                        </goals>
+                        <id>kotlin-test-compile</id>
+                        <phase>process-test-sources</phase>
+                        <goals><goal>test-compile</goal></goals>
                         <configuration>
-                            <jdkHome>${env.JAVA_HOME}</jdkHome>
                             <jvmTarget>23</jvmTarget>
+                            <args>
+                                <arg>-Xjdk-release=23</arg>
+                            </args>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <release>${maven.compiler.release}</release>
+                    <release>23</release>
+                    <useModulePath>true</useModulePath>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.36</version>
                         </path>
                     </annotationProcessorPaths>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.3.0</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                        </manifest>
-                    </archive>
                 </configuration>
             </plugin>
             <plugin>
