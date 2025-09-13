@@ -1,6 +1,5 @@
 package org.cryptotrader.admin.config;
 
-import org.cryptotrader.desktop.library.component.config.SpringContext;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
