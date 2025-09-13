@@ -131,7 +131,7 @@ jobs:
         with:
           user: ${{ github.repository_owner }}
           password: ${{ secrets.GH_PACKAGES_TOKEN }}
-          repository-url: https://pypi.pkg.github.com/${{ github.repository_owner }}/
+          repository-url: https://pypi.pkg.github.com/${{ github.repository }}/
           packages-dir: Crypto-Trader-Analysis/dist
           skip-existing: true
           attestations: false
@@ -142,7 +142,7 @@ jobs:
         with:
           user: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          repository-url: https://pypi.pkg.github.com/${{ github.repository_owner }}/
+          repository-url: https://pypi.pkg.github.com/${{ github.repository }}/
           packages-dir: Crypto-Trader-Analysis/dist
           skip-existing: true
           attestations: false
