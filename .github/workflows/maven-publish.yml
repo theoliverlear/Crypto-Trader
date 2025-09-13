@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   build:
-    uses: theoliverlear/Sigwarth-Software-Suite/.github/workflows/maven-package.yml@d024bd332b95e4640e0838d69fddde6a7cfc549a
+    uses: theoliverlear/Sigwarth-Software-Suite/.github/workflows/maven-package.yml@master
     with:
       java-version: '23'
       distribution: temurin
