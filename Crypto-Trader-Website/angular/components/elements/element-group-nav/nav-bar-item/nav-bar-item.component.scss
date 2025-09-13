@@ -11,17 +11,17 @@ nav-bar-item {
     @include flex(center, center, row);
     border-radius: simplest-calc(0.5);
     transition: background-color, box-shadow, scale, 0.3s;
-    padding: simplest-calc(0.5) simplest-calc(1);
+    padding: simplest-calc(0.5) simplest-calc(0);
     background-color: #4074A7;
     //background: radial-gradient(circle, $muted-blue, $blue-gray);
     //background-color: $charcoal;
     //border: $light-charcoal $thinnest-border solid;
     box-shadow: add-alpha($light-charcoal, 0.5) 0 0 $quarter-percent simplest-calc(0.001);
-    flex-basis: $ten-percent;
+    flex-basis: $nine-percent;
     h4 {
         font-family: fonts.$google-sans-code-font;
         font-size: calc($h4-font-size * 0.65);
-        min-width: 9ch;
+        min-width: 8ch;
         //color: $pure-white;
         //color: $sunbeam-yellow;
         //color: $neutral-black;
