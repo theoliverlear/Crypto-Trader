@@ -1,7 +1,11 @@
 // auth-console-signup-section.component.ts 
 import {Component, EventEmitter, Output} from "@angular/core";
 import {AuthInputType} from "../auth-input/models/AuthInputType";
-import {ButtonText, ElementSize} from "@theoliverlear/angular-suite";
+import {
+    AuthPopup,
+    ButtonText,
+    ElementSize, EmailValidatorService
+} from "@theoliverlear/angular-suite";
 import {SignupCredentials} from "../../../../models/auth/SignupCredentials";
 
 @Component({
@@ -13,13 +17,22 @@ import {SignupCredentials} from "../../../../models/auth/SignupCredentials";
 export class AuthConsoleSignupSectionComponent {
     signupCredentials: SignupCredentials = new SignupCredentials();
     @Output() signupButtonClicked: EventEmitter<SignupCredentials> = new EventEmitter<SignupCredentials>();
-    constructor() {
+    @Output() authPopupEvent: EventEmitter<AuthPopup> = new EventEmitter<AuthPopup>();
+    constructor(private emailValidator: EmailValidatorService) {
         
     }
+    
+    emitAuthPopup(authPopup: AuthPopup): void {
+        this.authPopupEvent.emit(authPopup);
+    }
+    
     updateUsername(username: string): void {
         this.signupCredentials.username = username;
     }
     updateEmail(email: string): void {
+        if (!this.emailValidator.isValidEmail(email)) {
+            this.emitAuthPopup(AuthPopup.INVALID_EMAIL);
+        }
         this.signupCredentials.email = email;
     }
     updatePassword(password: string): void {
