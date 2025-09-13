@@ -4,7 +4,7 @@ open module org.cryptotrader.api.library.communication {
     requires static com.fasterxml.jackson.annotation;
     requires org.cryptotrader.api.library.models;
     
-    exports org.cryptotrader.api.library.comm.request;
-    exports org.cryptotrader.api.library.comm.request.alias;
-    exports org.cryptotrader.api.library.comm.response;
+    exports org.cryptotrader.api.library.communication.request;
+    exports org.cryptotrader.api.library.communication.request.alias;
+    exports org.cryptotrader.api.library.communication.response;
 }
