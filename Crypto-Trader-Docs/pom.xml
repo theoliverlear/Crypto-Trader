@@ -7,13 +7,16 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.2.1</version>
+        <version>0.2.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>crypto-trader-docs</artifactId>
     <name>Crypto-Trader-Docs</name>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
+    <description>
+        Documentation tooling — generates OpenAPI specs from running services and bundles the project docs site.
+    </description>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

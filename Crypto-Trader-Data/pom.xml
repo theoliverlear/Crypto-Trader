@@ -6,15 +6,15 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.2.1</version>
+        <version>0.2.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>crypto-trader-data</artifactId>
     <name>Crypto-Trader-Data</name>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <description>
-        The core data harvester and manager for Crypto-Trader.
+        Data ingestion and management service — connectors, ETL pipelines, and storage for market and account data.
     </description>
 
     <properties>

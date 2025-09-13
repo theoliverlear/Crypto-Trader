@@ -6,15 +6,15 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.2.1</version>
+        <version>0.2.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>crypto-trader-engine</artifactId>
     <name>Crypto-Trader-Engine</name>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <description>
-        The core trading and asset manipulation engine for Crypto-Trader.
+        Core trading engine — order execution, portfolio management, and strategy orchestration for Crypto Trader.
     </description>
 
     <properties>

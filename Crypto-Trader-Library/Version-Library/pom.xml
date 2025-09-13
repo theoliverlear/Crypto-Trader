@@ -6,14 +6,16 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.0.4</version>
+        <version>0.0.5</version>
     </parent>
 
     <artifactId>version-library</artifactId>
     <packaging>jar</packaging>
     <name>Version-Library</name>
-    <description>Parent POM aggregating version management libraries and models for Crypto Trader.</description>
-    <version>0.0.2</version>
+    <description>
+        Parent POM aggregating version management libraries and models for Crypto Trader.
+    </description>
+    <version>0.0.3</version>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>

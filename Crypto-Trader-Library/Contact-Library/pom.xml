@@ -6,12 +6,15 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.0.4</version>
+        <version>0.0.5</version>
     </parent>
 
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <artifactId>contact-library</artifactId>
     <name>Contact-Library</name>
+    <description>
+        Aggregator for the Contact module — shared models, repositories, and events for notifications.
+    </description>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>

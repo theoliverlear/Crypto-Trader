@@ -6,13 +6,16 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.0.4</version>
+        <version>0.0.5</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>api-services</artifactId>
     <name>Api-Services</name>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
+    <description>
+        The core business logic of Crypto Trader APIs and microservices.
+    </description>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>

@@ -6,13 +6,15 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.2.1</version>
+        <version>0.2.2</version>
     </parent>
 
     <artifactId>crypto-trader-version</artifactId>
     <name>Crypto-Trader-Version</name>
-    <description>Interface for version management, POM parsing, and generating release notes for Crypto Trader.</description>
-    <version>0.1.0</version>
+    <description>
+        Interface for version management, POM parsing, and generating release notes for Crypto Trader.
+    </description>
+    <version>0.1.1</version>
     <properties>
         <maven.compiler.source>23</maven.compiler.source>
         <maven.compiler.target>23</maven.compiler.target>
@@ -25,6 +27,18 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sigwarthsoftware</groupId>
+            <artifactId>changelog-suite</artifactId>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.sigwarthsoftware</groupId>-->
+<!--            <artifactId>promo-suite</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>

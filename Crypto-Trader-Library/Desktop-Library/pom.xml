@@ -6,14 +6,16 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.0.4</version>
+        <version>0.0.5</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <artifactId>desktop-library</artifactId>
     <name>Desktop-Library</name>
-    <description>Shared JavaFX desktop library aggregating reusable components for Crypto Trader.</description>
+    <description>
+        Shared JavaFX desktop library aggregating reusable components for Crypto Trader.
+    </description>
     <packaging>jar</packaging>
 
 

@@ -6,13 +6,16 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.0.4</version>
+        <version>0.0.5</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>contact-models</artifactId>
     <name>Contact-Models</name>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
+    <description>
+        Domain models for notifications — recipients, templates, delivery state, and provider metadata.
+    </description>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>

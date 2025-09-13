@@ -6,14 +6,16 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.2.1</version>
+        <version>0.2.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>crypto-trader-assets</artifactId>
     <name>Crypto-Trader-Assets</name>
-    <description>Shared UI assets and resources (images, styles, etc.) for Crypto Trader.</description>
-    <version>0.0.3</version>
+    <description>
+        Shared UI assets for Crypto Trader — icons, images, stylesheets, and other JavaFX resources packaged for reuse.
+    </description>
+    <version>0.0.4</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

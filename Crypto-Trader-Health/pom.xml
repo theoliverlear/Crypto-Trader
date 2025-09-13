@@ -6,12 +6,15 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.2.1</version>
+        <version>0.2.2</version>
     </parent>
 
     <artifactId>crypto-trader-health</artifactId>
     <name>Crypto-Trader-Health</name>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
+    <description>
+        Lightweight health monitoring service — liveness/readiness probes, dependency checks, and uptime metrics.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

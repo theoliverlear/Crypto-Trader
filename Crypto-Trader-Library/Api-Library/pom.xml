@@ -6,15 +6,17 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.0.4</version>
+        <version>0.0.5</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>api-library</artifactId>
     <name>Api-Library</name>
-    <description>Composite API library aggregating components, communication, models, and repositories for Crypto Trader.</description>
+    <description>
+        Composite API library aggregating components, communication, models, and repositories for Crypto Trader.
+    </description>
     <packaging>jar</packaging>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
 
 
     <properties>

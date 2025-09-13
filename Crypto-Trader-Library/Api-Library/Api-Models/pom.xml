@@ -6,14 +6,16 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.0.4</version>
+        <version>0.0.5</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>api-models</artifactId>
     <name>Api-Models</name>
-    <description>Domain models and entities used across Crypto Trader APIs and services.</description>
-    <version>0.0.5</version>
+    <description>
+        Domain models and entities used across Crypto Trader APIs and services.
+    </description>
+    <version>0.0.6</version>
     <properties>
         <maven.compiler.source>23</maven.compiler.source>
         <maven.compiler.target>23</maven.compiler.target>

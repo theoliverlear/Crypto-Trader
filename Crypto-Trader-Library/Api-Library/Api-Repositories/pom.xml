@@ -6,14 +6,16 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.0.4</version>
+        <version>0.0.5</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>api-repositories</artifactId>
     <name>Api-Repositories</name>
-    <description>Spring Data JPA repositories for Crypto Trader domain models.</description>
-    <version>0.0.4</version>
+    <description>
+        Spring Data JPA repositories for Crypto Trader domain models.
+    </description>
+    <version>0.0.5</version>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>

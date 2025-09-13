@@ -6,14 +6,16 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.0.4</version>
+        <version>0.0.5</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>api-components</artifactId>
     <name>Api-Components</name>
-    <description>Reusable Spring-based components (web, JDBC, HTTP clients) for Crypto Trader APIs.</description>
-    <version>0.0.4</version>
+    <description>
+        Reusable Spring-based components (web, JDBC, HTTP clients) for Crypto Trader APIs.
+    </description>
+    <version>0.0.5</version>
     <properties>
         <maven.compiler.source>23</maven.compiler.source>
         <maven.compiler.target>23</maven.compiler.target>

@@ -6,13 +6,16 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.0.4</version>
+        <version>0.0.5</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>contact-events</artifactId>
     <name>Contact-Events</name>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
+    <description>
+        Notification lifecycle events — queued, sent, delivered, and failed messages for the Contact module.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

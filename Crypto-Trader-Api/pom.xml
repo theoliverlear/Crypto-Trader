@@ -4,13 +4,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <name>Crypto-Trader-Api</name>
-    <description>Spring Boot REST API for the Crypto Trader platform.</description>
+    <description>
+        Public Spring Boot REST API for the Crypto Trader platform — exposes endpoints for accounts, market data,
+        orders, and platform operations.
+    </description>
     <artifactId>crypto-trader-api</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.2.1</version>
+        <version>0.2.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <properties>
