@@ -4,6 +4,11 @@ import {Subscription} from "rxjs";
 import {
     SignupWebSocketService
 } from "../../../services/net/websocket/signup-websocket.service";
+import {
+    LoginWebSocketService
+} from "../../../services/net/websocket/login-websocket.service";
+import {LoginCredentials} from "../../../models/auth/LoginCredentials";
+import {SignupCredentials} from "../../../models/auth/SignupCredentials";
 
 @Component({
     selector: 'authorize',
@@ -12,28 +17,56 @@ import {
     styleUrls: ['./authorize.component.scss']
 })
 export class AuthorizeComponent implements WebSocketCapable, OnInit {
-    constructor(private signupWebSocket: SignupWebSocketService) {
+    private loginCredentials: LoginCredentials;
+    private signupCredentials: SignupCredentials;
+    private authPopup: AuthPopup = AuthPopup.NONE;
+    constructor(private signupWebSocket: SignupWebSocketService,
+                private loginWebSocket: LoginWebSocketService) {
 
     }
     
+    setAuthPopup(authPopup: AuthPopup): void {
+        this.authPopup = authPopup;
+    }
+    
+    webSocketSubscriptions: Record<string, Subscription> = {};
+
     ngOnInit(): void {
-        this.initializeWebSocket();
+        this.initializeWebSockets();
+    }
+    initializeWebSockets(): void {
+        this.initSignupWebSocket();
+        this.initLoginWebSocket();
     }
 
-    webSocketSubscription: Subscription;
-    initializeWebSocket(): void {
+    private initSignupWebSocket() {
         this.signupWebSocket.connect();
-        this.webSocketSubscription = this.signupWebSocket.getMessages().subscribe(
-            (message) => {
+        this.webSocketSubscriptions['signup'] = this.signupWebSocket.getMessages().subscribe({
+            next: (message) => {
                 console.log(message);
             },
-            (error) => {
+            error: (error) => {
                 console.log(error);
             },
-            () => {
+            complete: () => {
                 console.log('complete');
             }
-        );
+        });
+    }
+    
+    private initLoginWebSocket() {
+        this.loginWebSocket.connect();
+        this.webSocketSubscriptions['login'] = this.loginWebSocket.getMessages().subscribe({
+            next: (message) => {
+                console.log(message);
+            },
+            error: (error) => {
+                console.log(error);
+            },
+            complete: () => {
+                console.log('complete');
+            }
+        });
     }
 
     protected readonly AuthPopup = AuthPopup;
