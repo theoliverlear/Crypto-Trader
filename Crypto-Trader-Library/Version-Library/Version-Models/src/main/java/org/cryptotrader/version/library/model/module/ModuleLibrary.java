@@ -8,10 +8,11 @@ import java.util.List;
 
 @Getter
 public class ModuleLibrary {
-    public static String[] cryptoTraderParent = {
+    public static String[] CRYPTO_TRADER_PARENT = {
             "Crypto-Trader-Admin",
             "Crypto-Trader-Api",
             "Crypto-Trader-Assets",
+            "Crypto-Trader-Contact",
             "Crypto-Trader-Coverage",
             "Crypto-Trader-Data",
             "Crypto-Trader-Docs",
@@ -19,46 +20,69 @@ public class ModuleLibrary {
             "Crypto-Trader-Health",
             "Crypto-Trader-Library",
             "Crypto-Trader-Logging",
-            "Crypto-Trader-Mobile",
             "Crypto-Trader-Testing",
             "Crypto-Trader-Version"
     };
     
-    public static String[] libraryParent = {
+    public static String[] LIBRARY_PARENT = {
+            "Admin-Library",
+            "Admin-Events",
+            "Admin-Models",
             "Api-Library",
             "Api-Communication",
             "Api-Components",
             "Api-Config",
+            "Api-Events",
             "Api-Models",
             "Api-Repositories",
             "Api-Services",
+            "Contact-Library",
+            "Contact-Events",
+            "Contact-Repositories",
             "Desktop-Library",
             "Desktop-Components",
-            "Externals-Library"
+            "Externals-Library",
+            "Version-Library",
+            "Version-Models"
     };
     
-    public static List<ModuleLibrary> modules = List.of(
+    public static List<ModuleLibrary> MODULES = List.of(
             new ModuleLibrary("Crypto-Trader-Admin"),
             new ModuleLibrary("Crypto-Trader-Api"),
             new ModuleLibrary("Crypto-Trader-Assets"),
+            new ModuleLibrary("Crypto-Trader-Contact"),
             new ModuleLibrary("Crypto-Trader-Coverage"),
             new ModuleLibrary("Crypto-Trader-Data"),
             new ModuleLibrary("Crypto-Trader-Docs"),
             new ModuleLibrary("Crypto-Trader-Engine"),
             new ModuleLibrary("Crypto-Trader-Health"),
             new ModuleLibrary("Crypto-Trader-Library"),
+            // Admin hierarchy
+            new ModuleLibrary("Admin-Library"),
+            new ModuleLibrary("Admin-Events"),
+            new ModuleLibrary("Admin-Models"),
+            // API hierarchy
             new ModuleLibrary("Api-Library"),
             new ModuleLibrary("Api-Communication"),
             new ModuleLibrary("Api-Components"),
             new ModuleLibrary("Api-Config"),
+            new ModuleLibrary("Api-Events"),
             new ModuleLibrary("Api-Models"),
             new ModuleLibrary("Api-Repositories"),
             new ModuleLibrary("Api-Services"),
+            // Contact hierarchy
+            new ModuleLibrary("Contact-Library"),
+            new ModuleLibrary("Contact-Events"),
+            new ModuleLibrary("Contact-Models"),
+            new ModuleLibrary("Contact-Repositories"),
+            // Desktop hierarchy
             new ModuleLibrary("Desktop-Library"),
             new ModuleLibrary("Desktop-Components"),
+            // Other libraries
             new ModuleLibrary("Externals-Library"),
             new ModuleLibrary("Version-Library"),
             new ModuleLibrary("Version-Models"),
+            // Other project modules
             new ModuleLibrary("Crypto-Trader-Logging"),
             new ModuleLibrary("Crypto-Trader-Mobile"),
             new ModuleLibrary("Crypto-Trader-Testing"),
@@ -69,7 +93,7 @@ public class ModuleLibrary {
     private String name;
 
     public static void initializeModules(List<ModuleLibrary> modules) {
-        ModuleLibrary.modules = modules;
+        ModuleLibrary.MODULES = modules;
     }
 
     public ModuleLibrary(String name) {
@@ -80,7 +104,7 @@ public class ModuleLibrary {
         if (path == null) {
             throw new IllegalArgumentException("Path must not be null");
         }
-        if (modules == null || modules.isEmpty()) {
+        if (MODULES == null || MODULES.isEmpty()) {
             throw new IllegalStateException("ModuleLibrary has not been initialized. Call ModuleLibrary.initializeModules(...) before resolving modules. Path=" + path);
         }
         String pathText = path.toString();
@@ -89,7 +113,7 @@ public class ModuleLibrary {
         int deepestIndex = -1;
         for (int i = 0; i < segments.length; i++) {
             String segment = segments[i];
-            for (ModuleLibrary module : modules) {
+            for (ModuleLibrary module : MODULES) {
                 if (segment.equals(module.getName())) {
                     if (i > deepestIndex) {
                         deepestIndex = i;
@@ -101,10 +125,10 @@ public class ModuleLibrary {
         if (deepestSegmentMatch != null) {
             return deepestSegmentMatch;
         }
-        return modules.stream()
+        return MODULES.stream()
                 .filter(module -> pathText.contains(module.getName()))
                 .max(Comparator.comparingInt(module -> module.getName().length()))
-                .orElseThrow(() -> new IllegalArgumentException("Unable to resolve module from path: " + path + ". Known modules=" + modules.stream().map(ModuleLibrary::getName).toList()));
+                .orElseThrow(() -> new IllegalArgumentException("Unable to resolve module from path: " + path + ". Known modules=" + MODULES.stream().map(ModuleLibrary::getName).toList()));
     }
 
     @Override
