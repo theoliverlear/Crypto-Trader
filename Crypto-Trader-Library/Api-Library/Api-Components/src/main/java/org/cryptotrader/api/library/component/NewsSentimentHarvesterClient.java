@@ -8,8 +8,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.cryptotrader.api.library.comm.request.NewsSentimentHarvestRequest;
-import org.cryptotrader.api.library.comm.request.NewsSentimentTargetedHarvestRequest;
+import org.cryptotrader.api.library.communication.request.NewsSentimentHarvestRequest;
+import org.cryptotrader.api.library.communication.request.NewsSentimentTargetedHarvestRequest;
 
 import java.io.IOException;
 import java.net.URI;
