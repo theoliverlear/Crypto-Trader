@@ -3,8 +3,6 @@
 //=================================-Imports-==================================
 @use "../../../../styles/globals" as *;
 
-@import "../../../app/app.component";
-
 $nav-bar-height: calc-size(6, 3, 2);
 
 nav-bar {
