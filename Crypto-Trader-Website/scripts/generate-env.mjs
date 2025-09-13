@@ -19,6 +19,7 @@ const ENV = {
     // Common
     API_URL: process.env.WEBSITE_API_URL || process.env.API_URL || 'http://localhost:3000/api',
     DATA_URL: process.env.WEBSITE_DATA_URL || process.env.DATA_URL || (process.env.WEBSITE_API_URL || process.env.API_URL || 'http://localhost:3000/api'),
+    WEBSOCKET_URL: process.env.WEBSITE_WEBSOCKET_URL || process.env.WEBSOCKET_URL || 'ws://localhost:3000/ws',
     ENABLE_DEBUG: boolFromEnv(process.env.WEBSITE_ENABLE_DEBUG ?? process.env.ENABLE_DEBUG, true),
     FEATURE_FLAG: boolFromEnv(process.env.WEBSITE_FEATURE_FLAG ?? process.env.FEATURE_FLAG, false),
 };
@@ -28,12 +29,13 @@ if (!existsSync(outDir)) {
     mkdirSync(outDir, { recursive: true });
 }
 
-function fileContent({ production, apiUrl, dataUrl, enableDebug, featureFlag }) {
+function fileContent({ production, apiUrl, dataUrl, websocketUrl, enableDebug, featureFlag }) {
     // Produce a TypeScript module exporting the environment object.
     return `export const environment = {
   production: ${production},
   apiUrl: ${JSON.stringify(apiUrl)},
   dataUrl: ${JSON.stringify(dataUrl)},
+  websocketUrl: ${JSON.stringify(websocketUrl)},
   enableDebug: ${enableDebug},
   featureFlag: ${featureFlag}
 };
@@ -47,6 +49,7 @@ const files = [
             production: false,
             apiUrl: ENV.API_URL,
             dataUrl: ENV.DATA_URL,
+            websocketUrl: ENV.WEBSOCKET_URL,
             enableDebug: ENV.ENABLE_DEBUG,
             featureFlag: ENV.FEATURE_FLAG,
         }),
@@ -57,6 +60,7 @@ const files = [
             production: false,
             apiUrl: ENV.API_URL,
             dataUrl: ENV.DATA_URL,
+            websocketUrl: ENV.WEBSOCKET_URL,
             enableDebug: ENV.ENABLE_DEBUG,
             featureFlag: ENV.FEATURE_FLAG,
         }),
@@ -67,6 +71,7 @@ const files = [
             production: true,
             apiUrl: process.env.WEBSITE_API_URL_PROD || process.env.API_URL_PROD || ENV.API_URL.replace('http://', 'https://').replace(':3000', ''),
             dataUrl: process.env.WEBSITE_DATA_URL_PROD || process.env.DATA_URL_PROD || (process.env.WEBSITE_API_URL_PROD || process.env.API_URL_PROD || ENV.DATA_URL).replace('http://', 'https://').replace(':3000', ''),
+            websocketUrl: process.env.WEBSOCKET_URL_PROD || process.env.WEBSOCKET_URL_PROD || ENV.WEBSOCKET_URL.replace('http://', 'https://').replace(':3000', ''),
             enableDebug: boolFromEnv(process.env.WEBSITE_ENABLE_DEBUG_PROD ?? process.env.ENABLE_DEBUG_PROD, false),
             featureFlag: boolFromEnv(process.env.WEBSITE_FEATURE_FLAG_PROD ?? process.env.FEATURE_FLAG_PROD, true),
         }),
