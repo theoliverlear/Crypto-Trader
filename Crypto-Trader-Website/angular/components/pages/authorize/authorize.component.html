@@ -1,4 +1,4 @@
 <ng-container>
-    <auth-console/>
-    <popup [popupMessage]="AuthPopup.FILL_ALL_FIELDS"/>
+    <auth-console (authPopupEvent)="setAuthPopup($event)"/>
+    <popup [popupMessage]="AuthPopup.NONE"/>
 </ng-container>
