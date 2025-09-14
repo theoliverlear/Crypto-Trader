@@ -433,6 +433,16 @@
             </dependency>
             <dependency>
                 <groupId>org.cryptotrader</groupId>
+                <artifactId>admin-events</artifactId>
+                <version>0.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>admin-library</artifactId>
+                <version>0.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
                 <artifactId>crypto-trader-health</artifactId>
                 <version>0.0.2</version>
             </dependency>
@@ -479,6 +489,11 @@
             </dependency>
             <dependency>
                 <groupId>org.cryptotrader</groupId>
+                <artifactId>crypto-trader-contact</artifactId>
+                <version>0.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
                 <artifactId>externals-library</artifactId>
                 <version>0.0.3</version>
             </dependency>
@@ -502,6 +517,11 @@
             <dependency>
                 <groupId>org.cryptotrader</groupId>
                 <artifactId>contact-repositories</artifactId>
+                <version>0.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>contact-library</artifactId>
                 <version>0.0.2</version>
             </dependency>
 
