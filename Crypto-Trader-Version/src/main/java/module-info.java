@@ -25,7 +25,27 @@ open module org.cryptotrader.version {
     requires org.cryptotrader.assets;
     requires org.cryptotrader.desktop.library.components;
     requires fr.brouillard.oss.cssfx;
+    
+    requires javafx.web;
+    requires org.controlsfx.controls;
+    requires com.dlsc.formsfx;
+    requires net.synedra.validatorfx;
+    requires org.kordamp.ikonli.javafx;
+    requires org.kordamp.bootstrapfx.core;
+    requires eu.hansolo.tilesfx;
+    requires spring.web;
+    requires spring.jdbc;
+    requires org.apache.httpcomponents.client5.httpclient5;
+    requires org.apache.httpcomponents.core5.httpcore5;
+    requires com.fasterxml.jackson.databind;
+    requires reactfx;
+    requires javafx.base;
+    requires jakarta.annotation;
+    requires org.scenicview.scenicview;
+    requires spring.data.jpa;
 
     exports org.cryptotrader.version;
     exports org.cryptotrader.version.script;
+    exports org.cryptotrader.version.config;
+    exports org.cryptotrader.version.controller;
 }
