@@ -238,6 +238,7 @@
                                     <fileset dir="${repo.root}/Crypto-Trader-Assets/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
+
                                 <!-- Data module -->
                                 <mkdir dir="${staging.dir}/Data"/>
                                 <echo file="${staging.dir}/Data/README.md"># Data&#10;&#10;This module does not have a README.md yet.</echo>
@@ -262,6 +263,18 @@
                                     <fileset dir="${repo.root}/Crypto-Trader-Engine/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
+                                <!-- Contact module -->
+                                <mkdir dir="${staging.dir}/Contact"/>
+                                <echo file="${staging.dir}/Contact/README.md"># Contact&#10;&#10;This module does not have a README.md yet.</echo>
+                                <mkdir dir="${staging.dir}/Contact/api"/>
+                                <echo file="${staging.dir}/Contact/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy file="${repo.root}/Crypto-Trader-Contact/README.md" tofile="${staging.dir}/Contact/README.md" overwrite="true" failonerror="false"/>
+                                <copy todir="${staging.dir}/Contact/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Contact/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
                                 <!-- Library module -->
                                 <mkdir dir="${staging.dir}/Library"/>
                                 <echo file="${staging.dir}/Library/README.md"># Library&#10;&#10;This module does not have a README.md yet.</echo>
@@ -274,6 +287,273 @@
                                     <fileset dir="${repo.root}/Crypto-Trader-Library/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
+                                <!-- Library children docs aggregator -->
+                                <echo file="${staging.dir}/Library/index.md"><![CDATA[# Library Reference
+
+This module aggregates documentation for child library modules. Select a sub-module below:
+
+## Library Root
+- [Library root](api/index.html)
+
+## Admin Library
+- [Admin-Library root](Admin-Library/api/index.html)
+- [Admin-Events](Admin-Library/Admin-Events/api/index.html)
+- [Admin-Models](Admin-Library/Admin-Models/api/index.html)
+
+## API Library
+- [Api-Library root](Api-Library/api/index.html)
+- [Api-Communication](Api-Library/Api-Communication/api/index.html)
+- [Api-Components](Api-Library/Api-Components/api/index.html)
+- [Api-Config](Api-Library/Api-Config/api/index.html)
+- [Api-Events](Api-Library/Api-Events/api/index.html)
+- [Api-Models](Api-Library/Api-Models/api/index.html)
+- [Api-Repositories](Api-Library/Api-Repositories/api/index.html)
+- [Api-Services](Api-Library/Api-Services/api/index.html)
+
+## Contact Library
+- [Contact-Library root](Contact-Library/api/index.html)
+- [Contact-Events](Contact-Library/Contact-Events/api/index.html)
+- [Contact-Models](Contact-Library/Contact-Models/api/index.html)
+- [Contact-Repositories](Contact-Library/Contact-Repositories/api/index.html)
+
+## Desktop Library
+- [Desktop-Library root](Desktop-Library/api/index.html)
+- [Desktop-Components](Desktop-Library/Desktop-Components/api/index.html)
+
+## Externals Library
+- [Externals-Library](Externals-Library/api/index.html)
+
+## Version Library
+- [Version-Library root](Version-Library/api/index.html)
+- [Version-Models](Version-Library/Version-Models/api/index.html)
+]]></echo>
+
+                                <!-- API Library (root and sub-modules) -->
+                                <mkdir dir="${staging.dir}/Library/Api-Library"/>
+                                <echo file="${staging.dir}/Library/Api-Library/README.md"># Api-Library&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Api-Library/README.md" tofile="${staging.dir}/Library/Api-Library/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Api-Library/api"/>
+                                <echo file="${staging.dir}/Library/Api-Library/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy todir="${staging.dir}/Library/Api-Library/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Api-Library/Api-Components"/>
+                                <echo file="${staging.dir}/Library/Api-Library/Api-Components/README.md"># Api-Components&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Components/README.md" tofile="${staging.dir}/Library/Api-Library/Api-Components/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Api-Library/Api-Components/api"/>
+                                <echo file="${staging.dir}/Library/Api-Library/Api-Components/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy todir="${staging.dir}/Library/Api-Library/Api-Components/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Components/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Api-Library/Api-Communication"/>
+                                <echo file="${staging.dir}/Library/Api-Library/Api-Communication/README.md"># Api-Communication&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Communication/README.md" tofile="${staging.dir}/Library/Api-Library/Api-Communication/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Api-Library/Api-Communication/api"/>
+                                <echo file="${staging.dir}/Library/Api-Library/Api-Communication/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy todir="${staging.dir}/Library/Api-Library/Api-Communication/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Communication/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Api-Library/Api-Config"/>
+                                <echo file="${staging.dir}/Library/Api-Library/Api-Config/README.md"># Api-Config&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Config/README.md" tofile="${staging.dir}/Library/Api-Library/Api-Config/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Api-Library/Api-Config/api"/>
+                                <echo file="${staging.dir}/Library/Api-Library/Api-Config/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy todir="${staging.dir}/Library/Api-Library/Api-Config/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Config/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Api-Library/Api-Events"/>
+                                <echo file="${staging.dir}/Library/Api-Library/Api-Events/README.md"># Api-Events&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Events/README.md" tofile="${staging.dir}/Library/Api-Library/Api-Events/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Api-Library/Api-Events/api"/>
+                                <echo file="${staging.dir}/Library/Api-Library/Api-Events/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy todir="${staging.dir}/Library/Api-Library/Api-Events/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Events/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Api-Library/Api-Models"/>
+                                <echo file="${staging.dir}/Library/Api-Library/Api-Models/README.md"># Api-Models&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Models/README.md" tofile="${staging.dir}/Library/Api-Library/Api-Models/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Api-Library/Api-Models/api"/>
+                                <echo file="${staging.dir}/Library/Api-Library/Api-Models/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy todir="${staging.dir}/Library/Api-Library/Api-Models/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Models/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Api-Library/Api-Repositories"/>
+                                <echo file="${staging.dir}/Library/Api-Library/Api-Repositories/README.md"># Api-Repositories&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Repositories/README.md" tofile="${staging.dir}/Library/Api-Library/Api-Repositories/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Api-Library/Api-Repositories/api"/>
+                                <echo file="${staging.dir}/Library/Api-Library/Api-Repositories/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy todir="${staging.dir}/Library/Api-Library/Api-Repositories/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Repositories/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Api-Library/Api-Services"/>
+                                <echo file="${staging.dir}/Library/Api-Library/Api-Services/README.md"># Api-Services&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Services/README.md" tofile="${staging.dir}/Library/Api-Library/Api-Services/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Api-Library/Api-Services/api"/>
+                                <echo file="${staging.dir}/Library/Api-Library/Api-Services/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy todir="${staging.dir}/Library/Api-Library/Api-Services/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Api-Library/Api-Services/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <!-- Desktop Library -->
+                                <mkdir dir="${staging.dir}/Library/Desktop-Library"/>
+                                <echo file="${staging.dir}/Library/Desktop-Library/README.md"># Desktop-Library&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Desktop-Library/README.md" tofile="${staging.dir}/Library/Desktop-Library/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Desktop-Library/api"/>
+                                <echo file="${staging.dir}/Library/Desktop-Library/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy todir="${staging.dir}/Library/Desktop-Library/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Desktop-Library/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Desktop-Library/Desktop-Components"/>
+                                <echo file="${staging.dir}/Library/Desktop-Library/Desktop-Components/README.md"># Desktop-Components&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Desktop-Library/Desktop-Components/README.md" tofile="${staging.dir}/Library/Desktop-Library/Desktop-Components/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Desktop-Library/Desktop-Components/api"/>
+                                <echo file="${staging.dir}/Library/Desktop-Library/Desktop-Components/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy todir="${staging.dir}/Library/Desktop-Library/Desktop-Components/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Desktop-Library/Desktop-Components/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <!-- Version Library -->
+                                <mkdir dir="${staging.dir}/Library/Version-Library"/>
+                                <echo file="${staging.dir}/Library/Version-Library/README.md"># Version-Library&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Version-Library/README.md" tofile="${staging.dir}/Library/Version-Library/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Version-Library/api"/>
+                                <echo file="${staging.dir}/Library/Version-Library/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy todir="${staging.dir}/Library/Version-Library/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Version-Library/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Version-Library/Version-Models"/>
+                                <echo file="${staging.dir}/Library/Version-Library/Version-Models/README.md"># Version-Models&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Version-Library/Version-Models/README.md" tofile="${staging.dir}/Library/Version-Library/Version-Models/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Version-Library/Version-Models/api"/>
+                                <echo file="${staging.dir}/Library/Version-Library/Version-Models/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy todir="${staging.dir}/Library/Version-Library/Version-Models/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Version-Library/Version-Models/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <!-- Externals Library -->
+                                <mkdir dir="${staging.dir}/Library/Externals-Library"/>
+                                <echo file="${staging.dir}/Library/Externals-Library/README.md"># Externals-Library&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Externals-Library/README.md" tofile="${staging.dir}/Library/Externals-Library/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Externals-Library/api"/>
+                                <echo file="${staging.dir}/Library/Externals-Library/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy todir="${staging.dir}/Library/Externals-Library/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Externals-Library/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <!-- Contact Library -->
+                                <mkdir dir="${staging.dir}/Library/Contact-Library"/>
+                                <echo file="${staging.dir}/Library/Contact-Library/README.md"># Contact-Library&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Contact-Library/README.md" tofile="${staging.dir}/Library/Contact-Library/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Contact-Library/api"/>
+                                <echo file="${staging.dir}/Library/Contact-Library/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy todir="${staging.dir}/Library/Contact-Library/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Contact-Library/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Contact-Library/Contact-Models"/>
+                                <echo file="${staging.dir}/Library/Contact-Library/Contact-Models/README.md"># Contact-Models&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Contact-Library/Contact-Models/README.md" tofile="${staging.dir}/Library/Contact-Library/Contact-Models/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Contact-Library/Contact-Models/api"/>
+                                <echo file="${staging.dir}/Library/Contact-Library/Contact-Models/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy todir="${staging.dir}/Library/Contact-Library/Contact-Models/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Contact-Library/Contact-Models/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Contact-Library/Contact-Repositories"/>
+                                <echo file="${staging.dir}/Library/Contact-Library/Contact-Repositories/README.md"># Contact-Repositories&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Contact-Library/Contact-Repositories/README.md" tofile="${staging.dir}/Library/Contact-Library/Contact-Repositories/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Contact-Library/Contact-Repositories/api"/>
+                                <echo file="${staging.dir}/Library/Contact-Library/Contact-Repositories/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy todir="${staging.dir}/Library/Contact-Library/Contact-Repositories/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Contact-Library/Contact-Repositories/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Contact-Library/Contact-Events"/>
+                                <echo file="${staging.dir}/Library/Contact-Library/Contact-Events/README.md"># Contact-Events&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Contact-Library/Contact-Events/README.md" tofile="${staging.dir}/Library/Contact-Library/Contact-Events/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Contact-Library/Contact-Events/api"/>
+                                <echo file="${staging.dir}/Library/Contact-Library/Contact-Events/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy todir="${staging.dir}/Library/Contact-Library/Contact-Events/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Contact-Library/Contact-Events/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <!-- Admin Library -->
+                                <mkdir dir="${staging.dir}/Library/Admin-Library"/>
+                                <echo file="${staging.dir}/Library/Admin-Library/README.md"># Admin-Library&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Admin-Library/README.md" tofile="${staging.dir}/Library/Admin-Library/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Admin-Library/api"/>
+                                <echo file="${staging.dir}/Library/Admin-Library/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy todir="${staging.dir}/Library/Admin-Library/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Admin-Library/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Admin-Library/Admin-Events"/>
+                                <echo file="${staging.dir}/Library/Admin-Library/Admin-Events/README.md"># Admin-Events&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Admin-Library/Admin-Events/README.md" tofile="${staging.dir}/Library/Admin-Library/Admin-Events/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Admin-Library/Admin-Events/api"/>
+                                <echo file="${staging.dir}/Library/Admin-Library/Admin-Events/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy todir="${staging.dir}/Library/Admin-Library/Admin-Events/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Admin-Library/Admin-Events/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <mkdir dir="${staging.dir}/Library/Admin-Library/Admin-Models"/>
+                                <echo file="${staging.dir}/Library/Admin-Library/Admin-Models/README.md"># Admin-Models&#10;&#10;This module does not have a README.md yet.</echo>
+                                <copy file="${repo.root}/Crypto-Trader-Library/Admin-Library/Admin-Models/README.md" tofile="${staging.dir}/Library/Admin-Library/Admin-Models/README.md" overwrite="true" failonerror="false"/>
+                                <mkdir dir="${staging.dir}/Library/Admin-Library/Admin-Models/api"/>
+                                <echo file="${staging.dir}/Library/Admin-Library/Admin-Models/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy todir="${staging.dir}/Library/Admin-Library/Admin-Models/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Library/Admin-Library/Admin-Models/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
                                 <!-- Logging module -->
                                 <mkdir dir="${staging.dir}/Logging"/>
                                 <echo file="${staging.dir}/Logging/README.md"># Logging&#10;&#10;This module does not have a README.md yet.</echo>
@@ -284,6 +564,18 @@
                                 <copy file="${repo.root}/Crypto-Trader-Logging/README.md" tofile="${staging.dir}/Logging/README.md" overwrite="true" failonerror="false"/>
                                 <copy todir="${staging.dir}/Logging/api" overwrite="true" failonerror="false">
                                     <fileset dir="${repo.root}/Crypto-Trader-Logging/target/dokka-html" erroronmissingdir="false"/>
+                                </copy>
+
+                                <!-- Health module -->
+                                <mkdir dir="${staging.dir}/Health"/>
+                                <echo file="${staging.dir}/Health/README.md"># Health&#10;&#10;This module does not have a README.md yet.</echo>
+                                <mkdir dir="${staging.dir}/Health/api"/>
+                                <echo file="${staging.dir}/Health/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Dokka API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy file="${repo.root}/Crypto-Trader-Health/README.md" tofile="${staging.dir}/Health/README.md" overwrite="true" failonerror="false"/>
+                                <copy todir="${staging.dir}/Health/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Health/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
                                 <!-- Testing module -->
@@ -309,6 +601,7 @@
                                 <copy todir="${staging.dir}/Version/api" overwrite="true" failonerror="false">
                                     <fileset dir="${repo.root}/Crypto-Trader-Version/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
+
                             </target>
                         </configuration>
                     </execution>
@@ -345,6 +638,23 @@
                                         <include name="**/api/index.md"/>
                                     </fileset>
                                 </delete>
+                            </target>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>copy-library-into-docs</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <delete dir="${project.basedir}/docs/library" quiet="true"/>
+                                <mkdir dir="${project.basedir}/docs/library"/>
+                                <copy todir="${project.basedir}/docs/library" overwrite="true" failonerror="false">
+                                    <fileset dir="${project.basedir}/docs/reference/Library" erroronmissingdir="false"/>
+                                </copy>
                             </target>
                         </configuration>
                     </execution>
