@@ -9,7 +9,7 @@ The full OpenAPI specification for Crypto Trader is embedded below.
 <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    Redoc.init('../api/openapi-api.yaml', {
+    Redoc.init('openapi-api.yaml', {
       hideHostname: true,
       expandResponses: '200,201',
       pathInMiddlePanel: true,
