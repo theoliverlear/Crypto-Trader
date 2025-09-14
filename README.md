@@ -74,11 +74,11 @@ step-by-step guides, live API references, and full module documentation.
     - [Guides index](https://theoliverlear.github.io/Crypto-Trader/guides/)
 - APIs you can build on:
     - [CT API (application API)](https://theoliverlear.github.io/Crypto-Trader/api/)
+    - [Contact API (messaging and communications)](https://theoliverlear.github.io/Crypto-Trader/contact/)
     - [Data API (market and data services)](https://theoliverlear.github.io/Crypto-Trader/data/)
     - [Engine API (strategy execution)](https://theoliverlear.github.io/Crypto-Trader/engine/)
 - Deep dives and references (per module):
-    - Api • Admin • Assets • Data • Engine • Library • Logging • Testing •
-      Version
+    - Api • Admin • Assets • Data • Engine • Library • Logging • Testing • Version • Contact • Health • Coverage
     - [Reference hub](https://theoliverlear.github.io/Crypto-Trader/reference/)
 
 Quick start (docs):
@@ -92,18 +92,22 @@ Tip: Always begin in paper mode and set strict limits before funding. See
 ## 🧩 Modules at a glance
 | Module                              | Purpose                                                                                           |
 |-------------------------------------|---------------------------------------------------------------------------------------------------|
-| [Api](Crypto-Trader-Api/)           | Core backend for identity, portfolios, and platform orchestration.                                |
 | [Admin](Crypto-Trader-Admin/)       | Desktop portal for secure operations: monitoring, logs, user controls, and kill‑switches.         |
-| [Assets](Crypto-Trader-Assets/)     | Inward‑facing, curated assets and loaders powering a consistent UI.                               |
-| [Data](Crypto-Trader-Data/)         | Data backbone harvesting prices, ingesting sentiment, and serving a high‑throughput internal API. |
-| [Engine](Crypto-Trader-Engine/)     | Execution core that turns signals into live trades under strict guardrails.                       |
 | [Analysis](Crypto-Trader-Analysis/) | Machine learning and market analytics engine for training and price predictions.                  |
+| [Api](Crypto-Trader-Api/)           | Core backend for identity, portfolios, and platform orchestration.                                |
+| [Assets](Crypto-Trader-Assets/)     | Inward‑facing, curated assets and loaders powering a consistent UI.                               |
+| [Contact](Crypto-Trader-Contact/)   | Outbound messaging and support communications (email templates, event-driven sends, policies).    |
+| [Coverage](Crypto-Trader-Coverage/) | Aggregated JaCoCo test coverage for the entire platform.                                          |
+| [Data](Crypto-Trader-Data/)         | Data backbone harvesting prices, ingesting sentiment, and serving a high‑throughput internal API. |
+| [Docs](Crypto-Trader-Docs/)         | Documentation site and build system for guides, API refs, and module references.                  |
+| [Engine](Crypto-Trader-Engine/)     | Execution core that turns signals into live trades under strict guardrails.                       |
+| [Health](Crypto-Trader-Health/)     | Lightweight health checks and probes for services and dependencies.                               |
 | [Library](Crypto-Trader-Library/)   | Shared contracts and building blocks (models, components, services) used across modules.          |
 | [Logging](Crypto-Trader-Logging/)   | Structured observability toolkit for consistent, actionable logs.                                 |
+| [Mobile](Crypto-Trader-Mobile/)     | Mobile companion app for monitoring, notifications, and portfolio controls.                       |
 | [Testing](Crypto-Trader-Testing/)   | Shared test toolkit with assertions, fixtures, and containerized environments.                    |
 | [Version](Crypto-Trader-Version/)   | Versioning and release intelligence for coordinated, traceable releases.                          |
 | [Website](Crypto-Trader-Website/)   | Public site for brand, story, and a gateway to documentation.                                     |
-| [Docs](Crypto-Trader-Docs/)         | Documentation site and build system for guides, API refs, and module references.                  |
 
 
 ## ❓ Questions or help
