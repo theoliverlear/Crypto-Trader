@@ -37,6 +37,7 @@ jobs:
     outputs:
       pages_enabled: ${{ steps.pages.outcome }}
       site_ready: ${{ steps.verify_site.outputs.site_ready }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -48,90 +49,87 @@ jobs:
           java-version: '23'
           cache: 'maven'
 
-      - name: Build all modules (install to local repo)
-        run: mvn -B -s .github/maven-settings.xml -DskipTests -U clean install
-
+      # Single Dokka run for all modules (no need for a full reactor install first)
       - name: Generate Dokka for all modules
         run: mvn -B -s .github/maven-settings.xml -DskipTests org.jetbrains.dokka:dokka-maven-plugin:1.9.20:dokka
 
-      - name: Start API (docs profile) in background
+      # Start all services with docs profile, wait until /v3/api-docs.yaml is up, fail fast if any process exits
+      - name: Start services (docs profile) and wait
         run: |
-          nohup mvn -B -s .github/maven-settings.xml -DskipTests \
-            -f Crypto-Trader-Api/pom.xml -am \
-            -Dspring-boot.run.profiles=docs \
-            -Dspring-boot.run.arguments=--server.port=18080 \
-            spring-boot:run > api.log 2>&1 &
-          echo $! > api.pid
+          set -euo pipefail
 
-#      - name: Wait for API to be ready
-#        run: |
-#          for i in {1..90}; do
-#            if curl -fsS http://localhost:18080/v3/api-docs.yaml >/dev/null; then
-#              echo "API docs are up"; exit 0; fi
-#            if [ -f api.pid ] && ! ps -p "$(cat api.pid)" >/dev/null 2>&1; then
-#              echo "API process exited early"; break; fi
-#            sleep 2
-#          done
-#          echo "API failed to start; printing api.log:"
-#          tail -n +1 api.log || true
-#          exit 1
+          SERVICES=$(cat <<'EOF'
+          api      Crypto-Trader-Api      18080   ""
+          data     Crypto-Trader-Data     18081   "--cryptotrader.loadCurrencies=false"
+          engine   Crypto-Trader-Engine   18082   "--cryptotrader.engine.trading.enabled=false"
+          contact  Crypto-Trader-Contact  18083   "--cryptotrader.engine.trading.enabled=false"
+          EOF
+          )
 
-      - name: Start Data (docs profile) in background
-        run: |
-          nohup mvn -B -s .github/maven-settings.xml -DskipTests \
-            -f Crypto-Trader-Data/pom.xml -am \
-            -Dspring-boot.run.profiles=docs \
-            -Dspring-boot.run.arguments="--server.port=18081 --cryptotrader.loadCurrencies=false" \
-            spring-boot:run > data.log 2>&1 &
-          echo $! > data.pid
+          start_one () {
+            local name="$1" module="$2" port="$3" extra="$4"
+            echo "==> starting $name on :$port ($module)"
+            nohup mvn -B -s .github/maven-settings.xml -DskipTests \
+              -f "$module/pom.xml" -am \
+              -Dspring-boot.run.profiles=docs \
+              -Dspring-boot.run.arguments="--server.port=$port $extra" \
+              spring-boot:run > "$name.log" 2>&1 &
+            echo $! > "$name.pid"
+          }
 
-      - name: Start Engine (docs profile) in background
-        run: |
-          nohup mvn -B -s .github/maven-settings.xml -DskipTests \
-            -f Crypto-Trader-Engine/pom.xml -am \
-            -Dspring-boot.run.profiles=docs \
-            -Dspring-boot.run.arguments="--server.port=18082 --cryptotrader.engine.trading.enabled=false" \
-            spring-boot:run > engine.log 2>&1 &
-          echo $! > engine.pid
+          echo "$SERVICES" | awk 'NF && $1 !~ /^#/' | while read -r name module port extra; do
+            start_one "$name" "$module" "$port" "$extra"
+          done
 
-      - name: Start Contact (docs profile) in background
-        run: |
-          nohup mvn -B -s .github/maven-settings.xml -DskipTests \
-            -f Crypto-Trader-Contact/pom.xml -am \
-            -Dspring-boot.run.profiles=docs \
-            -Dspring-boot.run.arguments="--server.port=18083 --cryptotrader.engine.trading.enabled=false" \
-            spring-boot:run > contact.log 2>&1 &
-          echo $! > contact.pid
+          die() {
+            echo "::error::$1"
+            echo "---- tail logs ----"
+            tail -n 200 *.log || true
+            exit 1
+          }
 
-      - name: Wait for APIs to be ready
-        run: |
-          for i in {1..120}; do
+          # Wait up to ~4 minutes like before (120 * 2s)
+          for i in $(seq 1 120); do
+            # Fail fast if any service died
+            for pidfile in *.pid; do
+              [ -f "$pidfile" ] || continue
+              pid=$(cat "$pidfile")
+              if ! ps -p "$pid" >/dev/null 2>&1; then
+                svc="${pidfile%.pid}"
+                die "Service '$svc' exited before becoming ready."
+              fi
+            done
+
             A=$(curl -fsS http://localhost:18080/v3/api-docs.yaml >/dev/null && echo ok || echo no)
             D=$(curl -fsS http://localhost:18081/v3/api-docs.yaml >/dev/null && echo ok || echo no)
             E=$(curl -fsS http://localhost:18082/v3/api-docs.yaml >/dev/null && echo ok || echo no)
-            C=$(curl -fsS http://localhost:18083/v3/api-docs.yaml >/dev/null && echo ok || echo no)
-            if [ "$A" = ok ] && [ "$D" = ok ] && [ "$E" = ok ] && [ "$C" = ok ]; then
-              echo "All APIs are up"; exit 0; fi
+            C_(curl -fsS http://localhost:18083/v3/api-docs.yaml >/dev/null && echo ok || echo no) || true
+            C=${C_:-no}
+
+            echo "probe #$i  A=$A D=$D E=$E C=$C"
+            if [ "$A$D$E$C" = "okokokok" ]; then
+              echo "All APIs are up"
+              break
+            fi
             sleep 2
           done
-          echo "APIs failed to start; dumping logs"
-          tail -n +1 api.log || true
-          tail -n +1 data.log || true
-          tail -n +1 engine.log || true
-          tail -n +1 contact.log || true
-          exit 1
 
+          if [ "$A$D$E$C" != "okokokok" ]; then
+            die "Timed out waiting for APIs to start."
+          fi
+
+      # Generate OpenAPI + move into docs via the Docs module (keeps your existing POM behavior)
       - name: Build docs module (generate OpenAPI + copy to docs)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_ACTOR: ${{ github.actor }}
         run: mvn -B -s .github/maven-settings.xml -DskipTests -Ddocs.skipOpenapi=false -f Crypto-Trader-Docs/pom.xml -N verify
 
+      # Backstop: if API spec is empty/missing, fetch directly from the running service
       - name: Ensure CT API spec is present and non-empty; fallback to live endpoint
         run: |
+          set -euo pipefail
           FILE="Crypto-Trader-Docs/docs/api/openapi-api.yaml"
           if [ ! -s "$FILE" ] || [ "$(wc -c < "$FILE")" -eq 0 ]; then
             echo "CT OpenAPI spec missing/empty, fetching directly from running service..."
+            mkdir -p "$(dirname "$FILE")"
             curl -fsS http://localhost:18080/v3/api-docs.yaml -o "$FILE" || true
             if [ ! -s "$FILE" ] || [ "$(wc -c < "$FILE")" -eq 0 ]; then
               echo "::warning::Failed to fetch CT OpenAPI spec; leaving it absent so the site shows a friendly message instead of an error."
@@ -143,29 +141,15 @@ jobs:
             echo "CT OpenAPI spec already present and non-empty."
           fi
 
-      - name: Stop APIs
+      - name: Stop services
+        if: always()
         run: |
-          if [ -f api.pid ]; then kill "$(cat api.pid)" || true; fi
-          if [ -f data.pid ]; then kill "$(cat data.pid)" || true; fi
-          if [ -f engine.pid ]; then kill "$(cat engine.pid)" || true; fi
-          if [ -f contact.pid ]; then kill "$(cat contact.pid)" || true; fi
+          for f in api.pid data.pid engine.pid contact.pid; do
+            [ -f "$f" ] && kill "$(cat "$f")" || true
+          done
 
+      # Coverage build (aggregate)
       - name: Run tests with coverage (aggregate)
-        env:
-          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
-          PSQL_DB_URL: ${{ secrets.PSQL_DB_URL }}
-          PSQL_HOST: ${{ secrets.PSQL_HOST }}
-          PSQL_PW: ${{ secrets.PSQL_PW }}
-          PSQL_USER: ${{ secrets.PSQL_USER }}
-          PYTHONUNBUFFERED: ${{ secrets.PYTHONUNBUFFERED }}
-          WORLDNEWS_API_KEY: ${{ secrets.WORLDNEWS_API_KEY }}
-          X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
-          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
-          X_API_KEY: ${{ secrets.X_API_KEY }}
-          X_SECRET: ${{ secrets.X_SECRET }}
-          REPO_NAME: ${{ secrets.REPO_NAME }}
-          APP_NAME: ${{ secrets.APP_NAME }}
         run: mvn -B -s .github/maven-settings.xml -ntp -Pcoverage -DskipITs=true -DfailIfNoTests=false clean verify
 
       - name: Set up .NET (for ReportGenerator)
@@ -173,11 +157,10 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: Install ReportGenerator
-        run: dotnet tool install --global dotnet-reportgenerator-globaltool
-
-      - name: Add .NET global tools to PATH
-        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+      - name: Install ReportGenerator & add to PATH
+        run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
 
       - name: Build single aggregate coverage site
         run: |
@@ -192,13 +175,11 @@ jobs:
             cp Crypto-Trader-Docs/docs/coverage/index.htm Crypto-Trader-Docs/docs/coverage/index.html
           fi
 
-      - name: Build (runs verify -> javadoc -> copy)
-        run: mvn -B -s .github/maven-settings.xml -DskipTests -Ddocs.skipOpenapi=false verify
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
+          cache: 'pip'
 
       - name: Install MkDocs Material
         working-directory: Crypto-Trader-Docs
@@ -229,7 +210,6 @@ jobs:
         with:
           enablement: true
 
-      # ✅ Only mark site ready when it actually exists and is non-empty
       - name: Verify built site is non-empty
         id: verify_site
         run: |
