@@ -109,6 +109,47 @@
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-version</artifactId>
         </dependency>
+        <!-- Additional modules to ensure full coverage aggregation across the platform -->
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>api-events</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-health</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-contact</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>contact-library</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>contact-models</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>contact-repositories</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>contact-events</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>admin-library</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>admin-models</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>admin-events</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
