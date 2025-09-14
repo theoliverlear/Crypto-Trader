@@ -21,7 +21,10 @@ The full OpenAPI specification for Crypto Trader is embedded below.
       for (const url of candidates) {
         try {
           const res = await fetch(url, { cache: 'no-store' });
-          if (res.ok) return url;
+          if (res.ok) {
+            const text = await res.text();
+            if (text && text.trim().length > 0) return url;
+          }
         } catch (e) {
           // try next
         }
