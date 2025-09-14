@@ -8,11 +8,25 @@ import org.apache.http.impl.client.HttpClientBuilder
 import org.cryptotrader.health.models.CryptoTraderService
 import org.slf4j.LoggerFactory
 import java.io.IOException
+import java.net.URI
+
+private const val BASE_OVERRIDE_PROP = "ct.health.base" // e.g., "http://localhost:12345"
+private const val BASE_OVERRIDE_ENV = "CT_HEALTH_BASE"
 
 private val log = LoggerFactory.getLogger("org.cryptotrader.health.ServiceStatus")
 
-private fun getUrl(service: CryptoTraderService): String {
-    return "http://localhost:${service.port}/actuator/health";
+private fun getBaseOverride(): String? {
+    return System.getProperty(BASE_OVERRIDE_PROP)
+        ?: System.getenv(BASE_OVERRIDE_ENV)
+}
+
+internal fun getUrl(service: CryptoTraderService): String {
+    val base = getBaseOverride()
+    return if (base != null) {
+        URI.create(base).resolve("/actuator/health").toString()
+    } else {
+        "http://localhost:${service.port}/actuator/health"
+    }
 }
 
 private fun getHttpRequest(url: String): HttpGet {
