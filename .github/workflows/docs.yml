@@ -49,7 +49,7 @@ jobs:
           java-version: '23'
           cache: 'maven'
 
-      # Single Dokka run for all modules (no need for a full reactor install first)
+      # Generate Dokka once (no need for full reactor install first)
       - name: Generate Dokka for all modules
         run: mvn -B -s .github/maven-settings.xml -DskipTests org.jetbrains.dokka:dokka-maven-plugin:1.9.20:dokka
 
@@ -91,14 +91,10 @@ jobs:
 
           probe() {
             local port="$1"
-            if curl -fsS "http://localhost:${port}/v3/api-docs.yaml" >/dev/null; then
-              echo ok
-            else
-              echo no
-            fi
+            curl -fsS "http://localhost:${port}/v3/api-docs.yaml" >/dev/null && echo ok || echo no
           }
 
-          # Wait up to ~4 minutes like before (120 * 2s)
+          # Wait up to ~4 minutes (120 * 2s)
           for i in $(seq 1 120); do
             # Fail fast if any service died
             for pidfile in *.pid; do
@@ -127,28 +123,25 @@ jobs:
             die "Timed out waiting for APIs to start."
           fi
 
-      # Generate OpenAPI + move into docs via the Docs module (keeps your existing POM behavior)
+      # Generate OpenAPI + move into docs via the Docs module (keeps your POM behavior)
       - name: Build docs module (generate OpenAPI + copy to docs)
         run: mvn -B -s .github/maven-settings.xml -DskipTests -Ddocs.skipOpenapi=false -f Crypto-Trader-Docs/pom.xml -N verify
 
-      # Backstop: if API spec is empty/missing, fetch directly from the running service
-      - name: Ensure CT API spec is present and non-empty; fallback to live endpoint
+      # Ensure the spec exists in docs while services are still up (fallback to live only here)
+      - name: Ensure CT API spec exists (while services are up)
         run: |
           set -euo pipefail
           FILE="Crypto-Trader-Docs/docs/api/openapi-api.yaml"
-          if [ ! -s "$FILE" ] || [ "$(wc -c < "$FILE")" -eq 0 ]; then
-            echo "CT OpenAPI spec missing/empty, fetching directly from running service..."
-            mkdir -p "$(dirname "$FILE")"
-            curl -fsS http://localhost:18080/v3/api-docs.yaml -o "$FILE" || true
-            if [ ! -s "$FILE" ] || [ "$(wc -c < "$FILE")" -eq 0 ]; then
-              echo "::warning::Failed to fetch CT OpenAPI spec; leaving it absent so the site shows a friendly message instead of an error."
-              rm -f "$FILE" || true
-            else
-              echo "Fetched CT OpenAPI spec successfully (non-empty)."
-            fi
-          else
-            echo "CT OpenAPI spec already present and non-empty."
+          mkdir -p "$(dirname "$FILE")"
+
+          if [ ! -s "$FILE" ]; then
+            echo "Spec missing in docs; pulling from live API…"
+            curl -fsS http://localhost:18080/v3/api-docs.yaml -o "$FILE"
           fi
+
+          echo "Spec in docs:"
+          ls -l "$FILE"
+          test -s "$FILE"
 
       - name: Stop services
         if: always()
@@ -200,44 +193,22 @@ jobs:
         working-directory: Crypto-Trader-Docs
         run: mkdocs build --site-dir site
 
-      - name: Force-ship CT API spec into site/api and verify
+      # Copy spec from docs into built site; DO NOT fetch live here
+      - name: Copy spec into site/api and verify
         run: |
           set -euo pipefail
           SRC="Crypto-Trader-Docs/docs/api/openapi-api.yaml"
           DST_DIR="Crypto-Trader-Docs/site/api"
           mkdir -p "$DST_DIR"
-          
-          if [ -s "$SRC" ]; then
-            echo "Using spec from docs: $SRC"
-            cp -fv "$SRC" "$DST_DIR/openapi-api.yaml"
-          else
-            echo "::warning::Spec missing in docs, pulling live from the running API"
-            curl -fsS http://localhost:18080/v3/api-docs.yaml -o "$DST_DIR/openapi-api.yaml"
-          fi
-          
-          # Make sure GH Pages/Jekyll won’t mess with it
+          cp -fv "$SRC" "$DST_DIR/openapi-api.yaml"
+
+          # prevent Jekyll munging
           touch "Crypto-Trader-Docs/site/.nojekyll"
-          
-          # Show we really have it in the artifact
+
+          # prove it’s in the artifact
           ls -l "$DST_DIR"
-          echo "sha256:"
           sha256sum "$DST_DIR/openapi-api.yaml"
-          
-          # Hard fail if somehow still empty/missing
           test -s "$DST_DIR/openapi-api.yaml"
-
-
-      - name: Ensure CT API spec present in built site (post-build)
-        run: |
-          SRC="Crypto-Trader-Docs/docs/api/openapi-api.yaml"
-          DST_DIR="Crypto-Trader-Docs/site/api"
-          if [ -s "$SRC" ]; then
-            mkdir -p "$DST_DIR"
-            cp -f "$SRC" "$DST_DIR/openapi-api.yaml"
-            echo "CT API spec copied into site directory:" && ls -l "$DST_DIR" || true
-          else
-            echo "::warning::CT API spec not found in docs/api when copying to site; page will show friendly message."
-          fi
 
       - name: Configure Pages
         id: pages
