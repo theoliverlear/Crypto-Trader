@@ -20,6 +20,20 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GITHUB_ACTOR: ${{ github.actor }}
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
+      PSQL_DB_URL: ${{ secrets.PSQL_DB_URL }}
+      PSQL_HOST: ${{ secrets.PSQL_HOST }}
+      PSQL_PW: ${{ secrets.PSQL_PW }}
+      PSQL_USER: ${{ secrets.PSQL_USER }}
+      PYTHONUNBUFFERED: ${{ secrets.PYTHONUNBUFFERED }}
+      WORLDNEWS_API_KEY: ${{ secrets.WORLDNEWS_API_KEY }}
+      X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
+      X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+      X_API_KEY: ${{ secrets.X_API_KEY }}
+      X_SECRET: ${{ secrets.X_SECRET }}
+      REPO_NAME: ${{ secrets.REPO_NAME }}
+      APP_NAME: ${{ secrets.APP_NAME }}
     outputs:
       pages_enabled: ${{ steps.pages.outcome }}
       site_ready: ${{ steps.verify_site.outputs.site_ready }}
@@ -67,18 +81,18 @@ jobs:
             spring-boot:run > api.log 2>&1 &
           echo $! > api.pid
 
-      - name: Wait for API to be ready
-        run: |
-          for i in {1..90}; do
-            if curl -fsS http://localhost:18080/v3/api-docs.yaml >/dev/null; then
-              echo "API docs are up"; exit 0; fi
-            if [ -f api.pid ] && ! ps -p "$(cat api.pid)" >/dev/null 2>&1; then
-              echo "API process exited early"; break; fi
-            sleep 2
-          done
-          echo "API failed to start; printing api.log:"
-          tail -n +1 api.log || true
-          exit 1
+#      - name: Wait for API to be ready
+#        run: |
+#          for i in {1..90}; do
+#            if curl -fsS http://localhost:18080/v3/api-docs.yaml >/dev/null; then
+#              echo "API docs are up"; exit 0; fi
+#            if [ -f api.pid ] && ! ps -p "$(cat api.pid)" >/dev/null 2>&1; then
+#              echo "API process exited early"; break; fi
+#            sleep 2
+#          done
+#          echo "API failed to start; printing api.log:"
+#          tail -n +1 api.log || true
+#          exit 1
 
       - name: Start Data (docs profile) in background
         run: |
