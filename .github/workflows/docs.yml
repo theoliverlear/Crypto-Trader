@@ -228,6 +228,18 @@ jobs:
         working-directory: Crypto-Trader-Docs
         run: mkdocs build --site-dir site
 
+      - name: Ensure CT API spec present in built site (post-build)
+        run: |
+          SRC="Crypto-Trader-Docs/docs/api/openapi-api.yaml"
+          DST_DIR="Crypto-Trader-Docs/site/api"
+          if [ -s "$SRC" ]; then
+            mkdir -p "$DST_DIR"
+            cp -f "$SRC" "$DST_DIR/openapi-api.yaml"
+            echo "CT API spec copied into site directory:" && ls -l "$DST_DIR" || true
+          else
+            echo "::warning::CT API spec not found in docs/api when copying to site; page will show friendly message."
+          fi
+
       - name: Configure Pages
         id: pages
         uses: actions/configure-pages@v5
