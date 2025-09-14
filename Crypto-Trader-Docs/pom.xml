@@ -28,7 +28,6 @@
         <docs.openapi.format>yaml</docs.openapi.format>
         <docs.openapi.outputDir>${project.build.directory}</docs.openapi.outputDir>
         <docs.site.specPath>${project.basedir}/docs/api/openapi.yaml</docs.site.specPath>
-        <docs.openapi.outputDir>${project.basedir}/docs/api</docs.openapi.outputDir>
         <!-- Default to skipping OpenAPI generation unless explicitly enabled -->
         <docs.skipOpenapi>true</docs.skipOpenapi>
 
@@ -666,14 +665,15 @@ This module aggregates documentation for child library modules. Select a sub-mod
                             <skip>${docs.skipOpenapi}</skip>
                             <target>
                                 <mkdir dir="${project.basedir}/docs/api"/>
-                                <copy file="${project.build.directory}/${docs.openapi.api.file}.${docs.openapi.format}"
-                                      tofile="${project.basedir}/docs/api/${docs.openapi.api.file}.${docs.openapi.format}" overwrite="true" failonerror="false"/>
-                                <copy file="${project.build.directory}/${docs.openapi.data.file}.${docs.openapi.format}"
-                                      tofile="${project.basedir}/docs/api/${docs.openapi.data.file}.${docs.openapi.format}" overwrite="true" failonerror="false"/>
-                                <copy file="${project.build.directory}/${docs.openapi.engine.file}.${docs.openapi.format}"
-                                      tofile="${project.basedir}/docs/api/${docs.openapi.engine.file}.${docs.openapi.format}" overwrite="true" failonerror="false"/>
-                                <copy file="${project.build.directory}/${docs.openapi.contact.file}.${docs.openapi.format}"
-                                      tofile="${project.basedir}/docs/api/${docs.openapi.contact.file}.${docs.openapi.format}" overwrite="true" failonerror="false"/>
+                                <copy todir="${project.basedir}/docs/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${project.build.directory}">
+                                        <include name="${docs.openapi.api.file}.${docs.openapi.format}"/>
+                                        <include name="${docs.openapi.data.file}.${docs.openapi.format}"/>
+                                        <include name="${docs.openapi.engine.file}.${docs.openapi.format}"/>
+                                        <include name="${docs.openapi.contact.file}.${docs.openapi.format}"/>
+                                        <size value="0" when="more"/>
+                                    </fileset>
+                                </copy>
                             </target>
                         </configuration>
                         <goals>
