@@ -36,12 +36,12 @@ nav:
   - Engine API: engine/index.md
   - Contact API: contact/index.md
   - References:
-    - Api:
-      - README: reference/Api/README.md
-      - Complete Docs: reference/Api/api/index.html
     - Admin:
       - README: reference/Admin/README.md
       - Complete Docs: reference/Admin/api/index.html
+    - Api:
+      - README: reference/Api/README.md
+      - Complete Docs: reference/Api/api/index.html
     - Assets:
       - README: reference/Assets/README.md
       - Complete Docs: reference/Assets/api/index.html
@@ -54,9 +54,9 @@ nav:
     - Engine:
       - README: reference/Engine/README.md
       - Complete Docs: reference/Engine/api/index.html
-    - Library:
-      - README: reference/Library/README.md
-      - Complete Docs: reference/Library/api/index.html
+    - Health:
+      - README: reference/Health/README.md
+      - Complete Docs: reference/Health/api/index.html
     - Logging:
       - README: reference/Logging/README.md
       - Complete Docs: reference/Logging/api/index.html
@@ -66,4 +66,69 @@ nav:
     - Version:
       - README: reference/Version/README.md
       - Complete Docs: reference/Version/api/index.html
+  - Library:
+    - Overview: library/index.md
+    - Library:
+      - README: library/README.md
+      - Complete Docs: library/api/index.html
+    - Admin-Library:
+      - README: library/Admin-Library/README.md
+      - Complete Docs: library/Admin-Library/api/index.html
+    - Admin-Events:
+      - README: library/Admin-Library/Admin-Events/README.md
+      - Complete Docs: library/Admin-Library/Admin-Events/api/index.html
+    - Admin-Models:
+      - README: library/Admin-Library/Admin-Models/README.md
+      - Complete Docs: library/Admin-Library/Admin-Models/api/index.html
+    - Api-Library:
+      - README: library/Api-Library/README.md
+      - Complete Docs: library/Api-Library/api/index.html
+    - Api-Communication:
+      - README: library/Api-Library/Api-Communication/README.md
+      - Complete Docs: library/Api-Library/Api-Communication/api/index.html
+    - Api-Components:
+      - README: library/Api-Library/Api-Components/README.md
+      - Complete Docs: library/Api-Library/Api-Components/api/index.html
+    - Api-Config:
+      - README: library/Api-Library/Api-Config/README.md
+      - Complete Docs: library/Api-Library/Api-Config/api/index.html
+    - Api-Events:
+      - README: library/Api-Library/Api-Events/README.md
+      - Complete Docs: library/Api-Library/Api-Events/api/index.html
+    - Api-Models:
+      - README: library/Api-Library/Api-Models/README.md
+      - Complete Docs: library/Api-Library/Api-Models/api/index.html
+    - Api-Repositories:
+      - README: library/Api-Library/Api-Repositories/README.md
+      - Complete Docs: library/Api-Library/Api-Repositories/api/index.html
+    - Api-Services:
+      - README: library/Api-Library/Api-Services/README.md
+      - Complete Docs: library/Api-Library/Api-Services/api/index.html
+    - Contact-Library:
+      - README: library/Contact-Library/README.md
+      - Complete Docs: library/Contact-Library/api/index.html
+    - Contact-Events:
+      - README: library/Contact-Library/Contact-Events/README.md
+      - Complete Docs: library/Contact-Library/Contact-Events/api/index.html
+    - Contact-Models:
+      - README: library/Contact-Library/Contact-Models/README.md
+      - Complete Docs: library/Contact-Library/Contact-Models/api/index.html
+    - Contact-Repositories:
+      - README: library/Contact-Library/Contact-Repositories/README.md
+      - Complete Docs: library/Contact-Library/Contact-Repositories/api/index.html
+    - Desktop-Library:
+      - README: library/Desktop-Library/README.md
+      - Complete Docs: library/Desktop-Library/api/index.html
+    - Desktop-Components:
+      - README: library/Desktop-Library/Desktop-Components/README.md
+      - Complete Docs: library/Desktop-Library/Desktop-Components/api/index.html
+    - Externals-Library:
+      - README: library/Externals-Library/README.md
+      - Complete Docs: library/Externals-Library/api/index.html
+    - Version-Library:
+      - README: library/Version-Library/README.md
+      - Complete Docs: library/Version-Library/api/index.html
+    - Version-Models:
+      - README: library/Version-Library/Version-Models/README.md
+      - Complete Docs: library/Version-Library/Version-Models/api/index.html
   - Coverage: coverage/index.html
