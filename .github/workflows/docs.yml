@@ -145,6 +145,22 @@ jobs:
           GITHUB_ACTOR: ${{ github.actor }}
         run: mvn -B -s .github/maven-settings.xml -DskipTests -Ddocs.skipOpenapi=false -f Crypto-Trader-Docs/pom.xml -N verify
 
+      - name: Ensure CT API spec is present and non-empty; fallback to live endpoint
+        run: |
+          FILE="Crypto-Trader-Docs/docs/api/openapi-api.yaml"
+          if [ ! -s "$FILE" ] || [ "$(wc -c < "$FILE")" -eq 0 ]; then
+            echo "CT OpenAPI spec missing/empty, fetching directly from running service..."
+            curl -fsS http://localhost:18080/v3/api-docs.yaml -o "$FILE" || true
+            if [ ! -s "$FILE" ] || [ "$(wc -c < "$FILE")" -eq 0 ]; then
+              echo "::warning::Failed to fetch CT OpenAPI spec; leaving it absent so the site shows a friendly message instead of an error."
+              rm -f "$FILE" || true
+            else
+              echo "Fetched CT OpenAPI spec successfully (non-empty)."
+            fi
+          else
+            echo "CT OpenAPI spec already present and non-empty."
+          fi
+
       - name: Stop APIs
         run: |
           if [ -f api.pid ]; then kill "$(cat api.pid)" || true; fi
