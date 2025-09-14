@@ -200,6 +200,33 @@ jobs:
         working-directory: Crypto-Trader-Docs
         run: mkdocs build --site-dir site
 
+      - name: Force-ship CT API spec into site/api and verify
+        run: |
+          set -euo pipefail
+          SRC="Crypto-Trader-Docs/docs/api/openapi-api.yaml"
+          DST_DIR="Crypto-Trader-Docs/site/api"
+          mkdir -p "$DST_DIR"
+          
+          if [ -s "$SRC" ]; then
+            echo "Using spec from docs: $SRC"
+            cp -fv "$SRC" "$DST_DIR/openapi-api.yaml"
+          else
+            echo "::warning::Spec missing in docs, pulling live from the running API"
+            curl -fsS http://localhost:18080/v3/api-docs.yaml -o "$DST_DIR/openapi-api.yaml"
+          fi
+          
+          # Make sure GH Pages/Jekyll won’t mess with it
+          touch "Crypto-Trader-Docs/site/.nojekyll"
+          
+          # Show we really have it in the artifact
+          ls -l "$DST_DIR"
+          echo "sha256:"
+          sha256sum "$DST_DIR/openapi-api.yaml"
+          
+          # Hard fail if somehow still empty/missing
+          test -s "$DST_DIR/openapi-api.yaml"
+
+
       - name: Ensure CT API spec present in built site (post-build)
         run: |
           SRC="Crypto-Trader-Docs/docs/api/openapi-api.yaml"
