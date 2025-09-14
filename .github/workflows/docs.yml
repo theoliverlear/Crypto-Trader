@@ -57,6 +57,7 @@ jobs:
       - name: Start services (docs profile) and wait
         run: |
           set -euo pipefail
+          shopt -s nullglob
 
           SERVICES=$(cat <<'EOF'
           api      Crypto-Trader-Api      18080   ""
@@ -88,6 +89,15 @@ jobs:
             exit 1
           }
 
+          probe() {
+            local port="$1"
+            if curl -fsS "http://localhost:${port}/v3/api-docs.yaml" >/dev/null; then
+              echo ok
+            else
+              echo no
+            fi
+          }
+
           # Wait up to ~4 minutes like before (120 * 2s)
           for i in $(seq 1 120); do
             # Fail fast if any service died
@@ -100,11 +110,10 @@ jobs:
               fi
             done
 
-            A=$(curl -fsS http://localhost:18080/v3/api-docs.yaml >/dev/null && echo ok || echo no)
-            D=$(curl -fsS http://localhost:18081/v3/api-docs.yaml >/dev/null && echo ok || echo no)
-            E=$(curl -fsS http://localhost:18082/v3/api-docs.yaml >/dev/null && echo ok || echo no)
-            C_(curl -fsS http://localhost:18083/v3/api-docs.yaml >/dev/null && echo ok || echo no) || true
-            C=${C_:-no}
+            A=$(probe 18080)
+            D=$(probe 18081)
+            E=$(probe 18082)
+            C=$(probe 18083)
 
             echo "probe #$i  A=$A D=$D E=$E C=$C"
             if [ "$A$D$E$C" = "okokokok" ]; then
