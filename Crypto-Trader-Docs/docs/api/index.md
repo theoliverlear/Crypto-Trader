@@ -12,7 +12,9 @@ The full OpenAPI specification for Crypto Trader is embedded below.
     const container = document.getElementById('redoc');
     const candidates = [
       'openapi-api.yaml',
+      'openapi-api.yml',
       'openapi.yaml',
+      'openapi.yml',
       'openapi-api.json',
       'openapi.json'
     ];
