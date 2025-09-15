@@ -37,21 +37,27 @@ public class AdminApplication extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(AdminApplication.class.getResource("ui/view/app/AppView.fxml"));
         fxmlLoader.setControllerFactory(this.applicationContext::getBean);
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
-        System.out.println("[Loaded Controller] " + fxmlLoader.getController()
-                + " @" + System.identityHashCode(fxmlLoader.getController()));
+        Scene scene = new Scene(fxmlLoader.load(), 900, 700);
         stage.setTitle("Crypto Trader Admin Panel");
         URL cssPath = AdminApplication.class.getResource("ui/view/app/AppView.css");
-        if (cssPath != null) {
-            scene.getStylesheets().add(cssPath.toExternalForm());
-        }
+        addPossibleStylesheet(cssPath, scene);
         stage.setScene(scene);
         CSSFX.start();
         stage.show();
-//        ScenicView.show(scene);
-        stage.getIcons().add(CryptoTraderLogoImageAssets.CROPPED_TRANSPARENT_PNG);
+        ScenicView.show(scene);
+        addDesktopIcon(stage);
         this.addReloadKeybind(scene);
         this.addJRebelListener(scene);
+    }
+
+    private static void addPossibleStylesheet(URL cssPath, Scene scene) {
+        if (cssPath != null) {
+            scene.getStylesheets().add(cssPath.toExternalForm());
+        }
+    }
+
+    private static void addDesktopIcon(Stage stage) {
+        stage.getIcons().add(CryptoTraderLogoImageAssets.CROPPED_TRANSPARENT_PNG);
     }
 
     private void addJRebelListener(Scene scene) {
@@ -63,14 +69,9 @@ public class AdminApplication extends Application {
     }
 
     private void addReloadKeybind(Scene scene) {
-        scene.getAccelerators().put(
-                new KeyCodeCombination(KeyCode.R, 
-                        KeyCombination.CONTROL_DOWN,
-                        KeyCombination.SHIFT_DOWN),
-                () -> {
-                    reloadScene(scene);
-                }
-        );
+        scene.getAccelerators().put(new KeyCodeCombination(KeyCode.R,
+                KeyCombination.CONTROL_DOWN,
+                KeyCombination.SHIFT_DOWN), () -> reloadScene(scene));
     }
 
 
