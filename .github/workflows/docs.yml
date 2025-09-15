@@ -128,20 +128,20 @@ jobs:
         run: mvn -B -s .github/maven-settings.xml -DskipTests -Ddocs.skipOpenapi=false -f Crypto-Trader-Docs/pom.xml -N verify
 
       # Ensure the spec exists in docs while services are still up (fallback to live only here)
-#      - name: Ensure CT API spec exists (while services are up)
-#        run: |
-#          set -euo pipefail
-#          FILE="Crypto-Trader-Docs/docs/api/openapi-api.yaml"
-#          mkdir -p "$(dirname "$FILE")"
-#
-#          if [ ! -s "$FILE" ]; then
-#            echo "Spec missing in docs; pulling from live API…"
-#            curl -fsS http://localhost:18080/v3/api-docs.yaml -o "$FILE"
-#          fi
-#
-#          echo "Spec in docs:"
-#          ls -l "$FILE"
-#          test -s "$FILE"
+      - name: Ensure CT API spec exists (while services are up)
+        run: |
+          set -euo pipefail
+          FILE="Crypto-Trader-Docs/docs/api/openapi-api.yaml"
+          mkdir -p "$(dirname "$FILE")"
+
+          if [ ! -s "$FILE" ]; then
+            echo "Spec missing in docs; pulling from live API…"
+            curl -fsS http://localhost:18080/v3/api-docs.yaml -o "$FILE"
+          fi
+
+          echo "Spec in docs:"
+          ls -l "$FILE"
+          test -s "$FILE"
 
       - name: Stop services
         if: always()
@@ -194,21 +194,21 @@ jobs:
         run: mkdocs build --site-dir site
 
       # Copy spec from docs into built site; DO NOT fetch live here
-#      - name: Copy spec into site/api and verify
-#        run: |
-#          set -euo pipefail
-#          SRC="Crypto-Trader-Docs/docs/api/openapi-api.yaml"
-#          DST_DIR="Crypto-Trader-Docs/site/api"
-#          mkdir -p "$DST_DIR"
-#          cp -fv "$SRC" "$DST_DIR/openapi-api.yaml"
-#
-#          # prevent Jekyll munging
-#          touch "Crypto-Trader-Docs/site/.nojekyll"
-#
-#          # prove it’s in the artifact
-#          ls -l "$DST_DIR"
-#          sha256sum "$DST_DIR/openapi-api.yaml"
-#          test -s "$DST_DIR/openapi-api.yaml"
+      - name: Copy spec into site/api and verify
+        run: |
+          set -euo pipefail
+          SRC="Crypto-Trader-Docs/docs/api/openapi-api.yaml"
+          DST_DIR="Crypto-Trader-Docs/site/api"
+          mkdir -p "$DST_DIR"
+          cp -fv "$SRC" "$DST_DIR/openapi-api.yaml"
+
+          # prevent Jekyll munging
+          touch "Crypto-Trader-Docs/site/.nojekyll"
+
+          # prove it’s in the artifact
+          ls -l "$DST_DIR"
+          sha256sum "$DST_DIR/openapi-api.yaml"
+          test -s "$DST_DIR/openapi-api.yaml"
 
       - name: Configure Pages
         id: pages
