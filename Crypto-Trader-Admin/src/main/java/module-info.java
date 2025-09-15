@@ -18,8 +18,6 @@ open module org.cryptotrader.admin {
     requires spring.beans;
     requires spring.web;
     requires spring.jdbc;
-    requires org.apache.httpcomponents.client5.httpclient5;
-    requires org.apache.httpcomponents.core5.httpcore5;
     requires com.fasterxml.jackson.databind;
     requires org.slf4j;
     requires java.sql;
@@ -29,6 +27,7 @@ open module org.cryptotrader.admin {
     requires javafx.graphics;
     requires javafx.base;
     requires jakarta.annotation;
+    requires jakarta.xml.bind;
     requires org.cryptotrader.assets;
     requires javafxsvg;
     requires org.scenicview.scenicview;
@@ -38,7 +37,10 @@ open module org.cryptotrader.admin {
     requires org.cryptotrader.api.library.repositories;
     requires org.cryptotrader.api.library.models;
     requires org.cryptotrader.api.library.communication;
+    requires org.cryptotrader.api.library.events;
+    requires org.cryptotrader.api.library.config;
     requires spring.data.jpa;
+    requires org.apache.tomcat.embed.core;
 
     exports org.cryptotrader.admin;
     exports org.cryptotrader.admin.controller;
