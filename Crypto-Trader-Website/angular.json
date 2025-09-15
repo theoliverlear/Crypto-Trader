@@ -43,8 +43,6 @@
               }
             ],
             "styles": [
-              "node_modules/@theoliverlear/angular-suite/styles/_globals.scss",
-              "node_modules/@theoliverlear/styles-suite/index.scss",
               "angular/components/app/app.component.scss",
               "angular/components/elements/content-stripe/content-stripe.component.scss",
               "angular/components/elements/element-group-auth/auth-console-login-section/auth-console-login-section.component.scss",
@@ -56,6 +54,7 @@
               "angular/components/elements/element-group-chart/chart/chart.component.scss",
               "angular/components/elements/element-group-chart/live-chart/live-chart.component.scss",
               "angular/components/elements/element-group-currency/display-currency/display-currency.component.scss",
+              "angular/components/elements/element-group-currency/performance-arrow/performance-arrow.component.scss",
               "angular/components/elements/element-group-nav/home-anchor/home-anchor.component.scss",
               "angular/components/elements/element-group-nav/nav-bar-item/nav-bar-item.component.scss",
               "angular/components/elements/element-group-nav/nav-bar-profile-picture/nav-bar-profile-picture.component.scss",
@@ -82,7 +81,9 @@
               "angular/components/pages/not-found/not-found.component.scss",
               "angular/components/pages/portfolio/portfolio.component.scss",
               "angular/components/pages/terms-of-service/terms-of-service.component.scss",
-              "angular/components/pages/trader/trader.component.scss"
+              "angular/components/pages/trader/trader.component.scss",
+              "node_modules/@theoliverlear/angular-suite/styles/_globals.scss",
+              "node_modules/@theoliverlear/styles-suite/index.scss"
             ],
             "scripts": [],
             "fileReplacements": [],
