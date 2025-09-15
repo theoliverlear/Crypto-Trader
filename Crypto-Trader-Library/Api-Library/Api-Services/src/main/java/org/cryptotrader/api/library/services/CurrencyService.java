@@ -6,6 +6,7 @@ import org.cryptotrader.api.library.entity.currency.Currency;
 import org.cryptotrader.api.library.entity.currency.CurrencyHistory;
 import org.cryptotrader.api.library.entity.currency.UniqueCurrency;
 import org.cryptotrader.api.library.entity.currency.UniqueCurrencyHistory;
+import org.cryptotrader.api.library.model.currency.PerformanceRating;
 import org.cryptotrader.api.library.services.models.MarketSnapshotOperations;
 import org.cryptotrader.api.library.communication.response.DisplayCurrencyListResponse;
 import org.cryptotrader.api.library.communication.response.DisplayCurrencyResponse;
@@ -143,6 +144,12 @@ public class CurrencyService {
 
     public List<TimeValueResponse> getCurrencyHistory(String currencyCode, int hours) {
         return this.getCurrencyHistory(currencyCode, hours, 60);
+    }
+    
+    public PerformanceRating getDayPerformance(String currencyCode) {
+        double currentPrice = this.getCurrencyByCurrencyCode(currencyCode).getValue();
+        double lastDayPrice = this.currencyHistoryRepository.getPreviousDayCurrency(currencyCode).getValue();
+        return PerformanceRating.fromValues(currentPrice, lastDayPrice);
     }
 
     public List<TimeValueResponse> getCurrencyHistory(String currencyCode, int hours, int intervalSeconds) {
