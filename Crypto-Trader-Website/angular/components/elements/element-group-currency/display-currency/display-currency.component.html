@@ -9,7 +9,10 @@
             <ss-title class="display-currency-name"
                       [tagType]="TagType.H3"
                       [text]="currency.currencyName"/>
-            <subtitle [tagType]="TagType.H4" [text]="getCurrencyPrice()"/>
+            <div class="currency-price-div">
+                <subtitle [tagType]="TagType.H4" [text]="getCurrencyPrice()" class="currency-price"/>
+                <performance-arrow [performance]="performance"/>
+            </div>
             <div class="currency-action-buttons-div">
                 <ss-button [text]="'Buy'" [size]="ElementSize.SMALL"/>
                 <ss-button [text]="'Sell'" [size]="ElementSize.SMALL"/>
