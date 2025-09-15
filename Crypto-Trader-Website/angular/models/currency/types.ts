@@ -1,7 +1,4 @@
-import {Injectable} from "@angular/core";
-import {HttpClientService} from "@theoliverlear/angular-suite";
 import {Observable} from "rxjs";
-import {HttpClient} from "@angular/common/http";
 
 export type Currency = {
     currencyName: string;
@@ -17,6 +14,12 @@ export type DisplayCurrency = Currency & {logoUrl: string};
 
 export type DisplayCurrencyList = {
     currencies: DisplayCurrency[];
+};
+
+export type PerformanceRating = 'up' | 'down' | 'neutral';
+
+export type PerformanceRatingResponse = {
+    rating: PerformanceRating;
 };
 
 export type HistoryPoint = {
