@@ -53,6 +53,25 @@ jobs:
       - name: Generate Dokka for all modules
         run: mvn -B -s .github/maven-settings.xml -DskipTests org.jetbrains.dokka:dokka-maven-plugin:1.9.20:dokka
 
+      - name: Start Kafka (docker-compose)
+        run: |
+          set -euo pipefail
+          docker compose -f infra/kafka/docker-compose.yml up -d
+          # Wait for Kafka (port 9092) to be reachable
+          for i in $(seq 1 60); do
+            if timeout 1 bash -c 'cat </dev/null >/dev/tcp/127.0.0.1/9092' 2>/dev/null; then
+              echo "Kafka is up"
+              break
+            fi
+            echo "Waiting for Kafka... ($i/60)"
+            sleep 2
+          done
+          if ! timeout 1 bash -c 'cat </dev/null >/dev/tcp/127.0.0.1/9092' 2>/dev/null; then
+            echo "::error::Kafka failed to start on port 9092"
+            docker compose -f infra/kafka/docker-compose.yml logs || true
+            exit 1
+          fi
+
       # Start all services with docs profile, wait until /v3/api-docs.yaml is up, fail fast if any process exits
       - name: Start services (docs profile) and wait
         run: |
@@ -304,6 +323,10 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: Crypto-Trader-Docs/site
+
+      - name: Stop Kafka (docker-compose)
+        if: always()
+        run: docker compose -f infra/kafka/docker-compose.yml down -v
 
   deploy:
     environment:
