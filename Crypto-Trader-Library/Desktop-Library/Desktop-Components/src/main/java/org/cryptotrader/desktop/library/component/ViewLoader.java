@@ -2,7 +2,9 @@ package org.cryptotrader.desktop.library.component;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -43,13 +45,26 @@ public class ViewLoader {
     public void loadView(Pane container,
                          Class<?> controllerClass) {
         Parent view = this.initializeView(controllerClass);
+        try {
+            if (container instanceof VBox vbox) {
+                javafx.scene.layout.VBox.setVgrow(view, javafx.scene.layout.Priority.ALWAYS);
+            } else if (container instanceof javafx.scene.layout.AnchorPane) {
+                AnchorPane.setTopAnchor(view, 0.0);
+                AnchorPane.setBottomAnchor(view, 0.0);
+                AnchorPane.setLeftAnchor(view, 0.0);
+                AnchorPane.setRightAnchor(view, 0.0);
+            }
+        } catch (Throwable ignored) {
+            
+        }
         container.getChildren().setAll(view);
     }
 
     private String resolveFxmlPath(Class<?> controllerClass) {
         String simpleName = controllerClass.getSimpleName();
         String basePackage = extractBasePackage(controllerClass, simpleName);
-        String feature = simpleName.substring(0, simpleName.length() - "Controller".length()).toLowerCase();
+        String rawFeature = simpleName.substring(0, simpleName.length() - "Controller".length());
+        String feature = toKebabCase(rawFeature);
         String viewName = simpleName.replace("Controller", "View") + ".fxml";
         String resourcePackage = basePackage + ".ui.view." + feature;
         String resourcePath = "/" + resourcePackage.replace('.', '/') + "/" + viewName;
@@ -69,6 +84,26 @@ public class ViewLoader {
         return basePackage;
     }
 
+    private static String toKebabCase(String input) {
+        if (input == null || input.isEmpty()) {
+            return "";
+        }
+        StringBuilder kebabString = new StringBuilder();
+        char[] chars = input.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            char letter = chars[i];
+            boolean isUpper = Character.isUpperCase(letter);
+            if (i > 0 && isUpper) {
+                boolean hasLowerNeighbor = Character.isLowerCase(chars[i - 1]) || (i + 1 < chars.length && Character.isLowerCase(chars[i + 1]));
+                if (hasLowerNeighbor) {
+                    kebabString.append('-');
+                }
+            }
+            kebabString.append(Character.toLowerCase(letter));
+        }
+        return kebabString.toString();
+    }
+    
     private static boolean isValidClass(String simpleName) {
         return simpleName.endsWith("Controller");
     }
