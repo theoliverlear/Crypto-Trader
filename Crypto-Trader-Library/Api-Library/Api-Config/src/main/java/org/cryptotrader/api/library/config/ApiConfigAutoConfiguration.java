@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Import;
         DefaultPropertiesConfig.class,
         DocsSecurityConfig.class,
         ApplicationYamlConfig.class,
+        ApplicationDocsYamlConfig.class,
         ApplicationTestYamlConfig.class,
         CorsConfig.class,
         HttpClientConfig.class,
