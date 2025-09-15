@@ -1,14 +1,14 @@
 // display-currency.component.ts
 import {
     AfterViewInit,
-    Component,
+    Component, HostBinding,
     Input,
     OnChanges,
     SimpleChanges
 } from "@angular/core";
 import {
     DisplayCurrency,
-    HistoryPoint
+    HistoryPoint, PerformanceRating, PerformanceRatingResponse
 } from "../../../../models/currency/types";
 import {
     defaultCurrencyIcon,
@@ -21,6 +21,9 @@ import {
 import {
     GetCurrencyHistoryService
 } from "../../../../services/net/http/get-currency-history.service";
+import {
+    CurrencyDayPerformanceService
+} from "../../../../services/net/http/currency-day-performance.service";
 
 @Component({
     selector: 'display-currency',
@@ -32,9 +35,18 @@ export class DisplayCurrencyComponent implements OnChanges, AfterViewInit {
     @Input() currency: DisplayCurrency;
     imageAsset: ImageAsset = defaultCurrencyIcon;
     history: HistoryPoint[] = [];
+    performance: PerformanceRating;
+    @HostBinding('class.up-performance') get isUpPerformance(): boolean {
+        return this.performance === "up";
+    }
+    
+    @HostBinding('class.down-performance') get isDownPerformance(): boolean {
+        return this.performance === "down";
+    }
 
     constructor(private currencyFormatter: CurrencyFormatterService,
-                private historyService: GetCurrencyHistoryService) {}
+                private historyService: GetCurrencyHistoryService,
+                private dayPerformance: CurrencyDayPerformanceService) {}
 
     getCurrencyPrice(): string {
         if (!this.currency) {
@@ -56,6 +68,16 @@ export class DisplayCurrencyComponent implements OnChanges, AfterViewInit {
 
     ngAfterViewInit() {
         this.resolveImageAsset();
+        this.updatePerformance();
+    }
+    
+    updatePerformance(): void {
+        this.dayPerformance.getCurrencyDayPerformance(this.currency.currencyCode)
+            .subscribe(
+                (performance: PerformanceRatingResponse) => {
+                    this.performance = performance.rating;
+                },
+            )
     }
 
     fetchHistory(): void {
