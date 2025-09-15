@@ -6,9 +6,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.cryptotrader.admin.controller.EmailView"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<?import javafx.scene.web.WebView?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.cryptotrader.admin.controller.EmailController"
+      fillWidth="true"
+      minHeight="0.0" minWidth="0.0">
+    <WebView fx:id="webView" VBox.vgrow="ALWAYS"/>
+</VBox>
