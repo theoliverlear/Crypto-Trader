@@ -1,4 +1,8 @@
 spring:
+  devtools:
+    restart:
+      enabled: false
+    add-properties: false
   web:
     resources:
       cache:
