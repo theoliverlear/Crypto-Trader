@@ -1,19 +1,33 @@
 server:
-  port: 18080
+  port: ${SERVER_PORT:18080}
+
 spring:
+  devtools:
+    restart:
+      enabled: false
+    add-properties: false
   main:
     web-application-type: servlet
-    lazy-initialization: true
+    lazy-initialization: false
   task:
     scheduling:
       enabled: false
   datasource:
-    url: jdbc:h2:mem:docs;DB_CLOSE_DELAY=-1
+    url: jdbc:h2:mem:docs;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;DATABASE_TO_UPPER=false;CASE_INSENSITIVE_IDENTIFIERS=true
+    driver-class-name: org.h2.Driver
     username: sa
-    password: 
+    password:
   jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: false
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
+  sql:
+    init:
+      mode: never
+  h2:
+    console:
+      enabled: false
   flyway:
     enabled: false
   liquibase:
@@ -27,6 +41,7 @@ spring:
   cloud:
     stream:
       enabled: false
+
 management:
   endpoints:
     web:
@@ -37,6 +52,7 @@ management:
       enabled: true
       probes:
         enabled: true
+
 springdoc:
   api-docs:
     enabled: true
