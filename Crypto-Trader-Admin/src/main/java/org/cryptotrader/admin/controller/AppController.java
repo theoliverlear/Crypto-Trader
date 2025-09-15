@@ -39,6 +39,7 @@ public class AppController extends BaseViewController {
         switch (event.appPage()) {
             case AppPage.ADMIN_USERS -> controllerClass = AdminUsersController.class;
             case AppPage.AUTH -> controllerClass = AuthController.class;
+            case AppPage.EMAIL -> controllerClass = EmailController.class;
             default -> throw new IllegalArgumentException("Unknown appPage: " + event.appPage());
         }
         this.viewLoader.loadView(this.page, controllerClass);
