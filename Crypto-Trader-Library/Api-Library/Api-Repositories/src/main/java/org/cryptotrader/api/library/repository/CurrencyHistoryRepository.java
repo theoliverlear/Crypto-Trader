@@ -29,4 +29,7 @@ public interface CurrencyHistoryRepository extends JpaRepository<CurrencyHistory
     List<Object[]> findDownsampledHistory(@Param("code") String currencyCode,
                                           @Param("since") LocalDateTime since,
                                           @Param("intervalSeconds") int intervalSeconds);
+    
+    @Query(value = "SELECT * FROM currency_history WHERE currency_code = :code AND last_updated < now() - INTERVAL '1 DAY' ORDER BY last_updated DESC LIMIT 1", nativeQuery = true)
+    CurrencyHistory getPreviousDayCurrency(@Param("code") String currencyCode);
 }
