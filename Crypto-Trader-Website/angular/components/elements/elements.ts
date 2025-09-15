@@ -75,6 +75,9 @@ import {
 import {
     DisplayCurrencyComponent
 } from "./element-group-currency/display-currency/display-currency.component";
+import {
+    PerformanceArrowComponent
+} from "./element-group-currency/performance-arrow/performance-arrow.component";
 
 export const elements = [
     AuthConsoleComponent,
@@ -93,6 +96,7 @@ export const elements = [
     NavBarItemComponent,
     NavBarProfilePictureComponent,
     PaperModePromoComponent,
+    PerformanceArrowComponent,
     PerformanceChartComponent,
     PerformanceChartSettingsComponent,
     PerformanceSectionComponent,
