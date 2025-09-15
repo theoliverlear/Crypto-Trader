@@ -22,7 +22,13 @@ public class SecurityConfig {
     @ConditionalOnMissingBean(SecurityFilterChain.class)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize -> {
-            authorize.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
+            authorize.requestMatchers(
+                            "/swagger-ui/**",
+                            "/v3/api-docs/**",
+                            "/v3/api-docs.yaml",
+                            "/actuator/health",
+                            "/actuator/info"
+                    )
                      .permitAll().anyRequest().permitAll();
         }).csrf(AbstractHttpConfigurer::disable);
         return http.build();
