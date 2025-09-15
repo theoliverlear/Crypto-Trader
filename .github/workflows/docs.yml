@@ -194,21 +194,21 @@ jobs:
         run: mkdocs build --site-dir site
 
       # Copy spec from docs into built site; DO NOT fetch live here
-      - name: Copy spec into site/api and verify
-        run: |
-          set -euo pipefail
-          SRC="Crypto-Trader-Docs/docs/api/openapi-api.yaml"
-          DST_DIR="Crypto-Trader-Docs/site/api"
-          mkdir -p "$DST_DIR"
-          cp -fv "$SRC" "$DST_DIR/openapi-api.yaml"
-
-          # prevent Jekyll munging
-          touch "Crypto-Trader-Docs/site/.nojekyll"
-
-          # prove it’s in the artifact
-          ls -l "$DST_DIR"
-          sha256sum "$DST_DIR/openapi-api.yaml"
-          test -s "$DST_DIR/openapi-api.yaml"
+#      - name: Copy spec into site/api and verify
+#        run: |
+#          set -euo pipefail
+#          SRC="Crypto-Trader-Docs/docs/api/openapi-api.yaml"
+#          DST_DIR="Crypto-Trader-Docs/site/api"
+#          mkdir -p "$DST_DIR"
+#          cp -fv "$SRC" "$DST_DIR/openapi-api.yaml"
+#
+#          # prevent Jekyll munging
+#          touch "Crypto-Trader-Docs/site/.nojekyll"
+#
+#          # prove it’s in the artifact
+#          ls -l "$DST_DIR"
+#          sha256sum "$DST_DIR/openapi-api.yaml"
+#          test -s "$DST_DIR/openapi-api.yaml"
 
       - name: Configure Pages
         id: pages
