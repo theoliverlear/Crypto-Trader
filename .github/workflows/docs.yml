@@ -91,7 +91,10 @@ jobs:
 
           probe() {
             local port="$1"
-            curl -fsS "http://localhost:${port}/v3/api-docs.yaml" >/dev/null && echo ok || echo no
+            # Consider endpoint ready only if response body is non-empty (>20 bytes)
+            local sz
+            sz=$(curl -fsS "http://localhost:${port}/v3/api-docs.yaml" | wc -c | tr -d ' ' || echo 0)
+            if [ "${sz:-0}" -gt 20 ]; then echo ok; else echo no; fi
           }
 
           # Wait up to ~4 minutes (120 * 2s)
