@@ -1,0 +1,27 @@
+// performance-arrow.component.scss
+@use "../../../../styles/globals" as *;
+
+performance-arrow {
+    ss-img {
+        @include square-size(calc($one-half-percent + $quarter-percent));
+        @extend %circle-border-radius;
+        padding: $quarter-percent;
+        //border: $thinnest-border solid $pure-white;
+        //box-shadow: $alabaster-stone 0 0 $quarter-percent;
+    }
+    &.down {
+        ss-img {
+            transform: rotate(180deg);
+            //background-color: add-alpha-opaque($red-orange, 0.5, $muted-blue)
+            //background-color: $red-orange;
+            //background-image: linear-gradient(to bottom, $red-orange, lightblue);
+        }
+    }
+    &.up {
+        ss-img {
+            //background-color: add-alpha-opaque($lime, 0.5, $muted-blue)
+            //background-color: $lime;
+            //background-image: linear-gradient(to bottom, $lime, lightblue);
+        }
+    }
+}
