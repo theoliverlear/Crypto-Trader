@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(basePackages = {
         "org.cryptotrader.api.library.repository"
 })
-@EntityScan(basePackages = "org.cryptotrader.entity")
+@EntityScan(basePackages = "org.cryptotrader.api.library.entity")
 public class SpringBootConfig {
 
 }
