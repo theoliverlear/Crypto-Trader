@@ -132,11 +132,43 @@ jobs:
         run: |
           set -euo pipefail
           FILE="Crypto-Trader-Docs/docs/api/openapi-api.yaml"
+          TMP="${FILE}.tmp"
           mkdir -p "$(dirname "$FILE")"
 
           if [ ! -s "$FILE" ]; then
-            echo "Spec missing in docs; pulling from live API…"
-            curl -fsS http://localhost:18080/v3/api-docs.yaml -o "$FILE"
+            echo "Spec missing in docs; attempting to pull from live API (yaml, then json)…"
+            # Try YAML first
+            if curl -fsS http://localhost:18080/v3/api-docs.yaml -o "$TMP"; then
+              if [ -s "$TMP" ]; then
+                mv -f "$TMP" "$FILE"
+              else
+                echo "YAML fetch returned empty body; trying JSON…"
+                rm -f "$TMP"
+                if curl -fsS http://localhost:18080/v3/api-docs -o "$TMP"; then
+                  if [ -s "$TMP" ]; then
+                    # ReDoc accepts JSON as well; store JSON at .yaml path
+                    mv -f "$TMP" "$FILE"
+                  else
+                    echo "::error::JSON fetch also returned empty body."
+                    rm -f "$TMP"
+                  fi
+                else
+                  echo "::error::JSON fetch failed."
+                fi
+              fi
+            else
+              echo "YAML fetch failed; trying JSON…"
+              if curl -fsS http://localhost:18080/v3/api-docs -o "$TMP"; then
+                if [ -s "$TMP" ]; then
+                  mv -f "$TMP" "$FILE"
+                else
+                  echo "::error::JSON fetch returned empty body."
+                  rm -f "$TMP"
+                fi
+              else
+                echo "::error::JSON fetch failed."
+              fi
+            fi
           fi
 
           echo "Spec in docs:"
