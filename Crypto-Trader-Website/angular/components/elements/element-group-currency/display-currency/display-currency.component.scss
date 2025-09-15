@@ -1,22 +1,37 @@
 // display-currency.component.scss
 @use "../../../../styles/globals" as *;
+@use "../../../../styles/gradients/global_gradient_placeholders" as *;
 
 display-currency {
-    @include flex(center, center, row);
-    width: 80%;
+    @include flex(space-between, center, row);
+    width: 90%;
     min-height: $ten-percent;
     padding: $one-percent;
-    background-color: $alabaster-stone;
+    //background-color: add-alpha-opaque($alabaster-stone, 0.5, $muted-blue);
+    background: linear-gradient(135deg, rgba(240, 248, 255, 0.8), rgba(173, 216, 230, 0.8));
+
+    .currency-price-div {
+        @include flex(center, center, row);
+        subtitle {
+            margin: 0 $half-percent;
+        }
+    }
+
     margin: $half-percent 0;
     @extend %soft-border-radius;
     .display-action-div {
         @include flex(center, center, row);
+        flex: 1;
         .image-code-div {
             @include flex(center, center, column);
-            background-color: lightblue;
             padding: $half-percent;
             @extend %soft-border-radius;
-
+            //@extend %light-logo-gradient;
+            background-color: #00C8B6;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 800 800'%3E%3Cg %3E%3Ccircle fill='%2300C8B6' cx='400' cy='400' r='600'/%3E%3Ccircle fill='%233bd7a9' cx='400' cy='400' r='500'/%3E%3Ccircle fill='%236ae496' cx='400' cy='400' r='400'/%3E%3Ccircle fill='%2399f080' cx='400' cy='400' r='300'/%3E%3Ccircle fill='%23caf869' cx='400' cy='400' r='200'/%3E%3Ccircle fill='%23FFFD56' cx='400' cy='400' r='100'/%3E%3C/g%3E%3C/svg%3E");
+            background-attachment: fixed;
+            background-size: cover;
+            border: $thinnest-border solid $pure-white;
             ss-img {
                 @include square-size($six-percent);
                 padding: $half-percent;
@@ -24,7 +39,6 @@ display-currency {
                 @extend %circle-border-radius;
             }
         }
-
         .display-currency-title {
             @include flex(center, center, column);
             flex: 1;
@@ -32,15 +46,43 @@ display-currency {
             .display-currency-name {
                 //font-size: calc($h4-font-size * 1.25);
                 @extend %soft-text-shadow;
+                color: $pure-white;
+            }
+            .currency-price {
+                color: $sunbeam-yellow;
             }
 
             .currency-action-buttons-div {
-                @include flex(space-around, center, row);
+                @include flex(center, center, row);
                 margin: $half-percent 0;
                 width: 80%;
 
                 ss-button {
                     min-width: 4ch;
+                }
+                ss-button:first-child {
+                    margin-right: $half-percent;
+                }
+                ss-button:last-child {
+                    margin-left: $half-percent;
+                }
+            }
+        }
+    }
+    &.up-performance {
+        .display-action-div {
+            .display-currency-title {
+                .currency-price {
+                    color: $lime;
+                }
+            }
+        }
+    }
+    &.down-performance {
+        .display-action-div {
+            .display-currency-title {
+                .currency-price {
+                    color: $red-orange;
                 }
             }
         }
