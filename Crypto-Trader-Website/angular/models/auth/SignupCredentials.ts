@@ -7,15 +7,13 @@ import {
 import {SignupRequest} from "./types";
 
 export class SignupCredentials extends LoginCredentials {
-    email: string;
     confirmPassword: string;
     agreedTerms: boolean;
-    constructor(username: string = "",
-                email: string = "",
+    constructor(email: string = "",
                 password: string = "",
                 confirmPassword: string = "",
                 agreedTerms: boolean = false) {
-        super(username, password);
+        super(email, password);
         this.email = email;
         this.confirmPassword = confirmPassword;
         this.agreedTerms = agreedTerms;
@@ -28,7 +26,7 @@ export class SignupCredentials extends LoginCredentials {
     
     public isPasswordMatch(): boolean {
         if (this.password === "" || this.confirmPassword === "") {
-            return false;
+            return true;
         }
         return this.password === this.confirmPassword;
     }
@@ -39,7 +37,7 @@ export class SignupCredentials extends LoginCredentials {
     
     public isFilledFields(): boolean {
         const filledFieldsService: FilledFieldsService = new FilledFieldsService();
-        return filledFieldsService.isFilledFields([this.username, this.email, this.password, this.confirmPassword]);
+        return filledFieldsService.isFilledFields([this.email, this.password, this.confirmPassword]);
     }
     
     public getAnyTypingIssue(): AuthPopup {
@@ -63,14 +61,17 @@ export class SignupCredentials extends LoginCredentials {
     }
     
     public getAnyIssue(): AuthPopup {
-        const typingIssue: AuthPopup = this.getAnyTypingIssue();
         const submitIssue: AuthPopup = this.getSubmitIssue();
-        const bothIssuesNotNone: boolean = typingIssue !== AuthPopup.NONE && submitIssue !== AuthPopup.NONE;
-        if (bothIssuesNotNone) {
-            return AuthPopup.NONE;
-        } else {
-            return typingIssue || submitIssue;
+        if (submitIssue !== AuthPopup.NONE) {
+            return submitIssue;
         }
+        
+        const typingIssue: AuthPopup = this.getAnyTypingIssue();
+        if (typingIssue !== AuthPopup.NONE) {
+            return typingIssue;
+
+        }
+        return AuthPopup.NONE;
     }
     
     public getSignupRequest(): SignupRequest {
@@ -79,7 +80,6 @@ export class SignupCredentials extends LoginCredentials {
         }
         const hashPasswordService: HashPasswordService = new HashPasswordService();
         return {
-            username: this.username,
             email: this.email,
             password: hashPasswordService.hashPassword(this.password)
         };
