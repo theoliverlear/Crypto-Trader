@@ -4,7 +4,7 @@ import {AuthInputType} from "../auth-input/models/AuthInputType";
 import {
     AuthPopup,
     ButtonText,
-    ElementSize, EmailValidatorService
+    ElementSize
 } from "@theoliverlear/angular-suite";
 import {SignupCredentials} from "../../../../models/auth/SignupCredentials";
 
@@ -18,7 +18,7 @@ export class AuthConsoleSignupSectionComponent {
     signupCredentials: SignupCredentials = new SignupCredentials();
     @Output() signupButtonClicked: EventEmitter<SignupCredentials> = new EventEmitter<SignupCredentials>();
     @Output() authPopupEvent: EventEmitter<AuthPopup> = new EventEmitter<AuthPopup>();
-    constructor(private emailValidator: EmailValidatorService) {
+    constructor() {
         
     }
     
@@ -26,20 +26,44 @@ export class AuthConsoleSignupSectionComponent {
         this.authPopupEvent.emit(authPopup);
     }
     
+    updateAgreedTerms(agree: string): void {
+        this.signupCredentials.agreedTerms = Boolean(agree);
+    }
+    
     updateUsername(username: string): void {
         this.signupCredentials.username = username;
     }
     updateEmail(email: string): void {
-        if (!this.emailValidator.isValidEmail(email)) {
-            this.emitAuthPopup(AuthPopup.INVALID_EMAIL);
-        }
         this.signupCredentials.email = email;
+        this.emitPossibleInvalidEmail();
     }
+
+    private emitPossibleInvalidEmail() {
+        if (!this.signupCredentials.isValidEmail()) {
+            console.log("Invalid email");
+            this.emitAuthPopup(AuthPopup.INVALID_EMAIL);
+        } else {
+            this.emitAuthPopup(this.signupCredentials.getAnyTypingIssue());
+        }
+    }
+
     updatePassword(password: string): void {
         this.signupCredentials.password = password;
+        this.emitPossibleMismatch();
     }
+
+    private emitPossibleMismatch(): void {
+        if (!this.signupCredentials.isPasswordMatch()) {
+            console.log("Invalid password");
+            this.emitAuthPopup(AuthPopup.PASSWORDS_DONT_MATCH);
+        } else {
+            this.emitAuthPopup(this.signupCredentials.getAnyTypingIssue());
+        }
+    }
+
     updateConfirmPassword(confirmPassword: string): void {
         this.signupCredentials.confirmPassword = confirmPassword;
+        this.emitPossibleMismatch();
     }
     emitFields(): void {
         this.signupButtonClicked.emit(this.signupCredentials);
