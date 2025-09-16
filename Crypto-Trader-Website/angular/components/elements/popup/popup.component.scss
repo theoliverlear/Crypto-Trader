@@ -4,9 +4,11 @@
 
 popup {
     ss-title {
-        background-color: $light-charcoal;
+        background-image: linear-gradient(42deg, $light-charcoal, $ocean-blue);
         @extend %soft-border-radius;
         padding: $half-percent $one-percent;
         color: $pure-white;
+        box-shadow: add-alpha($blue-gray, 0.5) 0 $quarter-percent $quarter-percent 0;
+        border: $thinnest-border solid $pure-white;
     }
 }
