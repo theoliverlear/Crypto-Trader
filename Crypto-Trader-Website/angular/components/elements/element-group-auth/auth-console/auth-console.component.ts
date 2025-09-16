@@ -1,4 +1,10 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    Output
+} from "@angular/core";
 import {
     AuthPopup,
     AuthType,
@@ -13,6 +19,7 @@ import {
 import {Subscription} from "rxjs";
 import {SignupCredentials} from "../../../../models/auth/SignupCredentials";
 import {SignupRequest} from "../../../../models/auth/types";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'auth-console',
@@ -20,20 +27,22 @@ import {SignupRequest} from "../../../../models/auth/types";
     templateUrl: './auth-console.component.html',
     styleUrls: ['./auth-console.component.scss']
 })
-export class AuthConsoleComponent implements WebSocketCapable {
+export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
     @Input() currentAuthType: AuthType = AuthType.SIGN_UP;
     @Output() authPopupEvent: EventEmitter<AuthPopup> = new EventEmitter<AuthPopup>();
+    attempts: number = 0;
     webSocketSubscriptions: Record<string, Subscription> = {};
     constructor(private signupWebSocket: SignupWebSocketService,
-                private loginWebSocket: LoginWebSocketService) {
+                private loginWebSocket: LoginWebSocketService,
+                private router: Router) {
 
     }
     
-    attemptSignup(signupCredentials: SignupCredentials) {
-        if (signupCredentials.getSubmitIssue() !== AuthPopup.NONE) {
+    attemptSignup(signupCredentials: SignupCredentials): void {
+        if (signupCredentials.getAnyIssue() === AuthPopup.NONE) {
             this.signup(signupCredentials.getSignupRequest());
         } else {
-            this.emitAuthPopup(signupCredentials.getSubmitIssue());
+            this.emitAuthPopup(signupCredentials.getAnyIssue());
         }
     }
     
@@ -64,34 +73,70 @@ export class AuthConsoleComponent implements WebSocketCapable {
     }
 
     private initSignupWebSocket() {
+        console.log('[WS] Connecting signup socket…');
         this.signupWebSocket.connect();
         this.webSocketSubscriptions['signup'] = this.signupWebSocket.getMessages().subscribe({
             next: (message) => {
-                console.log(message);
+                console.log('[WS][signup] message:', message);
+                if (message?.authorized) {
+                    console.log("[WS][signup] Authorized");
+                    this.router.navigate(['/portfolio']);
+                } else {
+                    console.log("[WS][signup] Not authorized");
+                    if (this.attempts !== 0) {
+                        this.emitAuthPopup(AuthPopup.USERNAME_OR_EMAIL_EXISTS);
+                    }
+                }
             },
             error: (error) => {
-                console.log(error);
+                console.log('[WS][signup] error:', error);
             },
             complete: () => {
-                console.log('complete');
+                console.log('[WS][signup] complete');
             }
         });
     }
 
     private initLoginWebSocket() {
+        console.log('[WS] Connecting login socket…');
         this.loginWebSocket.connect();
         this.webSocketSubscriptions['login'] = this.loginWebSocket.getMessages().subscribe({
             next: (message) => {
-                console.log(message);
+                console.log('[WS][login] message:', message);
+                if (message?.authorized) {
+                    console.log("[WS][login] Authorized");
+                    this.router.navigate(['/portfolio']);
+                } else {
+                    console.log("[WS][login] Not authorized");
+                    if (this.attempts !== 0) {
+                        this.emitAuthPopup(AuthPopup.USERNAME_OR_EMAIL_EXISTS);
+                    }
+                }
             },
             error: (error) => {
-                console.log(error);
+                console.log('[WS][login] error:', error);
             },
             complete: () => {
-                console.log('complete');
+                console.log('[WS][login] complete');
             }
         });
     }
+
+    ngOnDestroy(): void {
+        Object.values(this.webSocketSubscriptions).forEach((sub) => {
+            try { 
+                sub?.unsubscribe(); 
+            } catch {}
+        });
+        this.webSocketSubscriptions = {};
+        try { 
+            this.signupWebSocket.disconnect?.(); 
+        } catch {}
+        try { 
+            this.loginWebSocket.disconnect?.(); 
+        } catch {}
+    }
+
 
     protected readonly AuthPopup = AuthPopup;
 }
