@@ -6,9 +6,6 @@ import {
     ViewChild
 } from "@angular/core";
 import {defaultAvatar, ImageAsset} from "../../../../assets/imageAssets";
-import {
-    ProfilePictureService
-} from "../../../../services/server/profile-picture.service";
 import {SsImgComponent} from "@theoliverlear/angular-suite";
 
 @Component({
@@ -22,29 +19,11 @@ export class ProfilePictureComponent implements AfterViewInit {
     @Input() isHeadlineProfilePicture: boolean = false;
     @Input() imageAsset: ImageAsset = defaultAvatar;
     @ViewChild('profilePictureImage') profilePictureImage: SsImgComponent;
-    constructor(private profilePictureService: ProfilePictureService,
-                private changeDetection: ChangeDetectorRef) {
+    constructor(private changeDetection: ChangeDetectorRef) {
         
     }
     ngAfterViewInit() {
-        if (this.userId !== 0) {
-            this.profilePictureService.getHasProfilePictureFromServer(this.userId).subscribe((hasProfilePicture: boolean) => {
-                console.log(`User ${this.userId} has profile picture: ${hasProfilePicture}`);
-                Promise.resolve().then(() => {
-                    if (hasProfilePicture) {
-                        let profilePictureAsset: ImageAsset = {
-                            src: `localhost:8080/profile/get/${this.userId}/profile-picture`,
-                            alt: 'Profile Picture'
-                        };
-                        this.profilePictureImage.imageAsset = profilePictureAsset;
-                    } else {
-                        this.profilePictureImage.imageAsset = defaultAvatar;
-                    }
-                    this.changeDetection.detectChanges();
-                });
-
-            });
-        }
+        
     }
 
     protected readonly defaultAvatar = defaultAvatar;
