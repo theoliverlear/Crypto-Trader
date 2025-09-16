@@ -19,6 +19,9 @@ import {
 import {
     CurrenciesComponent
 } from "../../components/pages/currencies/currencies.component";
+import {
+    ConsoleComponent
+} from "../../components/pages/console/console.component";
 
 
 const isDevelopment = true;
@@ -92,6 +95,17 @@ export const currenciesRoute: Route = {
         },
     }
 };
+
+export const consoleRoute: Route = {
+    path: 'console',
+    component: ConsoleComponent,
+    canActivate: isDevelopment ? [] : [AuthGuard],
+    data: {
+        meta: {
+            title: 'Console | Crypto Trader'
+        },
+    }
+};
 export const routes: Routes = [
     accountRoute,
     authorizeRoute,
@@ -99,5 +113,6 @@ export const routes: Routes = [
     portfolioRoute,
     termsOfServiceRoute,
     currenciesRoute,
+    consoleRoute,
     traderRoute
 ];
