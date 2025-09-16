@@ -60,6 +60,7 @@
         <module>Crypto-Trader-Coverage</module>
         <module>Crypto-Trader-Health</module>
         <module>Crypto-Trader-Contact</module>
+        <module>Crypto-Trader-Console</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
