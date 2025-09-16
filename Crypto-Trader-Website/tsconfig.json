@@ -15,7 +15,7 @@
   },
   "include": ["./angular/**/*.ts"],
   "exclude": [
-    "../node_modules",
+    "./node_modules",
     "./Crypto-Trader-Api/src/main/resources/static/script/bundle.js",
     "./angular/**/*.js",
     "./angular/**/*.d.ts"
