@@ -1,6 +1,6 @@
 // auth-console-login-section-style.component.scss
 @use "../../../../styles/globals" as *;
-@import "../auth-console-signup-section/auth-console-signup-section.component";
+@use "../auth-console-signup-section/auth-console-signup-section.component" as *;
 
 auth-console-login-section {
     @extend auth-console-signup-section;
