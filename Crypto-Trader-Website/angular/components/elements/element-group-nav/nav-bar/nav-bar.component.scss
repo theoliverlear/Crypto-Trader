@@ -19,7 +19,7 @@ nav-bar {
         @extend %fill-container;
         .nav-items-div {
             @include flex(space-between, center, row);
-            width: 50%;
+            width: 41%;
         }
     }
 }
