@@ -133,11 +133,11 @@
               ],
               "optimization": false,
               "outputHashing": "none",
-              "sourceMap": true,
-              "namedChunks": true,
+              "sourceMap": false,
+              "namedChunks": false,
               "aot": false,
-              "extractLicenses": true,
-              "vendorChunk": true,
+              "extractLicenses": false,
+              "vendorChunk": false,
               "buildOptimizer": false
             }
           }
@@ -149,7 +149,8 @@
           },
           "configurations": {
             "hmr": {
-              "hmr": true
+              "hmr": true,
+              "buildTarget": "crypto-trader:build:development"
             },
             "production": {
               "buildTarget": "crypto-trader:build:production"
