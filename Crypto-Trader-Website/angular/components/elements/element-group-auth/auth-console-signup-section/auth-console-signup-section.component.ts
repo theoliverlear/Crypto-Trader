@@ -29,10 +29,7 @@ export class AuthConsoleSignupSectionComponent {
     updateAgreedTerms(agree: string): void {
         this.signupCredentials.agreedTerms = Boolean(agree);
     }
-    
-    updateUsername(username: string): void {
-        this.signupCredentials.username = username;
-    }
+
     updateEmail(email: string): void {
         this.signupCredentials.email = email;
         this.emitPossibleInvalidEmail();
