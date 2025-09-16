@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Configuration
+@Configuration("apiLibrarySecurityConfig")
 @EnableWebSecurity
 @ConditionalOnProperty(name = "cryptotrader.api.security.enabled", havingValue = "true", matchIfMissing = true)
 public class SecurityConfig {
