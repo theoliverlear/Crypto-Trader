@@ -45,11 +45,14 @@ export const getStartedElementLink = new TextElementLink('/authorize',
     TargetType.SELF,
     false,
     'Get Started',
-    TagType.H4,
-)
+    TagType.H4);
 
 export const repositoryElementLink = new TextElementLink('https://github.com/theoliverlear/Crypto-Trader',
     TargetType.BLANK,
     false,
     'Explore Source Code',
-    TagType.H4)
+    TagType.H4);
+
+export const consoleElementLink = new ElementLink('/console',
+    TargetType.SELF,
+    false);
