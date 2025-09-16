@@ -6,10 +6,12 @@ import {CurrenciesComponent} from "./currencies/currencies.component";
 import {NotFoundComponent} from "./not-found/not-found.component";
 import {TermsOfServiceComponent} from "./terms-of-service/terms-of-service.component";
 import {AccountComponent} from "./account/account.component";
+import {ConsoleComponent} from "./console/console.component";
 
 export const pages = [
     AccountComponent,
     AuthorizeComponent,
+    ConsoleComponent,
     CurrenciesComponent,
     HomeComponent,
     NotFoundComponent,
