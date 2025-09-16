@@ -31,16 +31,14 @@ public class AuthService {
         this.userEventsPublisher = userEventsPublisher;
     }
     public PayloadStatusResponse<AuthResponse> signup(SignupRequest signupRequest) {
-        String username = signupRequest.getUsername();
         String email = signupRequest.getEmail();
         String password = signupRequest.getPassword();
-        boolean userExists = this.productUserService.userExistsByUsername(username);
+        boolean userExists = this.productUserService.userExistsByEmail(email);
         if (userExists) {
             return new PayloadStatusResponse<>(new AuthResponse(AuthStatus.UNAUTHORIZED.isAuthorized), HttpStatus.CONFLICT);
         } else {
             SafePassword safePassword = new SafePassword(password);
             ProductUser user = ProductUser.builder()
-                            .username(username)
                             .email(email)
                             .safePassword(safePassword)
                             .build();
