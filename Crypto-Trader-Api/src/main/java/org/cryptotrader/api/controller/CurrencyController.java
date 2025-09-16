@@ -16,7 +16,7 @@ import org.cryptotrader.api.library.entity.currency.Currency;
 @Profile("!docs")
 @RequestMapping("/api/currency")
 public class CurrencyController {
-    private CurrencyService currencyService;
+    private final CurrencyService currencyService;
     @Autowired
     public CurrencyController(CurrencyService currencyService) {
         this.currencyService = currencyService;
@@ -33,7 +33,7 @@ public class CurrencyController {
     }
     @GetMapping("/performance/{currencyCode}")
     public ResponseEntity<PerformanceRatingResponse> getCurrencyPerformance(@PathVariable String currencyCode) {
-        if (currencyCode == null) {
+        if (currencyCode == null || currencyCode.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
             PerformanceRating performanceRatingResponse = this.currencyService.getDayPerformance(currencyCode);
