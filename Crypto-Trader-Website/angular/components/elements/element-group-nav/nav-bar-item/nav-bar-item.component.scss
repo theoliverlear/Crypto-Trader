@@ -12,7 +12,8 @@ nav-bar-item {
     border-radius: simplest-calc(0.5);
     transition: background-color, box-shadow, scale, 0.3s;
     padding: simplest-calc(0.5) simplest-calc(0);
-    background-color: #4074A7;
+    background-color: $ocean-blue;
+    margin-right: $quarter-percent;
     //background: radial-gradient(circle, $muted-blue, $blue-gray);
     //background-color: $charcoal;
     //border: $light-charcoal $thinnest-border solid;
