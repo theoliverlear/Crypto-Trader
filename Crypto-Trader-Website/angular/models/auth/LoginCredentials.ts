@@ -1,9 +1,16 @@
+import {FilledFieldsService} from "@theoliverlear/angular-suite";
+
 export class LoginCredentials {
-    username: string;
+    email: string;
     password: string;
-    constructor(username: string = "",
+    constructor(email: string = "",
                 password: string = "") {
-        this.username = username;
+        this.email = email;
         this.password = password;
+    }
+    
+    public isFilledFields(): boolean {
+        const filledFieldsService: FilledFieldsService = new FilledFieldsService();
+        return filledFieldsService.isFilledFields([this.email, this.password]);
     }
 }
