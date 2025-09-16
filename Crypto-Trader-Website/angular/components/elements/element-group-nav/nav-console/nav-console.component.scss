@@ -1,0 +1,33 @@
+// nav-console.component.scss
+@use "../../../../styles/globals" as *;
+
+nav-console {
+    @include flex(center, center, row);
+    border-radius: $quarter-percent;
+    background-color: $ocean-blue;
+    padding: $quarter-percent;
+    position: absolute;
+    top: $one-percent;
+    right: $seven-percent;
+    box-shadow: add-alpha($light-charcoal, 0.5) 0 0 $quarter-percent simplest-calc(0.001);
+    transition: background-color, box-shadow, scale, 0.15s;
+    ss-anchor {
+        ss-img {
+            @include square-size($two-half-percent);
+            filter: invert(1);
+        }
+    }
+    &:hover {
+        //background-color: $almost-white;
+        $box-shadow-size: simplest-calc(0.25);
+        box-shadow: add-alpha($light-charcoal, 0.25) 0 0 $half-percent simplest-calc(0.005);
+        cursor: pointer;
+    }
+
+    &:active {
+        box-shadow: none;
+        scale: 0.9;
+        //$top-and-right: simplest-calc(0.25);
+        //transform: translate($top-and-right, $top-and-right);
+    }
+}
