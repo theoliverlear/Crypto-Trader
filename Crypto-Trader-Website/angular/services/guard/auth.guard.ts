@@ -6,36 +6,34 @@ import {
     RouterStateSnapshot
 } from "@angular/router";
 import {catchError, map, Observable} from "rxjs";
+import {LoggedInService} from "../net/http/logged-in.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-    constructor(private router: Router) {
-        console.log('AuthGuard loaded');
+    constructor(private router: Router,
+                private loggedInService: LoggedInService) {
+        
     }
     
-    // TODO: Implement an auth guard with HTTP requests.
     canActivate(route: ActivatedRouteSnapshot,
                 state: RouterStateSnapshot): Observable<boolean> {
-        // return this.loginService.getIsLoggedInFromServer().pipe(
-        //     map(isAuthorized => {
-        //         if (isAuthorized) {
-        //             return true;
-        //         } else {
-        //             this.router.navigate(['/authorize']);
-        //             return false;
-        //         }
-        //     }),
-        //     catchError(() => {
-        //         this.router.navigate(['/authorize']);
-        //         return new Observable<boolean>(observer => {
-        //             observer.next(false);
-        //         });
-        //     })
-        // )
-        return new Observable<boolean>(observer => {
-            observer.next(true);
-        });
+        return this.loggedInService.isLoggedIn().pipe(
+            map(isAuthorized => {
+                if (isAuthorized) {
+                    return true;
+                } else {
+                    this.router.navigate(['/authorize']);
+                    return false;
+                }
+            }),
+            catchError(() => {
+                this.router.navigate(['/authorize']);
+                return new Observable<boolean>(observer => {
+                    observer.next(false);
+                });
+            })
+        )
     }
 }
