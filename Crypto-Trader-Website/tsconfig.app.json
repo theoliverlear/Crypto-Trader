@@ -4,10 +4,13 @@
     "outDir": "./",
     "types": []
   },
-  "files": [
-    "../angular/modules/crypto-trader.module.ts"
-  ],
   "include": [
-    "angular/**/*.d.ts"
+    "./angular/**/*.ts"
+  ],
+  "exclude": [
+    "./node_modules",
+    "./angular/**/*.d.ts",
+    "./**/*.ts~",
+    "./**/*.*~"
   ]
 }
