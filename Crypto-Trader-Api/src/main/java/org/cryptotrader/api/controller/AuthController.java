@@ -20,7 +20,7 @@ import org.cryptotrader.api.library.model.http.PayloadStatusResponse;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/api/authorize")
+@RequestMapping("/api/auth")
 public class AuthController {
     private final AuthService authService;
     private final SessionService sessionService;
@@ -44,7 +44,7 @@ public class AuthController {
         } else {
             PayloadStatusResponse<AuthResponse> signupResponse = this.authService.signup(signupRequest);
             if (signupResponse.getPayload().isAuthorized()) {
-                User possibleUser = this.productUserService.getUserByUsername(signupRequest.getUsername());
+                User possibleUser = this.productUserService.getUserByEmail(signupRequest.getEmail());
                 this.userEventsPublisher.publishUserRegisteredEvent(new UserRegisteredEvent(possibleUser, LocalDateTime.now()));
             }
             return ResponseEntity.status(signupResponse.getStatus()).body(signupResponse.getPayload());
@@ -61,7 +61,7 @@ public class AuthController {
         }
     }
     // TODO: Refactor to use HttpServletRequest to verify session.
-    @GetMapping("/isloggedin")
+    @GetMapping("/logged-in")
     public ResponseEntity<AuthResponse> isLoggedIn(HttpSession session) {
         boolean userInSession = this.sessionService.userInSession(session);
         if (userInSession) {
