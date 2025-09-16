@@ -63,3 +63,8 @@ export const upArrowIcon: ImageAsset = {
     src: getIconImagePath('up_arrow_icon.svg'),
     alt: 'Up Arrow Icon'
 };
+
+export const consoleIcon: ImageAsset = {
+    src: getIconImagePath('console_icon.svg'),
+    alt: 'Console Icon'
+};
