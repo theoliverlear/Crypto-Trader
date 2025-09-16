@@ -61,6 +61,7 @@
         <module>Crypto-Trader-Health</module>
         <module>Crypto-Trader-Contact</module>
         <module>Crypto-Trader-Console</module>
+        <module>Crypto-Trader-Security</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
