@@ -2,6 +2,7 @@ package org.cryptotrader.api.config
 
 import org.cryptotrader.api.controller.websocket.LoginWebSocketHandler
 import org.cryptotrader.api.controller.websocket.SignupWebSocketHandler
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.socket.config.annotation.EnableWebSocket
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer
@@ -10,6 +11,7 @@ import org.springframework.web.socket.server.support.DefaultHandshakeHandler
 
 @Configuration
 @EnableWebSocket
+@ConditionalOnProperty(name = ["cryptotrader.api.websocket.enabled"], havingValue = "true", matchIfMissing = true)
 open class WebSocketConfig(
     val signupWebsocket: SignupWebSocketHandler,
     val loginWebSocket: LoginWebSocketHandler
