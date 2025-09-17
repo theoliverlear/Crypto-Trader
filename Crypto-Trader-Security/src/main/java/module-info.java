@@ -10,11 +10,11 @@ open module org.cryptotrader.security {
     requires spring.security.config;
     requires spring.security.core;
     requires spring.data.jpa;
-    requires micrometer.core;
+    requires static lombok;
+    requires com.google.crypto.tink;
+    requires inet.ipaddr;
+    requires org.cryptotrader.api.library.models;
+    requires kotlin.stdlib;
 
-    exports org.cryptotrader.security.jpa;
-    exports org.cryptotrader.security.config;
-    exports org.cryptotrader.security.net;
-    exports org.cryptotrader.security.events;
-    exports org.cryptotrader.security.ban;
+    exports org.cryptotrader.security;
 }
