@@ -56,7 +56,7 @@ public class AuthServiceTest extends CryptoTraderTest {
         String encodedPassword = clientSideHashedPassword.getEncodedPassword();
         this.userRequest = new UserRequest(this.testUsername, this.testEmail, encodedPassword);
         this.loginRequest = new LoginRequest(this.testEmail, encodedPassword);
-        this.signupRequest = new SignupRequest(this.testEmail, this.testUsername, encodedPassword);
+        this.signupRequest = new SignupRequest(this.testEmail, encodedPassword);
         this.user = new ProductUser(this.testUsername, new SafePassword(this.testPassword));
     }
     
@@ -89,7 +89,7 @@ public class AuthServiceTest extends CryptoTraderTest {
     @Test
     @DisplayName("Should not sign up existing users")
     public void signup_NotSignUp_WhenUserExists() {
-        when(this.productUserService.userExistsByUsername(this.testUsername)).thenReturn(true);
+        when(this.productUserService.userExistsByEmail(this.testEmail)).thenReturn(true);
         AuthResponse expectedResponse = new AuthResponse(false);
         PayloadStatusResponse<AuthResponse> actualResponse = this.authService.signup(this.signupRequest);
         AuthResponse actualAuthResponse = actualResponse.getPayload();
