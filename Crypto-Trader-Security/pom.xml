@@ -40,7 +40,6 @@
             <groupId>com.sigwarthsoftware</groupId>
             <artifactId>spring-boot-websocket</artifactId>
         </dependency>
-        <!-- If your event is a Kotlin data class, you NEED these: -->
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-kotlin</artifactId>
@@ -206,6 +205,14 @@
         <dependency>
             <groupId>jakarta.activation</groupId>
             <artifactId>jakarta.activation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.seancfoley</groupId>
+            <artifactId>ipaddress</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.crypto.tink</groupId>
+            <artifactId>tink</artifactId>
         </dependency>
     </dependencies>
 
