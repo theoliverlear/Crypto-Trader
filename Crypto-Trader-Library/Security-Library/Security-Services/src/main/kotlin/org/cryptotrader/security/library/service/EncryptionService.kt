@@ -6,27 +6,32 @@ import com.google.crypto.tink.KeyTemplates
 import com.google.crypto.tink.KeysetHandle
 import com.google.crypto.tink.TinkJsonProtoKeysetFormat
 import com.google.crypto.tink.config.TinkConfig
-import org.cryptotrader.security.library.config.SecurityPropertiesConfig
 import org.slf4j.LoggerFactory
 import java.io.File
 
 class EncryptionService(
-    private val properties: SecurityPropertiesConfig
+    private val keysetPath: String
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
     private val aead: Aead by lazy { this.createAeadFromKeyset() }
 
-    fun encrypt(bytes: ByteArray, keyAlias: String? = null): ByteArray = this.aead.encrypt(bytes, null)
+    fun encrypt(bytes: ByteArray, keyAlias: String? = null): ByteArray {
+        return this.aead.encrypt(bytes, null)
+    }
 
     fun decrypt(bytes: ByteArray): ByteArray = this.aead.decrypt(bytes, null)
 
     private fun createAeadFromKeyset(): Aead {
         TinkConfig.register()
-        val keysetPath = this.properties.encryption?.tink?.keysetPath ?: this.properties.crypto.tink.keysetPath
+        val keysetPath = this.keysetPath
         this.log.info("Initializing encryption (Google Tink AEAD). Keyset source configured as: {}", keysetPath)
         return when {
-            keysetPath.startsWith("classpath:") -> this.loadKeysetFromClasspath(keysetPath.removePrefix("classpath:"))
-            keysetPath.startsWith("file:") -> this.loadKeysetFromFile(keysetPath.removePrefix("file:"), generateIfMissing = true)
+            keysetPath.startsWith("classpath:") -> {
+                this.loadKeysetFromClasspath(keysetPath.removePrefix("classpath:"))
+            }
+            keysetPath.startsWith("file:") -> {
+                this.loadKeysetFromFile(keysetPath.removePrefix("file:"), generateIfMissing = true)
+            }
             else -> this.loadKeysetFromFile(keysetPath, generateIfMissing = true)
         }
     }
@@ -53,8 +58,7 @@ class EncryptionService(
         if (!file.exists()) {
             if (generateIfMissing) {
                 file.parentFile?.mkdirs()
-                val handle: KeysetHandle = KeysetHandle.generateNew(
-                    KeyTemplates.get("AES256_GCM"))
+                val handle: KeysetHandle = KeysetHandle.generateNew(KeyTemplates.get("AES256_GCM"))
                 val keysetJson: String = TinkJsonProtoKeysetFormat.serializeKeyset(handle, InsecureSecretKeyAccess.get())
                 file.writeText(keysetJson, Charsets.UTF_8)
                 this.log.info("Generated new Tink AEAD keyset at {}", file.absolutePath)
@@ -63,7 +67,7 @@ class EncryptionService(
                 throw IllegalStateException("Tink keyset file not found: $filePath")
             }
         }
-        val json = file.readText(Charsets.UTF_8)
+        val json: String = file.readText(Charsets.UTF_8)
         val handle: KeysetHandle = TinkJsonProtoKeysetFormat.parseKeyset(json, InsecureSecretKeyAccess.get())
         return handle.getPrimitive(Aead::class.java)
     }
