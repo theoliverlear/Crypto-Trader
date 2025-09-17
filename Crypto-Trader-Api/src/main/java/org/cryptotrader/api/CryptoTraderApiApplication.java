@@ -16,6 +16,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         "org.cryptotrader.api",
         "org.cryptotrader.api.library.component",
         "org.cryptotrader.api.library.services",
+        "org.cryptotrader.security.library.service"
 })
 @EnableJpaRepositories(basePackages = {
         "org.cryptotrader.api.library.repository"
