@@ -76,3 +76,12 @@ management:
     web:
       exposure:
         include: health,info
+
+
+# Feature flags for conditional configurations
+cryptotrader:
+  api:
+    jpa:
+      enabled: true
+    websocket:
+      enabled: true
