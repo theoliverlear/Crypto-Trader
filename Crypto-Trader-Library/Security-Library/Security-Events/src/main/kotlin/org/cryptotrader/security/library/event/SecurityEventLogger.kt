@@ -1,13 +1,13 @@
 package org.cryptotrader.security.library.event
 
 import org.cryptotrader.security.library.entity.BannedIp
-import org.cryptotrader.security.library.repository.SecurityEventRepository
+import org.cryptotrader.security.library.repository.BannedIpRepository
 import org.slf4j.LoggerFactory
 import org.springframework.context.event.EventListener
 import java.time.LocalDateTime
 
 class SecurityEventLogger(
-    private val repository: SecurityEventRepository
+    private val repository: BannedIpRepository
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 

@@ -2,7 +2,7 @@ package org.cryptotrader.security.library.config
 
 import org.cryptotrader.security.library.event.SecurityEventLogger
 import org.cryptotrader.security.library.infrastructure.IpBanFilter
-import org.cryptotrader.security.library.repository.SecurityEventRepository
+import org.cryptotrader.security.library.repository.BannedIpRepository
 import org.cryptotrader.security.library.service.EncryptionService
 import org.cryptotrader.security.library.service.InMemoryIpBanService
 import org.cryptotrader.security.library.service.IpBanService
@@ -39,8 +39,8 @@ open class SecurityAutoConfig {
     }
 
     @Bean
-    @ConditionalOnBean(SecurityEventRepository::class)
-    open fun securityEventLogger(repository: SecurityEventRepository): SecurityEventLogger {
+    @ConditionalOnBean(BannedIpRepository::class)
+    open fun securityEventLogger(repository: BannedIpRepository): SecurityEventLogger {
         return SecurityEventLogger(repository)
     }
 
