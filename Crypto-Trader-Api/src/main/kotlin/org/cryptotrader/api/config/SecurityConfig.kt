@@ -1,5 +1,8 @@
 package org.cryptotrader.api.config
 
+import org.cryptotrader.security.library.service.InMemoryIpBanService
+import org.cryptotrader.security.library.service.IpBanService
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
@@ -21,4 +24,8 @@ open class SecurityConfig {
                     .anyRequest().permitAll()
             }.build()
     }
+
+    @Bean
+    @ConditionalOnMissingBean(IpBanService::class)
+    open fun ipBanService(): IpBanService = InMemoryIpBanService()
 }
