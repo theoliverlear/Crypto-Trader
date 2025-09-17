@@ -15,7 +15,7 @@ data class SecurityPropertiesConfig(
     )
 
     data class Http(
-        val blockResponseCode: Int = 403
+        val blockResponseCode: Int = 404
     )
 
     data class Encryption(
