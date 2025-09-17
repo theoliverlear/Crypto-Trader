@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.cryptotrader.api.library.entity.Identifiable;
 
 import java.time.LocalDateTime;
 
@@ -17,10 +16,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-public class BannedIp extends Identifiable {
-    @Column(length = 64)
-    private String ip;
+public class BannedIpAddress extends IpAddress {
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "occurred_at")
     private LocalDateTime occurredAt = LocalDateTime.now();
 }
