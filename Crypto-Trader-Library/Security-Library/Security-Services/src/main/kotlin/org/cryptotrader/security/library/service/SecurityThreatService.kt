@@ -3,13 +3,12 @@ package org.cryptotrader.security.library.service
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.cryptotrader.security.library.config.SecurityPropertiesConfig
 import org.springframework.stereotype.Service
 
 @Service
 class SecurityThreatService(
     private val ipBanService: IpBanService,
-    private val properties: SecurityPropertiesConfig
+    private val blockResponseCode: Int = 404
 ) {
     fun handle(request: HttpServletRequest, response: HttpServletResponse, next: () -> Unit) {
         val clientIp = request.remoteAddr
@@ -35,7 +34,7 @@ class SecurityThreatService(
     }
 
     private fun blockRequest(response: HttpServletResponse) {
-        response.status = this.properties.http.blockResponseCode
+        response.status = this.blockResponseCode
         response.flushBuffer()
     }
 }
