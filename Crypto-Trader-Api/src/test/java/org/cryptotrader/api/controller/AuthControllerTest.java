@@ -49,7 +49,7 @@ public class AuthControllerTest extends CryptoTraderTest {
     
     @BeforeEach
     void setup() {
-        this.signupRequest = new SignupRequest("ollie@ollie.com", "Ollie", "password");
+        this.signupRequest = new SignupRequest("ollie@ollie.com", "password");
         this.loginRequest = new LoginRequest("ollie@ollie.com", "password");
     }
     
@@ -70,7 +70,7 @@ public class AuthControllerTest extends CryptoTraderTest {
     public void signup_SignUp_UsersNotInSession() {
         when(this.sessionService.userInSession(this.httpSession)).thenReturn(false);
         when(this.authService.signup(this.signupRequest)).thenReturn(new PayloadStatusResponse<>(new AuthResponse(true), HttpStatus.OK));
-        when(this.productUserService.getUserByUsername("Ollie")).thenReturn(new ProductUser("Ollie", new SafePassword("password")));
+        when(this.productUserService.getUserByEmail("ollie@ollie.com")).thenReturn(new ProductUser("Ollie", new SafePassword("password")));
         ResponseEntity<AuthResponse> signupResponse = this.authController.signup(this.signupRequest, this.httpSession);
         verify(this.sessionService).userInSession(this.httpSession);
         verify(this.authService).signup(this.signupRequest);
