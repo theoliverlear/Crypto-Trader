@@ -14,12 +14,17 @@ import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.PropertySource
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @AutoConfiguration
 @EnableConfigurationProperties(SecurityPropertiesConfig::class)
 @EnableJpaRepositories(basePackages = ["org.cryptotrader.security.library.repository"])
-@EntityScan(basePackages = ["org.cryptotrader.security.entity"])
+@EntityScan(basePackages = ["org.cryptotrader.security.library.entity"])
+@PropertySource(
+    value = ["classpath:application-secure.yml"],
+    factory = YamlPropertySourceFactory::class
+)
 open class SecurityAutoConfig {
 
     @Bean
@@ -35,7 +40,8 @@ open class SecurityAutoConfig {
     @Bean
     @ConditionalOnMissingBean
     open fun encryptionService(properties: SecurityPropertiesConfig): EncryptionService {
-        return EncryptionService(properties)
+        val keysetPath = properties.encryption?.tink?.keysetPath ?: properties.crypto.tink.keysetPath
+        return EncryptionService(keysetPath)
     }
 
     @Bean
@@ -49,7 +55,7 @@ open class SecurityAutoConfig {
     open fun handleSecurityThreat(
         ipBanService: IpBanService,
         properties: SecurityPropertiesConfig
-    ): SecurityThreatService = SecurityThreatService(ipBanService, properties)
+    ): SecurityThreatService = SecurityThreatService(ipBanService, properties.http.blockResponseCode)
 
     @Bean
     open fun ipBanFilterRegistration(
