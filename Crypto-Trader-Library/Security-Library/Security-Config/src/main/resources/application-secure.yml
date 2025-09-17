@@ -1,0 +1,3 @@
+security:
+  honeypot:
+    paths: ${SECURITY_HONEYPOT_PATHS:}
