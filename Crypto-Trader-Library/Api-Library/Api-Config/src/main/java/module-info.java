@@ -14,6 +14,8 @@ open module org.cryptotrader.api.library.config {
     requires spring.core;
     requires spring.boot;
     requires org.jetbrains.annotations;
+    requires org.slf4j;
+    requires kotlin.stdlib;
 
     exports org.cryptotrader.api.library.config;
 }
