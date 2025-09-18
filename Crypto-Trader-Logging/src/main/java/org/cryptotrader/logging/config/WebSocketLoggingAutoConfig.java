@@ -2,13 +2,14 @@ package org.cryptotrader.logging.config;
 
 import org.cryptotrader.logging.properties.CryptoTraderWebSocketLoggingProperties;
 import org.cryptotrader.logging.websocket.StompChannelLoggingInterceptor;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.simp.config.ChannelRegistration;
-import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 @AutoConfiguration
@@ -16,8 +17,12 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @ConditionalOnProperty(prefix = "cryptotrader.websocket.logging", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class WebSocketLoggingAutoConfig implements WebSocketMessageBrokerConfigurer {
 
-    @org.springframework.beans.factory.annotation.Autowired
-    private ChannelInterceptor interceptor;
+    private final ObjectProvider<StompChannelLoggingInterceptor> interceptorProvider;
+
+    @Autowired
+    public WebSocketLoggingAutoConfig(ObjectProvider<StompChannelLoggingInterceptor> interceptorProvider) {
+        this.interceptorProvider = interceptorProvider;
+    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -26,18 +31,24 @@ public class WebSocketLoggingAutoConfig implements WebSocketMessageBrokerConfigu
     }
 
     @Bean
-    @ConditionalOnMissingBean(ChannelInterceptor.class)
-    public ChannelInterceptor stompChannelLoggingInterceptor(CryptoTraderWebSocketLoggingProperties props) {
+    @ConditionalOnMissingBean(StompChannelLoggingInterceptor.class)
+    public StompChannelLoggingInterceptor stompChannelLoggingInterceptor(CryptoTraderWebSocketLoggingProperties props) {
         return new StompChannelLoggingInterceptor(props);
     }
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(interceptor);
+        StompChannelLoggingInterceptor interceptor = interceptorProvider.getIfAvailable();
+        if (interceptor != null) {
+            registration.interceptors(interceptor);
+        }
     }
 
     @Override
     public void configureClientOutboundChannel(ChannelRegistration registration) {
-        registration.interceptors(interceptor);
+        StompChannelLoggingInterceptor interceptor = interceptorProvider.getIfAvailable();
+        if (interceptor != null) {
+            registration.interceptors(interceptor);
+        }
     }
 }
