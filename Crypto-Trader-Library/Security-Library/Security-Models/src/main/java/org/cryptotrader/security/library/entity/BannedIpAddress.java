@@ -3,6 +3,7 @@ package org.cryptotrader.security.library.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.Index;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,9 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "banned_ips")
+@Table(name = "banned_ips", indexes = {
+        @Index(name = "ix_banned_ip_address", columnList = "ip_address")
+})
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
