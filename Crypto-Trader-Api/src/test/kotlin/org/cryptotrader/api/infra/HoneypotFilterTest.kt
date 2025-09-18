@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.cryptotrader.security.library.config.YamlPropertySourceFactory
 import org.springframework.context.annotation.FilterType
 import org.springframework.test.context.bean.override.mockito.MockitoBean
+import org.cryptotrader.api.library.infrastructure.JwtToSessionFilter
 
 @WebMvcTest(
     excludeAutoConfiguration = [
@@ -36,7 +37,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean
     excludeFilters = [
         org.springframework.context.annotation.ComponentScan.Filter(
             type = FilterType.ASSIGNABLE_TYPE,
-            classes = [WebSocketConfig::class]
+            classes = [WebSocketConfig::class, JwtToSessionFilter::class]
         )
     ]
 )
