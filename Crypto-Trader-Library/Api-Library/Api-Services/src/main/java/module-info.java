@@ -15,7 +15,9 @@ open module org.cryptotrader.api.library.services {
     requires org.apache.tomcat.embed.core;
     requires org.slf4j;
     requires kotlin.stdlib;
-    
+    requires jjwt.api;
+    requires com.auth0.jwt;
+
     exports org.cryptotrader.api.library.services.models;
     exports org.cryptotrader.api.library.services.config;
     exports org.cryptotrader.api.library.services;
