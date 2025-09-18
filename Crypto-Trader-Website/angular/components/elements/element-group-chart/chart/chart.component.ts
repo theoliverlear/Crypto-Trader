@@ -3,7 +3,7 @@ import { Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } fro
 import * as d3 from 'd3';
 import {
     CurrencyFormatterService
-} from "../../../../services/currency-formatter.service";
+} from "../../../../services/ui/currency-formatter.service";
 
 export type SparkPoint = { 
     date: Date | string | number;
