@@ -69,7 +69,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <useModulePath>false</useModulePath>
+                    <useModulePath>true</useModulePath>
                     <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
                 </configuration>
             </plugin>
@@ -110,7 +110,7 @@
                             <configuration>
                                 <skipAfterFailureCount>1</skipAfterFailureCount>
                                 <forkedProcessTimeoutInSeconds>180</forkedProcessTimeoutInSeconds>
-                                <useModulePath>false</useModulePath>
+                                <useModulePath>true</useModulePath>
                                 <argLine>${argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
                                 <systemPropertyVariables>
                                     <junit.platform.excludeEngines>vintage</junit.platform.excludeEngines>
