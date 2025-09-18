@@ -15,6 +15,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         "org.cryptotrader.api",
         "org.cryptotrader.api.library.component",
         "org.cryptotrader.api.library.services",
+        "org.cryptotrader.api.library.infrastructure",
         "org.cryptotrader.security.library.service"
 })
 public class CryptoTraderApiApplication {
