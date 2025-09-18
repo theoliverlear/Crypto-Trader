@@ -58,7 +58,7 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>api-library</artifactId>
+            <artifactId>api-infrastructure</artifactId>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
