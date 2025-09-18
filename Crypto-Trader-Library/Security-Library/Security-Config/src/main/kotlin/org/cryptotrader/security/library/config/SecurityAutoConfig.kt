@@ -9,23 +9,33 @@ import org.cryptotrader.security.library.service.IpBanService
 import org.cryptotrader.security.library.service.SecurityThreatService
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.PropertySource
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean
+import javax.sql.DataSource
 
 @AutoConfiguration
 @EnableConfigurationProperties(SecurityPropertiesConfig::class)
-@EnableJpaRepositories(basePackages = ["org.cryptotrader.security.library.repository"])
-@EntityScan(basePackages = ["org.cryptotrader.security.library.entity"])
 @PropertySource(
     value = ["classpath:application-secure.yml"],
     factory = YamlPropertySourceFactory::class
 )
 open class SecurityAutoConfig {
+
+    // --- JPA (optional) ---
+    @Configuration
+    @ConditionalOnClass(LocalContainerEntityManagerFactoryBean::class)
+    @ConditionalOnBean(DataSource::class)
+    @EnableJpaRepositories(basePackages = ["org.cryptotrader.security.library.repository"]) 
+    @EntityScan(basePackages = ["org.cryptotrader.security.library.entity"]) 
+    open class SecurityJpaConfig
 
     @Bean
     @ConditionalOnMissingBean
