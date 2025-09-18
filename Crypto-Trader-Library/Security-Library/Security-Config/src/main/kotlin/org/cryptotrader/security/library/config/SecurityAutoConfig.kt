@@ -1,8 +1,6 @@
 package org.cryptotrader.security.library.config
 
-import org.cryptotrader.security.library.event.SecurityEventLogger
 import org.cryptotrader.security.library.infrastructure.IpBanFilter
-import org.cryptotrader.security.library.repository.BannedIpAddressesRepository
 import org.cryptotrader.security.library.service.EncryptionService
 import org.cryptotrader.security.library.service.InMemoryIpBanService
 import org.cryptotrader.security.library.service.IpBanService
@@ -18,6 +16,8 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.PropertySource
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.cryptotrader.security.library.repository.BannedIpAddressesRepository
+import org.cryptotrader.security.library.event.SecurityEventLogger
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean
 
 @AutoConfiguration
@@ -33,7 +33,7 @@ open class SecurityAutoConfig {
     @ConditionalOnClass(LocalContainerEntityManagerFactoryBean::class)
     @ConditionalOnBean(type = ["javax.sql.DataSource"])
     @EnableJpaRepositories(basePackages = ["org.cryptotrader.security.library.repository"]) 
-    @EntityScan(basePackages = ["org.cryptotrader.security.library.entity"]) 
+    @EntityScan(basePackages = ["org.cryptotrader.security.library.entity", "org.cryptotrader.api.library.entity"]) 
     open class SecurityJpaConfig
 
     @Bean
