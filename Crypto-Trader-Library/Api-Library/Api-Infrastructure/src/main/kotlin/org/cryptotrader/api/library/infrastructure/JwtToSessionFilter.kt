@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse
 import org.cryptotrader.api.library.entity.user.ProductUser
 import org.cryptotrader.api.library.services.JwtService
 import org.cryptotrader.api.library.services.ProductUserService
+import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import kotlin.text.startsWith
@@ -17,7 +18,7 @@ private val log = KotlinLogging.logger {  }
 @Component
 class JwtToSessionFilter(
     private val jwtService: JwtService,
-    private val productUserService: ProductUserService
+    @param:Lazy private val productUserService: ProductUserService
 ) : OncePerRequestFilter() {
     override fun doFilterInternal(request: HttpServletRequest,
                                   response: HttpServletResponse,
