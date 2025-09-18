@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.cryptotrader.security.library.config.YamlPropertySourceFactory
 import org.springframework.context.annotation.FilterType
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 
 @WebMvcTest(
     excludeAutoConfiguration = [
@@ -56,7 +57,7 @@ class HoneypotFilterTest {
 
     @Autowired lateinit var env: Environment
 
-    @org.springframework.boot.test.mock.mockito.MockBean
+    @MockitoBean
     lateinit var honeypotService: HoneypotService
 
     @Test
