@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import kotlin.test.assertEquals
 
 @SpringBootTest(properties = [
-    "spring.autoconfigure.exclude=org.cryptotrader.docs.autoconfigure.CryptoTraderDocsAutoConfiguration",
+    "spring.autoconfigure.exclude=org.cryptotrader.docs.autoconfigure.CryptoTraderDocsAutoConfiguration,org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration,org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration",
     "docs.autoconfigure.enabled=false"
 ])
 class TemplateServiceTest @Autowired constructor(
