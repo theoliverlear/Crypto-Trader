@@ -39,6 +39,14 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-console</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-contact</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-data</artifactId>
         </dependency>
         <dependency>
@@ -48,6 +56,41 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>crypto-trader-engine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-health</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-testing</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-version</artifactId>
+        </dependency>
+
+
+
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>admin-library</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>admin-models</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>admin-events</artifactId>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
@@ -67,6 +110,14 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
+            <artifactId>api-events</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>api-infrastructure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
             <artifactId>api-models</artifactId>
         </dependency>
         <dependency>
@@ -77,54 +128,14 @@
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-services</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.cryptotrader</groupId>
-            <artifactId>desktop-library</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.cryptotrader</groupId>
-            <artifactId>desktop-components</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.cryptotrader</groupId>
-            <artifactId>externals-library</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.cryptotrader</groupId>
-            <artifactId>version-library</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.cryptotrader</groupId>
-            <artifactId>version-models</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-logging</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-testing</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-version</artifactId>
-        </dependency>
-        <!-- Additional modules to ensure full coverage aggregation across the platform -->
-        <dependency>
-            <groupId>org.cryptotrader</groupId>
-            <artifactId>api-events</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-health</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-contact</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>contact-library</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>contact-events</artifactId>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
@@ -134,22 +145,59 @@
             <groupId>org.cryptotrader</groupId>
             <artifactId>contact-repositories</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>contact-events</artifactId>
+            <artifactId>desktop-library</artifactId>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>admin-library</artifactId>
+            <artifactId>desktop-components</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>externals-library</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>security-library</artifactId>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>admin-models</artifactId>
+            <artifactId>security-config</artifactId>
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>admin-events</artifactId>
+            <artifactId>security-events</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>security-infrastructure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>security-models</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>security-repositories</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>security-services</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>version-library</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>version-models</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
