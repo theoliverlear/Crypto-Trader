@@ -1,6 +1,6 @@
 import {
     CurrencyFormatterService
-} from "../../services/currency-formatter.service";
+} from "../../../services/ui/currency-formatter.service";
 import {TestBed} from "@angular/core/testing";
 
 describe('CurrencyFormatterService', () => {
