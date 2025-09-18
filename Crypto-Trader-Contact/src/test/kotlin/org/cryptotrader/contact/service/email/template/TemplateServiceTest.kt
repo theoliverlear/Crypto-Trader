@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import kotlin.test.assertEquals
 
-@SpringBootTest
+@SpringBootTest(properties = [
+    "spring.autoconfigure.exclude=org.cryptotrader.docs.autoconfigure.CryptoTraderDocsAutoConfiguration",
+    "docs.autoconfigure.enabled=false"
+])
 class TemplateServiceTest @Autowired constructor(
     private val templateService: TemplateService
 ) : CryptoTraderTest() {
