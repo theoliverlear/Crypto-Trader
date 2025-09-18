@@ -26,10 +26,6 @@
     <dependencies>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>api-library</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.cryptotrader</groupId>
             <artifactId>api-services</artifactId>
         </dependency>
         <dependency>
@@ -176,7 +172,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <useModulePath>false</useModulePath>
+                    <useModulePath>true</useModulePath>
                     <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
                 </configuration>
             </plugin>
