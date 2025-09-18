@@ -28,7 +28,7 @@ class HoneypotService(
         val path = normalizePath(request?.requestURI ?: "")
         val query = (request?.queryString ?: "").lowercase()
 
-        if (this.isHoneypotPath(path) || this.looksLikeSecretProbe(path, query)) {
+        if (this.isViolation(path, query)) {
             val clientIp = extractClientIp(request)
             if (clientIp.isNotBlank()) {
                 ipBanService.ban(clientIp)
@@ -37,6 +37,9 @@ class HoneypotService(
         }
         return null
     }
+
+    private fun isViolation(path: String, query: String): Boolean =
+        this.isHoneypotPath(path) || this.looksLikeSecretProbe(path, query)
 
     private fun isHoneypotPath(path: String): Boolean {
         for (honeypotPath in honeypotPaths) {
