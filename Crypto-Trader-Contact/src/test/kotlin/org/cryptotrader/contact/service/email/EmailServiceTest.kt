@@ -16,7 +16,10 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 
-@SpringBootTest
+@SpringBootTest(properties = [
+    "spring.autoconfigure.exclude=org.cryptotrader.docs.autoconfigure.CryptoTraderDocsAutoConfiguration",
+    "docs.autoconfigure.enabled=false"
+])
 class EmailServiceTest @Autowired constructor(
     private val emailService: EmailService
 ) : CryptoTraderTest() {
