@@ -402,7 +402,7 @@
                 <version>3.2.5</version>
                 <configuration>
                     <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
-                    <useModulePath>false</useModulePath>
+                    <useModulePath>true</useModulePath>
                 </configuration>
             </plugin>
             <plugin>
