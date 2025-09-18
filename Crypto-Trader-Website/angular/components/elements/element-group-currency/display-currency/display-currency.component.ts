@@ -17,7 +17,7 @@ import {
 import {ElementSize, TagType} from "@theoliverlear/angular-suite";
 import {
     CurrencyFormatterService
-} from "../../../../services/currency-formatter.service";
+} from "../../../../services/ui/currency-formatter.service";
 import {
     GetCurrencyHistoryService
 } from "../../../../services/net/http/get-currency-history.service";
