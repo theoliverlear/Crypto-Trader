@@ -19,6 +19,7 @@
         <module>Api-Library/Api-Config</module>
         <module>Api-Library/Api-Events</module>
         <module>Api-Library/Api-Models</module>
+        <module>Api-Library/Api-Infrastructure</module>
         <module>Api-Library/Api-Repositories</module>
         <module>Api-Library/Api-Services</module>
         <module>Desktop-Library</module>
