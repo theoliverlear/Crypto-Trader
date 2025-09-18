@@ -1,6 +1,6 @@
 package org.cryptotrader.contact.component
 
-import org.cryptotrader.api.library.config.EventPublisher
+import org.cryptotrader.api.library.component.EventPublisher
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.context.annotation.Configuration
 
