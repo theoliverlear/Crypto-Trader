@@ -54,6 +54,9 @@
                         <goals><goal>compile</goal></goals>
                         <configuration>
                             <jvmTarget>23</jvmTarget>
+                            <sourceDirs>
+                                <sourceDir>src/main/kotlin</sourceDir>
+                            </sourceDirs>
                             <args>
                                 <!-- Bind to JDK 23 APIs while producing stable bytecode -->
                                 <arg>-Xjdk-release=23</arg>
