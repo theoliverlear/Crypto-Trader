@@ -16,7 +16,7 @@ open class SecurityConfig {
     //------------------------Security-Filter-Chain---------------------------
     @Bean
     @Primary
-    open fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
+    open fun apiSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
         return http
             .csrf { it.disable() }
             .authorizeHttpRequests {
