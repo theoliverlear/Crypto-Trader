@@ -1,6 +1,6 @@
 import {Injectable, NgZone} from "@angular/core";
-import {SwipeEvent} from "../components/events/SwipeEvent";
-import {SwipeDirection} from "../components/events/models/SwipeDirection";
+import {SwipeEvent} from "../../components/events/SwipeEvent";
+import {SwipeDirection} from "../../components/events/models/SwipeDirection";
 
 @Injectable({
     providedIn: 'root'
