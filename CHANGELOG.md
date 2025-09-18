@@ -15,6 +15,7 @@
 | Crypto-Trader-Analysis | v.v.v   |
 | Crypto-Trader-Api      | v.v.v   |
 | Crypto-Trader-Assets   | v.v.v   |
+| Crypto-Trader-Console  | v.v.v   |
 | Crypto-Trader-Contact  | v.v.v   |
 | Crypto-Trader-Coverage | v.v.v   |
 | Crypto-Trader-Data     | v.v.v   |
@@ -24,6 +25,7 @@
 | Crypto-Trader-Library  | v.v.v   |
 | Crypto-Trader-Logging  | v.v.v   |
 | Crypto-Trader-Mobile   | v.v.v   |
+| Crypto-Trader-Security | v.v.v   |
 | Crypto-Trader-Testing  | v.v.v   |
 | Crypto-Trader-Version  | v.v.v   |
 | Crypto-Trader-Website  | v.v.v   |
@@ -31,29 +33,37 @@
 
 ### Module Version - Library
 
-| Module               | Version |
-|----------------------|---------|
-| Admin-Library        | v.v.v   |
-| Admin-Events         | v.v.v   |
-| Admin-Models         | v.v.v   |
-| Api-Library          | v.v.v   |
-| Api-Communication    | v.v.v   |
-| Api-Components       | v.v.v   |
-| Api-Config           | v.v.v   |
-| Api-Events           | v.v.v   |
-| Api-Models           | v.v.v   |
-| Api-Repositories     | v.v.v   |
-| Api-Services         | v.v.v   |
-| Contact-Library      | v.v.v   |
-| Contact-Events       | v.v.v   |
-| Contact-Models       | v.v.v   |
-| Contact-Repositories | v.v.v   |
-| Desktop-Library      | v.v.v   |
-| Desktop-Components   | v.v.v   |
-| Desktop-Styles       | v.v.v   |     
-| Externals-Library    | v.v.v   |
-| Version-Library      | v.v.v   |
-| Version-Models       | v.v.v   |
+| Module                  | Version |
+|-------------------------|---------|
+| Admin-Library           | v.v.v   |
+| Admin-Events            | v.v.v   |
+| Admin-Models            | v.v.v   |
+| Api-Library             | v.v.v   |
+| Api-Communication       | v.v.v   |
+| Api-Components          | v.v.v   |
+| Api-Config              | v.v.v   |
+| Api-Events              | v.v.v   |
+| Api-Infrastructure      | v.v.v   |
+| Api-Models              | v.v.v   |
+| Api-Repositories        | v.v.v   |
+| Api-Services            | v.v.v   |
+| Contact-Library         | v.v.v   |
+| Contact-Events          | v.v.v   |
+| Contact-Models          | v.v.v   |
+| Contact-Repositories    | v.v.v   |
+| Desktop-Library         | v.v.v   |
+| Desktop-Components      | v.v.v   |
+| Desktop-Styles          | v.v.v   |     
+| Externals-Library       | v.v.v   |
+| Security-Library        | v.v.v   |
+| Security-Config         | v.v.v   |
+| Security-Events         | v.v.v   |
+| Security-Infrastructure | v.v.v   |
+| Security-Models         | v.v.v   |
+| Security-Repositories   | v.v.v   |
+| Security-Services       | v.v.v   |
+| Version-Library         | v.v.v   |
+| Version-Models          | v.v.v   |
 
 ### Breaking changes
 - Bullet
@@ -88,6 +98,11 @@
 - Bullet
 
 ### [Crypto Trader Assets](Crypto-Trader-Assets)
+- Bullet
+- Bullet
+- Bullet
+
+### [Crypto Trader Console](Crypto-Trader-Console)
 - Bullet
 - Bullet
 - Bullet
@@ -152,6 +167,8 @@
 - Bullet
 - Bullet
 
+---
+
 ### [Admin Library](Crypto-Trader-Library/Admin-Library)
 - Bullet
 - Bullet
@@ -188,6 +205,11 @@
 - Bullet
 
 ### [Api Events](Crypto-Trader-Library/Api-Library/Api-Events)
+- Bullet
+- Bullet
+- Bullet
+
+### [Api Infrastructure](Crypto-Trader-Library/Api-Library/Api-Infrastructure)
 - Bullet
 - Bullet
 - Bullet
@@ -243,6 +265,41 @@
 - Bullet
 
 ### [Externals Library](Crypto-Trader-Library/Externals-Library)
+- Bullet
+- Bullet
+- Bullet
+
+### [Security Library](Crypto-Trader-Library/Security-Library)
+- Bullet
+- Bullet
+- Bullet
+
+### [Security Config](Crypto-Trader-Library/Security-Library/Security-Config)
+- Bullet
+- Bullet
+- Bullet
+
+### [Security Events](Crypto-Trader-Library/Security-Library/Security-Events)
+- Bullet
+- Bullet
+- Bullet
+
+### [Security Infrastructure](Crypto-Trader-Library/Security-Library/Security-Infrastructure)
+- Bullet
+- Bullet
+- Bullet
+
+### [Security Models](Crypto-Trader-Library/Security-Library/Security-Models)
+- Bullet
+- Bullet
+- Bullet
+
+### [Security Repositories](Crypto-Trader-Library/Security-Library/Security-Repositories)
+- Bullet
+- Bullet
+- Bullet
+
+### [Security Services](Crypto-Trader-Library/Security-Library/Security-Services)
 - Bullet
 - Bullet
 - Bullet
