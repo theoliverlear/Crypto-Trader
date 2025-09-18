@@ -2,13 +2,18 @@ import {Injectable} from "@angular/core";
 import {WebSocketService} from "@theoliverlear/angular-suite";
 import {AuthResponse, SignupRequest} from "../../../models/auth/types";
 import {environment} from "../../../environments/environment";
+import {TokenStorageService} from "../../auth/token-storage.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class SignupWebSocketService extends WebSocketService<SignupRequest, AuthResponse> {
     private static readonly URL: string = `${environment.websocketUrl}/signup`;
-    constructor() {
-        super(SignupWebSocketService.URL);
+    constructor(private tokens: TokenStorageService) {
+        // Prefer Authorization header for WS if underlying client supports headers; fallback to query param
+        // Our server accepts both Authorization: Bearer <token> and ?token=<token>
+        const token = tokens.getToken();
+        const url = token ? `${SignupWebSocketService.URL}?token=${encodeURIComponent(token)}` : SignupWebSocketService.URL;
+        super(url);
     }
 }
