@@ -60,6 +60,9 @@ nav:
     - Logging:
       - README: reference/Logging/README.md
       - Complete Docs: reference/Logging/api/index.html
+    - Security:
+      - README: reference/Security/README.md
+      - Complete Docs: reference/Security/api/index.html
     - Testing:
       - README: reference/Testing/README.md
       - Complete Docs: reference/Testing/api/index.html
@@ -112,6 +115,26 @@ nav:
     - Contact-Repositories:
       - README: library/Contact-Library/Contact-Repositories/README.md
       - Complete Docs: library/Contact-Library/Contact-Repositories/api/index.html
+    - Security-Library:
+      - README: library/Security-Library/README.md
+    - Security-Config:
+      - README: library/Security-Library/Security-Config/README.md
+      - Complete Docs: library/Security-Library/Security-Config/api/index.html
+    - Security-Events:
+      - README: library/Security-Library/Security-Events/README.md
+      - Complete Docs: library/Security-Library/Security-Events/api/index.html
+    - Security-Infrastructure:
+      - README: library/Security-Library/Security-Infrastructure/README.md
+      - Complete Docs: library/Security-Library/Security-Infrastructure/api/index.html
+    - Security-Models:
+      - README: library/Security-Library/Security-Models/README.md
+      - Complete Docs: library/Security-Library/Security-Models/api/index.html
+    - Security-Repositories:
+      - README: library/Security-Library/Security-Repositories/README.md
+      - Complete Docs: library/Security-Library/Security-Repositories/api/index.html
+    - Security-Services:
+      - README: library/Security-Library/Security-Services/README.md
+      - Complete Docs: library/Security-Library/Security-Services/api/index.html
     - Desktop-Library:
       - README: library/Desktop-Library/README.md
     - Desktop-Components:
