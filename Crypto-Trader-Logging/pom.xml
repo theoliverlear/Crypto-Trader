@@ -123,11 +123,7 @@
                 <version>3.13.0</version>
                 <configuration>
                     <release>23</release>
-                    <useModulePath>false</useModulePath>
-                    <excludes>
-                        <exclude>module-info.java</exclude>
-                        <exclude>**/module-info.java</exclude>
-                    </excludes>
+                    <useModulePath>true</useModulePath>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
@@ -155,15 +151,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
-                <configuration>
-                    <useModulePath>false</useModulePath>
-                    <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jetbrains.dokka</groupId>
