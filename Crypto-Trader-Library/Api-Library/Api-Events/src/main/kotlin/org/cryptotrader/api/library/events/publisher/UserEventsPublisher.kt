@@ -1,6 +1,6 @@
 package org.cryptotrader.api.library.events.publisher
 
-import org.cryptotrader.api.library.config.EventPublisher
+import org.cryptotrader.api.library.component.EventPublisher
 import org.cryptotrader.api.library.events.UserRegisteredEvent
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.stereotype.Component
