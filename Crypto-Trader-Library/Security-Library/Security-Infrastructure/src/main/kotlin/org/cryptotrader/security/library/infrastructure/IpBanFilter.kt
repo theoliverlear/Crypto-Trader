@@ -14,11 +14,9 @@ class IpBanFilter(
     private val blockResponseCode: Int
 ) : OncePerRequestFilter() {
 
-    override fun doFilterInternal(
-        request: HttpServletRequest,
-        response: HttpServletResponse,
-        filterChain: FilterChain
-    ) {
+    override fun doFilterInternal(request: HttpServletRequest, 
+                                  response: HttpServletResponse,
+                                  filterChain: FilterChain) {
         val clientIp = request.remoteAddr
         if (this.isClientBanned(clientIp)) {
             this.blockRequest(response)
