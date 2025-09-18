@@ -5,6 +5,7 @@ open module org.cryptotrader.api.library.infrastructure {
     requires spring.web;
     requires spring.websocket;
     requires org.slf4j;
+    requires org.apache.tomcat.embed.core;
     
     requires org.cryptotrader.api.library.services;
     requires org.cryptotrader.api.library.models;
