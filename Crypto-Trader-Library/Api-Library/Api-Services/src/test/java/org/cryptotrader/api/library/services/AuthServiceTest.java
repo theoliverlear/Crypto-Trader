@@ -35,6 +35,9 @@ public class AuthServiceTest extends CryptoTraderTest {
     @Mock
     private UserEventsPublisher userEventsPublisher;
     
+    @Mock
+    private JwtService jwtService;
+    
     private LoginRequest loginRequest;
     
     private SignupRequest signupRequest;
@@ -71,17 +74,18 @@ public class AuthServiceTest extends CryptoTraderTest {
         ProductUserService productUserService = Mockito.mock(ProductUserService.class);
         PortfolioService portfolioService = Mockito.mock(PortfolioService.class);
         UserEventsPublisher userEventsPublisher = Mockito.mock(UserEventsPublisher.class);
-        AuthService authService = new AuthService(productUserService, portfolioService, userEventsPublisher);
+        JwtService jwtService = Mockito.mock(JwtService.class);
+        AuthService authService = new AuthService(productUserService, portfolioService, userEventsPublisher, jwtService);
         assertNotNull(authService);
     }
     
     @Test
     @DisplayName("Should sign up users with valid requests")
     public void signup_SignUpUsers_WithValidRequests() {
-        when(this.productUserService.userExistsByUsername(this.testUsername)).thenReturn(false);
+        when(this.productUserService.userExistsByEmail(this.testEmail)).thenReturn(false);
         AuthResponse expectedResponse = new AuthResponse(true);
         PayloadStatusResponse<AuthResponse> actualResponse = this.authService.signup(this.signupRequest);
-        verify(this.productUserService).userExistsByUsername(this.testUsername);
+        verify(this.productUserService).userExistsByEmail(this.testEmail);
         AuthResponse actualAuthResponse = actualResponse.getPayload();
         assertEquals(expectedResponse, actualAuthResponse);
     }
