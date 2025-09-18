@@ -1,3 +1,7 @@
 security:
   honeypot:
     paths: ${SECURITY_HONEYPOT_PATHS:}
+  jwt:
+    secret: ${SECURITY_JWT_SECRET:devmodedevmodedevmodedevmodedevmodedev}
+    issuer: ${SECURITY_JWT_ISSUER:crypto-trader-api}
+    ttl-seconds: ${SECURITY_JWT_TTL_SECONDS:3600}
