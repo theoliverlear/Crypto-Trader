@@ -54,7 +54,6 @@ open module org.cryptotrader.api {
     requires org.cryptotrader.docs;
     
     requires org.cryptotrader.security.library.services;
-    requires org.cryptotrader.security.library.config;
 
     exports org.cryptotrader.api;
     exports org.cryptotrader.api.config;
