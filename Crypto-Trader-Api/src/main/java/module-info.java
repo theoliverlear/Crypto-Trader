@@ -1,6 +1,5 @@
 open module org.cryptotrader.api {
     requires kotlin.stdlib;
-    requires org.cryptotrader.api.library;
     requires com.sigwarthsoftware.springboot.websocket;
 
     requires spring.boot;
@@ -48,6 +47,7 @@ open module org.cryptotrader.api {
     requires org.cryptotrader.api.library.services;
     requires org.cryptotrader.api.library.components;
     requires org.cryptotrader.api.library.repositories;
+    requires org.cryptotrader.api.library.infrastructure;
     requires org.cryptotrader.api.library.events;
     requires org.cryptotrader.api.library.config;
     requires io.swagger.v3.oas.annotations;
