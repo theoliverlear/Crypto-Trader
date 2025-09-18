@@ -1,4 +1,4 @@
-package org.cryptotrader.api.library.config;
+package org.cryptotrader.api.library.component;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
