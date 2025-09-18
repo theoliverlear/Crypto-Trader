@@ -22,13 +22,16 @@ public class AuthService {
     private final ProductUserService productUserService;
     private final PortfolioService portfolioService;
     private final UserEventsPublisher userEventsPublisher;
+    private final JwtService jwtService;
     @Autowired
     public AuthService(ProductUserService productUserService,
                        PortfolioService portfolioService,
-                       UserEventsPublisher userEventsPublisher) {
+                       UserEventsPublisher userEventsPublisher,
+                       JwtService jwtService) {
         this.productUserService = productUserService;
         this.portfolioService = portfolioService;
         this.userEventsPublisher = userEventsPublisher;
+        this.jwtService = jwtService;
     }
     public PayloadStatusResponse<AuthResponse> signup(SignupRequest signupRequest) {
         String email = signupRequest.getEmail();
@@ -62,7 +65,9 @@ public class AuthService {
         } else {
             boolean passwordsMatch = this.productUserService.comparePassword(user, password);
             if (passwordsMatch) {
-                return new PayloadStatusResponse<>(new AuthResponse(AuthStatus.AUTHORIZED.isAuthorized), HttpStatus.OK);
+                String subject = String.valueOf(user.getId());
+                String token = this.jwtService.generateToken(subject, email);
+                return new PayloadStatusResponse<>(new AuthResponse(AuthStatus.AUTHORIZED.isAuthorized, token), HttpStatus.OK);
             } else {
                 return new PayloadStatusResponse<>(new AuthResponse(AuthStatus.UNAUTHORIZED.isAuthorized), HttpStatus.UNAUTHORIZED);
             }
