@@ -1,2 +1,3 @@
 org.cryptotrader.logging.config.CryptoTraderLoggingAutoConfig
 org.cryptotrader.logging.config.HttpLoggingAutoConfig
+org.cryptotrader.logging.config.WebSocketLoggingAutoConfig
