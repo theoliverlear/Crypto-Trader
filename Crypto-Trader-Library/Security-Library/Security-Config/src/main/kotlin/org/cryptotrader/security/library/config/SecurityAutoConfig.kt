@@ -19,7 +19,6 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.PropertySource
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean
-import javax.sql.DataSource
 
 @AutoConfiguration
 @EnableConfigurationProperties(SecurityPropertiesConfig::class)
@@ -32,7 +31,7 @@ open class SecurityAutoConfig {
     // --- JPA (optional) ---
     @Configuration
     @ConditionalOnClass(LocalContainerEntityManagerFactoryBean::class)
-    @ConditionalOnBean(DataSource::class)
+    @ConditionalOnBean(type = ["javax.sql.DataSource"])
     @EnableJpaRepositories(basePackages = ["org.cryptotrader.security.library.repository"]) 
     @EntityScan(basePackages = ["org.cryptotrader.security.library.entity"]) 
     open class SecurityJpaConfig
@@ -69,13 +68,13 @@ open class SecurityAutoConfig {
 
     @Bean
     open fun ipBanFilterRegistration(
-        ipBanService: IpBanService,
+        filter: IpBanFilter,
         properties: SecurityPropertiesConfig
     ): FilterRegistrationBean<IpBanFilter> {
-        val filter = IpBanFilter(ipBanService, properties.http.blockResponseCode)
         val registration = FilterRegistrationBean(filter)
         registration.order = -100
-        registration.setName("ipBanFilter")
+        // Use a unique registration name to avoid clashes with auto-registered filter bean name
+        registration.setName("securityIpBanFilter")
         registration.isEnabled = properties.bans.enabled
         return registration
     }
