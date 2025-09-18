@@ -14,7 +14,8 @@ open module org.cryptotrader.api.library.components {
     requires spring.jdbc;
     requires kotlin.stdlib;
     requires spring.boot.autoconfigure;
-    
+    requires spring.cloud.stream;
+
     exports org.cryptotrader.api.library.component.config;
     exports org.cryptotrader.api.library.component;
 }
