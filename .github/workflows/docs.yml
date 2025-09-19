@@ -51,7 +51,7 @@ jobs:
 
       # Generate Dokka once (no need for full reactor install first)
       - name: Generate Dokka for all modules
-        run: mvn -B -s .github/maven-settings.xml -DskipTests -am -U org.jetbrains.dokka:dokka-maven-plugin:1.9.20:dokka
+        run: mvn -B -s .github/maven-settings.xml -DskipTests -am -U package org.jetbrains.dokka:dokka-maven-plugin:1.9.20:dokka
 
       - name: Start Kafka (docker-compose)
         run: |
