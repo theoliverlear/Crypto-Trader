@@ -37,9 +37,14 @@ public class SecurityConfig {
 //        http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
 //           .csrf(AbstractHttpConfigurer::disable);
 
-        http.authorizeHttpRequests(authorize -> {
-            authorize.anyRequest().permitAll();
-        }).csrf(AbstractHttpConfigurer::disable);
+        http.securityMatcher(
+                "/swagger-ui/**",
+                "/v3/api-docs/**",
+                "/v3/api-docs.yaml",
+                "/actuator/**"
+        );
+        http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
+           .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
     //--------------------------Password-Encoder------------------------------
