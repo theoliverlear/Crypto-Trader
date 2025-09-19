@@ -7,6 +7,7 @@
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
         <version>0.0.5</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>version-library</artifactId>
