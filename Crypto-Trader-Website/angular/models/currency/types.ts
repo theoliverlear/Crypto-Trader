@@ -16,10 +16,11 @@ export type DisplayCurrencyList = {
     currencies: DisplayCurrency[];
 };
 
-export type PerformanceRating = 'up' | 'down' | 'neutral';
+export type CurrencyPerformanceRating = 'up' | 'down' | 'neutral';
 
-export type PerformanceRatingResponse = {
-    rating: PerformanceRating;
+export type PerformanceRating = {
+    rating: CurrencyPerformanceRating;
+    changePercent: string;
 };
 
 export type HistoryPoint = {
