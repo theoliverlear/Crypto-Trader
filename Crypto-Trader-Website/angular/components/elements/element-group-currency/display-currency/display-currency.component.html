@@ -10,15 +10,14 @@
                       [tagType]="TagType.H3"
                       [text]="currency.currencyName"/>
             <div class="currency-price-div">
-                <subtitle [tagType]="TagType.H4" [text]="getCurrencyPrice()" class="currency-price"/>
-                <performance-arrow [performance]="performance"/>
+                <subtitle [tagType]="TagType.H4" [text]="currencyPrice" class="currency-price"/>
+                <performance-arrow [performance]="performance" [includePercent]="true"/>
             </div>
             <div class="currency-action-buttons-div">
-                <ss-button [text]="'Buy'" [size]="ElementSize.SMALL"/>
-                <ss-button [text]="'Sell'" [size]="ElementSize.SMALL"/>
+                <ss-button [text]="'TRADE'" [size]="ElementSize.SMALL"/>
             </div>
         </div>
     </div>
 
-    <chart [data]="history" [width]="525" [height]="175" [stroke]="'#ffffff'"/>
+    <chart [data]="history" [width]="550" [height]="175" [stroke]="'#ffffff'"/>
 </ng-container>
