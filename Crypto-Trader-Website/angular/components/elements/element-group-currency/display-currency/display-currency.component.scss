@@ -42,6 +42,7 @@ display-currency {
         .display-currency-title {
             @include flex(center, center, column);
             flex: 1;
+            margin: 0 $half-percent;
 
             .display-currency-name {
                 //font-size: calc($h4-font-size * 1.25);
