@@ -14,7 +14,7 @@ import {
     providedIn: 'root'
 })
 export class GetCurrencyHistoryService extends HttpClientService<any, TimeValueResponse[] | null> {
-    private static URL: string = `${environment.dataUrl}/currency/history`;
+    private static URL: string = `${environment.apiUrl}/currency/history`;
     private cache: ObservableHistoryMap = new Map<string, ObservableHistoryPoint>();
 
     constructor(httpClient: HttpClient) {
