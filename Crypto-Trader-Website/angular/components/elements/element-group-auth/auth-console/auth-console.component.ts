@@ -18,8 +18,9 @@ import {
 } from "../../../../services/net/websocket/login-websocket.service";
 import {Subscription} from "rxjs";
 import {SignupCredentials} from "../../../../models/auth/SignupCredentials";
-import {SignupRequest} from "../../../../models/auth/types";
+import {LoginRequest, SignupRequest} from "../../../../models/auth/types";
 import {Router} from "@angular/router";
+import {LoginCredentials} from "../../../../models/auth/LoginCredentials";
 
 @Component({
     selector: 'auth-console',
@@ -36,6 +37,18 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
                 private loginWebSocket: LoginWebSocketService,
                 private router: Router) {
 
+    }
+    
+    attemptLogin(loginCredentials: LoginCredentials): void {
+        if (loginCredentials.isFilledFields()) {
+            this.login(loginCredentials.getRequest())
+        } else {
+            this.emitAuthPopup(AuthPopup.FILL_ALL_FIELDS);
+        }
+    }
+    
+    login(loginRequest: LoginRequest): void {
+        this.loginWebSocket.sendMessage(loginRequest);
     }
     
     attemptSignup(signupCredentials: SignupCredentials): void {
@@ -55,6 +68,7 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
     }
 
     setAuthType(authType: AuthType): void {
+        this.emitAuthPopup(AuthPopup.NONE);
         this.currentAuthType = authType;
     }
     isSignupSection(): boolean {
