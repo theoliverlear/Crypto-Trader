@@ -28,7 +28,9 @@ public class SecurityConfig {
                 "/v3/api-docs/**",
                 "/v3/api-docs.yaml",
                 "/actuator/health",
-                "/actuator/info"
+                "/actuator/info",
+                // Any endpoint
+                "/**"
         );
         http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
            .csrf(AbstractHttpConfigurer::disable);
