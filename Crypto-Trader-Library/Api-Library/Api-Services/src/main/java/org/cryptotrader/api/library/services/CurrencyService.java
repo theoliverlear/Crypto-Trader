@@ -149,9 +149,19 @@ public class CurrencyService {
     public PerformanceRating getDayPerformance(String currencyCode) {
         double currentPrice = this.getCurrencyByCurrencyCode(currencyCode).getValue();
         double lastDayPrice = this.currencyHistoryRepository.getPreviousDayCurrency(currencyCode).getValue();
-        return PerformanceRating.fromValues(currentPrice, lastDayPrice);
+        return PerformanceRating.fromValues(lastDayPrice, currentPrice);
     }
 
+    public String getPercentageDayPerformance(String currencyCode) {
+        double currentPrice = this.getCurrencyByCurrencyCode(currencyCode).getValue();
+        double lastDayPrice = this.currencyHistoryRepository.getPreviousDayCurrency(currencyCode).getValue();
+        if (lastDayPrice == 0.0 || Double.isNaN(lastDayPrice) || Double.isNaN(currentPrice)) {
+            return "0.00%";
+        }
+        double percentDelta = (currentPrice - lastDayPrice) / lastDayPrice * 100.0;
+        return String.format("%+.2f%%", percentDelta);
+    }
+    
     public List<TimeValueResponse> getCurrencyHistory(String currencyCode, int hours, int intervalSeconds) {
         if (intervalSeconds <= 0) {
             intervalSeconds = 60;
