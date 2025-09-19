@@ -97,6 +97,7 @@
         <jacoco.it.exec>${project.build.directory}/jacoco-it.exec</jacoco.it.exec>
         <!-- Centralized JavaFX version for all desktop modules -->
         <javafx.version>21.0.6</javafx.version>
+        <kotlin.version>2.2.0</kotlin.version>
     </properties>
 
     <dependencyManagement>
