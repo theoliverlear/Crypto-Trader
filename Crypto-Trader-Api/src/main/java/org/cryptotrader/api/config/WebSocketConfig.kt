@@ -1,5 +1,6 @@
 package org.cryptotrader.api.config
 
+import org.cryptotrader.api.controller.websocket.CurrencyValueWebSocketHandler
 import org.cryptotrader.api.controller.websocket.LoginWebSocketHandler
 import org.cryptotrader.api.controller.websocket.SignupWebSocketHandler
 import org.cryptotrader.api.library.infrastructure.JwtHandshakeInterceptor
@@ -22,25 +23,29 @@ import org.springframework.web.socket.server.support.DefaultHandshakeHandler
 open class WebSocketConfig(
     val signupWebsocket: SignupWebSocketHandler,
     val loginWebSocket: LoginWebSocketHandler,
+    val currencyValueWebSocket: CurrencyValueWebSocketHandler,
     val jwtHandshakeInterceptor: JwtHandshakeInterceptor
 ) : WebSocketConfigurer {
 
     @Bean
     @ConditionalOnMissingBean(JwtHandshakeInterceptor::class)
-    open fun jwtHandshakeInterceptor(
-        jwtService: JwtService,
-        productUserService: ProductUserService
+    open fun jwtHandshakeInterceptor(jwtService: JwtService,
+                                     productUserService: ProductUserService
     ): JwtHandshakeInterceptor = JwtHandshakeInterceptor(jwtService, productUserService)
 
     override fun registerWebSocketHandlers(registry: WebSocketHandlerRegistry) {
         registry.addHandler(this.signupWebsocket, "/ws/signup")
-            .addInterceptors(jwtHandshakeInterceptor)
-            .setAllowedOrigins("*")
+            .addInterceptors(this.jwtHandshakeInterceptor)
+            .setAllowedOriginPatterns("*")
             .setHandshakeHandler(DefaultHandshakeHandler())
 
         registry.addHandler(this.loginWebSocket, "/ws/login")
-            .addInterceptors(jwtHandshakeInterceptor)
-            .setAllowedOrigins("*")
+            .addInterceptors(this.jwtHandshakeInterceptor)
+            .setAllowedOriginPatterns("*")
+            .setHandshakeHandler(DefaultHandshakeHandler())
+        registry.addHandler(this.currencyValueWebSocket, "/ws/currency/value")
+            .addInterceptors(this.jwtHandshakeInterceptor)
+            .setAllowedOriginPatterns("*")
             .setHandshakeHandler(DefaultHandshakeHandler())
     }
 }
