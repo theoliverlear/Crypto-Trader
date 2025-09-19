@@ -1,7 +1,11 @@
 // performance-arrow.component.ts
 import {Component, HostBinding, Input} from "@angular/core";
-import {PerformanceRating} from "../../../../models/currency/types";
+import {
+    CurrencyPerformanceRating,
+    PerformanceRating
+} from "../../../../models/currency/types";
 import {upArrowIcon} from "../../../../assets/imageAssets";
+import {TagType} from "@theoliverlear/angular-suite";
 
 @Component({
     selector: 'performance-arrow',
@@ -10,16 +14,18 @@ import {upArrowIcon} from "../../../../assets/imageAssets";
     standalone: false
 })
 export class PerformanceArrowComponent {
-    @Input() performance: PerformanceRating;
+    @Input() performance: PerformanceRating = { rating: 'neutral', changePercent: '0%' };
+    @Input() includePercent: boolean = false;
     @HostBinding('class.up') get isUp() {
-        return this.performance === "up";
+        return this.performance && this.performance.rating === "up";
     }
     @HostBinding('class.down') get isDown() {
-        return this.performance === "down";
+        return this.performance && this.performance.rating === "down";
     }
     constructor() {
         
     }
 
     protected readonly upArrowIcon = upArrowIcon;
+    protected readonly TagType = TagType;
 }
