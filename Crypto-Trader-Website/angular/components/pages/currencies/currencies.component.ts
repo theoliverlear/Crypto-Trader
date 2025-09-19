@@ -15,7 +15,7 @@ import {
     styleUrls: ['./currencies.component.scss']
 })
 export class CurrenciesComponent implements OnInit {
-    currencies: DisplayCurrencyList;
+    currencies: DisplayCurrencyList = { currencies: [] };
     constructor(private getAllCurrenciesService: GetAllCurrenciesService) {
         
     }
