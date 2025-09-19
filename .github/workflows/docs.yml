@@ -151,8 +151,8 @@ jobs:
             fi
           }
 
-          # Wait up to ~4 minutes (120 * 2s)
-          for i in $(seq 1 120); do
+          # Wait up to ~8 minutes (240 * 2s)
+          for i in $(seq 1 240); do
             # Fail fast if any service died
             for pidfile in *.pid; do
               [ -f "$pidfile" ] || continue
