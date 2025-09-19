@@ -21,16 +21,17 @@ public class SecurityConfig {
     @Bean
     @ConditionalOnMissingBean(SecurityFilterChain.class)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(authorize -> {
-            authorize.requestMatchers(
-                            "/swagger-ui/**",
-                            "/v3/api-docs/**",
-                            "/v3/api-docs.yaml",
-                            "/actuator/health",
-                            "/actuator/info"
-                    )
-                     .permitAll().anyRequest().permitAll();
-        }).csrf(AbstractHttpConfigurer::disable);
+        // Scope this filter chain to only API docs and actuator endpoints to avoid overlapping with
+        // application-level SecurityFilterChain definitions.
+        http.securityMatcher(
+                "/swagger-ui/**",
+                "/v3/api-docs/**",
+                "/v3/api-docs.yaml",
+                "/actuator/health",
+                "/actuator/info"
+        );
+        http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
+           .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
     //--------------------------Password-Encoder------------------------------
