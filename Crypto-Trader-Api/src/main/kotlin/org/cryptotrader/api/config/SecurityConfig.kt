@@ -1,5 +1,6 @@
 package org.cryptotrader.api.config
 
+import org.cryptotrader.api.library.infrastructure.JwtToSessionFilter
 import org.cryptotrader.security.library.service.InMemoryIpBanService
 import org.cryptotrader.security.library.service.IpBanService
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Primary
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @Configuration
 @EnableWebSecurity
@@ -16,13 +18,24 @@ open class SecurityConfig {
     //------------------------Security-Filter-Chain---------------------------
     @Bean
     @Primary
-    open fun apiSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
+    open fun apiSecurityFilterChain(http: HttpSecurity,
+                                    jwtToSessionFilter: JwtToSessionFilter): SecurityFilterChain {
         return http
             .csrf { it.disable() }
             .authorizeHttpRequests {
-                it.requestMatchers("/ws/signup", "/ws/login").permitAll()
+                it.requestMatchers(
+                    "/ws/signup",
+                    "/ws/login",
+                    "/ws/currency/value",
+                    "/api/auth/**",
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**",
+                    "/actuator/**"
+                ).permitAll()
                     .anyRequest().permitAll()
-            }.build()
+            }
+            .addFilterBefore(jwtToSessionFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .build()
     }
 
     @Bean
