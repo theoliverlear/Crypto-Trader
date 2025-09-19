@@ -5,6 +5,7 @@ open module org.cryptotrader.api.library.events {
     requires spring.core;
     requires org.cryptotrader.api.library.models;
     requires org.cryptotrader.api.library.components;
+    requires org.slf4j;
 
     exports org.cryptotrader.api.library.events;
     exports org.cryptotrader.api.library.events.publisher;
