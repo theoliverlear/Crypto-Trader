@@ -1,4 +1,5 @@
 import {FilledFieldsService} from "@theoliverlear/angular-suite";
+import {LoginRequest} from "./types";
 
 export class LoginCredentials {
     email: string;
@@ -12,5 +13,15 @@ export class LoginCredentials {
     public isFilledFields(): boolean {
         const filledFieldsService: FilledFieldsService = new FilledFieldsService();
         return filledFieldsService.isFilledFields([this.email, this.password]);
+    }
+    
+    public getRequest(): LoginRequest {
+        if (!this.isFilledFields()) {
+            throw new Error("Cannot get login request due to input issues.");
+        }
+        return {
+            email: this.email,
+            password: this.password
+        };
     }
 }
