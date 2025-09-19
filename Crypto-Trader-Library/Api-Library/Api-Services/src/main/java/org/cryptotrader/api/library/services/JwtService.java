@@ -16,12 +16,9 @@ public class JwtService {
     private final String issuer;
     private final long ttlSeconds;
 
-    public JwtService(
-            @Value("${security.jwt.secret:changeme-please-set-SECURITY_JWT_SECRET}") String secret,
-            @Value("${security.jwt.issuer:crypto-trader-api}") String issuer,
-            @Value("${security.jwt.ttl-seconds:3600}") long ttlSeconds
-    ) {
-        // Auth0 library will handle HMAC256 key size appropriately
+    public JwtService(@Value("${security.jwt.secret:dev-secret}") String secret, 
+                      @Value("${security.jwt.issuer:crypto-trader-api}") String issuer,
+                      @Value("${security.jwt.ttl-seconds:3600}") long ttlSeconds) {
         this.algorithm = Algorithm.HMAC256(secret.getBytes(StandardCharsets.UTF_8));
         this.issuer = issuer;
         this.ttlSeconds = ttlSeconds;
@@ -29,13 +26,13 @@ public class JwtService {
 
     public String generateToken(String subject, String email) {
         Instant now = Instant.now();
-        Instant exp = now.plusSeconds(ttlSeconds);
+        Instant expires = now.plusSeconds(ttlSeconds);
         return JWT.create()
                 .withIssuer(issuer)
                 .withSubject(subject)
                 .withClaim("email", email)
                 .withIssuedAt(Date.from(now))
-                .withExpiresAt(Date.from(exp))
+                .withExpiresAt(Date.from(expires))
                 .sign(algorithm);
     }
 
@@ -46,8 +43,8 @@ public class JwtService {
                 .verify(token);
         String subject = jwt.getSubject();
         String email = jwt.getClaim("email").asString();
-        Date iat = jwt.getIssuedAt();
-        Date exp = jwt.getExpiresAt();
-        return new JwtClaims(subject, email, iat, exp);
+        Date issuedAt = jwt.getIssuedAt();
+        Date expires = jwt.getExpiresAt();
+        return new JwtClaims(subject, email, issuedAt, expires);
     }
 }
