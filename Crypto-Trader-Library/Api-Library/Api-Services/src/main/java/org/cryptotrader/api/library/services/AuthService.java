@@ -53,7 +53,9 @@ public class AuthService {
             // TODO: Replace with event publishing or other method of talking
             //       between modules.
 //            this.portfolioService.addPortfolioToTraders(portfolio);
-            return new PayloadStatusResponse<>(new AuthResponse(AuthStatus.AUTHORIZED.isAuthorized), HttpStatus.OK);
+            String token = this.jwtService.generateToken(String.valueOf(user.getId()), email);
+            AuthResponse authResponse = new AuthResponse(AuthStatus.AUTHORIZED.isAuthorized, token);
+            return new PayloadStatusResponse<>(authResponse, HttpStatus.OK);
         }
     }
     public PayloadStatusResponse<AuthResponse> login(LoginRequest loginRequest) {
@@ -64,12 +66,15 @@ public class AuthService {
             return new PayloadStatusResponse<>(new AuthResponse(AuthStatus.UNAUTHORIZED.isAuthorized), HttpStatus.NOT_FOUND);
         } else {
             boolean passwordsMatch = this.productUserService.comparePassword(user, password);
+            AuthResponse authResponse;
             if (passwordsMatch) {
                 String subject = String.valueOf(user.getId());
                 String token = this.jwtService.generateToken(subject, email);
-                return new PayloadStatusResponse<>(new AuthResponse(AuthStatus.AUTHORIZED.isAuthorized, token), HttpStatus.OK);
+                authResponse = new AuthResponse(AuthStatus.AUTHORIZED.isAuthorized, token);
+                return new PayloadStatusResponse<>(authResponse, HttpStatus.OK);
             } else {
-                return new PayloadStatusResponse<>(new AuthResponse(AuthStatus.UNAUTHORIZED.isAuthorized), HttpStatus.UNAUTHORIZED);
+                authResponse = new AuthResponse(AuthStatus.UNAUTHORIZED.isAuthorized);
+                return new PayloadStatusResponse<>(authResponse, HttpStatus.UNAUTHORIZED);
             }
         }
     }
