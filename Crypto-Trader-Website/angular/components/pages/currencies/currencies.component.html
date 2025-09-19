@@ -1,6 +1,8 @@
 <!-- currencies.component.html -->
 <ng-container (error)="onError($event)">
-    @for (currency of currencies.currencies; track currency.currencyCode) {
-        <display-currency [currency]="currency"/>
+    @if (currencies?.currencies?.length) {
+        @for (currency of currencies.currencies; track currency.currencyCode) {
+            <display-currency [currency]="currency"/>
+        }
     }
 </ng-container>
