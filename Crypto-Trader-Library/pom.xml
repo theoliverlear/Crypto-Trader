@@ -38,8 +38,8 @@
         <module>Security-Library/Security-Models</module>
         <module>Security-Library/Security-Config</module>
         <module>Security-Library/Security-Events</module>
-        <module>Security-Library/Security-Infrastructure</module>
         <module>Security-Library/Security-Services</module>
+        <module>Security-Library/Security-Infrastructure</module>
         <module>Security-Library/Security-Repositories</module>
     </modules>
 
