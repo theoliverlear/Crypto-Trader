@@ -4,6 +4,6 @@
         <auth-console-signup-section (authPopupEvent)="emitAuthPopup($event)" (signupButtonClicked)="attemptSignup($event)"/>
     }
     @if (isLoginSection()) {
-        <auth-console-login-section/>
+        <auth-console-login-section (loginButtonClicked)="attemptLogin($event)"/>
     }
 </ng-container>
