@@ -10,6 +10,6 @@
   ],
   "include": [
     "angular/**/*.d.ts",
-    "angular/**/*.spec.ts"
+    "angular/test/**/*.spec.ts"
   ]
 }
