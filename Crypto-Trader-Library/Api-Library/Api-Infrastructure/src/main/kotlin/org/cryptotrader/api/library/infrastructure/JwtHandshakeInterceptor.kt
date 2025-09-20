@@ -4,7 +4,7 @@ import org.slf4j.LoggerFactory
 import jakarta.servlet.http.HttpServletRequest
 import org.cryptotrader.api.library.entity.user.ProductUser
 import org.cryptotrader.api.library.services.JwtClaims
-import org.cryptotrader.api.library.services.JwtService
+import org.cryptotrader.api.library.services.JwtTokenService
 import org.cryptotrader.api.library.services.ProductUserService
 import org.springframework.http.server.ServerHttpRequest
 import org.springframework.http.server.ServerHttpResponse
@@ -19,7 +19,7 @@ private val log = LoggerFactory.getLogger(JwtHandshakeInterceptor::class.java)
 
 @Component
 class JwtHandshakeInterceptor(
-    private val jwtService: JwtService,
+    private val jwtService: JwtTokenService,
     private val productUserService: ProductUserService
 ) : HandshakeInterceptor {
 
@@ -29,29 +29,12 @@ class JwtHandshakeInterceptor(
                                  attributes: MutableMap<String, Any>): Boolean {
         log.info("Handshake: {}", request.uri)
         try {
-            val servletRequest: HttpServletRequest? = this.getServletRequest(request)
-            val authHeader: String? = this.getAuthHeader(request)
-            val queryToken: String? = this.getQueryToken(servletRequest)
-            val token: String? = when {
-                this.isBearerToken(authHeader) -> authHeader.substringAfter("Bearer ")
-                !queryToken.isNullOrBlank() -> queryToken
-                else -> null
-            }
+            val servletRequest = this.getServletRequest(request)
+            val token = this.chooseToken(this.getAuthHeader(request), this.getQueryToken(servletRequest))
             if (!token.isNullOrBlank()) {
-                val claims: JwtClaims? = this.jwtService.validateAndParse(token)
-                val userIdStr = claims?.subject
-                val email = claims?.email
-                val userId = userIdStr?.toLongOrNull()
-                if (userId != null) {
-                    val fetched = this.productUserService.getUserById(userId)
-                    val user = fetched as? ProductUser
-                    if (user != null) {
-                        if (email == null || email.equals(user.email, ignoreCase = true)) {
-                            val httpSession = servletRequest?.session
-                            httpSession?.setAttribute("product-user", user)
-                            attributes["product-user"] = user
-                        }
-                    }
+                val user = this.validateAndFetchUser(token)
+                if (user != null) {
+                    this.attachUser(attributes, user)
                 }
             }
         } catch (ex: Exception) {
@@ -61,9 +44,31 @@ class JwtHandshakeInterceptor(
         return true
     }
 
+    private fun chooseToken(authHeader: String?, queryToken: String?): String? = when {
+        this.isBearerToken(authHeader) -> authHeader!!.substringAfter("Bearer ")
+        !queryToken.isNullOrBlank() -> queryToken
+        else -> null
+    }
+
+    private fun validateAndFetchUser(token: String): ProductUser? {
+        val claims: JwtClaims = this.jwtService.validateAndParse(token)
+        val userId = claims.subject?.toLongOrNull() ?: return null
+        val fetched = this.productUserService.getUserById(userId)
+        val user = fetched as? ProductUser
+        return if (user != null && emailsMatch(claims.email, user.email)) user else null
+    }
+
+    private fun attachUser(attributes: MutableMap<String, Any>, user: ProductUser) {
+        // Attach only to WebSocket attributes; do not touch HTTP session (stateless JWT)
+        attributes["product-user"] = user
+    }
+
+    private fun emailsMatch(emailClaim: String?, userEmail: String?): Boolean =
+        emailClaim == null || (userEmail != null && emailClaim.equals(userEmail, ignoreCase = true))
+
     @OptIn(ExperimentalContracts::class)
     private fun isBearerToken(authHeader: String?): Boolean {
-        contract { 
+        contract {
             returns(true) implies (authHeader != null)
         }
         return authHeader != null && authHeader.startsWith("Bearer ")
