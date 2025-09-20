@@ -1,18 +1,28 @@
 // nav-bar-profile-picture.component.scss
 @use "../../../../styles/globals" as *;
+@use "../../../../styles/gradients/global_gradient_placeholders" as *;
 
 nav-bar-profile-picture {
-    @include flex(space-around, center, column);
+    @include flex(center, center, column);
     position: absolute;
-    box-sizing: border-box;
-    top: $quarter-percent;
+    //box-sizing: border-box;
+    //top: calc($quarter-percent * 1.15);
+    top: $one-percent;
     right: $one-percent;
-    @include square-size(calc($three-half-percent * 1.15));
+    //padding: $half-percent;
+    background-color: $ocean-blue;
+    //@extend %light-logo-gradient;
+    //padding: calc($half-percent * 1.2);
+    padding: $quarter-percent;
+    @include square-size(calc($three-percent * 1.02));
     //padding: simple-calc(0.15, 0.05);
-    border-radius: simple-calc(1, 1);
+    //border-radius: simple-calc(1, 1);
     transition: box-shadow, transform, 0.3s;
+    border-radius: $quarter-percent;
+    @include square-size($two-half-percent);
+    box-shadow: add-alpha($light-charcoal, 0.5) 0 0 $quarter-percent simplest-calc(0.001);
     profile-picture {
-        @include square-size(100%);
+        //@include square-size(80%);
         //@include square-size(calc($three-half-percent * .95));
     }
     &:hover {
