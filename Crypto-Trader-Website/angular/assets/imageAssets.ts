@@ -68,3 +68,13 @@ export const consoleIcon: ImageAsset = {
     src: getIconImagePath('console_icon.svg'),
     alt: 'Console Icon'
 };
+
+export const profileIcon: ImageAsset = {
+    src: getIconImagePath('profile_icon.svg'),
+    alt: 'Profile Icon'
+};
+
+export const exitIcon: ImageAsset = {
+    src: getIconImagePath('white_exit_door_icon.svg'),
+    alt: 'Exit Icon'
+};
