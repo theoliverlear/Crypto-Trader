@@ -13,9 +13,8 @@ import org.cryptotrader.api.library.entity.user.User;
 @Slf4j
 public class UserController {
     //============================-Variables-=================================
-    private ProductUserService productUserService;
-    private PortfolioService portfolioService;
-    private User currentUser;
+    private final ProductUserService productUserService;
+    private final PortfolioService portfolioService;
     //===========================-Constructors-===============================
     @Autowired
     public UserController(ProductUserService productUserService, PortfolioService portfolioService) {
