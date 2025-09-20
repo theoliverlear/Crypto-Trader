@@ -706,15 +706,17 @@
         </pluginRepository>
     </pluginRepositories>
 
-    <dependencies>
-        <!-- ===== Test runtime dependencies for all modules ===== -->
-        <!-- Ensure all modules have JUnit 5 on the test classpath for IDE 'Run All Tests' -->
-    </dependencies>
-
     <build>
         <plugins>
             <!-- Ensure Maven reporting plugins (like JaCoCo) know about Kotlin source roots -->
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <release>23</release>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.jetbrains.dokka</groupId>
                 <artifactId>dokka-maven-plugin</artifactId>
