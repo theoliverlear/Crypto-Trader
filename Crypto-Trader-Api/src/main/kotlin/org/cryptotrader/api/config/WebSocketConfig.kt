@@ -31,7 +31,8 @@ open class WebSocketConfig(
     @ConditionalOnMissingBean(JwtHandshakeInterceptor::class)
     open fun jwtHandshakeInterceptor(jwtService: JwtTokenService,
                                      productUserService: ProductUserService
-    ): JwtHandshakeInterceptor = JwtHandshakeInterceptor(jwtService, productUserService)
+    ): JwtHandshakeInterceptor =
+        JwtHandshakeInterceptor(jwtService, productUserService)
 
     override fun registerWebSocketHandlers(registry: WebSocketHandlerRegistry) {
         registry.addHandler(this.signupWebsocket, "/ws/signup")
