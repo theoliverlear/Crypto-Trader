@@ -54,6 +54,7 @@ open module org.cryptotrader.api {
     requires org.cryptotrader.docs;
     
     requires org.cryptotrader.security.library.services;
+    requires spring.security.core;
 
     exports org.cryptotrader.api;
     exports org.cryptotrader.api.config;
