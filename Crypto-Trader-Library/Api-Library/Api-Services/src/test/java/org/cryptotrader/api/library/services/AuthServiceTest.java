@@ -36,7 +36,7 @@ public class AuthServiceTest extends CryptoTraderTest {
     private UserEventsPublisher userEventsPublisher;
     
     @Mock
-    private JwtService jwtService;
+    private JwtTokenService jwtService;
     
     private LoginRequest loginRequest;
     
@@ -74,7 +74,7 @@ public class AuthServiceTest extends CryptoTraderTest {
         ProductUserService productUserService = Mockito.mock(ProductUserService.class);
         PortfolioService portfolioService = Mockito.mock(PortfolioService.class);
         UserEventsPublisher userEventsPublisher = Mockito.mock(UserEventsPublisher.class);
-        JwtService jwtService = Mockito.mock(JwtService.class);
+        JwtTokenService jwtService = Mockito.mock(JwtTokenService.class);
         AuthService authService = new AuthService(productUserService, portfolioService, userEventsPublisher, jwtService);
         assertNotNull(authService);
     }
