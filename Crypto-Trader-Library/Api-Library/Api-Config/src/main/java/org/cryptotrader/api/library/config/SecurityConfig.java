@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -20,33 +21,42 @@ public class SecurityConfig {
     //==============================-Beans-===================================
 
     //------------------------Security-Filter-Chain---------------------------
-    @Bean
-    @ConditionalOnMissingBean(SecurityFilterChain.class)
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Scope this filter chain to only API docs and actuator endpoints to avoid overlapping with
-        // application-level SecurityFilterChain definitions.
+//    @Bean
+//    @ConditionalOnMissingBean(SecurityFilterChain.class)
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        // Scope this filter chain to only API docs and actuator endpoints to avoid overlapping with
+//        // application-level SecurityFilterChain definitions.
+    ////        http.securityMatcher(
+    ////                "/swagger-ui/**",
+    ////                "/v3/api-docs/**",
+    ////                "/v3/api-docs.yaml",
+    ////                "/actuator/health",
+    ////                "/actuator/info",
+    ////                // Any endpoint
+    ////                "/**"
+    ////        );
+    ////        http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
+    ////           .csrf(AbstractHttpConfigurer::disable);
+//
 //        http.securityMatcher(
 //                "/swagger-ui/**",
 //                "/v3/api-docs/**",
 //                "/v3/api-docs.yaml",
-//                "/actuator/health",
-//                "/actuator/info",
-//                // Any endpoint
-//                "/**"
+//                "/actuator/**"
 //        );
 //        http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
 //           .csrf(AbstractHttpConfigurer::disable);
-
-        http.securityMatcher(
-                "/swagger-ui/**",
-                "/v3/api-docs/**",
-                "/v3/api-docs.yaml",
-                "/actuator/**"
-        );
-        http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
-           .csrf(AbstractHttpConfigurer::disable);
+//        return http.build();
+//    }
+    @Bean
+    @Order(1)
+    public SecurityFilterChain docsAndActuator(HttpSecurity http) throws Exception {
+        http.securityMatcher("/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs.yaml", "/actuator/**");
+        http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+                .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
+
     //--------------------------Password-Encoder------------------------------
     @Bean
     @ConditionalOnMissingBean(BCryptPasswordEncoder.class)
