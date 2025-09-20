@@ -3,7 +3,7 @@ package org.cryptotrader.api.library.infrastructure
 import org.slf4j.LoggerFactory
 import jakarta.servlet.http.HttpServletRequest
 import org.cryptotrader.api.library.entity.user.ProductUser
-import org.cryptotrader.api.library.services.JwtClaims
+import org.cryptotrader.api.library.services.models.JwtClaims
 import org.cryptotrader.api.library.services.JwtTokenService
 import org.cryptotrader.api.library.services.ProductUserService
 import org.springframework.http.server.ServerHttpRequest

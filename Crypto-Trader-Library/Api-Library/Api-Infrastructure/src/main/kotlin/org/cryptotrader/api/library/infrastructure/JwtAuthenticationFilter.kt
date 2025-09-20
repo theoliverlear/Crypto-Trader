@@ -4,7 +4,7 @@ import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.cryptotrader.api.library.entity.user.ProductUser
-import org.cryptotrader.api.library.services.JwtClaims
+import org.cryptotrader.api.library.services.models.JwtClaims
 import org.cryptotrader.api.library.services.JwtTokenService
 import org.cryptotrader.api.library.services.ProductUserService
 import org.slf4j.LoggerFactory
