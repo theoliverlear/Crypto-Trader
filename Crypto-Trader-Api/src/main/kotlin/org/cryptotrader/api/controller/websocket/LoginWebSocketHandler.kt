@@ -17,6 +17,6 @@ class LoginWebSocketHandler(
     override fun makeResponse(loginRequest: LoginRequest): AuthResponse {
         log.info("Login: {}", loginRequest.email)
         val response: HttpAuthStatus = this.authService.login(loginRequest)
-        return AuthResponse(response.payload.isAuthorized)
+        return response.payload
     }
 }
