@@ -4,23 +4,24 @@
 profile-picture {
     @include flex(center, center, column);
     @extend %circle-border-radius;
-    transition: box-shadow, margin-left, margin-bottom, 0.3s;
-    border: $thin-border solid $pure-white;
+    //transition: box-shadow, margin-left, margin-bottom, 0.3s;
+    //border: $thin-border solid $pure-white;
     ss-img {
-        @extend %fill-container;
-        border-radius: inherit;
+        img {
+            border-radius: unset;
+        }
     }
     &:hover {
-        $hover-box-shadow-size: simplest-calc(0.15);
-        box-shadow: $morning-frost-blue $hover-box-shadow-size $hover-box-shadow-size;
-        cursor: pointer;
+        //$hover-box-shadow-size: simplest-calc(0.15);
+        //box-shadow: $morning-frost-blue $hover-box-shadow-size $hover-box-shadow-size;
+        //cursor: pointer;
     }
 
     &:active {
-        box-shadow: none;
-        margin-left: simplest-calc(0.05);
-        $bottom-and-right-margin: simplest-calc(0.15);
-        margin-bottom: calc($bottom-and-right-margin * -1);
-        margin-right: $bottom-and-right-margin;
+        //box-shadow: none;
+        //margin-left: simplest-calc(0.05);
+        //$bottom-and-right-margin: simplest-calc(0.15);
+        //margin-bottom: calc($bottom-and-right-margin * -1);
+        //margin-right: $bottom-and-right-margin;
     }
 }
