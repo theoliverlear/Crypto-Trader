@@ -1,6 +1,6 @@
 package org.cryptotrader.api.config
 
-import org.cryptotrader.api.library.infrastructure.JwtToSessionFilter
+import org.cryptotrader.api.library.infrastructure.JwtAuthenticationFilter
 import org.cryptotrader.security.library.service.InMemoryIpBanService
 import org.cryptotrader.security.library.service.IpBanService
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
@@ -19,7 +19,7 @@ open class SecurityConfig {
     @Bean
     @Primary
     open fun apiSecurityFilterChain(http: HttpSecurity,
-                                    jwtToSessionFilter: JwtToSessionFilter): SecurityFilterChain {
+                                    jwtAuthenticationFilter: JwtAuthenticationFilter): SecurityFilterChain {
         return http
             .csrf { it.disable() }
             .authorizeHttpRequests {
@@ -34,7 +34,7 @@ open class SecurityConfig {
                 ).permitAll()
                     .anyRequest().permitAll()
             }
-            .addFilterBefore(jwtToSessionFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
             .build()
     }
 
