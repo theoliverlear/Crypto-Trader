@@ -55,6 +55,7 @@
               "angular/components/elements/element-group-chart/live-chart/live-chart.component.scss",
               "angular/components/elements/element-group-currency/display-currency/display-currency.component.scss",
               "angular/components/elements/element-group-currency/performance-arrow/performance-arrow.component.scss",
+              "angular/components/elements/element-group-nav/exit-anchor/exit-anchor.component.scss",
               "angular/components/elements/element-group-nav/home-anchor/home-anchor.component.scss",
               "angular/components/elements/element-group-nav/nav-bar-item/nav-bar-item.component.scss",
               "angular/components/elements/element-group-nav/nav-bar-profile-picture/nav-bar-profile-picture.component.scss",
