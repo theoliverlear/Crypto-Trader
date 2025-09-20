@@ -5,7 +5,11 @@ import {
     OnInit,
     ViewChild
 } from "@angular/core";
-import {defaultAvatar, ImageAsset} from "../../../../assets/imageAssets";
+import {
+    defaultAvatar,
+    ImageAsset,
+    profileIcon
+} from "../../../../assets/imageAssets";
 import {SsImgComponent} from "@theoliverlear/angular-suite";
 
 @Component({
@@ -17,7 +21,7 @@ import {SsImgComponent} from "@theoliverlear/angular-suite";
 export class ProfilePictureComponent implements AfterViewInit {
     @Input() userId: number = 0;
     @Input() isHeadlineProfilePicture: boolean = false;
-    @Input() imageAsset: ImageAsset = defaultAvatar;
+    @Input() imageAsset: ImageAsset = profileIcon;
     @ViewChild('profilePictureImage') profilePictureImage: SsImgComponent;
     constructor(private changeDetection: ChangeDetectorRef) {
         
