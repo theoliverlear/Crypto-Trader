@@ -32,9 +32,14 @@ class JwtAuthenticationFilter(
                 val user = resolveUserFromClaims(claims)
                 if (user != null && emailsMatch(claims.email, user.email)) {
                     authenticate(user, request)
+                } else {
+                    SecurityContextHolder.clearContext()
                 }
+            } else {
+                SecurityContextHolder.clearContext()
             }
         } catch (ex: Exception) {
+            SecurityContextHolder.clearContext()
             log.debug("JWT authentication failed; proceeding unauthenticated", ex)
         }
         filterChain.doFilter(request, response)
