@@ -22,12 +22,12 @@ public class AuthService {
     private final ProductUserService productUserService;
     private final PortfolioService portfolioService;
     private final UserEventsPublisher userEventsPublisher;
-    private final JwtService jwtService;
+    private final JwtTokenService jwtService;
     @Autowired
     public AuthService(ProductUserService productUserService,
                        PortfolioService portfolioService,
                        UserEventsPublisher userEventsPublisher,
-                       JwtService jwtService) {
+                       JwtTokenService jwtService) {
         this.productUserService = productUserService;
         this.portfolioService = portfolioService;
         this.userEventsPublisher = userEventsPublisher;
@@ -42,9 +42,9 @@ public class AuthService {
         } else {
             SafePassword safePassword = new SafePassword(password);
             ProductUser user = ProductUser.builder()
-                            .email(email)
-                            .safePassword(safePassword)
-                            .build();
+                                          .email(email)
+                                          .safePassword(safePassword)
+                                          .build();
             Portfolio portfolio = new Portfolio(user);
             user.setPortfolio(portfolio);
             this.productUserService.saveUser(user);
