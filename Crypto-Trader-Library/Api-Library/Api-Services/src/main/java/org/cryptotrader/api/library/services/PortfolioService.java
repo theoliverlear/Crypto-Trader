@@ -21,11 +21,11 @@ import java.util.List;
 @Slf4j
 public class PortfolioService {
     //============================-Variables-=================================
-    private PortfolioRepository portfolioRepository;
-    private PortfolioAssetRepository portfolioAssetRepository;
-    private PortfolioHistoryRepository portfolioHistoryRepository;
-    private PortfolioAssetHistoryRepository portfolioAssetHistoryRepository;
-    private CurrencyService currencyService;
+    private final PortfolioRepository portfolioRepository;
+    private final PortfolioAssetRepository portfolioAssetRepository;
+    private final PortfolioHistoryRepository portfolioHistoryRepository;
+    private final PortfolioAssetHistoryRepository portfolioAssetHistoryRepository;
+    private final CurrencyService currencyService;
     //===========================-Constructors-===============================
     @Autowired
     public PortfolioService(PortfolioRepository portfolioRepository,
