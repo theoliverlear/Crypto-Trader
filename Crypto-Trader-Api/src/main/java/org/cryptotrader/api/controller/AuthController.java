@@ -61,24 +61,16 @@ public class AuthController {
     @GetMapping("/logged-in")
     public ResponseEntity<AuthResponse> isLoggedIn() {
         boolean authenticated = this.authContextService.isAuthenticated();
-        if (authenticated) {
-            AuthResponse authResponse = new AuthResponse(AuthStatus.AUTHORIZED.isAuthorized);
-            return ResponseEntity.ok(authResponse);
-        } else {
-            AuthResponse authResponse = new AuthResponse(AuthStatus.UNAUTHORIZED.isAuthorized);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(authResponse);
-        }
+        AuthResponse authResponse = new AuthResponse(authenticated);
+        return ResponseEntity.ok(authResponse);
     }
     @GetMapping("/logout")
     public ResponseEntity<AuthResponse> logout() {
-        // Stateless JWT: client must discard token; server maintains no session
-        boolean authenticated = this.authContextService.isAuthenticated();
         AuthResponse authResponse = new AuthResponse(AuthStatus.UNAUTHORIZED.isAuthorized);
+        boolean authenticated = this.authContextService.isAuthenticated();
         if (authenticated) {
             this.authContextService.logout();
-            return ResponseEntity.ok(authResponse);
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(authResponse);
         }
+        return ResponseEntity.ok(authResponse);
     }
 }
