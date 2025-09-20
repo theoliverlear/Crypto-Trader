@@ -18,6 +18,6 @@ class SignupWebSocketHandler(
     override fun makeResponse(signupRequest: SignupRequest): AuthResponse {
         log.info("Signup: {}", signupRequest.email)
         val response: HttpAuthStatus = this.authService.signup(signupRequest)
-        return AuthResponse(response.payload.isAuthorized)
+        return response.payload
     }
 }
