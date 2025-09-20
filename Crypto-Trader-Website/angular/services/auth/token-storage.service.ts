@@ -15,7 +15,7 @@ export class TokenStorageService {
         }
     }
 
-    setToken(token: PossibleToken, persist: PersistMethod = 'session'): void {
+    setToken(token: PossibleToken, persist: PersistMethod = 'local'): void {
         this.tokenInMemory = token;
         try {
             sessionStorage.removeItem(this.storageKey);
