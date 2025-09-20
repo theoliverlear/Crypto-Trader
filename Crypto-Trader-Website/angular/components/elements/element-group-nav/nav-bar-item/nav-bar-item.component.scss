@@ -11,7 +11,7 @@ nav-bar-item {
     @include flex(center, center, row);
     border-radius: simplest-calc(0.5);
     transition: background-color, box-shadow, scale, 0.3s;
-    padding: simplest-calc(0.5) simplest-calc(0);
+    padding: simplest-calc(0.5) simplest-calc(0.2);
     background-color: $ocean-blue;
     margin-right: $quarter-percent;
     //background: radial-gradient(circle, $muted-blue, $blue-gray);
@@ -22,7 +22,7 @@ nav-bar-item {
     h4 {
         font-family: fonts.$google-sans-code-font;
         font-size: calc($h4-font-size * 0.65);
-        min-width: 8ch;
+        min-width: 10ch;
         //color: $pure-white;
         //color: $sunbeam-yellow;
         //color: $neutral-black;
