@@ -81,6 +81,9 @@ import {
 import {
     NavConsoleComponent
 } from "./element-group-nav/nav-console/nav-console.component";
+import {
+    ExitAnchorComponent
+} from "./element-group-nav/exit-anchor/exit-anchor.component";
 
 export const elements = [
     AuthConsoleComponent,
@@ -93,6 +96,7 @@ export const elements = [
     ContentStripeComponent,
     CurrencyWalletComponent,
     DisplayCurrencyComponent,
+    ExitAnchorComponent,
     HomeAnchorComponent,
     LiveChartComponent,
     NavBarComponent,
