@@ -18,9 +18,16 @@ import {
 } from "../../../../services/net/websocket/login-websocket.service";
 import {Subscription} from "rxjs";
 import {SignupCredentials} from "../../../../models/auth/SignupCredentials";
-import {LoginRequest, SignupRequest} from "../../../../models/auth/types";
+import {
+    AuthResponse,
+    LoginRequest,
+    SignupRequest
+} from "../../../../models/auth/types";
 import {Router} from "@angular/router";
 import {LoginCredentials} from "../../../../models/auth/LoginCredentials";
+import {
+    TokenStorageService
+} from "../../../../services/auth/token-storage.service";
 
 @Component({
     selector: 'auth-console',
@@ -35,7 +42,8 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
     webSocketSubscriptions: Record<string, Subscription> = {};
     constructor(private signupWebSocket: SignupWebSocketService,
                 private loginWebSocket: LoginWebSocketService,
-                private router: Router) {
+                private router: Router,
+                private tokenStorageService: TokenStorageService) {
 
     }
     
@@ -49,6 +57,12 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
     
     login(loginRequest: LoginRequest): void {
         this.loginWebSocket.sendMessage(loginRequest);
+    }
+    
+    saveToken(authResponse: AuthResponse) {
+        if (authResponse.token) {
+            this.tokenStorageService.setToken(authResponse.token);
+        }
     }
     
     attemptSignup(signupCredentials: SignupCredentials): void {
@@ -90,10 +104,14 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
         console.log('[WS] Connecting signup socket…');
         this.signupWebSocket.connect();
         this.webSocketSubscriptions['signup'] = this.signupWebSocket.getMessages().subscribe({
-            next: (message) => {
-                console.log('[WS][signup] message:', message);
-                if (message?.authorized) {
+            next: (authResponse: AuthResponse) => {
+                console.log('[WS][signup] message:', authResponse);
+                if (!authResponse) {
+                    return;
+                }
+                if (authResponse.authorized) {
                     console.log("[WS][signup] Authorized");
+                    this.saveToken(authResponse);
                     this.router.navigate(['/portfolio']);
                 } else {
                     console.log("[WS][signup] Not authorized");
@@ -115,10 +133,14 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
         console.log('[WS] Connecting login socket…');
         this.loginWebSocket.connect();
         this.webSocketSubscriptions['login'] = this.loginWebSocket.getMessages().subscribe({
-            next: (message) => {
-                console.log('[WS][login] message:', message);
-                if (message?.authorized) {
+            next: (authResponse: AuthResponse) => {
+                console.log('[WS][login] message:', authResponse);
+                if (!authResponse) {
+                    return;
+                }
+                if (authResponse.authorized) {
                     console.log("[WS][login] Authorized");
+                    this.saveToken(authResponse);
                     this.router.navigate(['/portfolio']);
                 } else {
                     console.log("[WS][login] Not authorized");
@@ -144,10 +166,10 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
         });
         this.webSocketSubscriptions = {};
         try { 
-            this.signupWebSocket.disconnect?.(); 
+            this.signupWebSocket.disconnect(); 
         } catch {}
         try { 
-            this.loginWebSocket.disconnect?.(); 
+            this.loginWebSocket.disconnect(); 
         } catch {}
     }
 
