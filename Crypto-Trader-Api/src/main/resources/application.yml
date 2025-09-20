@@ -77,8 +77,11 @@ management:
       exposure:
         include: health,info
 
-
-# Feature flags for conditional configurations
+security:
+  jwt:
+    secret: ${JWT_SECRET}
+    issuer: "crypto-trader-api"
+    expiration: 360000
 cryptotrader:
   api:
     jpa:
