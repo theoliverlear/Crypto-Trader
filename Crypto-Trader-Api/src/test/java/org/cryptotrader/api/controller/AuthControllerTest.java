@@ -120,7 +120,7 @@ public class AuthControllerTest extends CryptoTraderTest {
         when(this.authContextService.isAuthenticated()).thenReturn(false);
         ResponseEntity<AuthResponse> logoutResponse = this.authController.logout();
         verify(this.authContextService).isAuthenticated();
-        HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
+        HttpStatus expectedStatus = HttpStatus.OK;
         AuthResponse expectedResponse = new AuthResponse(false);
         assertEquals(expectedStatus, logoutResponse.getStatusCode());
         assertEquals(expectedResponse, logoutResponse.getBody());
@@ -140,12 +140,12 @@ public class AuthControllerTest extends CryptoTraderTest {
     }
     
     @Test
-    @DisplayName("Should not count session users as logged in")
+    @DisplayName("Should not count unauthorized session users as logged in")
     public void isLoggedIn_NotLoggedIn_UsersInSession() {
         when(this.authContextService.isAuthenticated()).thenReturn(false);
         ResponseEntity<AuthResponse> isLoggedInResponse = this.authController.isLoggedIn();
         verify(this.authContextService).isAuthenticated();
-        HttpStatus expectedStatus = HttpStatus.UNAUTHORIZED;
+        HttpStatus expectedStatus = HttpStatus.OK;
         AuthResponse expectedResponse = new AuthResponse(false);
         assertEquals(expectedStatus, isLoggedInResponse.getStatusCode());
         assertEquals(expectedResponse, isLoggedInResponse.getBody());
