@@ -1,3 +1,15 @@
+/**
+ * Java Platform Module for the Crypto‑Trader HTTP API.
+ *
+ * Responsibilities:
+ * - Boots the Spring application (controllers, filters, services) that expose the REST API and WS endpoints.
+ * - Depends on the shared Api‑Library modules for data models, services, infrastructure filters (DPoP/JWT), and config.
+ * - Opens the module to Spring so that reflection can proxy/inject where needed ("open module").
+ *
+ * Notable exports:
+ * - org.cryptotrader.api.controller: REST controllers (including auth endpoints and JWKS).
+ * - org.cryptotrader.api.controller.websocket: WS endpoints that optionally accept Bearer at upgrade.
+ */
 open module org.cryptotrader.api {
     requires kotlin.stdlib;
     requires com.sigwarthsoftware.springboot.websocket;
@@ -55,9 +67,13 @@ open module org.cryptotrader.api {
     
     requires org.cryptotrader.security.library.services;
     requires spring.security.core;
+    requires com.auth0.jwt;
+    requires org.cryptotrader.api.library.scripts;
 
     exports org.cryptotrader.api;
     exports org.cryptotrader.api.config;
     exports org.cryptotrader.api.controller;
     exports org.cryptotrader.api.controller.websocket;
+    exports org.cryptotrader.api.infra;
+    exports org.cryptotrader.api.service;
 }
