@@ -1,0 +1,25 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: crypto-trader-api
+
+security:
+  jwt:
+    issuer: "https://sscryptotrader.com"
+    audience: "crypto-trader-api"
+  auth:
+    dpop:
+      allowed-algs: "ES256"
+      replay-ttl-seconds: 120
+  refresh:
+    cookie-name: __Host-rt
+    cookie-samesite: Strict
+    cookie-secure: true
+
+cryptotrader:
+  api:
+    cors:
+      allowed-origins: "https://sscryptotrader.com"
+      allowed-headers: "authorization,dpop,content-type"
