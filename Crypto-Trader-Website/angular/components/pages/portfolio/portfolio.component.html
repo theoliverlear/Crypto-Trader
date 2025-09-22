@@ -1,6 +1,9 @@
-<content-stripe id="portfolio-builder-title-stripe">
-    <div class="portfolio-builder-header">
-        <ss-title [tagType]="TagType.H3" [text]="'Portfolio Builder'"/>
-        <subtitle [text]="'Select the currencies you would like to have traded.'" [tagType]="TagType.H5"/>
-    </div>
-</content-stripe>
+<ng-container>
+    <content-stripe id="portfolio-builder-title-stripe">
+        <div class="portfolio-builder-header">
+            <ss-title [tagType]="TagType.H3" [text]="'Portfolio Builder'"/>
+            <subtitle [text]="'Select the currencies you would like to have traded.'" [tagType]="TagType.H5"/>
+        </div>
+    </content-stripe>
+    <portfolio-stats-section/>
+</ng-container>
