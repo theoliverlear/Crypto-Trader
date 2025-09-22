@@ -84,8 +84,53 @@ import {
 import {
     ExitAnchorComponent
 } from "./element-group-nav/exit-anchor/exit-anchor.component";
+import {
+    PortfolioAssetComponent
+} from "./element-group-portfolio/portfolio-asset/portfolio-asset.component";
+import {
+    PortfolioAssetListComponent
+} from "./element-group-portfolio/portfolio-asset-list/portfolio-asset-list.component";
+import {
+    AssetFieldComponent
+} from "./element-group-portfolio/asset-field/asset-field.component";
+import {
+    AssetFieldListComponent
+} from "./element-group-portfolio/asset-field-list/asset-field-list.component";
+import {
+    AssetButtonsComponent
+} from "./element-group-portfolio/asset-buttons/asset-buttons.component";
+import {
+    AssetButtonComponent
+} from "./element-group-portfolio/asset-button/asset-button.component";
+import {
+    AssetKillSwitchComponent
+} from "./element-group-portfolio/asset-kill-switch/asset-kill-switch.component";
+import {
+    PortfolioKillSwitchComponent
+} from "./element-group-portfolio/portfolio-kill-switch/portfolio-kill-switch.component";
+import {
+    PortfolioStatisticsComponent
+} from "./element-group-portfolio/portfolio-statistics/portfolio-statistics.component";
+import {
+    PortfolioStatisticComponent
+} from "./element-group-portfolio/portfolio-statistic/portfolio-statistic.component";
+import {
+    PortfolioChartComponent
+} from "./element-group-portfolio/portfolio-chart/portfolio-chart.component";
+import {
+    DayCurrencyChartComponent
+} from "./element-group-currency/day-currency-chart/day-currency-chart.component";
+import {
+    PortfolioStatisticsSectionComponent
+} from "./element-group-portfolio/portfolio-statistics-section/portfolio-statistics-section.component";
+import {LoadingWheelComponent} from "./loading-wheel/loading-wheel.component";
 
 export const elements = [
+    AssetButtonComponent,
+    AssetButtonsComponent,
+    AssetFieldComponent,
+    AssetFieldListComponent,
+    AssetKillSwitchComponent,
     AuthConsoleComponent,
     AuthConsoleLoginSectionComponent,
     AuthConsoleSignupSectionComponent,
@@ -95,6 +140,7 @@ export const elements = [
     ChartComponent,
     ContentStripeComponent,
     CurrencyWalletComponent,
+    DayCurrencyChartComponent,
     DisplayCurrencyComponent,
     ExitAnchorComponent,
     HomeAnchorComponent,
@@ -103,16 +149,24 @@ export const elements = [
     NavBarItemComponent,
     NavBarProfilePictureComponent,
     NavConsoleComponent,
+    LoadingWheelComponent,
     PaperModePromoComponent,
     PerformanceArrowComponent,
     PerformanceChartComponent,
     PerformanceChartSettingsComponent,
     PerformanceSectionComponent,
     PopupComponent,
+    PortfolioAssetComponent,
+    PortfolioAssetListComponent,
+    PortfolioChartComponent,
     PortfolioInputComponent,
+    PortfolioKillSwitchComponent,
     PortfolioSectionComponent,
     PortfolioSectionSelectorBubbleComponent,
     PortfolioSectionSelectorComponent,
+    PortfolioStatisticComponent,
+    PortfolioStatisticsComponent,
+    PortfolioStatisticsSectionComponent,
     ProfilePictureComponent,
     TierPromoComponent,
     TierPromoStripeComponent,
