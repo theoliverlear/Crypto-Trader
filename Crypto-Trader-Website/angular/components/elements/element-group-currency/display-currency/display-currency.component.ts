@@ -28,10 +28,10 @@ import {
 } from "../../../../services/ui/currency-formatter.service";
 import {
     GetCurrencyHistoryService
-} from "../../../../services/net/http/get-currency-history.service";
+} from "../../../../services/net/http/currency/get-currency-history.service";
 import {
     CurrencyDayPerformanceService
-} from "../../../../services/net/http/currency-day-performance.service";
+} from "../../../../services/net/http/currency/currency-day-performance.service";
 import {
     CurrencyValueWebsocketService
 } from "../../../../services/net/websocket/currency-value-websocket.service";
