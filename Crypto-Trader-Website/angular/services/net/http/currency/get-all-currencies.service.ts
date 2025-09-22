@@ -1,11 +1,11 @@
 import {HttpClientService} from "@theoliverlear/angular-suite";
-import {environment} from "../../../environments/environment";
+import {environment} from "../../../../environments/environment";
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {
     DisplayCurrencyList
-} from "../../../models/currency/types";
+} from "../../../../models/currency/types";
 
 @Injectable({
     providedIn: 'root'

@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClientService} from "@theoliverlear/angular-suite";
-import {PerformanceRating} from "../../../models/currency/types";
-import {environment} from "../../../environments/environment";
+import {PerformanceRating} from "../../../../models/currency/types";
+import {environment} from "../../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 

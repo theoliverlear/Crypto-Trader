@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { environment } from "../../../environments/environment";
+import { environment } from "../../../../environments/environment";
 import { Observable, of } from "rxjs";
 import { catchError, map, shareReplay } from "rxjs/operators";
 import { HttpClientService } from "@theoliverlear/angular-suite";
 import {
     HistoryPoint,
     ObservableHistoryMap, ObservableHistoryPoint, TimeValueResponse
-} from "../../../models/currency/types";
+} from "../../../../models/currency/types";
 
 
 @Injectable({
