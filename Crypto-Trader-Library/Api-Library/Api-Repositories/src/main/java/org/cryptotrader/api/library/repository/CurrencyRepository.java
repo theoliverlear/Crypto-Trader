@@ -2,6 +2,7 @@ package org.cryptotrader.api.library.repository;
 //=================================-Imports-==================================
 
 import org.cryptotrader.api.library.entity.currency.Currency;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -21,4 +22,19 @@ public interface CurrencyRepository extends JpaRepository<Currency, Long> {
     List<String> findAllCurrencyCodes();
     
     List<Currency> findTop10ByOrderByValueDesc();
+    @Query("SELECT c FROM Currency c" +
+            " WHERE c.name NOT LIKE '%Wrapped%' " +
+            "AND c.name NOT LIKE '%wrapped %' " +
+            "AND c.name NOT LIKE '%Staked%' " +
+            "AND c.name NOT LIKE '%staked %' " +
+            "ORDER BY c.value DESC")
+    List<Currency> findTopTenNonEncapsulated();
+
+    @Query("SELECT c FROM Currency c" +
+            " WHERE c.name NOT LIKE '%Wrapped%' " +
+            "AND c.name NOT LIKE '%wrapped %' " +
+            "AND c.name NOT LIKE '%Staked%' " +
+            "AND c.name NOT LIKE '%staked %' " +
+            "ORDER BY c.value DESC")
+    List<Currency> findNonEncapsulated(Pageable pageable);
 }
