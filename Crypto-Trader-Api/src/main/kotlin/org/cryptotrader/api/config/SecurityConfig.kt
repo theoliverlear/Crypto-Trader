@@ -59,7 +59,8 @@ open class SecurityConfig {
                     "/swagger-ui/**",
                     "/v3/api-docs/**",
                     "/actuator/**",
-                    "/.well-known/jwks.json"
+                    "/.well-known/jwks.json",
+                    "/api/currency/**"
                 ).permitAll()
                 it.anyRequest().authenticated()
             }
