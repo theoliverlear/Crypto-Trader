@@ -17,7 +17,14 @@ export class AuthConsoleLoginSectionComponent {
         
     }
     emitFields() {
-
+        this.loginButtonClicked.emit(this.loginCredentials);
+    }
+    
+    updateEmail(email: string): void {
+        this.loginCredentials.email = email;
+    }
+    updatePassword(password: string): void {
+        this.loginCredentials.password = password;
     }
     protected readonly AuthInputType = AuthInputType;
     protected readonly ElementSize = ElementSize;
