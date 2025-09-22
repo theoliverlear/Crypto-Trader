@@ -2,6 +2,9 @@
 @use "global-variables" as *;
 @use "global-mixins" as *;
 @use "global-functions" as *;
+@use "@theoliverlear/styles-suite/sigwarth-placeholders" as *;
+@use "@theoliverlear/styles-suite/sigwarth-functions" as *;
+@use "@theoliverlear/styles-suite/sigwarth-mixins" as *;
 @use "@theoliverlear/styles-suite/sigwarth-variables" as *;
 //===============================-Placeholders-===============================
 
@@ -14,4 +17,37 @@
     -webkit-text-stroke: 2px add-alpha($charcoal, 0.1);
     color: add-alpha($pure-white, 1);
     text-decoration: underline;
+}
+
+%nav-button {
+    background-color: $ocean-blue;
+    border-radius: $quarter-percent;
+    padding: $quarter-percent;
+    box-shadow: add-alpha($light-charcoal, 0.5) 0 0 $quarter-percent simplest-calc(0.001);
+    @include square-size($two-half-percent);
+    transition: background-color, box-shadow, transform, scale, 0.2s;
+    ss-anchor {
+        @extend %fill-container;
+        a {
+            @extend %fill-container;
+            ss-img {
+                @extend %fill-container;
+
+                img {
+                    @extend %fill-container;
+                }
+            }
+        }
+    }
+    &:hover {
+        $hover-box-shadow-size: simplest-calc(0.15);
+        box-shadow: $morning-frost-blue $hover-box-shadow-size $hover-box-shadow-size;
+        cursor: pointer;
+    }
+
+    &:active {
+        box-shadow: none;
+        $hover-box-shadow-size: simplest-calc(0.15);
+        transform: translate($hover-box-shadow-size, $hover-box-shadow-size);
+    }
 }
