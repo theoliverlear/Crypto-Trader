@@ -5,8 +5,10 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.cryptotrader.api.library.entity.user.ProductUser
-import org.cryptotrader.api.library.services.JwtTokenService
+import org.cryptotrader.api.library.services.jwt.JwtTokenService
 import org.cryptotrader.api.library.services.ProductUserService
+import org.cryptotrader.api.library.services.jwt.TokenBlacklistService
+import org.cryptotrader.api.library.services.rsa.RsaKeyService
 import org.cryptotrader.test.CryptoTraderTest
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -23,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 class JwtAuthenticationFilterTest : CryptoTraderTest() {
     private lateinit var jwtService: JwtTokenService
     private lateinit var productUserService: ProductUserService
+    private lateinit var tokenBlacklistService: TokenBlacklistService
     private lateinit var filter: JwtAuthenticationFilter
 
     val testSecret: String = "secret"
@@ -35,9 +38,13 @@ class JwtAuthenticationFilterTest : CryptoTraderTest() {
     
     @BeforeEach
     fun setUp() {
-        this.jwtService = JwtTokenService(this.testSecret, this.testIssuer, this.testExpiration)
+        val rsa = RsaKeyService(null, null, null)
+        this.jwtService = JwtTokenService(rsa, this.testIssuer, 300, "test-aud")
         this.productUserService = mock(ProductUserService::class.java)
-        this.filter = JwtAuthenticationFilter(this.jwtService, this.productUserService)
+        this.tokenBlacklistService = mock(TokenBlacklistService::class.java)
+        // default: not blacklisted unless specified
+        `when`(this.tokenBlacklistService.isBlacklisted(anyString())).thenReturn(false)
+        this.filter = JwtAuthenticationFilter(this.jwtService, this.productUserService, this.tokenBlacklistService)
         SecurityContextHolder.clearContext()
     }
 
@@ -142,6 +149,28 @@ class JwtAuthenticationFilterTest : CryptoTraderTest() {
         val user = ProductUser.builder().email(userEmail).build()
         user.id = userId
         `when`(this.productUserService.getUserById(userId)).thenReturn(user)
+
+        filter.doFilter(request, response, chain)
+
+        verify(chain, times(1)).doFilter(request, response)
+        assertThat(SecurityContextHolder.getContext().authentication).isNull()
+    }
+
+    @Test
+    fun `blacklisted token clears context and continues chain`() {
+        val request = mock(HttpServletRequest::class.java)
+        val response = mock(HttpServletResponse::class.java)
+        val chain = mock(FilterChain::class.java)
+
+        val userId = 123L
+        val email = "blacklisted@example.com"
+        val token = jwtService.generateToken(userId.toString(), email)
+        `when`(request.getHeader("Authorization")).thenReturn("Bearer $token")
+        `when`(tokenBlacklistService.isBlacklisted(token)).thenReturn(true)
+
+        // Pre-populate context to ensure it gets cleared
+        SecurityContextHolder.getContext().authentication =
+            TestingAuthenticationToken("user","cred")
 
         filter.doFilter(request, response, chain)
 
