@@ -1,38 +1,29 @@
 import {Injectable} from "@angular/core";
+import {BehaviorSubject, Observable} from "rxjs";
 import {PersistMethod, PossibleToken} from "../../models/auth/types";
 
+/**
+ * In-memory-only access token storage. No localStorage/sessionStorage usage.
+ * Provides both imperative getter and reactive observable.
+ */
 @Injectable({ providedIn: 'root' })
 export class TokenStorageService {
-    private tokenInMemory: PossibleToken = null;
-    private readonly storageKey = 'ct_jwt';
+    private readonly token$ = new BehaviorSubject<PossibleToken>(null);
 
     getToken(): PossibleToken {
-        if (this.tokenInMemory) return this.tokenInMemory;
-        try {
-            return sessionStorage.getItem(this.storageKey) || localStorage.getItem(this.storageKey);
-        } catch {
-            return null;
-        }
+        return this.token$.value;
     }
 
-    setToken(token: PossibleToken, persist: PersistMethod = 'local'): void {
-        this.tokenInMemory = token;
-        try {
-            sessionStorage.removeItem(this.storageKey);
-            localStorage.removeItem(this.storageKey);
-            if (token) {
-                if (persist === 'local') {
-                    localStorage.setItem(this.storageKey, token);
-                } else if (persist === 'session') {
-                    sessionStorage.setItem(this.storageKey, token);
-                }
-            }
-        } catch {
-            console.error("Key storage failure.")
-        }
+    observe(): Observable<PossibleToken> {
+        return this.token$.asObservable();
+    }
+
+    setToken(token: PossibleToken, _persist: PersistMethod = 'session'): void {
+        // persist parameter kept for API compatibility but ignored to enforce in-memory policy
+        this.token$.next(token);
     }
 
     clear(): void {
-        this.setToken(null);
+        this.token$.next(null);
     }
 }
