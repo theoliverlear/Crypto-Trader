@@ -39,6 +39,11 @@ import {Subscription} from "rxjs";
 import {
     NumberTweenService
 } from "../../../../services/ui/number-tween.service";
+import {
+    ChartDisplayProperties,
+    SparkPoint
+} from "../../../../models/chart/types";
+import {defaultChartProperties} from "../../../../assets/chartAssets";
 
 @Component({
     selector: 'display-currency',
@@ -53,6 +58,7 @@ export class DisplayCurrencyComponent implements OnChanges, OnInit, AfterViewIni
     history: HistoryPoint[] = [];
     performance: PerformanceRating = { rating: 'neutral', changePercent: '0%' };
     currencyPrice: string = "";
+    chartProperties: ChartDisplayProperties;
     private previousNumericPrice: number = 0;
     private currentNumericPrice: number = 0;
     private priceAnimationSub: Subscription | null = null;
@@ -76,7 +82,6 @@ export class DisplayCurrencyComponent implements OnChanges, OnInit, AfterViewIni
         this.currencyValueWebSocket.connect();
         this.webSocketSubscriptions['currency-value'] = this.currencyValueWebSocket.getMessages().subscribe({
            next: (message) => {
-               console.log('[WS][currency-value] message:', message);
                const numeric = Number(message);
                if (!isFinite(numeric)) {
                    return;
@@ -84,6 +89,15 @@ export class DisplayCurrencyComponent implements OnChanges, OnInit, AfterViewIni
                this.setCurrencyNumericPrice(numeric);
            }
         });
+    }
+
+    setChartProperties() {
+        const prices: SparkPoint[] = this.history.map(point => ({
+            date: point.date,
+            value: point.value
+        }));
+        this.chartProperties = defaultChartProperties;
+        this.chartProperties.data = prices;
     }
     
     ngOnInit(): void {
@@ -172,12 +186,20 @@ export class DisplayCurrencyComponent implements OnChanges, OnInit, AfterViewIni
                 this.currentNumericPrice = initNumericValue;
             }
         }
+        if (changes['history']) {
+            this.setChartProperties();
+        }
+        if (changes['performance']) {
+            this.updatePerformance();
+        }
     }
+    
 
     ngAfterViewInit() {
         this.resolveImageAsset();
         this.updatePerformance();
         this.continuouslyUpdatePrice();
+        // this.setChartProperties();
     }
 
     ngOnDestroy(): void {
@@ -187,7 +209,11 @@ export class DisplayCurrencyComponent implements OnChanges, OnInit, AfterViewIni
             this.priceAnimationSub.unsubscribe();
             this.priceAnimationSub = null;
         }
-        try { this.currencyValueWebSocket.disconnect?.(); } catch {}
+        try { 
+            this.currencyValueWebSocket.disconnect(); 
+        } catch {
+            console.error("Failed to disconnect from WebSocket");
+        }
     }
     
     updatePerformance(): void {
@@ -210,6 +236,7 @@ export class DisplayCurrencyComponent implements OnChanges, OnInit, AfterViewIni
         this.historyService.getHistory(this.currency.currencyCode, 24, 60)
             .subscribe(points => {
                 this.history = points;
+                this.setChartProperties();
             });
     }
 
