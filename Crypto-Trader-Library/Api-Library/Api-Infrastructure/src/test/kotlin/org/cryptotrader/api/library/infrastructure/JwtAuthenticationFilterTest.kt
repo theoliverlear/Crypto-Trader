@@ -42,8 +42,6 @@ class JwtAuthenticationFilterTest : CryptoTraderTest() {
         this.jwtService = JwtTokenService(rsa, this.testIssuer, 300, "test-aud")
         this.productUserService = mock(ProductUserService::class.java)
         this.tokenBlacklistService = mock(TokenBlacklistService::class.java)
-        // default: not blacklisted unless specified
-        `when`(this.tokenBlacklistService.isBlacklisted(anyString())).thenReturn(false)
         this.filter = JwtAuthenticationFilter(this.jwtService, this.productUserService, this.tokenBlacklistService)
         SecurityContextHolder.clearContext()
     }
