@@ -2,7 +2,7 @@ import {
     Component,
     EventEmitter,
     Input,
-    OnDestroy,
+    OnDestroy, OnInit,
     Output
 } from "@angular/core";
 import {
@@ -13,9 +13,6 @@ import {
 import {
     SignupWebSocketService
 } from "../../../../services/net/websocket/signup-websocket.service";
-import {
-    LoginWebSocketService
-} from "../../../../services/net/websocket/login-websocket.service";
 import {Subscription} from "rxjs";
 import {SignupCredentials} from "../../../../models/auth/SignupCredentials";
 import {
@@ -28,6 +25,8 @@ import {LoginCredentials} from "../../../../models/auth/LoginCredentials";
 import {
     TokenStorageService
 } from "../../../../services/auth/token-storage.service";
+import {LoginService} from "../../../../services/net/http/auth/access/login.service";
+import {SignupService} from "../../../../services/net/http/auth/access/signup.service";
 
 @Component({
     selector: 'auth-console',
@@ -35,20 +34,32 @@ import {
     templateUrl: './auth-console.component.html',
     styleUrls: ['./auth-console.component.scss']
 })
-export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
+/**
+ * Authentication console component for the landing/authorize page.
+ *
+ * Responsibilities:
+ * - Coordinates login and signup flows using the AuthService (HTTP + DPoP).
+ * - Shows UI feedback via AuthPopup events.
+ * - Avoids sending credentials over WebSockets; only the signup WS is used for
+ *   ancillary messages, while login/signup are performed over HTTP.
+ */
+export class AuthConsoleComponent implements WebSocketCapable, OnDestroy, OnInit {
     @Input() currentAuthType: AuthType = AuthType.SIGN_UP;
     @Output() authPopupEvent: EventEmitter<AuthPopup> = new EventEmitter<AuthPopup>();
     attempts: number = 0;
     webSocketSubscriptions: Record<string, Subscription> = {};
     constructor(private signupWebSocket: SignupWebSocketService,
-                private loginWebSocket: LoginWebSocketService,
+                private signupService: SignupService,
+                private loginService: LoginService,
                 private router: Router,
                 private tokenStorageService: TokenStorageService) {
 
     }
     
     attemptLogin(loginCredentials: LoginCredentials): void {
+        console.log("Attempting login");
         if (loginCredentials.isFilledFields()) {
+            console.log("Filled fields");
             this.login(loginCredentials.getRequest())
         } else {
             this.emitAuthPopup(AuthPopup.FILL_ALL_FIELDS);
@@ -56,7 +67,35 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
     }
     
     login(loginRequest: LoginRequest): void {
-        this.loginWebSocket.sendMessage(loginRequest);
+        console.log("Sending login request via HTTP /auth/login");
+        // this.authService.login(loginRequest).subscribe({
+        //     next: (authResponse: AuthResponse) => {
+        //         if (authResponse?.authorized) {
+        //             this.saveToken(authResponse);
+        //             this.router.navigate(['/portfolio']);
+        //         } else {
+        //             this.emitAuthPopup(AuthPopup.USERNAME_OR_EMAIL_EXISTS);
+        //         }
+        //     },
+        //     error: (err) => {
+        //         console.error('[HTTP][login] error:', err);
+        //         this.emitAuthPopup(AuthPopup.USERNAME_OR_EMAIL_EXISTS);
+        //     }
+        // });
+        this.loginService.login(loginRequest).subscribe({
+            next: (authResponse: AuthResponse) => {
+                if (authResponse?.authorized) {
+                    this.saveToken(authResponse);
+                    this.router.navigate(['/portfolio']);
+                } else {
+                    this.emitAuthPopup(AuthPopup.USERNAME_OR_EMAIL_EXISTS);
+                }
+            },
+            error: (err) => {
+                console.error('[HTTP][login] error:', err);
+                this.emitAuthPopup(AuthPopup.USERNAME_OR_EMAIL_EXISTS);
+            }
+        });
     }
     
     saveToken(authResponse: AuthResponse) {
@@ -74,7 +113,36 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
     }
     
     signup(signupRequest: SignupRequest) {
-        this.signupWebSocket.sendMessage(signupRequest);
+        // console.log("Sending signup request via HTTP /auth/signup");
+        // this.authService.signup(signupRequest as any).subscribe({
+        //     next: (authResponse: AuthResponse) => {
+        //         if (authResponse?.authorized) {
+        //             this.saveToken(authResponse);
+        //             this.router.navigate(['/portfolio']);
+        //         } else {
+        //             this.emitAuthPopup(AuthPopup.USERNAME_OR_EMAIL_EXISTS);
+        //         }
+        //     },
+        //     error: (err) => {
+        //         console.error('[HTTP][signup] error:', err);
+        //         this.emitAuthPopup(AuthPopup.USERNAME_OR_EMAIL_EXISTS);
+        //     }
+        // });
+        console.log("Sending signup request via HTTP /auth/signup");
+        this.signupService.signup(signupRequest).subscribe({
+            next: (authResponse: AuthResponse) => {
+                if (authResponse?.authorized) {
+                    this.saveToken(authResponse);
+                    this.router.navigate(['/portfolio']);
+                } else {
+                    this.emitAuthPopup(AuthPopup.USERNAME_OR_EMAIL_EXISTS);
+                }
+            },
+            error: (err) => {
+                console.error('[HTTP][signup] error:', err);
+                this.emitAuthPopup(AuthPopup.USERNAME_OR_EMAIL_EXISTS);
+            }
+        });
     }
 
     emitAuthPopup(authPopup: AuthPopup): void {
@@ -93,11 +161,11 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.initializeWebSockets();
+        // No WebSocket auth; using HTTP + DPoP
     }
     initializeWebSockets(): void {
         this.initSignupWebSocket();
-        this.initLoginWebSocket();
+        // Login now uses HTTP; no WebSocket connection needed
     }
 
     private initSignupWebSocket() {
@@ -129,34 +197,6 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
         });
     }
 
-    private initLoginWebSocket() {
-        console.log('[WS] Connecting login socket…');
-        this.loginWebSocket.connect();
-        this.webSocketSubscriptions['login'] = this.loginWebSocket.getMessages().subscribe({
-            next: (authResponse: AuthResponse) => {
-                console.log('[WS][login] message:', authResponse);
-                if (!authResponse) {
-                    return;
-                }
-                if (authResponse.authorized) {
-                    console.log("[WS][login] Authorized");
-                    this.saveToken(authResponse);
-                    this.router.navigate(['/portfolio']);
-                } else {
-                    console.log("[WS][login] Not authorized");
-                    if (this.attempts !== 0) {
-                        this.emitAuthPopup(AuthPopup.USERNAME_OR_EMAIL_EXISTS);
-                    }
-                }
-            },
-            error: (error) => {
-                console.log('[WS][login] error:', error);
-            },
-            complete: () => {
-                console.log('[WS][login] complete');
-            }
-        });
-    }
 
     ngOnDestroy(): void {
         Object.values(this.webSocketSubscriptions).forEach((sub) => {
@@ -167,9 +207,6 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
         this.webSocketSubscriptions = {};
         try { 
             this.signupWebSocket.disconnect(); 
-        } catch {}
-        try { 
-            this.loginWebSocket.disconnect(); 
         } catch {}
     }
 
