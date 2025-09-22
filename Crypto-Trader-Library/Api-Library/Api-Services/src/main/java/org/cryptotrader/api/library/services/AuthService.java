@@ -11,6 +11,7 @@ import org.cryptotrader.api.library.events.UserRegisteredEvent;
 import org.cryptotrader.api.library.events.publisher.UserEventsPublisher;
 import org.cryptotrader.api.library.model.http.AuthStatus;
 import org.cryptotrader.api.library.model.http.PayloadStatusResponse;
+import org.cryptotrader.api.library.services.jwt.JwtTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,10 @@ public class AuthService {
         this.jwtService = jwtService;
     }
     public PayloadStatusResponse<AuthResponse> signup(SignupRequest signupRequest) {
+        return signup(signupRequest, null);
+    }
+
+    public PayloadStatusResponse<AuthResponse> signup(SignupRequest signupRequest, String jwkThumbprint) {
         String email = signupRequest.getEmail();
         String password = signupRequest.getPassword();
         boolean userExists = this.productUserService.userExistsByEmail(email);
@@ -49,16 +54,23 @@ public class AuthService {
             user.setPortfolio(portfolio);
             this.productUserService.saveUser(user);
             this.portfolioService.savePortfolio(portfolio);
-            this.userEventsPublisher.publishUserRegisteredEvent(new UserRegisteredEvent(user, LocalDateTime.now()));
-            // TODO: Replace with event publishing or other method of talking
-            //       between modules.
-//            this.portfolioService.addPortfolioToTraders(portfolio);
-            String token = this.jwtService.generateToken(String.valueOf(user.getId()), email);
+            this.publishUserRegistration(user);
+            String token = this.jwtService.generateToken(String.valueOf(user.getId()), email, jwkThumbprint);
             AuthResponse authResponse = new AuthResponse(AuthStatus.AUTHORIZED.isAuthorized, token);
             return new PayloadStatusResponse<>(authResponse, HttpStatus.OK);
         }
     }
+
+    private void publishUserRegistration(ProductUser user) {
+        UserRegisteredEvent registerEvent = new UserRegisteredEvent(user, LocalDateTime.now());
+        this.userEventsPublisher.publishUserRegisteredEvent(registerEvent);
+    }
+
     public PayloadStatusResponse<AuthResponse> login(LoginRequest loginRequest) {
+        return login(loginRequest, null);
+    }
+
+    public PayloadStatusResponse<AuthResponse> login(LoginRequest loginRequest, String jwkThumbprint) {
         String email = loginRequest.getEmail();
         String password = loginRequest.getPassword();
         User user = this.productUserService.getUserByEmail(email);
@@ -69,7 +81,7 @@ public class AuthService {
             AuthResponse authResponse;
             if (passwordsMatch) {
                 String subject = String.valueOf(user.getId());
-                String token = this.jwtService.generateToken(subject, email);
+                String token = this.jwtService.generateToken(subject, email, jwkThumbprint);
                 authResponse = new AuthResponse(AuthStatus.AUTHORIZED.isAuthorized, token);
                 return new PayloadStatusResponse<>(authResponse, HttpStatus.OK);
             } else {
