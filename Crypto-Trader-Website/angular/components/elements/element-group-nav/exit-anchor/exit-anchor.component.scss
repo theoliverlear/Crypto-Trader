@@ -4,7 +4,8 @@
 exit-anchor {
     @include flex(center, center, row);
     border-radius: $quarter-percent;
-    background-color: $ocean-blue;
+    //background-color: $ocean-blue;
+    background-color: $light-charcoal;
     padding: calc($half-percent * 0.8);
     position: absolute;
     top: $one-percent;
