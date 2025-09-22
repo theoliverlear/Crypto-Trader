@@ -19,4 +19,9 @@ export class GetAllCurrenciesService extends HttpClientService<any, DisplayCurre
     public getAllCurrencies(): Observable<DisplayCurrencyList> {
         return this.get();
     }
+    
+    public getAllCurrenciesWithOffset(offset: number): Observable<DisplayCurrencyList> {
+        this.url = `${GetAllCurrenciesService.URL}?offset=${offset}`;
+        return this.get();
+    }
 }
