@@ -4,7 +4,8 @@
 nav-console {
     @include flex(center, center, row);
     border-radius: $quarter-percent;
-    background-color: $ocean-blue;
+    //background-color: $ocean-blue;
+    background-color: $light-charcoal;
     padding: $quarter-percent;
     position: absolute;
     top: $one-percent;
