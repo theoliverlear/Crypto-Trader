@@ -7,12 +7,14 @@ import {NotFoundComponent} from "./not-found/not-found.component";
 import {TermsOfServiceComponent} from "./terms-of-service/terms-of-service.component";
 import {AccountComponent} from "./account/account.component";
 import {ConsoleComponent} from "./console/console.component";
+import {DashboardComponent} from "./dashboard/dashboard.component";
 
 export const pages = [
     AccountComponent,
     AuthorizeComponent,
     ConsoleComponent,
     CurrenciesComponent,
+    DashboardComponent,
     HomeComponent,
     NotFoundComponent,
     PortfolioComponent,
