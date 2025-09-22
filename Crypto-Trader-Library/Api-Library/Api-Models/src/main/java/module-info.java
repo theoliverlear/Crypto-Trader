@@ -40,4 +40,6 @@ open module org.cryptotrader.api.library.models {
     exports org.cryptotrader.api.library.model.http;
     exports org.cryptotrader.api.library.model.trade;
     exports org.cryptotrader.api.library.model.currency;
+    exports org.cryptotrader.api.library.model.dpop;
+    exports org.cryptotrader.api.library.model.jwt;
 }
