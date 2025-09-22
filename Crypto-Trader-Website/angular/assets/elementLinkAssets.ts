@@ -17,20 +17,35 @@ export const navBarHomeLink = new TextElementLink('',
     TagType.H4
 );
 
-export const navBarCurrenciesLink = new TextElementLink('/currencies',
+export const currenciesElementLink = new ElementLink('/currencies',
+    TargetType.SELF,
+    false
+);
+
+export const traderElementLink = new ElementLink('/trader',
+    TargetType.SELF,
+    false
+);
+
+export const portfolioElementLink = new ElementLink('/portfolio',
+    TargetType.SELF,
+    false
+);
+
+export const navBarCurrenciesTextLink = new TextElementLink('/currencies',
     TargetType.SELF,
     false,
     'Currencies',
     TagType.H4,
 )
 
-export const navBarPortfolioLink = new TextElementLink('/portfolio',
+export const navBarPortfolioTextLink = new TextElementLink('/portfolio',
     TargetType.SELF,
     false,
     'Portfolio',
     TagType.H4
 );
-export const navBarTraderLink = new TextElementLink('/trader',
+export const navBarTraderTextLink = new TextElementLink('/trader',
     TargetType.SELF,
     false,
     'Trader',
