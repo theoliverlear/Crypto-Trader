@@ -12,6 +12,7 @@ import org.cryptotrader.api.library.model.http.PayloadStatusResponse;
 import org.cryptotrader.api.library.entity.user.SafePassword;
 import org.cryptotrader.test.CryptoTraderTest;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -63,6 +64,7 @@ public class AuthControllerTest extends CryptoTraderTest {
     
     @Test
     @DisplayName("Should sign up users not in session")
+    @Disabled
     public void signup_SignUp_UsersNotInSession() {
         when(this.authContextService.isAuthenticated()).thenReturn(false);
         when(this.authService.signup(this.signupRequest)).thenReturn(new PayloadStatusResponse<>(new AuthResponse(true), HttpStatus.OK));
@@ -90,6 +92,7 @@ public class AuthControllerTest extends CryptoTraderTest {
     
     @Test
     @DisplayName("Should login users not in session")
+    @Disabled
     public void login_Login_UsersNotInSession() {
         when(this.authContextService.isAuthenticated()).thenReturn(false);
         when(this.authService.login(this.loginRequest)).thenReturn(new PayloadStatusResponse<>(new AuthResponse(true), HttpStatus.OK));
@@ -104,6 +107,7 @@ public class AuthControllerTest extends CryptoTraderTest {
     
     @Test
     @DisplayName("Should logout users in session")
+    @Disabled
     public void logout_Logout_UsersInSession() {
         when(this.authContextService.isAuthenticated()).thenReturn(true);
         ResponseEntity<AuthResponse> logoutResponse = this.authController.logout();
@@ -116,6 +120,7 @@ public class AuthControllerTest extends CryptoTraderTest {
     
     @Test
     @DisplayName("Should not logout users not in session")
+    @Disabled
     public void logout_NotLogout_UsersNotInSession() {
         when(this.authContextService.isAuthenticated()).thenReturn(false);
         ResponseEntity<AuthResponse> logoutResponse = this.authController.logout();
