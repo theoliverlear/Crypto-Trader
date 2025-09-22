@@ -6,12 +6,20 @@ import {
     RouterStateSnapshot
 } from "@angular/router";
 import {catchError, map, Observable} from "rxjs";
-import {LoggedInService} from "../net/http/logged-in.service";
+import {LoggedInService} from "../net/http/auth/status/logged-in.service";
 import {TokenStorageService} from "../auth/token-storage.service";
 
 @Injectable({
     providedIn: 'root'
 })
+/**
+ * Route guard that checks server-side auth status before activating a protected route.
+ *
+ * Behavior:
+ * - Calls LoggedInService.isLoggedIn() (GET /auth/logged-in) to determine whether the current request is authenticated.
+ * - If authorized, allows activation. Otherwise, redirects to /authorize and blocks activation.
+ * - It does not attach Authorization/DPoP itself; the endpoint is designed to be public and reflect state.
+ */
 export class AuthGuard implements CanActivate {
     constructor(private router: Router,
                 private loggedInService: LoggedInService,
