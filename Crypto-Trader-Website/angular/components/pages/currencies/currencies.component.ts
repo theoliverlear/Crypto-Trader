@@ -2,7 +2,7 @@
 import {Component, OnInit} from "@angular/core";
 import {
     GetAllCurrenciesService
-} from "../../../services/net/http/get-all-currencies.service";
+} from "../../../services/net/http/currency/get-all-currencies.service";
 import {
     CurrencyList,
     DisplayCurrencyList
