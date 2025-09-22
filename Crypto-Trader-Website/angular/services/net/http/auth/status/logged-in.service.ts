@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {HttpClientService} from "@theoliverlear/angular-suite";
 import {environment} from "../../../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import {Observable, map} from "rxjs";
+import {Observable, map, BehaviorSubject} from "rxjs";
 import {AuthResponse} from "../../../../../models/auth/types";
 import {TokenStorageService} from "../../../../auth/token-storage.service";
 
@@ -19,6 +19,7 @@ import {TokenStorageService} from "../../../../auth/token-storage.service";
  */
 export class LoggedInService extends HttpClientService<any, AuthResponse> {
     private static readonly URL: string = `${environment.apiUrl}/auth/logged-in`;
+    private readonly authState$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     
     constructor(httpClient: HttpClient, private tokenStorage: TokenStorageService) {
         super(LoggedInService.URL, httpClient);
@@ -32,11 +33,16 @@ export class LoggedInService extends HttpClientService<any, AuthResponse> {
         return this.get().pipe(
             map((response: AuthResponse) => {
                 if (response?.authorized && !response.token) {
+                    this.authState$.next(response?.authorized || false);
                     const token: string = this.tokenStorage.getToken();
                     return token ? { ...response, token } : response;
                 }
                 return response;
             })
         );
+    }
+    
+    public getAuthState(): Observable<boolean> {
+        return this.authState$.asObservable();
     }
 }
