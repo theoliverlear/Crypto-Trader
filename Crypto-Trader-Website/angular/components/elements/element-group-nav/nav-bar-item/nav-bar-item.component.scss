@@ -5,40 +5,5 @@
 @use "../../../../styles/global_fonts" as fonts;
 
 nav-bar-item {
-    @include flex(center, center, row);
-    box-sizing: border-box;
-    position: relative;
-    @include flex(center, center, row);
-    border-radius: simplest-calc(0.5);
-    transition: background-color, box-shadow, scale, 0.3s;
-    padding: simplest-calc(0.5) simplest-calc(0.2);
-    background-color: $ocean-blue;
-    margin-right: $quarter-percent;
-    //background: radial-gradient(circle, $muted-blue, $blue-gray);
-    //background-color: $charcoal;
-    //border: $light-charcoal $thinnest-border solid;
-    box-shadow: add-alpha($light-charcoal, 0.5) 0 0 $quarter-percent simplest-calc(0.001);
-    flex-basis: $nine-percent;
-    h4 {
-        font-family: fonts.$google-sans-code-font;
-        font-size: calc($h4-font-size * 0.65);
-        min-width: 10ch;
-        //color: $pure-white;
-        //color: $sunbeam-yellow;
-        //color: $neutral-black;
-        color: $pure-white;
-    }
-    &:hover {
-        //background-color: $almost-white;
-        $box-shadow-size: simplest-calc(0.25);
-        box-shadow: add-alpha($light-charcoal, 0.25) 0 0 $half-percent simplest-calc(0.005);
-        cursor: pointer;
-    }
-
-    &:active {
-        box-shadow: none;
-        scale: 0.9;
-        //$top-and-right: simplest-calc(0.25);
-        //transform: translate($top-and-right, $top-and-right);
-    }
+    @extend %nav-button;
 }
