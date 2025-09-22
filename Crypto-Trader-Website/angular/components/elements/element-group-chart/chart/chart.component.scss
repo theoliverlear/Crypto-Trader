@@ -5,5 +5,6 @@
 chart {
     @extend %soft-border-radius;
     border: $thinnest-border solid $pure-white;
-    background-color: lightblue;
+    //background-color: lightblue;
+    background-color: add-alpha-opaque($mint-green, 0.5, $alabaster-stone);
 }
