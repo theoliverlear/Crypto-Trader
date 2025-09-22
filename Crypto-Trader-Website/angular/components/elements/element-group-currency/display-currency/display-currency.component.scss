@@ -40,21 +40,27 @@ display-currency {
             }
         }
         .display-currency-title {
-            @include flex(center, center, column);
+            border-left: $thin-border solid $pure-white;
+            padding: 0 $half-percent;
+            @include flex(center, flex-start, column);
             flex: 1;
-            margin: 0 $half-percent;
+            margin: 0 $one-percent;
 
+            > * {
+                margin-left: $half-percent;
+            }
             .display-currency-name {
                 //font-size: calc($h4-font-size * 1.25);
                 @extend %soft-text-shadow;
                 color: $pure-white;
+                text-align: left;
             }
             .currency-price {
                 color: $sunbeam-yellow;
             }
 
             .currency-action-buttons-div {
-                @include flex(center, center, row);
+                @include flex(flex-start, center, row);
                 margin: $half-percent 0;
                 width: 80%;
 
