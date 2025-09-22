@@ -19,6 +19,8 @@ import org.cryptotrader.api.library.repository.CurrencyRepository;
 import org.cryptotrader.api.library.repository.UniqueCurrencyHistoryRepository;
 import org.cryptotrader.api.library.repository.UniqueCurrencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -66,7 +68,8 @@ public class CurrencyService {
     }
 
     public DisplayCurrencyListResponse getCurrencyValuesResponse() {
-        List<Currency> currencies = this.getTopTenCurrencies();
+//        List<Currency> currencies = this.getTopTenCurrencies();
+        List<Currency> currencies = this.getTopTenNonEncapsulatedCurrencies();
         // sort by price desc
         currencies.sort((currencyOne, currencyTwo) -> {
             return Double.compare(currencyTwo.getValue(), currencyOne.getValue());
@@ -76,6 +79,26 @@ public class CurrencyService {
                 .toList());
     }
 
+    public DisplayCurrencyListResponse getCurrencyValuesResponse(int offset) {
+        List<Currency> currencies = this.getTopNonEncapsulatedCurrencies(offset);
+        currencies.sort((currencyOne, currencyTwo) -> Double.compare(currencyTwo.getValue(), currencyOne.getValue()));
+        return new DisplayCurrencyListResponse(currencies.stream()
+                .map(this::toCurrencyValueResponse)
+                .toList());
+    }
+
+    public List<Currency> getTopNonEncapsulatedCurrencies(int offset) {
+        int pageSize = 10;
+        int safeOffset = Math.max(0, offset);
+        int page = safeOffset / pageSize;
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return this.currencyRepository.findNonEncapsulated(pageable);
+    }
+    
+    public List<Currency> getTopTenNonEncapsulatedCurrencies() {
+        return this.currencyRepository.findTopTenNonEncapsulated();
+    }
+    
     public List<Currency> getTopTenCurrencies() {
         return this.currencyRepository.findTop10ByOrderByValueDesc();
     }
