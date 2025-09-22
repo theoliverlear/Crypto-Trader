@@ -18,6 +18,7 @@ open module org.cryptotrader.api.library.services {
     requires kotlin.stdlib;
     requires jjwt.api;
     requires com.auth0.jwt;
+    requires spring.data.commons;
 
     exports org.cryptotrader.api.library.services.jwt;
     exports org.cryptotrader.api.library.services.config;
