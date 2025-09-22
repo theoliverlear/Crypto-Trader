@@ -1,4 +1,7 @@
-import {FilledFieldsService} from "@theoliverlear/angular-suite";
+import {
+    FilledFieldsService,
+    HashPasswordService
+} from "@theoliverlear/angular-suite";
 import {LoginRequest} from "./types";
 
 export class LoginCredentials {
@@ -19,9 +22,10 @@ export class LoginCredentials {
         if (!this.isFilledFields()) {
             throw new Error("Cannot get login request due to input issues.");
         }
+        const passwordHasher: HashPasswordService = new HashPasswordService();
         return {
             email: this.email,
-            password: this.password
+            password: passwordHasher.hashPassword(this.password)
         };
     }
 }
