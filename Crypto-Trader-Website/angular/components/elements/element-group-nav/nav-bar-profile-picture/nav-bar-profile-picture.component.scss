@@ -10,11 +10,11 @@ nav-bar-profile-picture {
     top: $one-percent;
     right: $one-percent;
     //padding: $half-percent;
-    background-color: $ocean-blue;
+    //background-color: $ocean-blue;
+    background-color: $light-charcoal;
     //@extend %light-logo-gradient;
     //padding: calc($half-percent * 1.2);
     padding: $quarter-percent;
-    @include square-size(calc($three-percent * 1.02));
     //padding: simple-calc(0.15, 0.05);
     //border-radius: simple-calc(1, 1);
     transition: box-shadow, transform, 0.3s;
