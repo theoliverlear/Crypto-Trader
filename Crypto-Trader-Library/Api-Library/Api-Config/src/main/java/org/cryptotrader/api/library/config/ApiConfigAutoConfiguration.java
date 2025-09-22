@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Import;
 @AutoConfiguration
 @Import({
         DefaultPropertiesConfig.class,
-        DocsSecurityConfig.class,
         ApplicationYamlConfig.class,
         ApplicationDocsYamlConfig.class,
         ApplicationTestYamlConfig.class,
