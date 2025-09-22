@@ -4,17 +4,14 @@ import * as d3 from 'd3';
 import {
     CurrencyFormatterService
 } from "../../../../services/ui/currency-formatter.service";
+import {
+    ChartDisplayProperties,
+    Margin,
+    SparkPoint
+} from "../../../../models/chart/types";
+import {defaultChartProperties} from "../../../../assets/chartAssets";
 
-export type SparkPoint = { 
-    date: Date | string | number;
-    value: number;
-};
-export type Margin = {
-    top: number;
-    right: number;
-    bottom: number;
-    left: number;
-}
+
 @Component({
     selector: 'chart',
     standalone: false,
@@ -22,12 +19,8 @@ export type Margin = {
     styleUrls: ['./chart.component.scss']
 })
 export class ChartComponent implements OnChanges {
-    @Input() data: SparkPoint[] = [];
-    @Input() width: number = 120;
-    @Input() height: number = 40;
-    @Input() stroke: string = '#4caf50';
-    @Input() strokeWidth: number = 2.0;
-    @Input() margin: Margin = {top: 20, right: 20, bottom: 20, left: 20};
+    @Input() properties: ChartDisplayProperties;
+
 
     @ViewChild('svgElement', { static: true }) chartReference!: ElementRef<SVGSVGElement>;
 
@@ -36,7 +29,7 @@ export class ChartComponent implements OnChanges {
     }
     
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes['data']) {
+        if (changes['properties']) {
             this.render();
         }
     }
@@ -58,13 +51,13 @@ export class ChartComponent implements OnChanges {
 
         const graphic: any = d3.select(svgElement)
             .append('g')
-            .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
+            .attr('transform', `translate(${this.properties.margin.left},${this.properties.margin.top})`);
 
-        if (!this.data || this.data.length === 0) {
+        if (!this.properties.data || this.properties.data.length === 0) {
             return;
         }
 
-        const parsed: {date: Date; value: number}[] = this.data.map(point => ({
+        const parsed: {date: Date; value: number}[] = this.properties.data.map(point => ({
             date: point.date instanceof Date ? point.date : new Date(point.date),
             value: point.value
         })).filter(date => !isNaN((date.date as Date).getTime()));
@@ -88,8 +81,8 @@ export class ChartComponent implements OnChanges {
         graphic.append('path')
             .datum(parsed as any)
             .attr('fill', 'none')
-            .attr('stroke', this.stroke)
-            .attr('stroke-width', this.strokeWidth)
+            .attr('stroke', this.properties.stroke)
+            .attr('stroke-width', this.properties.strokeWidth)
             .attr('d', line as any);
 
         const [yMin, yMax] = yAxis.domain();
@@ -102,7 +95,7 @@ export class ChartComponent implements OnChanges {
             .attr('dx', '-6')
             .attr('dy', `${labelPadTopEm}em`)
             .attr('text-anchor', 'end')
-            .attr('fill', '#9aa0a6')
+            .attr('fill', this.properties.textColor)
             .attr('font-size', 10)
             .text(this.currencyFormatter.formatCurrency(yMax));
 
@@ -112,15 +105,53 @@ export class ChartComponent implements OnChanges {
             .attr('dx', '-6')
             .attr('dy', `-${labelPadBottomEm}em`)
             .attr('text-anchor', 'end')
-            .attr('fill', '#9aa0a6')
+            .attr('fill', this.properties.textColor)
             .attr('font-size', 10)
             .text(this.currencyFormatter.formatCurrency(yMin));
         
+        // Add simple time labels (HH:mm) at start and end of the x-axis
+        let [domainStart, domainEnd] = xAxis.domain() as [Date, Date];
+
+        // Ensure chronological order (left = earlier, right = later)
+        if (domainStart > domainEnd) {
+            const tmp = domainStart;
+            domainStart = domainEnd;
+            domainEnd = tmp;
+        }
+
+        // Floor to nearest minute to avoid second-level jitter
+        const startTime = new Date(Math.floor(domainStart.getTime() / 60000) * 60000);
+        const endTime = new Date(Math.floor(domainEnd.getTime() / 60000) * 60000);
+
+        const formatTime = d3.timeFormat('%m-%d-%y, %-I%p').bind(d3);
+
+        // Left (start) time label
+        graphic.append('text')
+            .attr('x', 0)
+            .attr('y', height)
+            .attr('dx', '6')
+            .attr('dy', '1.6em')
+            .attr('text-anchor', 'start')
+            .attr('fill', this.properties.textColor)
+            .attr('font-size', 10)
+            .text(formatTime(startTime));
+
+        // Right (end) time label
+        graphic.append('text')
+            .attr('x', width)
+            .attr('y', height)
+            .attr('dx', '-6')
+            .attr('dy', '1.6em')
+            .attr('text-anchor', 'end')
+            .attr('fill', this.properties.textColor)
+            .attr('font-size', 10)
+            .text(formatTime(endTime));
+
     }
 
     private setDimensions(svgElement: SVGSVGElement) {
-        svgElement.setAttribute('width', String(this.width));
-        svgElement.setAttribute('height', String(this.height));
+        svgElement.setAttribute('width', String(this.properties.width));
+        svgElement.setAttribute('height', String(this.properties.height));
     }
 
     private resetSVG(svgElement: SVGSVGElement) {
@@ -130,10 +161,10 @@ export class ChartComponent implements OnChanges {
     }
 
     private getAdjustedHeight() {
-        return this.height - this.margin.top - this.margin.bottom;
+        return this.properties.height - this.properties.margin.top - this.properties.margin.bottom;
     }
 
     private getAdjustedWidth() {
-        return this.width - this.margin.left - this.margin.right;
+        return this.properties.width - this.properties.margin.left - this.properties.margin.right;
     }
 }
