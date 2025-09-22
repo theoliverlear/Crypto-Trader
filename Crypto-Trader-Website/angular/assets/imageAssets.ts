@@ -78,3 +78,18 @@ export const exitIcon: ImageAsset = {
     src: getIconImagePath('white_exit_door_icon.svg'),
     alt: 'Exit Icon'
 };
+
+export const walletIcon: ImageAsset = {
+    src: getIconImagePath('wallet_icon.svg'),
+    alt: 'Wallet Icon'
+};
+
+export const coinIcon: ImageAsset = {
+    src: getIconImagePath('coin_icon.svg'),
+    alt: 'Coin Icon'
+};
+
+export const stockScaleIcon: ImageAsset = {
+    src: getIconImagePath('stock_scale_icon.svg'),
+    alt: 'Stock Scale Icon'
+};
