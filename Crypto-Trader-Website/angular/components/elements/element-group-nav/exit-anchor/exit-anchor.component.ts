@@ -2,7 +2,7 @@
 import {Component, HostListener} from "@angular/core";
 import {exitIcon} from "../../../../assets/imageAssets";
 import {homeElementLink} from "../../../../assets/elementLinkAssets";
-import {LogoutService} from "../../../../services/net/http/logout.service";
+import {LogoutService} from "../../../../services/net/http/auth/access/logout.service";
 import {
     TokenStorageService
 } from "../../../../services/auth/token-storage.service";
@@ -24,28 +24,28 @@ export class ExitAnchorComponent {
 
     @HostListener('click')
     onClick() {
-        try { 
-            this.tokenStorageService.clear(); 
-        } catch {
-            console.error('Failed to clear token storage');
-        }
-        this.router.navigate(['/authorize']).then(navigated => {
-            if (navigated) {
-                this.logoutService.logout().subscribe({
-                    next: (authResponse: AuthResponse) => {
-                        console.log('Logged out: ', authResponse);
-                    },
-                    error: (error) => {
-                        // Ignore errors; client state has been cleared
-                        console.warn('Logout request error (ignored):', error);
-                    },
-                    complete: () => {
-                        console.log('Logout complete');
-                    }
+        // Important: Do NOT clear the token before making the logout request,
+        // otherwise the Authorization header won't be attached and the server
+        // cannot blacklist the token. Clear it after the request completes.
+        this.logoutService.logout().subscribe({
+            next: (authResponse: AuthResponse) => {
+                console.log('Logged out: ', authResponse);
+            },
+            error: (error) => {
+                // Even if logout fails, clear local token to avoid lingering client auth
+                console.warn('Logout request error (ignored):', error);
+            },
+            complete: () => {
+                try {
+                    this.tokenStorageService.clear();
+                } catch {
+                    console.error('Failed to clear token storage');
+                }
+                this.router.navigate(['/authorize']).then(() => {
+                    console.log('Logout complete');
                 });
             }
         });
-
     }
     
     protected readonly exitIcon = exitIcon;
