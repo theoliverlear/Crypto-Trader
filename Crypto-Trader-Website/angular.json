@@ -80,6 +80,7 @@
               "angular/components/pages/authorize/authorize.component.scss",
               "angular/components/pages/console/console.component.scss",
               "angular/components/pages/currencies/currencies.component.scss",
+              "angular/components/pages/dashboard/dashboard.component.scss",
               "angular/components/pages/home/home.component.scss",
               "angular/components/pages/not-found/not-found.component.scss",
               "angular/components/pages/portfolio/portfolio.component.scss",
