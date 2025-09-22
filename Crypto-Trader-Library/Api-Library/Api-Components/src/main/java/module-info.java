@@ -18,4 +18,5 @@ open module org.cryptotrader.api.library.components {
 
     exports org.cryptotrader.api.library.component.config;
     exports org.cryptotrader.api.library.component;
+    exports org.cryptotrader.api.library.component.dpop;
 }
