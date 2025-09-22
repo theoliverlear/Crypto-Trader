@@ -1,0 +1,68 @@
+// loading-wheel.component.scss
+@use "../../../styles/globals" as *;
+
+loading-wheel {
+    @include flex(center, center, column);
+    @include square-size($six-percent);
+    position: relative;
+    margin: $one-percent 0;
+    .loader-ring {
+        @extend %fill-container;
+        border-radius: 50%;
+        position: absolute;
+        background: conic-gradient(
+                        from 0deg,
+                        //$sage-green,
+                lightblue,
+                        $mint-green,
+                        $air-blue,
+                        $pure-white
+        );
+        border: $thin-border solid $alabaster-stone;
+        box-shadow: 0 0 $eighth-percent $sea-blue,
+        0 0 $quarter-percent $turquoise-blue;
+        opacity: 0.7;
+        animation: spinning 1s cubic-bezier(0.6, 0.45, 0.1, 0.6) infinite;
+    }
+
+    .loader-dot {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        @include square-size($four-percent);
+        border-radius: 50%;
+        background-color: $pure-white;
+        box-shadow: 0 0 $half-percent $turquoise-blue;
+        animation: jumping 2s cubic-bezier(0.2, 0.57, 0.36, 0.98) infinite;
+    }
+    @keyframes spinning {
+        0% {
+            transform: rotate(0deg) scale(1);
+        }
+        100% {
+            transform: rotate(360deg) scale(1);
+        }
+    }
+
+    @keyframes glowing {
+        0% {
+            opacity: 0.6;
+            box-shadow: 0 0 $quarter-percent $deep-ocean;
+        }
+        100% {
+            opacity: 1;
+            box-shadow: 0 0 $six-percent $mint-green, 0 0 $quarter-percent $muted-blue;
+        }
+    }
+
+    @keyframes jumping {
+        0%, 100% {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        50% {
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+    }
+
+}
