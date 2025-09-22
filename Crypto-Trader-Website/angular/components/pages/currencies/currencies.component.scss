@@ -3,5 +3,9 @@
 
 
 currencies {
-
+    @include flex(center, center, column);
+    .currency-list {
+        @include flex(center, center, column);
+        @extend %fill-container;
+    }
 }
