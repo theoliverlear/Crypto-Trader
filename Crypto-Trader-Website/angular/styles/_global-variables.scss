@@ -13,7 +13,35 @@ $sunbeam-yellow: #ffe17b;
 $lime: #72E744;
 $red-orange: rgb(255, 102, 0);
 $ocean-blue: #4074A7;
-/*-------------------------Currency-Colors------------------------------*/
+
 $bitcoin-color: #F7931A;
 $ethereum-color: #6480EB;
 $litecoin-color: #375F9E;
+
+$green-lemon: #6FC164;
+$pale-mint: #C0ECD7;
+$sage-green: #A4DBC2;
+$teal-green: #3C9E7A;
+$mint-green: #3EB98D;
+$dark-teal: #1D5C57;
+$jungle-green: #076A64;
+$sea-blue: #26929D;
+$deep-ocean: #073D44;
+$turquoise-blue: #13899D;
+$steel-blue: #07718D;
+$dark-sea: #045267;
+
+$crypto-logo-stops: (
+        $green-lemon 9.3%,
+        $pale-mint 16.1%,
+        $sage-green 20.7%,
+        $teal-green 31.4%,
+        $mint-green 45.4%,
+        $dark-teal 56.8%,
+        $jungle-green 62.1%,
+        $sea-blue 81.8%,
+        $deep-ocean 86.8%,
+        $turquoise-blue 91.1%,
+        $steel-blue 94.6%,
+        $dark-sea 100%
+);
