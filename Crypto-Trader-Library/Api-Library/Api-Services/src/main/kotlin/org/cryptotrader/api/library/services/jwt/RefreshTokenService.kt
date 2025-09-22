@@ -90,7 +90,8 @@ class RefreshTokenService(
         if (record.jkt != presentedJkt) {
             // Optional one-time rebind: accept a single jkt change per family when enabled
             val rebindUsed = this.familyRebindUsed.getOrDefault(record.familyId, false)
-            if (this.allowRebindOnce && !rebindUsed && !presentedJkt.isNullOrBlank()) {
+            if (this.allowRebindOnce && !rebindUsed && record.jkt.isNullOrBlank() && !presentedJkt.isNullOrBlank()) {
+                // Allow a single rebind only from an unbound session (null/blank jkt) to a concrete jkt.
                 this.familyRebindUsed[record.familyId] = true
                 // Proceed with rotation but bind the new token to the new jkt
                 record.used = true
