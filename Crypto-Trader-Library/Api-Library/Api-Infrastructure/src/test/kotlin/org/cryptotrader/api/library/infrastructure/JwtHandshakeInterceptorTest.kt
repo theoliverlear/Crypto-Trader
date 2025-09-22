@@ -2,8 +2,9 @@ package org.cryptotrader.api.library.infrastructure
 
 import org.assertj.core.api.Assertions.assertThat
 import org.cryptotrader.api.library.entity.user.ProductUser
-import org.cryptotrader.api.library.services.JwtTokenService
+import org.cryptotrader.api.library.services.jwt.JwtTokenService
 import org.cryptotrader.api.library.services.ProductUserService
+import org.cryptotrader.api.library.services.jwt.TokenBlacklistService
 import org.cryptotrader.test.CryptoTraderTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -37,9 +38,11 @@ class JwtHandshakeInterceptorTest : CryptoTraderTest() {
 
     @BeforeEach
     fun setUp() {
-        this.jwtService = JwtTokenService("test-secret", "test-issuer", 3600)
+        val rsa = org.cryptotrader.api.library.services.rsa.RsaKeyService(null, null, null)
+        this.jwtService = JwtTokenService(rsa, "https://api.test", 300, "test-aud")
         this.productUserService = Mockito.mock(ProductUserService::class.java)
-        this.interceptor = JwtHandshakeInterceptor(jwtService, productUserService)
+        val tokenBlacklistService = Mockito.mock(TokenBlacklistService::class.java)
+        this.interceptor = JwtHandshakeInterceptor(jwtService, productUserService, tokenBlacklistService)
     }
 
     @Test
