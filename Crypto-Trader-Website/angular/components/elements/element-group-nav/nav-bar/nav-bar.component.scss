@@ -18,8 +18,15 @@ nav-bar {
         @include flex(center, center, row);
         @extend %fill-container;
         .nav-items-div {
-            @include flex(space-between, center, row);
-            width: 41%;
+            @include flex(space-around, center, row);
+            width: 32%;
+            nav-bar-item {
+                scale: 1.3;
+                //margin-right: $two-percent;
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
         }
     }
 }
@@ -27,7 +34,7 @@ nav-bar {
     nav-bar {
         nav {
             .nav-items-div {
-                width: 41%;
+                //width: 41%;
             }
         }
     }
