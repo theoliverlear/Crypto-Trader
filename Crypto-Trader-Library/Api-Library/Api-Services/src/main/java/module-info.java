@@ -6,6 +6,7 @@ open module org.cryptotrader.api.library.services {
     requires org.cryptotrader.api.library.models;
     requires org.cryptotrader.api.library.repositories;
     requires org.cryptotrader.api.library.events;
+    requires org.cryptotrader.api.library.scripts;
     requires spring.beans;
     requires spring.context;
     requires spring.jdbc;
@@ -18,7 +19,10 @@ open module org.cryptotrader.api.library.services {
     requires jjwt.api;
     requires com.auth0.jwt;
 
-    exports org.cryptotrader.api.library.services.models;
+    exports org.cryptotrader.api.library.services.jwt;
     exports org.cryptotrader.api.library.services.config;
     exports org.cryptotrader.api.library.services;
+    exports org.cryptotrader.api.library.services.dpop;
+    exports org.cryptotrader.api.library.services.rsa;
+    exports org.cryptotrader.api.library.services.models;
 }
