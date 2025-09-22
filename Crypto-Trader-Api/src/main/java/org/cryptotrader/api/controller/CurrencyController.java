@@ -1,5 +1,6 @@
 package org.cryptotrader.api.controller;
 
+import jakarta.annotation.security.PermitAll;
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.api.library.communication.response.DisplayCurrencyListResponse;
 import org.cryptotrader.api.library.communication.response.PerformanceRatingResponse;
@@ -27,6 +28,7 @@ public class CurrencyController {
     public CurrencyController(CurrencyService currencyService) {
         this.currencyService = currencyService;
     }
+    @PermitAll
     @PostMapping("/value")
     public ResponseEntity<AssetValueResponse> getCurrencyValue(@RequestBody AssetValueRequest assetValueRequest) {
         Currency currency = this.currencyService.getCurrencyByCurrencyCode(assetValueRequest.getCurrencyCode());
@@ -37,6 +39,7 @@ public class CurrencyController {
             return new ResponseEntity<>(new AssetValueResponse(assetValue), HttpStatus.OK);
         }
     }
+    @PermitAll
     @GetMapping("/performance/{currencyCode}")
     public ResponseEntity<PerformanceRatingResponse> getCurrencyPerformance(@PathVariable String currencyCode) {
         if (currencyCode == null || currencyCode.isEmpty()) {
@@ -44,17 +47,24 @@ public class CurrencyController {
         } else {
             PerformanceRating performanceRatingResponse = this.currencyService.getDayPerformance(currencyCode);
             String changePercent = this.currencyService.getPercentageDayPerformance(currencyCode);
-            log.info("Currency performance: {} - {}", performanceRatingResponse, changePercent);
             return new ResponseEntity<>(new PerformanceRatingResponse(performanceRatingResponse, changePercent),
                                         HttpStatus.OK);
         }
     }
 
+    @PermitAll
     @GetMapping("/all")
     public ResponseEntity<DisplayCurrencyListResponse> getAll() {
         return new ResponseEntity<>(this.currencyService.getCurrencyValuesResponse(), HttpStatus.OK);
     }
 
+    @PermitAll
+    @GetMapping(value = "/all", params = "offset")
+    public ResponseEntity<DisplayCurrencyListResponse> getAllWithOffset(@RequestParam(value = "offset", defaultValue = "0") int offset) {
+        return new ResponseEntity<>(this.currencyService.getCurrencyValuesResponse(offset), HttpStatus.OK);
+    }
+
+    @PermitAll
     @GetMapping("/history/{code}")
     public ResponseEntity<List<TimeValueResponse>> getHistory(@PathVariable("code") String code,
                                                               @RequestParam(value = "hours", defaultValue = "24") int hours,
