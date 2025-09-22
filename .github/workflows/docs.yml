@@ -34,6 +34,7 @@ jobs:
       X_SECRET: ${{ secrets.X_SECRET }}
       REPO_NAME: ${{ secrets.REPO_NAME }}
       APP_NAME: ${{ secrets.APP_NAME }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
     outputs:
       pages_enabled: ${{ steps.pages.outcome }}
       site_ready: ${{ steps.verify_site.outputs.site_ready }}
