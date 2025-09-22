@@ -24,7 +24,7 @@ import {
 } from "../../components/pages/console/console.component";
 
 
-const isDevelopment = true;
+const isDevelopment = false;
 
 
 export const accountRoute: Route = {
