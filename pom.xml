@@ -538,6 +538,11 @@
                 <artifactId>api-components</artifactId>
                 <version>0.0.5</version>
             </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>api-scripts</artifactId>
+                <version>0.0.1</version>
+            </dependency>
 
             <!-- Admin domain -->
             <dependency>
