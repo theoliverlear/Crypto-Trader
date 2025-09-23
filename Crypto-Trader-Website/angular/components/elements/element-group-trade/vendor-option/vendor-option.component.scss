@@ -1,0 +1,22 @@
+// vendor-option.component.scss
+@use "../../../../styles/globals" as *;
+
+vendor-option {
+    @include flex(center, center, column);
+    @extend %nav-button;
+    position: relative;
+    //scale: 1.5;
+    @include square-size($five-percent);
+    ss-img {
+        padding: calc($quarter-percent);
+    }
+    .recommended-icon {
+        top: calc($one-percent * -1);
+        right: calc($one-percent * -1);
+        @include square-size(calc(($one-percent + $quarter-percent) * 1.5));
+        position: absolute;
+        //filter: drop-shadow(0 0 $quarter-percent $turquoise-blue);
+        // Softer and less visible image
+        //filter: drop-shadow(0 $quarter-percent $quarter-percent $sunbeam-yellow) brightness(0.9);
+    }
+}

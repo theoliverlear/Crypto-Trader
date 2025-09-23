@@ -1,0 +1,7 @@
+<!-- vendor-option.component.html -->
+<ng-container>
+    @if (isRecommended) {
+        <ss-img [imageAsset]="starIcon" class="recommended-icon"/>
+    }
+    <ss-img [imageAsset]="VendorOption.getImageAsset(vendorOption)"/>
+</ng-container>
