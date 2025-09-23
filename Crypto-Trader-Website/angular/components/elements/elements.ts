@@ -133,6 +133,9 @@ import {
 import {
     VendorOptionsComponent
 } from "./element-group-trade/vendor-options/vendor-options.component";
+import {
+    AuthGuardPopupComponent
+} from "./element-group-auth/auth-guard-popup/auth-guard-popup.component";
 
 export const elements = [
     AssetButtonComponent,
@@ -145,6 +148,7 @@ export const elements = [
     AuthConsoleSignupSectionComponent,
     AuthConsoleTabComponent,
     AuthConsoleTabSectionComponent,
+    AuthGuardPopupComponent,
     AuthInputComponent,
     ChartComponent,
     ContentStripeComponent,
@@ -182,6 +186,6 @@ export const elements = [
     TierPromoStripeComponent,
     TraderEventBubbleComponent,
     TransparencyPromoComponent,
-    VendorOptionsComponent,
     VendorOptionComponent,
+    VendorOptionsComponent,
 ]
