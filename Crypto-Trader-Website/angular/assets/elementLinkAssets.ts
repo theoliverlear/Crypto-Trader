@@ -32,6 +32,11 @@ export const portfolioElementLink = new ElementLink('/portfolio',
     false
 );
 
+export const tradeElementLink = new ElementLink('/trade',
+    TargetType.SELF,
+    false
+)
+
 export const navBarCurrenciesTextLink = new TextElementLink('/currencies',
     TargetType.SELF,
     false,
