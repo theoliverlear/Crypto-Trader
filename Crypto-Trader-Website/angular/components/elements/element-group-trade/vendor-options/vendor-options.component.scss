@@ -1,0 +1,22 @@
+// vendor-options.component.scss
+@use "../../../../styles/globals" as *;
+@use "../../../../styles/gradients/global_gradient_placeholders" as *;
+
+vendor-options {
+    background-color: $pure-white;
+
+    padding: $one-percent;
+    @include flex(center, center, column);
+    margin: $one-percent 0;
+    @extend %soft-border-radius;
+    .vendors-title-div {
+        @include flex(center, center, column);
+        margin: $half-percent 0 $one-half-percent 0;
+        ss-title {
+            @extend %signature-brand-gradient-text;
+        }
+    }
+    .vendor-options-list {
+        @include flex(center, center, row);
+    }
+}

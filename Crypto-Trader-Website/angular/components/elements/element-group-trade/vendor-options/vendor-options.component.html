@@ -1,0 +1,12 @@
+<!-- vendor-options.component.html -->
+<ng-container>
+    <div class="vendors-title-div">
+        <ss-title [tagType]="TagType.H3" [text]="'Select a vendor.'"/>
+        <subtitle [tagType]="TagType.P" [text]="'Recommended: always start in paper mode.'"/>
+    </div>
+    <div class="vendor-options-list">
+        @for (vendor of VendorOption.values(); track vendor) {
+            <vendor-option [vendorOption]="vendor"/>
+        }
+    </div>
+</ng-container>
