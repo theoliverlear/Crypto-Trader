@@ -35,6 +35,7 @@ jobs:
       REPO_NAME: ${{ secrets.REPO_NAME }}
       APP_NAME: ${{ secrets.APP_NAME }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      SECURITY_HONEYPOT_PATHS: ${{ secrets.SECURITY_HONEYPOT_PATHS }}
     outputs:
       pages_enabled: ${{ steps.pages.outcome }}
       site_ready: ${{ steps.verify_site.outputs.site_ready }}
