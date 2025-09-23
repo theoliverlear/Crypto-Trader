@@ -51,3 +51,7 @@
         transform: translate($hover-box-shadow-size, $hover-box-shadow-size);
     }
 }
+
+%softer-border-radius {
+    border-radius: $quarter-percent;
+}
