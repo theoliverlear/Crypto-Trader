@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {filter, map, mergeMap} from "rxjs";
+import {AuthGuard} from "../../services/guard/auth.guard";
+import {DelayService} from "@theoliverlear/angular-suite";
 
 @Component({
     selector: 'app',
@@ -9,9 +11,13 @@ import {filter, map, mergeMap} from "rxjs";
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+    showAuthGuardPopup: boolean = false;
     title: string;
-    constructor(private router: Router, private activatedRoot: ActivatedRoute) {
-        console.log('AppComponent loaded');
+    constructor(private router: Router, 
+                private activatedRoot: ActivatedRoute,
+                private authGuard: AuthGuard,
+                private delayService: DelayService) {
+        
     }
     ngOnInit() {
         this.router.events.pipe(filter((event) => event instanceof NavigationEnd),
@@ -27,5 +33,15 @@ export class AppComponent implements OnInit {
             const metaInfo = data['meta'] || {};
             this.title = metaInfo['title'] || 'Crypto Trader';
         });
+        this.authGuard.getAuthBlocked().subscribe((authBlocked: undefined) => {
+            this.triggerAuthPopup();
+        })
+    }
+    
+    async triggerAuthPopup(): Promise<void> {
+        this.showAuthGuardPopup = true;
+        // Keep visible slightly longer than the animation duration for a smooth finish
+        await this.delayService.delay(4200);
+        this.showAuthGuardPopup = false;
     }
 }
