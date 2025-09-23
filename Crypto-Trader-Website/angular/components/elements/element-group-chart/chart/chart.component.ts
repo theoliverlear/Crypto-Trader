@@ -1,5 +1,8 @@
 // chart.component.ts 
-import { Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from "@angular/core";
+import {
+    Component, ElementRef,
+    HostListener, Input, OnChanges, SimpleChanges, ViewChild
+} from "@angular/core";
 import * as d3 from 'd3';
 import {
     CurrencyFormatterService
@@ -10,6 +13,9 @@ import {
     SparkPoint
 } from "../../../../models/chart/types";
 import {defaultChartProperties} from "../../../../assets/chartAssets";
+import {
+    PixelCalculatorService
+} from "../../../../services/ui/pixel-calculator.service";
 
 
 @Component({
@@ -19,13 +25,19 @@ import {defaultChartProperties} from "../../../../assets/chartAssets";
     styleUrls: ['./chart.component.scss']
 })
 export class ChartComponent implements OnChanges {
-    @Input() properties: ChartDisplayProperties;
+    @Input() properties: ChartDisplayProperties = defaultChartProperties;
 
 
     @ViewChild('svgElement', { static: true }) chartReference!: ElementRef<SVGSVGElement>;
 
-    constructor(private currencyFormatter: CurrencyFormatterService) {
+    constructor(private currencyFormatter: CurrencyFormatterService,
+                private pixelCalculator: PixelCalculatorService) {
 
+    }
+    
+    @HostListener('window:resize', ['$event'])
+    onResize(event: Event) {
+        this.render();
     }
     
     ngOnChanges(changes: SimpleChanges): void {
@@ -43,7 +55,8 @@ export class ChartComponent implements OnChanges {
         if (!svgElement) {
             return;
         }
-
+        this.properties.width = this.pixelCalculator.getByViewport(40, 0);
+        this.properties.height = this.pixelCalculator.getByViewport(0, 19);
         const width: number = this.getAdjustedWidth();
         const height: number = this.getAdjustedHeight();
         this.resetSVG(svgElement);
