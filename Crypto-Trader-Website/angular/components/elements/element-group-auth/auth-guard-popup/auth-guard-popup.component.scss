@@ -1,0 +1,47 @@
+// auth-guard-popup.component.scss
+@use "../../../../styles/globals" as *;
+
+// Keyframes for slide/float from top, slight grow, longer pause, then reverse up
+@keyframes authGuardFloatDownUp {
+    0% {
+        transform: translate(-50%, -120%) scale(0.96);
+        opacity: 0;
+    }
+    28% {
+        transform: translate(-50%, 8%) scale(1.04);
+        opacity: 1;
+    }
+    /* Hold steady for readability */
+    72% {
+        transform: translate(-50%, 8%) scale(1.02);
+        opacity: 1;
+    }
+    /* Float back up and fade out */
+    100% {
+        transform: translate(-50%, -120%) scale(0.96);
+        opacity: 0;
+    }
+}
+
+auth-guard-popup {
+    @include flex(center, center, column);
+    background-color: red;
+    @extend %simple-box-shadow;
+    @extend %softer-border-radius;
+    padding: $half-percent;
+    position: fixed;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -120%);
+    z-index: 10000;
+    pointer-events: none;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+
+    animation: authGuardFloatDownUp 4s cubic-bezier(.22, .61, .36, 1) forwards;
+
+    ss-title {
+        color: $pure-white;
+        white-space: nowrap;
+    }
+}
