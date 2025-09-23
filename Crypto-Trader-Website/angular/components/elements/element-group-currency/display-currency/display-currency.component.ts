@@ -58,7 +58,7 @@ export class DisplayCurrencyComponent implements OnChanges, OnInit, AfterViewIni
     history: HistoryPoint[] = [];
     performance: PerformanceRating = { rating: 'neutral', changePercent: '0%' };
     currencyPrice: string = "";
-    chartProperties: ChartDisplayProperties;
+    chartProperties: ChartDisplayProperties = defaultChartProperties;
     private previousNumericPrice: number = 0;
     private currentNumericPrice: number = 0;
     private priceAnimationSub: Subscription | null = null;
@@ -96,8 +96,11 @@ export class DisplayCurrencyComponent implements OnChanges, OnInit, AfterViewIni
             date: point.date,
             value: point.value
         }));
-        this.chartProperties = defaultChartProperties;
-        this.chartProperties.data = prices;
+        this.chartProperties = {
+            ...defaultChartProperties,
+            margin: { ...defaultChartProperties.margin },
+            data: prices
+        };
     }
     
     ngOnInit(): void {
@@ -217,7 +220,6 @@ export class DisplayCurrencyComponent implements OnChanges, OnInit, AfterViewIni
     }
     
     updatePerformance(): void {
-        console.log("Updating performance for ", this.currency.currencyCode);
         this.dayPerformance.getCurrencyDayPerformance(this.currency.currencyCode)
             .subscribe(
                 (performance: any) => {
