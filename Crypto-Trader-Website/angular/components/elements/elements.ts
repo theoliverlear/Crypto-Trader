@@ -124,6 +124,15 @@ import {
     PortfolioStatisticsSectionComponent
 } from "./element-group-portfolio/portfolio-statistics-section/portfolio-statistics-section.component";
 import {LoadingWheelComponent} from "./loading-wheel/loading-wheel.component";
+import {
+    TerminalComponent
+} from "./element-group-console/terminal/terminal.component";
+import {
+    VendorOptionComponent
+} from "./element-group-trade/vendor-option/vendor-option.component";
+import {
+    VendorOptionsComponent
+} from "./element-group-trade/vendor-options/vendor-options.component";
 
 export const elements = [
     AssetButtonComponent,
@@ -145,11 +154,11 @@ export const elements = [
     ExitAnchorComponent,
     HomeAnchorComponent,
     LiveChartComponent,
+    LoadingWheelComponent,
     NavBarComponent,
     NavBarItemComponent,
     NavBarProfilePictureComponent,
     NavConsoleComponent,
-    LoadingWheelComponent,
     PaperModePromoComponent,
     PerformanceArrowComponent,
     PerformanceChartComponent,
@@ -168,8 +177,11 @@ export const elements = [
     PortfolioStatisticsComponent,
     PortfolioStatisticsSectionComponent,
     ProfilePictureComponent,
+    TerminalComponent,
     TierPromoComponent,
     TierPromoStripeComponent,
     TraderEventBubbleComponent,
     TransparencyPromoComponent,
+    VendorOptionsComponent,
+    VendorOptionComponent,
 ]
