@@ -1,0 +1,26 @@
+// terminal.component.scss
+@use "../../../../styles/globals" as *;
+
+terminal {
+    @include flex(center, center, column);
+    background-color: $charcoal;
+    @extend %fill-container;
+    flex: 1;
+    height: 100%;
+    .terminal-wrap {
+        @extend %fill-container;
+        flex: 1;
+        height: 100%;
+        .term-host {
+            @extend %fill-container;
+            .xterm-helper-textarea {
+                //display: none;
+                opacity: 0;
+            }
+            .xterm-screen {
+                @extend %fill-container;
+                flex: 1;
+            }
+        }
+    }
+}
