@@ -8,6 +8,7 @@ import {TermsOfServiceComponent} from "./terms-of-service/terms-of-service.compo
 import {AccountComponent} from "./account/account.component";
 import {ConsoleComponent} from "./console/console.component";
 import {DashboardComponent} from "./dashboard/dashboard.component";
+import {TradeComponent} from "./trade/trade.component";
 
 export const pages = [
     AccountComponent,
@@ -19,5 +20,6 @@ export const pages = [
     NotFoundComponent,
     PortfolioComponent,
     TermsOfServiceComponent,
+    TradeComponent,
     TraderComponent,
 ];
