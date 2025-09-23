@@ -2,5 +2,11 @@
 @use "../../../styles/globals" as *;
 
 console {
-    
+    @include flex(center, center, column);
+    @extend %fill-container;
+    height: 100%;
+    flex: 1;
+    terminal {
+        @extend %fill-container;
+    }
 }
