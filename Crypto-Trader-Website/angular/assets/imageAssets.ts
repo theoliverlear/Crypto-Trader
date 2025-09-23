@@ -93,3 +93,18 @@ export const stockScaleIcon: ImageAsset = {
     src: getIconImagePath('stock_scale_icon.svg'),
     alt: 'Stock Scale Icon'
 };
+
+export const exchangeArrowsIcon: ImageAsset = {
+    src: getIconImagePath('exchange_arrows_icon.svg'),
+    alt: 'Soft Exchange Arrows Icon'
+};
+
+export const paperIcon: ImageAsset = {
+    src: getIconImagePath('paper_icon.svg'),
+    alt: 'Paper Icon'
+};
+
+export const starIcon: ImageAsset = {
+    src: getIconImagePath('star_icon.png'),
+    alt: 'Star Icon'
+};
