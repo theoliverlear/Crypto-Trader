@@ -23,9 +23,14 @@ import {
     ConsoleComponent
 } from "../../components/pages/console/console.component";
 import {TradeComponent} from "../../components/pages/trade/trade.component";
+import {AccountGuard} from "../../services/guard/account.guard";
+import {DashboardGuard} from "../../services/guard/dashboard.guard";
+import {
+    DashboardComponent
+} from "../../components/pages/dashboard/dashboard.component";
 
 
-const isDevelopment = false;
+const isDevelopment = true;
 
 
 export const accountRoute: Route = {
@@ -42,6 +47,7 @@ export const accountRoute: Route = {
 export const authorizeRoute: Route = {
     path: 'authorize',
     component: AuthorizeComponent,
+    canActivate: isDevelopment ? [] : [AccountGuard],
     data: {
         meta: {
             title: 'Authorize | Crypto Trader'
@@ -51,6 +57,7 @@ export const authorizeRoute: Route = {
 export const homeRoute: Route = {
     path: '',
     component: HomeComponent,
+    canActivate: isDevelopment ? [] : [DashboardGuard],
     data: {
         meta: {
             title: 'Crypto Trader'
@@ -117,6 +124,17 @@ export const tradeRoute: Route = {
         },
     }
 };
+
+export const dashboardRoute: Route = {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [],
+    data: {
+        meta: {
+            title: 'Dashboard | Crypto Trader'
+        },
+    }
+};
 export const routes: Routes = [
     accountRoute,
     authorizeRoute,
@@ -127,4 +145,5 @@ export const routes: Routes = [
     consoleRoute,
     traderRoute,
     tradeRoute,
+    dashboardRoute,
 ];
