@@ -24,10 +24,8 @@ import {LogoutService} from "./access/logout.service";
     providedIn: 'root' 
 })
 export class AuthService {
-    private readonly base = `${environment.apiUrl}/auth`;
 
-    constructor(private http: HttpClient,
-                private signupService: SignupService,
+    constructor(private signupService: SignupService,
                 private loginService: LoginService,
                 private tokenRefreshService: TokenRefreshService,
                 private logoutService: LogoutService) {}
@@ -36,23 +34,6 @@ export class AuthService {
      * Sign up using email/password.
      * Mirrors login but calls /auth/signup.
      */
-    // signup(request: { email: string; password: string; username?: string }): Observable<AuthResponse> {
-    //     const url = `${this.base}/signup`;
-    //     return new Observable<AuthResponse>((subscriber) => {
-    //         (async () => {
-    //             await this.keys.ensureKeys();
-    //             const dpop = await this.proofs.buildProof('POST', url);
-    //             const headers = new HttpHeaders({ 'DPoP': dpop });
-    //             this.http.post<AuthResponse>(url, request, { headers, withCredentials: true }).pipe(
-    //                 tap(res => { if (res?.authorized && res?.token) this.tokenStore.setToken(res.token as any); })
-    //             ).subscribe({
-    //                 next: (res) => { subscriber.next(res); subscriber.complete(); },
-    //                 error: (err) => subscriber.error(err)
-    //             });
-    //         })();
-    //     });
-    // }
-    
     signup(request: SignupRequest): Observable<AuthResponse> {
         return this.signupService.signup(request);
     }
@@ -68,25 +49,6 @@ export class AuthService {
      * @param request the email/password payload
      * @returns an observable of the AuthResponse (authorized + token when successful)
      */
-    // login(req: LoginRequest): Observable<AuthResponse> {
-    //     const url = `${this.base}/login`;
-    //     return new Observable<AuthResponse>((subscriber) => {
-    //         (async () => {
-    //             await this.keys.ensureKeys();
-    //             const dpop = await this.proofs.buildProof('POST', url);
-    //             const headers = new HttpHeaders({
-    //                 'DPoP': dpop
-    //             });
-    //             this.http.post<AuthResponse>(url, req, { headers, withCredentials: true }).pipe(
-    //                 tap(res => { if (res?.authorized && res?.token) this.tokenStore.setToken(res.token); })
-    //             ).subscribe({
-    //                 next: (res) => { subscriber.next(res); subscriber.complete(); },
-    //                 error: (err) => subscriber.error(err)
-    //             });
-    //         })();
-    //     });
-    // }
-
     login(request: LoginRequest): Observable<AuthResponse> {
         return this.loginService.login(request);
     }
@@ -97,33 +59,6 @@ export class AuthService {
      *
      * @returns an observable that emits the fresh access token string
      */
-    // refresh(): Observable<string> {
-    //     const url = `${this.base}/refresh`;
-    //     return new Observable<string>((subscriber) => {
-    //         (async () => {
-    //             await this.keys.ensureKeys();
-    //             const current = this.tokenStore.getToken() || undefined;
-    //             const dpop = await this.proofs.buildProof('POST', url, current);
-    //             const headers = new HttpHeaders({ 'DPoP': dpop });
-    //             this.http.post<AuthResponse>(url, {}, { headers, withCredentials: true }).subscribe({
-    //                 next: (res) => {
-    //                     if (res?.authorized && res?.token) {
-    //                         this.tokenStore.setToken(res.token);
-    //                         subscriber.next(res.token);
-    //                         subscriber.complete();
-    //                     } else {
-    //                         this.tokenStore.clear();
-    //                         subscriber.error(new Error('Unauthorized'));
-    //                     }
-    //                 },
-    //                 error: (err) => {
-    //                     this.tokenStore.clear();
-    //                     subscriber.error(err);
-    //                 }
-    //             });
-    //         })();
-    //     });
-    // }
     refresh(): Observable<string> {
         return this.tokenRefreshService.refreshToken();
     }
@@ -135,27 +70,6 @@ export class AuthService {
      *
      * @returns an observable that completes when logout has finished
      */
-    // logout(): Observable<void> {
-    //     const url = `${this.base}/logout`;
-    //     return new Observable<void>((subscriber) => {
-    //         (async () => {
-    //             await this.keys.ensureKeys();
-    //             // Capture current token for Authorization header, but clear storage BEFORE request to avoid race with guards
-    //             const current = this.tokenStore.getToken() || undefined;
-    //             const dpop = await this.proofs.buildProof('POST', url, current);
-    //             let headers = new HttpHeaders({ 'DPoP': dpop });
-    //             if (current) {
-    //                 headers = headers.set('Authorization', `DPoP ${current}`);
-    //             }
-    //             // Clear token now so subsequent requests (e.g., guards) won't attach it during the in-flight logout
-    //             this.tokenStore.clear();
-    //             this.http.post(url, {}, { withCredentials: true, headers }).subscribe({
-    //                 next: () => { this.keys.clear(); subscriber.next(); subscriber.complete(); },
-    //                 error: (err) => { this.keys.clear(); subscriber.error(err); }
-    //             });
-    //         })();
-    //     });
-    // }
     logout(): Observable<AuthResponse> {
         return this.logoutService.logout();
     }
