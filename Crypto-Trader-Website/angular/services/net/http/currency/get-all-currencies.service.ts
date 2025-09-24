@@ -12,8 +12,8 @@ import {
 })
 export class GetAllCurrenciesService extends HttpClientService<any, DisplayCurrencyList> {
     private static readonly URL: string = `${environment.apiUrl}/currency/all`;
-    constructor(httpClient: HttpClient) {
-        super(GetAllCurrenciesService.URL, httpClient);
+    constructor() {
+        super(GetAllCurrenciesService.URL);
     }
     
     public getAllCurrencies(): Observable<DisplayCurrencyList> {

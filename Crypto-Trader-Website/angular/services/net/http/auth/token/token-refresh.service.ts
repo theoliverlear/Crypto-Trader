@@ -17,11 +17,10 @@ import {Observable} from "rxjs";
 })
 export class TokenRefreshService extends HttpClientService<any, AuthResponse> {
     private static readonly URL: string = `${environment.apiUrl}/auth/refresh`;
-    constructor(httpClient: HttpClient,
-                private tokenStore: TokenStorageService,
+    constructor(private tokenStore: TokenStorageService,
                 private keys: DpopKeyService,
                 private proofs: DpopProofService) {
-        super(TokenRefreshService.URL, httpClient);
+        super(TokenRefreshService.URL);
     }
 
     public refreshToken(): Observable<string> {

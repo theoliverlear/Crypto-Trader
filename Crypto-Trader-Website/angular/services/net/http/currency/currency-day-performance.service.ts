@@ -11,8 +11,8 @@ import {Observable} from "rxjs";
 export class CurrencyDayPerformanceService extends HttpClientService<any, PerformanceRating> {
     private static readonly URL: string = `${environment.apiUrl}/currency/performance/`;
     
-    constructor(httpClient: HttpClient) {
-        super(CurrencyDayPerformanceService.URL, httpClient);
+    constructor() {
+        super(CurrencyDayPerformanceService.URL);
     }
     
     public getCurrencyDayPerformance(currencyCode: string): Observable<PerformanceRating> {

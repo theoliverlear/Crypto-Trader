@@ -17,11 +17,10 @@ import {Injectable} from "@angular/core";
 })
 export class SignupService extends HttpClientService<SignupRequest, AuthResponse> {
     private static readonly URL: string = `${environment.apiUrl}/auth/signup`;
-    constructor(httpClient: HttpClient,
-                private tokenStore: TokenStorageService,
+    constructor(private tokenStore: TokenStorageService,
                 private keys: DpopKeyService,
                 private proofs: DpopProofService) {
-        super(SignupService.URL, httpClient);
+        super(SignupService.URL);
     }
     
     public signup(request: SignupRequest): Observable<AuthResponse> {

@@ -17,11 +17,10 @@ import {DpopProofService} from "../../../../auth/dpop/dpop-proof.service";
 export class LoginService extends HttpClientService<LoginRequest, AuthResponse> {
     private static readonly URL: string = `${environment.apiUrl}/auth/login`;
 
-    constructor(httpClient: HttpClient,
-                private tokenStore: TokenStorageService,
+    constructor(private tokenStore: TokenStorageService,
                 private keys: DpopKeyService,
                 private proofs: DpopProofService) {
-        super(LoginService.URL, httpClient);
+        super(LoginService.URL);
     }
 
     // public login(request: LoginRequest, _persist: PersistMethod = 'session'): Observable<AuthResponse> {

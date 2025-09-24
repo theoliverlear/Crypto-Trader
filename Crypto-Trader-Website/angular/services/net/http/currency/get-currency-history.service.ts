@@ -17,8 +17,8 @@ export class GetCurrencyHistoryService extends HttpClientService<any, TimeValueR
     private static URL: string = `${environment.apiUrl}/currency/history`;
     private cache: ObservableHistoryMap = new Map<string, ObservableHistoryPoint>();
 
-    constructor(httpClient: HttpClient) {
-        super(GetCurrencyHistoryService.URL, httpClient);
+    constructor() {
+        super(GetCurrencyHistoryService.URL);
     }
 
     getHistory(currencyCode: string,

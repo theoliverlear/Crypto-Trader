@@ -21,8 +21,8 @@ export class LoggedInService extends HttpClientService<any, AuthResponse> {
     private static readonly URL: string = `${environment.apiUrl}/auth/logged-in`;
     private readonly authState$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     
-    constructor(httpClient: HttpClient, private tokenStorage: TokenStorageService) {
-        super(LoggedInService.URL, httpClient);
+    constructor(private tokenStorage: TokenStorageService) {
+        super(LoggedInService.URL);
     }
     
     /**

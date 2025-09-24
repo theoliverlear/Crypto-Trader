@@ -18,11 +18,10 @@ import {DpopProofService} from "../../../../auth/dpop/dpop-proof.service";
 export class LogoutService extends HttpClientService<any, AuthResponse> {
     private static readonly URL = `${environment.apiUrl}/auth/logout`;
 
-    constructor(httpClient: HttpClient,
-                private tokenStore: TokenStorageService,
+    constructor(private tokenStore: TokenStorageService,
                 private keys: DpopKeyService,
                 private proofs: DpopProofService) {
-        super(LogoutService.URL, httpClient);
+        super(LogoutService.URL);
     }
 
     public logout(): Observable<AuthResponse> {
