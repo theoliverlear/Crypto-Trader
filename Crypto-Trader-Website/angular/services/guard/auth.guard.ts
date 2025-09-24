@@ -5,7 +5,7 @@ import {
     Router,
     RouterStateSnapshot
 } from "@angular/router";
-import {BehaviorSubject, catchError, map, Observable} from "rxjs";
+import {catchError, map, Observable, Subject} from "rxjs";
 import {LoggedInService} from "../net/http/auth/status/logged-in.service";
 import {TokenStorageService} from "../auth/token-storage.service";
 
@@ -21,7 +21,7 @@ import {TokenStorageService} from "../auth/token-storage.service";
  * - It does not attach Authorization/DPoP itself; the endpoint is designed to be public and reflect state.
  */
 export class AuthGuard implements CanActivate {
-    authBlocked$: BehaviorSubject<void> = new BehaviorSubject<void>(undefined);
+    authBlocked$: Subject<void> = new Subject<void>();
     constructor(private router: Router,
                 private loggedInService: LoggedInService) {
         
@@ -35,7 +35,6 @@ export class AuthGuard implements CanActivate {
                 state: RouterStateSnapshot): Observable<boolean> {
         return this.loggedInService.isLoggedIn().pipe(
             map(authResponse => {
-                console.log('AuthGuard: isAuthorized', authResponse);
                 if (authResponse.authorized) {
                     return true;
                 } else {
@@ -49,11 +48,10 @@ export class AuthGuard implements CanActivate {
                 this.router.navigate(['/authorize']).then(navigated => {
                     
                 });
-                this.authBlocked$.next(undefined);
                 return new Observable<boolean>(observer => {
                     observer.next(false);
                 });
             })
-        )
+        );
     }
 }
