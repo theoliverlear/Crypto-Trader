@@ -70,7 +70,13 @@ export const getStartedElementLink = new TextElementLink('/authorize',
 export const repositoryElementLink = new TextElementLink('https://github.com/theoliverlear/Crypto-Trader',
     TargetType.BLANK,
     false,
-    'Explore Source Code',
+    'Explore Code',
+    TagType.H4);
+
+export const docsElementLink = new TextElementLink('https://theoliverlear.github.io/Crypto-Trader/',
+    TargetType.BLANK,
+    false,
+    'Read Docs',
     TagType.H4);
 
 export const consoleElementLink = new ElementLink('/console',
