@@ -1,6 +1,10 @@
 package org.cryptotrader.api.controller;
 //=================================-Imports-==================================
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.cryptotrader.api.library.communication.response.OperationSuccessfulResponse;
+import org.cryptotrader.api.library.services.AuthContextService;
+import org.cryptotrader.api.library.services.AuthContextServiceKt;
 import org.cryptotrader.api.library.services.PortfolioService;
 import org.cryptotrader.api.library.services.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,44 +27,62 @@ import java.util.Optional;
 @RequestMapping("/api/portfolio")
 public class PortfolioController {
     //============================-Variables-=================================
-    private ProductUser currentUser;
-    private Portfolio portfolio = new Portfolio();
-    private SessionService sessionService;
-    private PortfolioService portfolioService;
+    private final PortfolioService portfolioService;
+    private final AuthContextService authContextService;
     //===========================-Constructors-===============================
     @Autowired
-    public PortfolioController(SessionService sessionService,
+    public PortfolioController(AuthContextService authContextService,
                                PortfolioService portfolioService) {
-        this.sessionService = sessionService;
+        this.authContextService = authContextService;
         this.portfolioService = portfolioService;
     }
     //=============================-Methods-==================================
 
+    // TODO: Replace all entities with a DTO.
     //---------------------------Get-Portfolio--------------------------------
     @GetMapping("/get")
     public ResponseEntity<Portfolio> getPortfolio() {
-        this.portfolio = this.portfolioService.getPortfolioByUserId(this.currentUser.getId());
-        return ResponseEntity.ok(this.portfolio);
+        boolean isAuthorized = this.authContextService.isAuthenticated();
+        if (!isAuthorized) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        ProductUser currentUser = this.authContextService.getAuthenticatedProductUser();
+        if (currentUser == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        Portfolio portfolio = this.portfolioService.getPortfolioByUserId(currentUser.getId());
+        return ResponseEntity.ok(portfolio);
     }
     //------------------------Add-Portfolio-Asset-----------------------------
     @PostMapping("/add")
-    public ResponseEntity<String> addPortfolioAsset(@RequestBody PortfolioAssetRequest portfolioAssetRequest) {
-        this.portfolioService.addAssetToPortfolio(this.portfolio, portfolioAssetRequest);
-        return ResponseEntity.ok("Asset added to portfolio");
+    public ResponseEntity<OperationSuccessfulResponse> addPortfolioAsset(@RequestBody PortfolioAssetRequest portfolioAssetRequest) {
+        if (portfolioAssetRequest == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        boolean isAuthorized = this.authContextService.isAuthenticated();
+        if (!isAuthorized) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        ProductUser currentUser = this.authContextService.getAuthenticatedProductUser();
+        if (currentUser == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        Portfolio portfolio = this.portfolioService.getPortfolioByUserId(currentUser.getId());
+        this.portfolioService.addAssetToPortfolio(portfolio, portfolioAssetRequest);
+        return ResponseEntity.ok(new OperationSuccessfulResponse(true));
     }
     //-------------------------Is-Empty-Portfolio-----------------------------
     @GetMapping("/empty")
-    public ResponseEntity<HasPortfolioResponse> emptyPortfolio(HttpSession session) {
-        boolean userInSession = this.sessionService.userInSession(session);
-        if (!userInSession) {
+    public ResponseEntity<HasPortfolioResponse> emptyPortfolio() {
+        boolean isAuthorized = this.authContextService.isAuthenticated();
+        if (!isAuthorized) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        Optional<ProductUser> possibleSessionUser = this.sessionService.getUserFromSession(session);
-        if (possibleSessionUser.isEmpty()) {
+        ProductUser currentUser = this.authContextService.getAuthenticatedProductUser();
+        if (currentUser == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        ProductUser sessionUser = possibleSessionUser.get();
-        Portfolio portfolio = sessionUser.getPortfolio();
+        Portfolio portfolio = this.portfolioService.getPortfolioByUserId(currentUser.getId());
         if (portfolio == null) {
             return ResponseEntity.ok(new HasPortfolioResponse(false));
         } else {
@@ -69,17 +91,16 @@ public class PortfolioController {
     }
     //------------------------Get-Portfolio-History---------------------------
     @GetMapping("/history/get")
-    public ResponseEntity<List<PortfolioHistory>> getPortfolioHistory(HttpSession session) {
-        boolean userInSession = this.sessionService.userInSession(session);
-        if (!userInSession) {
+    public ResponseEntity<List<PortfolioHistory>> getPortfolioHistory() {
+        boolean isAuthorized = this.authContextService.isAuthenticated();
+        if (!isAuthorized) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        Optional<ProductUser> possibleSessionUser = this.sessionService.getUserFromSession(session);
-        if (possibleSessionUser.isEmpty()) {
+        ProductUser currentUser = this.authContextService.getAuthenticatedProductUser();
+        if (currentUser == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        ProductUser sessionUser = possibleSessionUser.get();
-        Portfolio portfolio = this.portfolioService.getPortfolioByUserId(sessionUser.getId());
+        Portfolio portfolio = this.portfolioService.getPortfolioByUserId(currentUser.getId());
         // TODO: Replace with a DTO.
         List<PortfolioHistory> portfolioHistory = this.portfolioService.getPortfolioHistory(portfolio);
         if (portfolioHistory.isEmpty()) {
@@ -88,11 +109,17 @@ public class PortfolioController {
         return ResponseEntity.ok(portfolioHistory);
     }
     @GetMapping("/history/get/asset")
-    public ResponseEntity<List<PortfolioAssetHistory>> getPortfolioAssetHistory(HttpSession session) {
-        ProductUser sessionUser = (ProductUser) session.getAttribute("user");
-        this.currentUser = sessionUser;
-        this.portfolio = this.portfolioService.getPortfolioByUserId(this.currentUser.getId());
-        List<PortfolioAssetHistory> portfolioAssetHistory = this.portfolioService.getPortfolioAssetHistory(this.portfolio);
+    public ResponseEntity<List<PortfolioAssetHistory>> getPortfolioAssetHistory() {
+        boolean isAuthorized = this.authContextService.isAuthenticated();
+        if (!isAuthorized) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        ProductUser currentUser = this.authContextService.getAuthenticatedProductUser();
+        if (currentUser == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        Portfolio portfolio = this.portfolioService.getPortfolioByUserId(currentUser.getId());
+        List<PortfolioAssetHistory> portfolioAssetHistory = this.portfolioService.getPortfolioAssetHistory(portfolio);
         return ResponseEntity.ok(portfolioAssetHistory);
     }
     @GetMapping("/history/get/asset/{currencyName}")
@@ -102,16 +129,35 @@ public class PortfolioController {
     //------------------------Get-Portfolio-Profit----------------------------
     @GetMapping("/history/profit")
     public ResponseEntity<AssetValueResponse> getPortfolioProfit() {
-        this.portfolio = this.portfolioService.getPortfolioByUserId(this.currentUser.getId());
-        double profit = this.portfolioService.getPortfolioProfit(this.portfolio);
+        boolean isAuthorized = this.authContextService.isAuthenticated();
+        if (!isAuthorized) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        ProductUser currentUser = this.authContextService.getAuthenticatedProductUser();
+        if (currentUser == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        Portfolio portfolio = this.portfolioService.getPortfolioByUserId(currentUser.getId());
+        double profit = this.portfolioService.getPortfolioProfit(portfolio);
         AssetValueResponse profitResponse = new AssetValueResponse(profit);
         return ResponseEntity.ok(profitResponse);
     }
     //------------------Get-Portfolio-Profit-By-Currency----------------------
     @GetMapping("/history/profit/{currencyName}")
     public ResponseEntity<AssetValueResponse> getPortfolioProfitByCurrency(@PathVariable String currencyName) {
-        this.portfolio = this.portfolioService.getPortfolioByUserId(this.currentUser.getId());
-        PortfolioAsset portfolioAsset = this.portfolioService.getPortfolioAssetByCurrencyName(this.portfolio, currencyName);
+        if (currencyName == null || currencyName.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        boolean isAuthorized = this.authContextService.isAuthenticated();
+        if (!isAuthorized) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        ProductUser currentUser = this.authContextService.getAuthenticatedProductUser();
+        if (currentUser == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        Portfolio portfolio = this.portfolioService.getPortfolioByUserId(currentUser.getId());
+        PortfolioAsset portfolioAsset = this.portfolioService.getPortfolioAssetByCurrencyName(portfolio, currencyName);
         double profit = this.portfolioService.getPortfolioAssetProfit(portfolioAsset);
         AssetValueResponse profitResponse = new AssetValueResponse(profit);
         return ResponseEntity.ok(profitResponse);
