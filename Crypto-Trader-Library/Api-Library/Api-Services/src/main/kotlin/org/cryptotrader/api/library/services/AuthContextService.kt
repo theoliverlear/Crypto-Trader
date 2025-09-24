@@ -2,6 +2,7 @@ package org.cryptotrader.api.library.services
 
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
+import org.cryptotrader.api.library.entity.user.ProductUser
 import org.cryptotrader.api.library.services.jwt.JwtTokenService
 import org.cryptotrader.api.library.model.jwt.JwtClaims
 import org.cryptotrader.api.library.services.jwt.TokenBlacklistService
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AnonymousAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
@@ -23,7 +25,8 @@ import org.springframework.web.context.request.ServletRequestAttributes
 @Service
 class AuthContextService(
     private val jwtTokenService: JwtTokenService,
-    private val tokenBlacklistService: TokenBlacklistService
+    private val tokenBlacklistService: TokenBlacklistService,
+    private val productUserService: ProductUserService
 ) {
     companion object {
         val log: Logger = LoggerFactory.getLogger(AuthContextService::class.java)
@@ -68,6 +71,29 @@ class AuthContextService(
         }
     }
 
+    fun getAuthenticatedProductUser(): ProductUser? {
+        if (!isAuthenticated()) return null
+        val auth: Authentication = SecurityContextHolder.getContext().authentication ?: return null
+        return when (val principal = auth.principal) {
+            is ProductUser -> principal
+            is UserDetails -> {
+                // username may be email or username in your system
+                val username = principal.username
+                runCatching { this.productUserService.getUserByEmail(username) }.getOrNull()
+                    ?: runCatching { this.productUserService.getUserByUsername(username) }.getOrNull()
+            }
+            is String -> {
+                runCatching { this.productUserService.getUserByEmail(principal) }.getOrNull()
+                    ?: runCatching { this.productUserService.getUserByUsername(
+                        principal
+                    ) }.getOrNull()
+            }
+            else -> null
+        }
+    }
+
+    fun isUserAuthenticated(): Boolean = this.getAuthenticatedProductUser() != null
+    
     private fun extractTokenFromRequest(request: HttpServletRequest): String? {
         // 1) Authorization header: support both schemes
         val authHeader = request.getHeader("Authorization")
