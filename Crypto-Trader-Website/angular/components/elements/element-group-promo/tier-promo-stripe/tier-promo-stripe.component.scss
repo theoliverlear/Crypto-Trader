@@ -3,11 +3,45 @@
 
 tier-promo-stripe {
     @include flex(center, center, column);
-    .tier-promos {
-        @include flex(center, center, row);
-    }
+
     background-color: add-alpha($sunbeam-yellow, 0.3);
     width: 100%;
     padding: $one-percent 0;
     margin: $one-half-percent 0;
+
+    .tier-promos {
+        @include flex(center, center, row);
+        gap: $one-percent;
+    }
+
+    .tier-promos > tier-promo {
+        opacity: 0;
+        transform: translateX(80px);
+        transition: opacity 800ms ease-out, transform 800ms ease-out;
+    }
+
+    &.in-view {
+        .tier-promos > tier-promo {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .tier-promos > tier-promo:nth-child(1) {
+            transition-delay: 0ms;
+        }
+        .tier-promos > tier-promo:nth-child(2) {
+            transition-delay: 200ms;
+        }
+        .tier-promos > tier-promo:nth-child(3) {
+            transition-delay: 400ms;
+        }
+        .tier-promos > tier-promo:nth-child(4) {
+            transition-delay: 600ms;
+        }
+        .tier-promos > tier-promo:nth-child(5) {
+            transition-delay: 800ms;
+        }
+        .tier-promos > tier-promo:nth-child(6) {
+            transition-delay: 1000ms;
+        }
+    }
 }
