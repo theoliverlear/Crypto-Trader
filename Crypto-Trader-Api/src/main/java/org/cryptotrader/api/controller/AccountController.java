@@ -31,9 +31,9 @@ import java.util.Optional;
 @RequestMapping("/api/account")
 public class AccountController {
     //============================-Variables-=================================
-    private SessionService sessionService;
-    private ProfilePictureOperations profilePictureService;
-    private ProductUserService productUserService;
+    private final SessionService sessionService;
+    private final ProfilePictureOperations profilePictureService;
+    private final ProductUserService productUserService;
     /**
      * REST endpoints for account management.
      *
