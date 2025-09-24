@@ -16,7 +16,7 @@ portfolio {
         }
         .portfolio-builder-header {
             width: 100%;
-            @include flex(space-around, center, row);
+            @include flex(center, center, column);
         }
     }
 }
