@@ -1,14 +1,15 @@
-package org.cryptotrader.api.library.services
+package org.cryptotrader.api.library.services.jwt
 
 import org.cryptotrader.api.library.model.jwt.JwtClaims
-import org.cryptotrader.api.library.services.jwt.JwtTokenService
 import org.cryptotrader.api.library.services.rsa.RsaKeyService
 import org.cryptotrader.test.CryptoTraderTest
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
+
 @DisplayName("JWT Token Service")
 class JwtTokenServiceTest : CryptoTraderTest() {
 
@@ -51,4 +52,3 @@ class JwtTokenServiceTest : CryptoTraderTest() {
         assertNotNull(decodedClaims.expiresAt)
     }
 }
-

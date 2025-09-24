@@ -1,8 +1,11 @@
-package org.cryptotrader.api.library.services
+package org.cryptotrader.api.library.services.jwt
 
-import org.cryptotrader.api.library.services.jwt.RefreshTokenService
 import org.cryptotrader.test.CryptoTraderTest
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertNotEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
