@@ -19,7 +19,7 @@ import org.mockito.Mockito.*
 import org.springframework.security.authentication.TestingAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 
-@Tag("Infrastructure")
+@Tag("infrastructure")
 @Tag("JwtAuthenticationFilter")
 @DisplayName("JWT Authentication Filter")
 class JwtAuthenticationFilterTest : CryptoTraderTest() {
@@ -90,19 +90,20 @@ class JwtAuthenticationFilterTest : CryptoTraderTest() {
     }
 
     @Test
-    fun `valid token with matching user authenticates request`() {
+    @DisplayName("Should have valid token with matching user authenticate request")
+    fun authentication_AuthenticatesRequest_ValidToken() {
         val request = mock(HttpServletRequest::class.java)
         val response = mock(HttpServletResponse::class.java)
         val chain = mock(FilterChain::class.java)
 
         val userId = 42L
         val email = "test@example.com"
-        val token = jwtService.generateToken(userId.toString(), email)
+        val token = this.jwtService.generateToken(userId.toString(), email)
         `when`(request.getHeader("Authorization")).thenReturn("Bearer $token")
 
         val user = ProductUser.builder().email(email).build()
         user.id = userId
-        `when`(productUserService.getUserById(userId)).thenReturn(user)
+        `when`(this.productUserService.getUserById(userId)).thenReturn(user)
 
         filter.doFilter(request, response, chain)
 
@@ -114,7 +115,8 @@ class JwtAuthenticationFilterTest : CryptoTraderTest() {
     }
 
     @Test
-    fun `valid token but user not found clears context`() {
+    @DisplayName("Should have valid token with no matching user clears context")
+    fun authentication_ClearsContext_ValidTokenNoMatch() {
         val request = mock(HttpServletRequest::class.java)
         val response = mock(HttpServletResponse::class.java)
         val chain = mock(FilterChain::class.java)
@@ -133,7 +135,8 @@ class JwtAuthenticationFilterTest : CryptoTraderTest() {
     }
 
     @Test
-    fun `valid token but email mismatch clears context`() {
+    @DisplayName("Should clear context on email mismatch")
+    fun authentication_ClearsContext_EmailMismatch() {
         val request = mock(HttpServletRequest::class.java)
         val response = mock(HttpServletResponse::class.java)
         val chain = mock(FilterChain::class.java)
@@ -141,7 +144,7 @@ class JwtAuthenticationFilterTest : CryptoTraderTest() {
         val userId = 7L
         val tokenEmail = "token@example.com"
         val userEmail = "real@example.com"
-        val token = jwtService.generateToken(userId.toString(), tokenEmail)
+        val token = this.jwtService.generateToken(userId.toString(), tokenEmail)
         `when`(request.getHeader("Authorization")).thenReturn("Bearer $token")
 
         val user = ProductUser.builder().email(userEmail).build()
@@ -155,16 +158,17 @@ class JwtAuthenticationFilterTest : CryptoTraderTest() {
     }
 
     @Test
-    fun `blacklisted token clears context and continues chain`() {
+    @DisplayName("Should clear context on blacklisted token")
+    fun authentication_ClearsContext_BlacklistedToken() {
         val request = mock(HttpServletRequest::class.java)
         val response = mock(HttpServletResponse::class.java)
         val chain = mock(FilterChain::class.java)
 
         val userId = 123L
         val email = "blacklisted@example.com"
-        val token = jwtService.generateToken(userId.toString(), email)
+        val token = this.jwtService.generateToken(userId.toString(), email)
         `when`(request.getHeader("Authorization")).thenReturn("Bearer $token")
-        `when`(tokenBlacklistService.isBlacklisted(token)).thenReturn(true)
+        `when`(this.tokenBlacklistService.isBlacklisted(token)).thenReturn(true)
 
         // Pre-populate context to ensure it gets cleared
         SecurityContextHolder.getContext().authentication =
