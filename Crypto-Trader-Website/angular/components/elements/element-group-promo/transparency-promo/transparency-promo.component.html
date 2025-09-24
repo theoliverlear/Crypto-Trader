@@ -3,6 +3,9 @@
     <ss-title [tagType]="TagType.H3" [text]="'Transparency'"/>
     <div class="text-with-button-div">
         <ss-paragraph [text]="transparencyParagraph"/>
-        <ss-anchor [isButton]="true" [elementLink]="repositoryElementLink"/>
+        <div class="transparency-buttons-div">
+            <ss-anchor [isButton]="true" [elementLink]="repositoryElementLink"/>
+            <ss-anchor [isButton]="true" [elementLink]="docsElementLink"/>
+        </div>
     </div>
 </ng-container>
