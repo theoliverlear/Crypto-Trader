@@ -3,6 +3,8 @@ package org.cryptotrader.api.library.services;
 
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.api.library.communication.request.PortfolioAssetRequest;
+import org.cryptotrader.api.library.communication.response.PortfolioAssetHistoryResponse;
+import org.cryptotrader.api.library.communication.response.PortfolioHistoryResponse;
 import org.cryptotrader.api.library.entity.currency.Currency;
 import org.cryptotrader.api.library.entity.portfolio.Portfolio;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset;
@@ -50,6 +52,39 @@ public class PortfolioService {
         }
     }
 
+    public PortfolioAssetHistoryResponse toPortfolioAssetHistoryResponse(PortfolioAssetHistory portfolioAssetHistory) {
+        return new PortfolioAssetHistoryResponse(
+                portfolioAssetHistory.getCurrency().getCurrencyCode(),
+                portfolioAssetHistory.getShares(),
+                portfolioAssetHistory.getSharesValueInDollars(),
+                portfolioAssetHistory.getAssetWalletDollars(),
+                portfolioAssetHistory.getTargetPrice(),
+                portfolioAssetHistory.getValueChange(),
+                portfolioAssetHistory.getSharesChange(),
+                portfolioAssetHistory.isTradeOccurred(),
+                portfolioAssetHistory.getVendor().getName(),
+                portfolioAssetHistory.getVendor().getRate(),
+                portfolioAssetHistory.getLastUpdated()
+        );
+    }
+    
+    public PortfolioHistoryResponse toPortfolioHistoryResponse(PortfolioHistory portfolioHistory) {
+        return new PortfolioHistoryResponse(
+                portfolioHistory.getDollarBalance(),
+                portfolioHistory.getShareBalance(),
+                portfolioHistory.getTotalWorth(),
+                portfolioHistory.getValueChange(),
+                portfolioHistory.isTradeOccurred(),
+                portfolioHistory.getLastUpdated()
+        );
+    }
+    
+    public List<PortfolioAssetHistoryResponse> toHistoryResponses(List<PortfolioAssetHistory> assetHistories) {
+        return assetHistories.stream()
+                .map(this::toPortfolioAssetHistoryResponse)
+                .toList();
+    }
+    
     public List<PortfolioAssetHistory> getPortfolioAssetHistory(Portfolio portfolio) {
         return this.portfolioAssetHistoryRepository.findAllByPortfolioId(portfolio.getId());
     }
@@ -95,6 +130,7 @@ public class PortfolioService {
     public List<PortfolioHistory> getPortfolioHistory(Portfolio portfolio) {
         return this.portfolioHistoryRepository.findAllByPortfolioId(portfolio.getId());
     }
+    
     //------------------------Get-Portfolio-Profit----------------------------
     public double getPortfolioProfit(Portfolio portfolio) {
         PortfolioHistory initialPortfolioHistory = this.portfolioHistoryRepository.getFirstByPortfolioId(portfolio.getId());
