@@ -35,7 +35,7 @@ import {
 import {
     CurrencyValueWebsocketService
 } from "../../../../services/net/websocket/currency-value-websocket.service";
-import {Subscription} from "rxjs";
+import {interval, Subject, Subscription, takeUntil} from "rxjs";
 import {
     NumberTweenService
 } from "../../../../services/ui/number-tween.service";
@@ -106,11 +106,12 @@ export class DisplayCurrencyComponent implements OnChanges, OnInit, AfterViewIni
     ngOnInit(): void {
         this.initializeWebSockets();
     }
-    continuouslyUpdatePrice() {
+
+    private destroy$ = new Subject<void>();
+
+    continuouslyUpdatePrice(): void {
         this.currencyValueWebSocket.sendMessage(this.currency.currencyCode);
-        setInterval(() => {
-            this.updatePrice();
-        }, 5000);
+        interval(5000).pipe(takeUntil(this.destroy$)).subscribe(() => this.updatePrice());
     }
 
     updatePrice(): void {
@@ -206,6 +207,9 @@ export class DisplayCurrencyComponent implements OnChanges, OnInit, AfterViewIni
     }
 
     ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+        
         Object.values(this.webSocketSubscriptions).forEach(sub => sub?.unsubscribe());
         this.webSocketSubscriptions = {};
         if (this.priceAnimationSub) {
@@ -213,7 +217,7 @@ export class DisplayCurrencyComponent implements OnChanges, OnInit, AfterViewIni
             this.priceAnimationSub = null;
         }
         try { 
-            this.currencyValueWebSocket.disconnect(); 
+            this.currencyValueWebSocket.disconnect();
         } catch {
             console.error("Failed to disconnect from WebSocket");
         }
