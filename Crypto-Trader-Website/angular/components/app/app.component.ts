@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
                 private delayService: DelayService) {
         
     }
-    ngOnInit() {
+    ngOnInit(): void {
         this.router.events.pipe(filter((event) => event instanceof NavigationEnd),
             map(() => this.activatedRoot),
             map((route) => {
@@ -40,7 +40,6 @@ export class AppComponent implements OnInit {
     
     async triggerAuthPopup(): Promise<void> {
         this.showAuthGuardPopup = true;
-        // Keep visible slightly longer than the animation duration for a smooth finish
         await this.delayService.delay(4200);
         this.showAuthGuardPopup = false;
     }
