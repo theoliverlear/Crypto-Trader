@@ -5,6 +5,7 @@ import org.cryptotrader.api.library.entity.user.ProductUser
 import org.cryptotrader.api.library.services.jwt.JwtTokenService
 import org.cryptotrader.api.library.services.ProductUserService
 import org.cryptotrader.api.library.services.jwt.TokenBlacklistService
+import org.cryptotrader.api.library.services.rsa.RsaKeyService
 import org.cryptotrader.test.CryptoTraderTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -19,7 +20,7 @@ import org.springframework.http.server.ServletServerHttpRequest
 import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.web.socket.WebSocketHandler
 
-@Tag("Infrastructure")
+@Tag("infrastructure")
 @Tag("JwtHandshakeInterceptor")
 @DisplayName("JWT Handshake Interceptor")
 class JwtHandshakeInterceptorTest : CryptoTraderTest() {
@@ -38,7 +39,7 @@ class JwtHandshakeInterceptorTest : CryptoTraderTest() {
 
     @BeforeEach
     fun setUp() {
-        val rsa = org.cryptotrader.api.library.services.rsa.RsaKeyService(null, null, null)
+        val rsa = RsaKeyService(null, null, null)
         this.jwtService = JwtTokenService(rsa, "https://api.test", 300, "test-aud")
         this.productUserService = Mockito.mock(ProductUserService::class.java)
         val tokenBlacklistService = Mockito.mock(TokenBlacklistService::class.java)
@@ -46,7 +47,8 @@ class JwtHandshakeInterceptorTest : CryptoTraderTest() {
     }
 
     @Test
-    fun `attaches user when Authorization bearer token is valid`() {
+    @DisplayName("Should attach user when Authorization bearer token is valid")
+    fun beforeHandshake_AttachesUser_ValidToken() {
         val userId = 10L
         val email = "user@example.com"
         val token = jwtService.generateToken(userId.toString(), email)
@@ -71,7 +73,8 @@ class JwtHandshakeInterceptorTest : CryptoTraderTest() {
     }
 
     @Test
-    fun `attaches user when query parameter token is valid`() {
+    @DisplayName("Should attach user when query parameter token is valid")
+    fun beforeHandshake_AttachesUser_ValidQueryParameter() {
         val userId = 20L
         val email = "query@example.com"
         val token = jwtService.generateToken(userId.toString(), email)
@@ -95,7 +98,8 @@ class JwtHandshakeInterceptorTest : CryptoTraderTest() {
     }
 
     @Test
-    fun `invalid token is ignored and handshake still proceeds`() {
+    @DisplayName("Should ignore invalid token")
+    fun beforeHandshake_Ignores_InvalidToken() {
         val headers = HttpHeaders()
         headers.add("Authorization", "Bearer not-a-valid-token")
         val request = Mockito.mock(ServerHttpRequest::class.java)
@@ -112,7 +116,8 @@ class JwtHandshakeInterceptorTest : CryptoTraderTest() {
     }
 
     @Test
-    fun `email mismatch prevents attaching user`() {
+    @DisplayName("Should not attach user when email does not match")
+    fun beforeHandshake_DoesNotAttachUser_EmailMismatch() {
         val userId = 30L
         val tokenEmail = "token@example.com"
         val actualEmail = "different@example.com"
@@ -138,7 +143,8 @@ class JwtHandshakeInterceptorTest : CryptoTraderTest() {
     }
 
     @Test
-    fun `missing token attaches nothing but proceeds`() {
+    @DisplayName("Should proceed without attaching user when no token")
+    fun beforeHandshake_Proceeds_NoToken() {
         val request = Mockito.mock(ServerHttpRequest::class.java)
         `when`(request.headers).thenReturn(HttpHeaders())
 
