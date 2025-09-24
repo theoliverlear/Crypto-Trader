@@ -7,6 +7,15 @@ transparency-promo {
     padding: $one-percent;
     width: 90%;
     background-color: add-alpha($alabaster-stone, 0.2);
+
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 900ms ease-out, transform 900ms ease-out;
+
+    &.in-view {
+        opacity: 1;
+        transform: translateY(0);
+    }
     ss-title {
         //@extend %soft-text-shadow;
         //text-shadow: add-alpha($charcoal, 0.1) 0 0 $half-percent;
@@ -27,16 +36,21 @@ transparency-promo {
             margin: $half-percent $one-percent $half-percent 0;
         }
 
-        ss-anchor {
-            background-color: add-alpha($sunbeam-yellow, 0.5);
-            width: $twenty-five-percent;
-            max-height: $four-percent;
-            flex: 1;
-            text-shadow: none;
-            color: add-alpha($pure-white, 1);
-            a {
-                h1, h2, h3, h4, h5, h6 {
-                    @extend %transparent-text;
+        .transparency-buttons-div {
+            @include flex(space-around, center, row);
+            width: 100%;
+            ss-anchor {
+                //background-color: add-alpha-opaque($sunbeam-yellow, 0.5, $pure-white);
+                //width: $twenty-five-percent;
+                max-height: $four-percent;
+                text-shadow: none;
+                color: add-alpha($pure-white, 1);
+
+                a {
+                    h1, h2, h3, h4, h5, h6 {
+                        min-width: 12ch;
+                        @extend %transparent-text;
+                    }
                 }
             }
         }
