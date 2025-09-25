@@ -29,10 +29,15 @@ public class SafePassword {
 
     //--------------------------Encode-Password-------------------------------
     public String encodePassword(String unencodedPassword) {
-        return this.encoder.encode(unencodedPassword);
+        String encoded = this.encoder.encode(unencodedPassword);
+        this.encodedPassword = encoded;
+        return encoded;
     }
     //---------------------Compare-Unencoded-Password-------------------------
     public boolean compareUnencodedPassword(String unencodedPassword) {
+        if (this.encodedPassword == null || this.encodedPassword.isBlank()) {
+            return false;
+        }
         return this.encoder.matches(unencodedPassword, this.encodedPassword);
     }
     //============================-Overrides-=================================
@@ -42,7 +47,7 @@ public class SafePassword {
     public boolean equals(Object object) {
         if (this == object) return true;
         if (object instanceof SafePassword comparedSafePassword) {
-            return this.encodedPassword.equals(comparedSafePassword.encodedPassword);
+            return this.encodedPassword != null && this.encodedPassword.equals(comparedSafePassword.encodedPassword);
         }
         return false;
     }
