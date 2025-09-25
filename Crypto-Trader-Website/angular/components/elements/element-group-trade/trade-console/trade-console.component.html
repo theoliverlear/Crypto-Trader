@@ -7,17 +7,17 @@
         }
     </div>
     <hr/>
-    @if (isVendorSelected) {
-        <vendor-options (vendorSelectedEvent)="setVendorOption($event)"/>
-    }
-    @if (!isVendorSelected) {
-        <div class="console-container">
-            <div class="left-column">
-                <search-input/>
-            </div>
-            <div class="console-body">
-
-            </div>
+    <div class="console-container">
+        <div class="left-column">
+            @if (shouldShowCurrencySearch()) {
+                <search-input [options]="currencyNames"/>
+            }
         </div>
-    }
+        <div class="console-body">
+            <nav-arrows/>
+            @if (!isVendorSelected) {
+                <vendor-options (vendorSelectedEvent)="setVendorOption($event)"/>
+            }
+        </div>
+    </div>
 </ng-container>
