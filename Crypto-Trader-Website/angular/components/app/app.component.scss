@@ -1,6 +1,19 @@
 // app.component.scss
 @use "../../styles/globals" as *;
 @use "../../styles/sigwarth-software-placeholders" as *;
+@use '@angular/material' as mat;
+
+html {
+    @include mat.theme((
+            color: (
+                    primary: mat.$azure-palette,
+                    tertiary: mat.$blue-palette,
+            ),
+            typography: $jetbrains-mono-font,
+            density: 2,
+    ));
+}
+
 
 h1 {
     font-size: $h1-font-size;
