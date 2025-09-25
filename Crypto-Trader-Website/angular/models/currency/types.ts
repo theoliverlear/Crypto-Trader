@@ -6,6 +6,10 @@ export type Currency = {
     value: number;
 };
 
+export type CurrencyNames = {
+    currencyNames: string[];
+}
+
 export type CurrencyList = {
     currencies: Currency[];
 };
