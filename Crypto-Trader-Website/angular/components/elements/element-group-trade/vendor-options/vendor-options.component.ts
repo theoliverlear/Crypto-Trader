@@ -1,5 +1,5 @@
 // vendor-options.component.ts
-import { Component } from "@angular/core";
+import {Component, EventEmitter, Output} from "@angular/core";
 import {VendorOption} from "../../../../models/vendor/VendorOption";
 import {TagType} from "@theoliverlear/angular-suite";
 
@@ -10,10 +10,15 @@ import {TagType} from "@theoliverlear/angular-suite";
     standalone: false
 })
 export class VendorOptionsComponent {
+    @Output() vendorSelectedEvent: EventEmitter<VendorOption> = new EventEmitter<VendorOption>();
     constructor() {
         
     }
 
+    emitVendorOption(vendorOption: VendorOption) {
+        this.vendorSelectedEvent.emit(vendorOption);
+    }
+    
     protected readonly VendorOption = VendorOption;
     protected readonly TagType = TagType;
 }
