@@ -8,6 +8,14 @@
                    matInput
                    [formControl]="searchControl"
                    [matAutocomplete]="auto">
+            @if (searchControl.value) {
+                <button mat-icon-button
+                        matSuffix
+                        aria-label="Clear"
+                        (click)="clear()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            }
         </div>
         <mat-autocomplete #auto="matAutocomplete">
             @if (filteredOptions | async; as options) {
