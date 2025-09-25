@@ -13,7 +13,7 @@
 import {APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA, inject} from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AppRouting} from "./routing/app-routing.module";
 import {RouterOutlet} from "@angular/router";
 import {CommonModule, NgOptimizedImage} from "@angular/common";
@@ -28,6 +28,13 @@ import {pages} from "../components/pages/pages";
 import {authInterceptor} from "../services/intercept/auth.interceptor";
 import { AuthService } from "../services/net/http/auth/auth.service";
 import { DpopKeyService } from "../services/auth/dpop/dpop-key.service";
+import {MatFormField, MatInput} from "@angular/material/input";
+import {
+    MatAutocomplete,
+    MatAutocompleteTrigger,
+    MatOption
+} from "@angular/material/autocomplete";
+import { MatIconModule } from '@angular/material/icon';
 
 /**
  * APP_INITIALIZER: ensure we have a DPoP key and try to refresh the access token
@@ -63,7 +70,14 @@ export function appInit(): () => Promise<void> {
         RouterOutlet,
         HttpClientModule,
         BaseChartDirective,
-        AngularSuiteModule
+        AngularSuiteModule,
+        MatFormField,
+        MatInput,
+        ReactiveFormsModule,
+        MatAutocompleteTrigger,
+        MatOption,
+        MatAutocomplete,
+        MatIconModule
     ],
     providers: [
         ...services,
