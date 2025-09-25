@@ -1,14 +1,21 @@
 // vendor-option.component.scss
 @use "../../../../styles/globals" as *;
+@use "../../../../styles/global-fonts" as *;
 
 vendor-option {
     @include flex(center, center, column);
     @extend %nav-button;
     position: relative;
     //scale: 1.5;
-    @include square-size($five-percent);
+    min-width: $five-percent;
+    min-height: $six-percent;
+    //@include square-size($five-percent);
     ss-img {
         padding: calc($quarter-percent);
+    }
+    ss-title {
+        color: $pure-white;
+        font-family: $fira-sans-font;
     }
     .recommended-icon {
         top: calc($one-percent * -1);
