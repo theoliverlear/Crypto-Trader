@@ -103,6 +103,16 @@ public class CurrencyService {
         return this.currencyRepository.findTop10ByOrderByValueDesc();
     }
     
+    public List<String> getCurrencyNames(boolean withCode) {
+        return this.getAllCurrencies().stream().map(currency -> {
+            String nameString = currency.getName();
+            if (withCode) {
+                nameString = nameString + " (" + currency.getCurrencyCode() + ")";
+            }
+            return nameString;
+        }).toList();
+    }
+    
     public List<Currency> getAllCurrencies() {
         return this.currencyRepository.findAll();
     }
