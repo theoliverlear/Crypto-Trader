@@ -1,5 +1,11 @@
 // vendor-option.component.ts
-import {Component, Input} from "@angular/core";
+import {
+    Component,
+    EventEmitter,
+    HostListener,
+    Input,
+    Output
+} from "@angular/core";
 import {VendorOption} from "../../../../models/vendor/VendorOption";
 import {starIcon} from "../../../../assets/imageAssets";
 
@@ -12,8 +18,14 @@ import {starIcon} from "../../../../assets/imageAssets";
 export class VendorOptionComponent {
     @Input() vendorOption: VendorOption;
     @Input() isRecommended: boolean = true;
+    @Output() vendorSelectedEvent: EventEmitter<VendorOption> = new EventEmitter<VendorOption>();
     constructor() {
         
+    }
+    
+    @HostListener('click')
+    onClick() {
+        this.vendorSelectedEvent.emit(this.vendorOption);
     }
 
     protected readonly VendorOption = VendorOption;
