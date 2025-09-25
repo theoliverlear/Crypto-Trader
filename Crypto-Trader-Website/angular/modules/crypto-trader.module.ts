@@ -28,13 +28,14 @@ import {pages} from "../components/pages/pages";
 import {authInterceptor} from "../services/intercept/auth.interceptor";
 import { AuthService } from "../services/net/http/auth/auth.service";
 import { DpopKeyService } from "../services/auth/dpop/dpop-key.service";
-import {MatFormField, MatInput} from "@angular/material/input";
+import {MatFormField, MatInput, MatSuffix} from "@angular/material/input";
 import {
     MatAutocomplete,
     MatAutocompleteTrigger,
     MatOption
 } from "@angular/material/autocomplete";
 import { MatIconModule } from '@angular/material/icon';
+import {MatIconButton} from "@angular/material/button";
 
 /**
  * APP_INITIALIZER: ensure we have a DPoP key and try to refresh the access token
@@ -77,7 +78,9 @@ export function appInit(): () => Promise<void> {
         MatAutocompleteTrigger,
         MatOption,
         MatAutocomplete,
-        MatIconModule
+        MatIconModule,
+        MatIconButton,
+        MatSuffix
     ],
     providers: [
         ...services,
