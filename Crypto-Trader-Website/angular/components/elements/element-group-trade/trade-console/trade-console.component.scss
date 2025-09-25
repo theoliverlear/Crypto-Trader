@@ -31,6 +31,9 @@ trade-console {
         box-shadow: 0 0 calc($quarter-percent / 9) $charcoal;
         flex: 1;
         @include flex(center, stretch, row);
+        nav-arrows {
+            justify-self: flex-start;
+        }
         .left-column {
             @include flex(flex-start, center, column);
             flex: 1;
