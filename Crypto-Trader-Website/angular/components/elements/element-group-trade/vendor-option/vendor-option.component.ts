@@ -8,6 +8,7 @@ import {
 } from "@angular/core";
 import {VendorOption} from "../../../../models/vendor/VendorOption";
 import {starIcon} from "../../../../assets/imageAssets";
+import {TagType} from "@theoliverlear/angular-suite";
 
 @Component({
     selector: 'vendor-option',
@@ -30,4 +31,5 @@ export class VendorOptionComponent {
 
     protected readonly VendorOption = VendorOption;
     protected readonly starIcon = starIcon;
+    protected readonly TagType = TagType;
 }
