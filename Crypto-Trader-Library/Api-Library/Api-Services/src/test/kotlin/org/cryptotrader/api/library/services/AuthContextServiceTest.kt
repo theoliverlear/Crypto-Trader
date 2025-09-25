@@ -71,6 +71,8 @@ class AuthContextServiceTest : CryptoTraderTest() {
             assertTrue(actualIsAuthenticated)
         }
 
+        @Test
+        @DisplayName("Should return false when auth context is not populated")
         fun isAuthenticated_ReturnsFalse_WhenNotPopulated() {
             SecurityContextHolder.getContext().authentication = null
             val actualIsAuthenticated: Boolean = authContextService.isAuthenticated()
