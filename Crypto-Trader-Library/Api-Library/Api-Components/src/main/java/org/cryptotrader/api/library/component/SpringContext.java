@@ -8,8 +8,13 @@ import org.springframework.stereotype.Component;
 public class SpringContext implements ApplicationContextAware {
     private static ApplicationContext context;
     
-    @Override public void setApplicationContext(ApplicationContext context) {
+    @Override
+    public void setApplicationContext(ApplicationContext context) {
         SpringContext.context = context;
+    }
+    
+    public static ApplicationContext getContext() {
+        return context;
     }
     
     public static <T> T getBean(Class<T> type) {
