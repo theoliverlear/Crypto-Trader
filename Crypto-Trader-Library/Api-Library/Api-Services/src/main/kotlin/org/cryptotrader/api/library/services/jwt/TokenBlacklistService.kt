@@ -19,8 +19,11 @@ import java.util.concurrent.ConcurrentHashMap
 class TokenBlacklistService {
     private val logger = LoggerFactory.getLogger(TokenBlacklistService::class.java)
 
-    /** Map of token -> expiry epoch millis. */
-    private val blacklistedTokens: MutableMap<String, Long> = ConcurrentHashMap()
+    private val _blacklistedTokens: MutableMap<String, Long> =
+        ConcurrentHashMap()
+    
+    val blacklistedTokens: MutableMap<String, Long>
+        get() = _blacklistedTokens
 
     /**
      * Blacklist a token until its expiry time.
@@ -32,7 +35,7 @@ class TokenBlacklistService {
         // Do not store already expired tokens
         val now = Instant.now().toEpochMilli()
         if (expiresAtEpochMillis <= now) return
-        this.blacklistedTokens[token] = expiresAtEpochMillis
+        this._blacklistedTokens[token] = expiresAtEpochMillis
         this.logger.debug("Token blacklisted until {}", expiresAtEpochMillis)
     }
 
@@ -43,11 +46,11 @@ class TokenBlacklistService {
      */
     fun isBlacklisted(token: String?): Boolean {
         if (token.isNullOrBlank()) return false
-        val expiry = this.blacklistedTokens[token] ?: return false
+        val expiry = this._blacklistedTokens[token] ?: return false
         val now = Instant.now().toEpochMilli()
         if (now >= expiry) {
             // cleanup once observed expired
-            this.blacklistedTokens.remove(token)
+            this._blacklistedTokens.remove(token)
             return false
         }
         return true
