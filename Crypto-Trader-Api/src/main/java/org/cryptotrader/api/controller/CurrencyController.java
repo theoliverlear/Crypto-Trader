@@ -2,9 +2,7 @@ package org.cryptotrader.api.controller;
 
 import jakarta.annotation.security.PermitAll;
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.api.library.communication.response.DisplayCurrencyListResponse;
-import org.cryptotrader.api.library.communication.response.PerformanceRatingResponse;
-import org.cryptotrader.api.library.communication.response.TimeValueResponse;
+import org.cryptotrader.api.library.communication.response.*;
 import org.cryptotrader.api.library.model.currency.PerformanceRating;
 import org.cryptotrader.api.library.services.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.cryptotrader.api.library.communication.request.AssetValueRequest;
-import org.cryptotrader.api.library.communication.response.AssetValueResponse;
 import org.cryptotrader.api.library.entity.currency.Currency;
 
 import java.util.List;
@@ -52,6 +49,14 @@ public class CurrencyController {
         }
     }
 
+    @PermitAll
+    @GetMapping("/list")
+    public ResponseEntity<CurrencyNamesResponse> getList(@RequestParam(value = "withCode", defaultValue = "false") boolean withCode) {
+        CurrencyNamesResponse response = new CurrencyNamesResponse(this.currencyService.getCurrencyNames(withCode));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    
+    
     @PermitAll
     @GetMapping("/all")
     public ResponseEntity<DisplayCurrencyListResponse> getAll() {
