@@ -30,6 +30,9 @@ public class CurrencyDataRetriever extends ApiDataRetriever {
         }
         List<String> currencyMapKeys = new ArrayList<>(updatedCurrencyMap.keySet());
         List<String> supportedCurrenciesKeys = SupportedCurrencies.SUPPORTED_CURRENCIES.stream().map(Currency::getCurrencyCode).toList();
+        if (supportedCurrenciesKeys.isEmpty()) {
+            return updatedCurrencyMap;
+        }
         Map<String, Currency> filteredCurrencyMap = new HashMap<>();
         for (String currencyCode : supportedCurrenciesKeys) {
             if (currencyMapKeys.contains(currencyCode)) {
