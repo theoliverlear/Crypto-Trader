@@ -27,8 +27,8 @@ import {
     CurrencyFormatterService
 } from "../../../../services/ui/currency-formatter.service";
 import {
-    GetCurrencyHistoryService
-} from "../../../../services/net/http/currency/get-currency-history.service";
+    CurrencyHistoryService
+} from "../../../../services/net/http/currency/currency-history.service";
 import {
     CurrencyDayPerformanceService
 } from "../../../../services/net/http/currency/currency-day-performance.service";
@@ -72,7 +72,7 @@ export class DisplayCurrencyComponent implements OnChanges, OnInit, AfterViewIni
     }
 
     constructor(private currencyFormatter: CurrencyFormatterService,
-                private historyService: GetCurrencyHistoryService,
+                private historyService: CurrencyHistoryService,
                 private dayPerformance: CurrencyDayPerformanceService,
                 private currencyValueWebSocket: CurrencyValueWebsocketService,
                 private numberTween: NumberTweenService) {}
