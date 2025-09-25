@@ -136,6 +136,12 @@ import {
 import {
     AuthGuardPopupComponent
 } from "./element-group-auth/auth-guard-popup/auth-guard-popup.component";
+import {
+    SearchInputComponent
+} from "./element-group-input/search-input/search-input.component";
+import {
+    TradeConsoleComponent
+} from "./element-group-trade/trade-console/trade-console.component";
 
 export const elements = [
     AssetButtonComponent,
@@ -181,9 +187,11 @@ export const elements = [
     PortfolioStatisticsComponent,
     PortfolioStatisticsSectionComponent,
     ProfilePictureComponent,
+    SearchInputComponent,
     TerminalComponent,
     TierPromoComponent,
     TierPromoStripeComponent,
+    TradeConsoleComponent,
     TraderEventBubbleComponent,
     TransparencyPromoComponent,
     VendorOptionComponent,
