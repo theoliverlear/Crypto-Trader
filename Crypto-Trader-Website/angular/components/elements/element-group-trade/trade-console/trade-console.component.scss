@@ -1,0 +1,46 @@
+// trade-console.component.scss
+@use "../../../../styles/globals" as *;
+@use "../../../../styles/gradients/global_gradient_placeholders" as *;
+
+trade-console {
+    margin: $one-percent 0;
+    background-color: $pure-white;
+
+    flex: 1;
+    min-width: $fifty-percent;
+    min-height: $twenty-percent;
+    padding: $one-percent;
+    @include flex(flex-start, center, column);
+    @extend %soft-border-radius;
+    .trade-console-title-div {
+        ss-title {
+            @extend %signature-brand-gradient-text-small-reflection;
+        }
+        @include flex(center, center, column);
+        //width: 80%;
+    }
+    hr {
+        width: 80%;
+        box-shadow: 0 0 calc($quarter-percent / 9) $charcoal;
+    }
+    .console-container {
+        @extend %softer-border-radius;
+        width: 100%;
+        height: 100%;
+        border: $very-thin-border solid $alabaster-stone;
+        box-shadow: 0 0 calc($quarter-percent / 9) $charcoal;
+        flex: 1;
+        @include flex(center, stretch, row);
+        .left-column {
+            @include flex(flex-start, center, column);
+            flex: 1;
+            border-right: $very-thin-border solid $alabaster-stone;
+            box-shadow: 0 0 calc($quarter-percent / 9) $charcoal;
+            padding: $one-percent;
+        }
+        .console-body {
+            flex: 3;
+        }
+    }
+
+}

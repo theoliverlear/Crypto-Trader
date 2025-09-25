@@ -1,0 +1,23 @@
+<!-- trade-console.component.html -->
+<ng-container>
+    <div class="trade-console-title-div">
+        <ss-title [tagType]="TagType.H3" [text]="currentTitle.title"/>
+        @if (currentTitle.subtitle) {
+            <subtitle [tagType]="TagType.P" [text]="currentTitle.subtitle"/>
+        }
+    </div>
+    <hr/>
+    @if (isVendorSelected) {
+        <vendor-options (vendorSelectedEvent)="setVendorOption($event)"/>
+    }
+    @if (!isVendorSelected) {
+        <div class="console-container">
+            <div class="left-column">
+                <search-input/>
+            </div>
+            <div class="console-body">
+
+            </div>
+        </div>
+    }
+</ng-container>
