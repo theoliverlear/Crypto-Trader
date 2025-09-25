@@ -2,8 +2,8 @@
 import {Component, HostListener, OnInit} from "@angular/core";
 import { animate, query, stagger, style, transition, trigger } from "@angular/animations";
 import {
-    GetAllCurrenciesService
-} from "../../../services/net/http/currency/get-all-currencies.service";
+    DisplayCurrenciesService
+} from "../../../services/net/http/currency/display-currencies.service";
 import {
     CurrencyList,
     DisplayCurrencyList
@@ -38,7 +38,7 @@ export class CurrenciesComponent implements OnInit {
     private readonly pageSize: number = 10;
     hasMore: boolean = true;
     private scrollTimer: any = null;
-    constructor(private getAllCurrenciesService: GetAllCurrenciesService) {
+    constructor(private getAllCurrenciesService: DisplayCurrenciesService) {
         
     }
     
