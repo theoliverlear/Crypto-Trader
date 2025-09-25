@@ -142,6 +142,9 @@ import {
 import {
     TradeConsoleComponent
 } from "./element-group-trade/trade-console/trade-console.component";
+import {
+    NavArrowsComponent
+} from "./element-group-nav/nav-arrows/nav-arrows.component";
 
 export const elements = [
     AssetButtonComponent,
@@ -165,6 +168,7 @@ export const elements = [
     HomeAnchorComponent,
     LiveChartComponent,
     LoadingWheelComponent,
+    NavArrowsComponent,
     NavBarComponent,
     NavBarItemComponent,
     NavBarProfilePictureComponent,
