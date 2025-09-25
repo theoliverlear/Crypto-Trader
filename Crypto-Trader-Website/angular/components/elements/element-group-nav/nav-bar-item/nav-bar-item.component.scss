@@ -2,7 +2,7 @@
 
 //=================================-Imports-==================================
 @use "../../../../styles/globals" as *;
-@use "../../../../styles/global_fonts" as fonts;
+@use "../../../../styles/global-fonts" as fonts;
 
 nav-bar-item {
     @extend %nav-button;
