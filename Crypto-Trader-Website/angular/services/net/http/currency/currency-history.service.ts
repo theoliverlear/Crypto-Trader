@@ -13,12 +13,12 @@ import {
 @Injectable({
     providedIn: 'root'
 })
-export class GetCurrencyHistoryService extends HttpClientService<any, TimeValueResponse[] | null> {
+export class CurrencyHistoryService extends HttpClientService<any, TimeValueResponse[] | null> {
     private static URL: string = `${environment.apiUrl}/currency/history`;
     private cache: ObservableHistoryMap = new Map<string, ObservableHistoryPoint>();
 
     constructor() {
-        super(GetCurrencyHistoryService.URL);
+        super(CurrencyHistoryService.URL);
     }
 
     getHistory(currencyCode: string,
@@ -53,6 +53,6 @@ export class GetCurrencyHistoryService extends HttpClientService<any, TimeValueR
                    hours: number,
                    intervalSeconds: number): string {
         let params: string = `${currencyCode}?hours=${hours}&intervalSeconds=${intervalSeconds}`;
-        return `${GetCurrencyHistoryService.URL}/${params}`;
+        return `${CurrencyHistoryService.URL}/${params}`;
     }
 }
