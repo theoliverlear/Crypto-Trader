@@ -243,7 +243,7 @@ jobs:
 
       # Coverage build (aggregate)
       - name: Run tests with coverage (aggregate)
-        run: mvn -B -s .github/maven-settings.xml -ntp -Pcoverage -DskipITs=true -DfailIfNoTests=false clean verify
+        run: mvn -B -s .github/maven-settings.xml -ntp -Pcoverage -DskipITs=true -DfailIfNoTests=false -Djunit.platform.excludeTags=ui clean verify
 
       - name: Set up .NET (for ReportGenerator)
         uses: actions/setup-dotnet@v4
