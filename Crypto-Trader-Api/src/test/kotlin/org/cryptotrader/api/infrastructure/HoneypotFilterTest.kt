@@ -1,4 +1,4 @@
-package org.cryptotrader.api.infra
+package org.cryptotrader.api.infrastructure
 
 import org.cryptotrader.api.service.HoneypotService
 import org.junit.jupiter.api.Assertions.assertFalse
