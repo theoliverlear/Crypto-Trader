@@ -43,7 +43,13 @@ public class CurrencyController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
             PerformanceRating performanceRatingResponse = this.currencyService.getDayPerformance(currencyCode);
+            if (performanceRatingResponse == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
             String changePercent = this.currencyService.getPercentageDayPerformance(currencyCode);
+            if (changePercent == null || changePercent.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
             return new ResponseEntity<>(new PerformanceRatingResponse(performanceRatingResponse, changePercent),
                                         HttpStatus.OK);
         }
