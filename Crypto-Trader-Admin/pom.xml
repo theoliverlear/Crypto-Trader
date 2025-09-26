@@ -346,6 +346,11 @@
                 <configuration>
                     <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading</argLine>
                     <useModulePath>false</useModulePath>
+                    <excludedGroups>ui</excludedGroups>
+                    <systemPropertyVariables>
+                        <junit.jupiter.extensions.autodetection.enabled>true</junit.jupiter.extensions.autodetection.enabled>
+                        <java.awt.headless>true</java.awt.headless>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
             <plugin>
