@@ -4,6 +4,8 @@
 search-input {
     background-color: #D0D2DC;
     min-width: $fifteen-percent;
+    @extend %softer-border-radius;
+    //box-shadow: $charcoal 0 0 $quarter-percent;
     .search-input-field {
         @extend %softer-border-radius;
         border: $thinnest-border solid $charcoal;
