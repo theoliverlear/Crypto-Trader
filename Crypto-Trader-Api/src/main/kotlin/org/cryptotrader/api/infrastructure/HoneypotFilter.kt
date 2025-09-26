@@ -1,4 +1,4 @@
-package org.cryptotrader.api.infra
+package org.cryptotrader.api.infrastructure
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
