@@ -10,10 +10,10 @@ import {
 @Injectable({
     providedIn: 'root'
 })
-export class GetAllCurrenciesService extends HttpClientService<any, DisplayCurrencyList> {
+export class DisplayCurrenciesService extends HttpClientService<any, DisplayCurrencyList> {
     private static readonly URL: string = `${environment.apiUrl}/currency/all`;
     constructor() {
-        super(GetAllCurrenciesService.URL);
+        super(DisplayCurrenciesService.URL);
     }
     
     public getAllCurrencies(): Observable<DisplayCurrencyList> {
@@ -21,7 +21,7 @@ export class GetAllCurrenciesService extends HttpClientService<any, DisplayCurre
     }
     
     public getAllCurrenciesWithOffset(offset: number): Observable<DisplayCurrencyList> {
-        this.url = `${GetAllCurrenciesService.URL}?offset=${offset}`;
+        this.url = `${DisplayCurrenciesService.URL}?offset=${offset}`;
         return this.get();
     }
 }
