@@ -108,3 +108,13 @@ export const starIcon: ImageAsset = {
     src: getIconImagePath('star_icon.png'),
     alt: 'Star Icon'
 };
+
+export const coinbaseBrandLogo: ImageAsset = {
+    src: getBrandLogoPath("coinbase_logo.svg"),
+    alt: 'Coinbase Logo'
+};
+
+export const binanceBrandLogo: ImageAsset = {
+    src: getBrandLogoPath("binance_logo.png"),
+    alt: 'Binance Logo'
+};
