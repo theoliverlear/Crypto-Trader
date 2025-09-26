@@ -2,7 +2,9 @@
 <ng-container>
     <div class="vendor-options-list">
         @for (vendor of VendorOption.values(); track vendor) {
-            <vendor-option [vendorOption]="vendor" (vendorSelectedEvent)="emitVendorOption($event)"/>
+            <vendor-option [vendorOption]="vendor"
+                           (vendorSelectedEvent)="emitVendorOption($event)"
+                           [isRecommended]="vendor === VendorOption.PAPER_MODE"/>
         }
     </div>
 </ng-container>
