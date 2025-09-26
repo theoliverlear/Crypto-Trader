@@ -74,6 +74,6 @@ open module org.cryptotrader.api {
     exports org.cryptotrader.api.config;
     exports org.cryptotrader.api.controller;
     exports org.cryptotrader.api.controller.websocket;
-    exports org.cryptotrader.api.infra;
+    exports org.cryptotrader.api.infrastructure;
     exports org.cryptotrader.api.service;
 }
