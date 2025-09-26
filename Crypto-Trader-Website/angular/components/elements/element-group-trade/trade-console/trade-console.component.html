@@ -8,16 +8,16 @@
     </div>
     <hr/>
     <div class="console-container">
-        <div class="left-column">
+        <div class="top-row">
             @if (shouldShowCurrencySearch()) {
                 <search-input [options]="currencyNames"/>
+            }
+            @if (!isVendorSelected) {
+                <vendor-options (vendorSelectedEvent)="setVendorOption($event)"/>
             }
         </div>
         <div class="console-body">
             <nav-arrows/>
-            @if (!isVendorSelected) {
-                <vendor-options (vendorSelectedEvent)="setVendorOption($event)"/>
-            }
         </div>
     </div>
 </ng-container>
