@@ -3,11 +3,9 @@
 @use "../../../../styles/gradients/global_gradient_placeholders" as *;
 
 vendor-options {
-    background-color: $pure-white;
-
-    padding: $one-percent;
-    @include flex(center, center, column);
-    margin: $one-percent 0;
+    //background-color: $pure-white;
+    //padding: $one-percent;
+    @include flex(space-around, center, column);
     @extend %soft-border-radius;
     .vendors-title-div {
         @include flex(center, center, column);
@@ -17,6 +15,8 @@ vendor-options {
         }
     }
     .vendor-options-list {
-        @include flex(center, center, row);
+        @include flex(space-around, center, row);
+        width: 100%;
+        height: 100%;
     }
 }
