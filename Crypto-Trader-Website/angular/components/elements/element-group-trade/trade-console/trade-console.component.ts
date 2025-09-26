@@ -20,6 +20,7 @@ export class TradeConsoleComponent implements OnInit {
     protected currentTitle: TradeConsoleTitle = TradeConsoleTitles.VENDOR;
     protected selectedVendor: PossibleVendor = null;
     protected isVendorSelected: boolean = false;
+    protected isCurrencySelected: boolean = false;
     protected currencyNames: string[] = [];
     constructor(private currencyNamesService: CurrencyNamesService) {
         
@@ -51,6 +52,7 @@ export class TradeConsoleComponent implements OnInit {
     setVendorOption(vendorOption: VendorOption): void {
         this.selectedVendor = vendorOption;
         this.isVendorSelected = true;
+        this.currentTitle = TradeConsoleTitles.CURRENCY;
     }
 
     protected readonly TagType = TagType;
