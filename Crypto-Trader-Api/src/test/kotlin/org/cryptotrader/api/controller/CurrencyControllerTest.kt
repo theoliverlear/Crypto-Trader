@@ -5,6 +5,7 @@ import org.cryptotrader.api.library.communication.response.AssetValueResponse
 import org.cryptotrader.api.library.communication.response.DisplayCurrencyListResponse
 import org.cryptotrader.api.library.communication.response.DisplayCurrencyResponse
 import org.cryptotrader.api.library.communication.response.PerformanceRatingResponse
+import org.cryptotrader.api.library.communication.response.TimeValueResponse
 import org.cryptotrader.api.library.entity.currency.Currency
 import org.cryptotrader.api.library.model.currency.PerformanceRating
 import org.cryptotrader.api.library.services.CurrencyService
@@ -108,14 +109,35 @@ class CurrencyControllerTest : CryptoTraderTest() {
                 )
             )
             `when`(currencyService.getCurrencyValuesResponse()).thenReturn(testDisplayCurrencyResponse)
-            val response: ResponseEntity<DisplayCurrencyListResponse> = controller.getAll()
+            val response: ResponseEntity<DisplayCurrencyListResponse> = controller.all
             assertEquals(HttpStatus.OK, response.statusCode)
             assertEquals(testDisplayCurrencyResponse, response.body)
         }
 
         @Test
         @DisplayName("Should return all currencies with offset")
-        fun getAllWithOffset_ReturnsAll_WithOffset() { }
+        fun getAllWithOffset_ReturnsAll_WithOffset() {
+            val testDisplayCurrencyResponses = (1..200).map { i ->
+                DisplayCurrencyResponse("Test Currency $i", "TEST$i", 10.0 + i)
+            }
+            val testDisplayCurrencyResponse = DisplayCurrencyListResponse(testDisplayCurrencyResponses)
+            val expectedResponses: List<DisplayCurrencyResponse> = testDisplayCurrencyResponses.subList(10, 20)
+            val expectedResponse = DisplayCurrencyListResponse(expectedResponses)
+            val testOffset = 10
+            `when`(currencyService.getCurrencyValuesResponse(testOffset)).thenReturn(expectedResponse)
+            val response: ResponseEntity<DisplayCurrencyListResponse> = controller.getAllWithOffset(testOffset)
+            assertEquals(HttpStatus.OK, response.statusCode)
+            assertEquals(expectedResponse, response.body)
+        }
+
+        @Test
+        @DisplayName("Should return bad request when offset negative")
+        fun getAllWithOffset_ReturnsBadRequest_WhenNegativeOffset() {
+            val negativeOffset = -1
+            val response: ResponseEntity<DisplayCurrencyListResponse> = controller.getAllWithOffset(negativeOffset)
+            assertEquals(HttpStatus.BAD_REQUEST, response.statusCode)
+            assertEquals(null, response.body)
+        }
     }
 
     @Nested
@@ -124,6 +146,21 @@ class CurrencyControllerTest : CryptoTraderTest() {
     inner class GetHistory {
         @Test
         @DisplayName("Should return history list or no content when empty")
-        fun getHistory_ReturnsList_OrNoContent() { }
+        fun getHistory_ReturnsList_OrNoContent() {
+            val hours = 1
+            val intervalSeconds = 60
+            val expectedSize = hours * 60 / intervalSeconds
+            `when`(currencyService.getCurrencyHistory(testCode, hours, intervalSeconds))
+                .thenReturn(List(expectedSize) { TimeValueResponse() })
+            val response: ResponseEntity<List<TimeValueResponse>> = controller.getHistory(testCode, hours, intervalSeconds)
+            assertEquals(HttpStatus.OK, response.statusCode)
+            assertEquals(expectedSize, response.body!!.size)
+
+            `when`(currencyService.getCurrencyHistory(testCode, hours, intervalSeconds))
+                .thenReturn(emptyList())
+            val noContentResponse: ResponseEntity<List<TimeValueResponse>> = controller.getHistory(testCode, hours, intervalSeconds)
+            assertEquals(HttpStatus.NO_CONTENT, noContentResponse.statusCode)
+            assertEquals(null, noContentResponse.body)
+        }
     }
 }
