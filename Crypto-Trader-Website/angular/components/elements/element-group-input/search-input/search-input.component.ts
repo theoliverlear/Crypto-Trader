@@ -1,5 +1,5 @@
 // search-input.component.ts
-import {Component, Input} from "@angular/core";
+import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {FormControl} from "@angular/forms";
 import {map, Observable, startWith} from "rxjs";
 
@@ -16,16 +16,22 @@ export class SearchInputComponent {
         startWith(''),
         map(value => this._filter(value || ''))
     );
+    
+    @Output() selectionChange: EventEmitter<string> = new EventEmitter();
     constructor() {
         
     }
 
+    emitSelectionChange() {
+        this.selectionChange.emit(this.searchControl.value);
+    }
+    
     clear(): void {
         this.searchControl.setValue('');
     }
 
     private _filter(value: string): string[] {
-        const filterValue = value.toLowerCase();
+        const filterValue: string = value.toLowerCase();
         return this.options.filter(option =>
             option.toLowerCase().includes(filterValue)
         );
