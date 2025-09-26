@@ -72,6 +72,9 @@ public class CurrencyController {
     @PermitAll
     @GetMapping(value = "/all", params = "offset")
     public ResponseEntity<DisplayCurrencyListResponse> getAllWithOffset(@RequestParam(value = "offset", defaultValue = "0") int offset) {
+        if (offset < 0) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(this.currencyService.getCurrencyValuesResponse(offset), HttpStatus.OK);
     }
 
