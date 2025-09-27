@@ -19,7 +19,50 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
+        <repository>
+            <id>central-1</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+        <repository>
+            <id>jetbrains-dokka</id>
+            <name>JetBrains Dokka Repository</name>
+            <url>https://maven.pkg.jetbrains.space/kotlin/p/dokka/maven</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <!-- Prefer Sigwarth Suite first so com.sigwarthsoftware artifacts resolve from the correct repository -->
+        <repository>
+            <id>gh-sigwarth-suite</id>
+            <name>GitHub Packages - Sigwarth-Software-Suite</name>
+            <url>https://maven.pkg.github.com/theoliverlear/Sigwarth-Software-Suite</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>gh-crypto-trader</id>
+            <name>GitHub Packages - Crypto-Trader</name>
+            <url>https://maven.pkg.github.com/theoliverlear/Crypto-Trader</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -368,10 +411,4 @@
             </plugin>
         </plugins>
     </build>
-    <repositories>
-        <repository>
-            <id>central</id>
-            <url>https://repo.maven.apache.org/maven2/</url>
-        </repository>
-    </repositories>
 </project>
