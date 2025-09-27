@@ -8,27 +8,28 @@
 ### Module Version - Top Level
 
 
-| Module                 | Version |
-|------------------------|---------|
-| Crypto-Trader          | v.v.v   |
-| Crypto-Trader-Admin    | v.v.v   |
-| Crypto-Trader-Analysis | v.v.v   |
-| Crypto-Trader-Api      | v.v.v   |
-| Crypto-Trader-Assets   | v.v.v   |
-| Crypto-Trader-Console  | v.v.v   |
-| Crypto-Trader-Contact  | v.v.v   |
-| Crypto-Trader-Coverage | v.v.v   |
-| Crypto-Trader-Data     | v.v.v   |
-| Crypto-Trader-Docs     | v.v.v   |
-| Crypto-Trader-Engine   | v.v.v   |
-| Crypto-Trader-Health   | v.v.v   |
-| Crypto-Trader-Library  | v.v.v   |
-| Crypto-Trader-Logging  | v.v.v   |
-| Crypto-Trader-Mobile   | v.v.v   |
-| Crypto-Trader-Security | v.v.v   |
-| Crypto-Trader-Testing  | v.v.v   |
-| Crypto-Trader-Version  | v.v.v   |
-| Crypto-Trader-Website  | v.v.v   |
+| Module                  | Version |
+|-------------------------|---------|
+| Crypto-Trader           | v.v.v   |
+| Crypto-Trader-Admin     | v.v.v   |
+| Crypto-Trader-Analysis  | v.v.v   |
+| Crypto-Trader-Api       | v.v.v   |
+| Crypto-Trader-Assets    | v.v.v   |
+| Crypto-Trader-Console   | v.v.v   |
+| Crypto-Trader-Contact   | v.v.v   |
+| Crypto-Trader-Coverage  | v.v.v   |
+| Crypto-Trader-Data      | v.v.v   |
+| Crypto-Trader-Docs      | v.v.v   |
+| Crypto-Trader-Engine    | v.v.v   |
+| Crypto-Trader-Health    | v.v.v   |
+| Crypto-Trader-Library   | v.v.v   |
+| Crypto-Trader-Logging   | v.v.v   |
+| Crypto-Trader-Mobile    | v.v.v   |
+| Crypto-Trader-Security  | v.v.v   |
+| Crypto-Trader-Simulator | v.v.v   |
+| Crypto-Trader-Testing   | v.v.v   |
+| Crypto-Trader-Version   | v.v.v   |
+| Crypto-Trader-Website   | v.v.v   |
 
 
 ### Module Version - Library
@@ -148,6 +149,16 @@
 - Bullet
 
 ### [Crypto Trader Mobile](Crypto-Trader-Mobile)
+- Bullet
+- Bullet
+- Bullet
+
+### [Crypto Trader Security](Crypto-Trader-Security)
+- Bullet
+- Bullet
+- Bullet
+
+### [Crypto Trader Simulator](Crypto-Trader-Simulator)
 - Bullet
 - Bullet
 - Bullet
