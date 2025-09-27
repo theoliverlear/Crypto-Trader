@@ -29,7 +29,7 @@ if (!existsSync(outDir)) {
     mkdirSync(outDir, { recursive: true });
 }
 
-function fileContent({ production, apiUrl, dataUrl, websocketUrl, enableDebug, featureFlag }) {
+function fileContent({ production, apiUrl, dataUrl, websocketUrl, enableDebug, featureFlag, persistDpopKey }) {
     // Produce a TypeScript module exporting the environment object.
     return `export const environment = {
   production: ${production},
@@ -37,7 +37,8 @@ function fileContent({ production, apiUrl, dataUrl, websocketUrl, enableDebug, f
   dataUrl: ${JSON.stringify(dataUrl)},
   websocketUrl: ${JSON.stringify(websocketUrl)},
   enableDebug: ${enableDebug},
-  featureFlag: ${featureFlag}
+  featureFlag: ${featureFlag},
+  persistDpopKey: ${persistDpopKey}
 };
 `;
 }
@@ -52,6 +53,7 @@ const files = [
             websocketUrl: ENV.WEBSOCKET_URL,
             enableDebug: ENV.ENABLE_DEBUG,
             featureFlag: ENV.FEATURE_FLAG,
+            persistDpopKey: true
         }),
     },
     {
@@ -63,6 +65,7 @@ const files = [
             websocketUrl: ENV.WEBSOCKET_URL,
             enableDebug: ENV.ENABLE_DEBUG,
             featureFlag: ENV.FEATURE_FLAG,
+            persistDpopKey: false
         }),
     },
     {
@@ -74,13 +77,14 @@ const files = [
             websocketUrl: process.env.WEBSOCKET_URL_PROD || process.env.WEBSOCKET_URL_PROD || ENV.WEBSOCKET_URL.replace('http://', 'https://').replace(':3000', ''),
             enableDebug: boolFromEnv(process.env.WEBSITE_ENABLE_DEBUG_PROD ?? process.env.ENABLE_DEBUG_PROD, false),
             featureFlag: boolFromEnv(process.env.WEBSITE_FEATURE_FLAG_PROD ?? process.env.FEATURE_FLAG_PROD, true),
+            persistDpopKey: true
         }),
     },
 ];
 
-for (const f of files) {
-    const p = resolve(outDir, f.name);
-    writeFileSync(p, f.data, 'utf8');
+for (const file of files) {
+    const path = resolve(outDir, file.name);
+    writeFileSync(path, file.data, 'utf8');
 }
 
 // Optional: emit a brief log for CI debugging
