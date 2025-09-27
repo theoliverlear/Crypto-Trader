@@ -11,11 +11,94 @@ permissions:
 
 jobs:
   build:
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-    uses: theoliverlear/Sigwarth-Software-Suite/.github/workflows/maven-package.yml@master
-    with:
-      java-version: '23'
-      distribution: temurin
-    secrets: inherit
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '23'
+          server-id: github
+          server-username: ${{ github.actor }}
+          server-password: ${{ secrets.GITHUB_TOKEN }}
+          settings-path: ${{ github.workspace }}
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn -B -s "$GITHUB_WORKSPACE/settings.xml" package --file pom.xml
+
+      - name: Deploy modules (skip if version exists)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -e
+          echo "Discovering modules..."
+          poms=$(git ls-files "pom.xml" ":(glob)**/pom.xml")
+          echo "Found POMs:"
+          echo "$poms"
+
+          for pom in $poms; do
+            PACK=$(mvn -q -DforceStdout -f "$pom" help:evaluate -Dexpression=project.packaging)
+            G=$(mvn -q -DforceStdout -f "$pom" help:evaluate -Dexpression=project.groupId)
+            A=$(mvn -q -DforceStdout -f "$pom" help:evaluate -Dexpression=project.artifactId)
+            V=$(mvn -q -DforceStdout -f "$pom" help:evaluate -Dexpression=project.version)
+            GP=${G//./\/}
+            URL="https://maven.pkg.github.com/${REPO}/${GP}/${A}/${V}/${A}-${V}.pom"
+
+            echo "Checking $A:$V at $URL"
+            code=$(curl -L -s -o /dev/null -w "%{http_code}" -u "${{ github.actor }}:${GITHUB_TOKEN}" "$URL")
+            if [ "$code" = "200" ]; then
+              echo "Artifact already exists (HTTP 200). Skipping deploy for $A:$V"
+              continue
+            fi
+            if [ "$code" = "401" ] || [ "$code" = "403" ]; then
+              echo "Auth check issue for $A:$V (HTTP $code). Proceeding with deploy to avoid false skip."
+            fi
+
+            log="deploy_${A}_${V}.log"
+            if [ "$PACK" = "pom" ]; then
+              echo "Deploying POM $A:$V from $pom"
+              set +e
+              mvn -B -s "$GITHUB_WORKSPACE/settings.xml" -f "$GITHUB_WORKSPACE/pom.xml" -pl ":$A" -am -DskipTests=true -DskipRootDeploy=true install 2>&1 | tee "$log"
+              rc=${PIPESTATUS[0]}
+              if [ $rc -eq 0 ]; then
+                mvn -B -s "$GITHUB_WORKSPACE/settings.xml" -f "$GITHUB_WORKSPACE/pom.xml" -pl ":$A" -DskipExisting=true -DskipRootDeploy=true deploy 2>&1 | tee -a "$log"
+                rc=${PIPESTATUS[0]}
+              fi
+              set -e
+              if [ $rc -ne 0 ]; then
+                if grep -Ei -q "(status code: 409|Return code is: 409|409[^0-9]*Conflict)" "$log"; then
+                  echo "Received 409 Conflict for $A:$V. Assuming already present. Skipping."
+                  continue
+                else
+                  echo "Deploy failed for $A:$V with code $rc"
+                  exit $rc
+                fi
+              fi
+            else
+              echo "Deploying $A:$V from $pom"
+              set +e
+              mvn -B -s "$GITHUB_WORKSPACE/settings.xml" -f "$GITHUB_WORKSPACE/pom.xml" -pl ":$A" -am -DskipTests=true -DskipRootDeploy=true install 2>&1 | tee "$log"
+              rc=${PIPESTATUS[0]}
+              if [ $rc -eq 0 ]; then
+                mvn -B -s "$GITHUB_WORKSPACE/settings.xml" -f "$GITHUB_WORKSPACE/pom.xml" -pl ":$A" -DskipTests=true -DskipExisting=true -DskipRootDeploy=true deploy 2>&1 | tee -a "$log"
+                rc=${PIPESTATUS[0]}
+              fi
+              set -e
+              if [ $rc -ne 0 ]; then
+                if grep -Ei -q "(status code: 409|Return code is: 409|409[^0-9]*Conflict)" "$log"; then
+                  echo "Received 409 Conflict for $A:$V. Assuming already present. Skipping."
+                  continue
+                else
+                  echo "Deploy failed for $A:$V with code $rc"
+                  exit $rc
+                fi
+              fi
+            fi
+          done
