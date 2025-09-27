@@ -86,6 +86,8 @@ security:
     dpop:
       allowed-algs: "ES256"
       replay-ttl-seconds: 120
+  honeypot:
+    paths: ${SECURITY_HONEYPOT_PATHS:}
   refresh:
     cookie-name: rt
     cookie-samesite: Strict
