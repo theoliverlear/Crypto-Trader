@@ -4,7 +4,7 @@ import {Component, HostBinding, Input} from "@angular/core";
 @Component({
     selector: 'loading-wheel',
     templateUrl: './loading-wheel.component.html',
-    styleUrls: ['./loading-wheel.component.css'],
+    styleUrls: ['./loading-wheel.component.scss'],
     standalone: false
 })
 export class LoadingWheelComponent {
