@@ -1,0 +1,4 @@
+# Spring Boot test configuration using YAML. No explicit honeypot paths; rely on env var.
+security:
+  honeypot:
+    paths: ${SECURITY_HONEYPOT_PATHS:}
