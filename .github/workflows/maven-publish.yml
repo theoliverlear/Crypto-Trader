@@ -11,6 +11,12 @@ permissions:
 
 jobs:
   build:
+    permissions:
+      contents: read
+      packages: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_ACTOR: ${{ github.actor }}
     uses: theoliverlear/Sigwarth-Software-Suite/.github/workflows/maven-package.yml@master
     with:
       java-version: '23'
