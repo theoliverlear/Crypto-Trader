@@ -6,13 +6,16 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.0.5</version>
+        <version>0.1.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <artifactId>security-infrastructure</artifactId>
     <name>Security-Infrastructure</name>
+    <description>
+        Infrastructure for security services — messaging, persistence, and cross-cutting utilities.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

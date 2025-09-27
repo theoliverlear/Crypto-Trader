@@ -6,13 +6,16 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.0.5</version>
+        <version>0.1.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <version>0.0.1</version>
     <artifactId>security-repositories</artifactId>
     <name>Security-Repositories</name>
+    <description>
+        Persistence layer for security — JPA repositories and data-access abstractions for security entities.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

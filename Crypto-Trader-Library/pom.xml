@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.2.2</version>
+        <version>0.3.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -49,7 +49,7 @@
     <description>
         Shared Java libraries for Crypto Trader, including API models, components, communication, and repositories.
     </description>
-    <version>0.0.5</version>
+    <version>0.1.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

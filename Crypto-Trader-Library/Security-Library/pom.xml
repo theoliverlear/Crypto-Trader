@@ -6,12 +6,15 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.0.5</version>
+        <version>0.1.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>security-library</artifactId>
     <name>Security-Library</name>
+    <description>
+        Aggregated security libraries — configuration, models, events, repositories, services, and infrastructure.
+    </description>
     <version>0.0.1</version>
 
     <properties>

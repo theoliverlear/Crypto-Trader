@@ -6,13 +6,16 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.0.5</version>
+        <version>0.1.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <version>0.0.1</version>
     <artifactId>security-services</artifactId>
     <name>Security-Services</name>
+    <description>
+        Core security services — authentication, authorization, token handling, and crypto helpers.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

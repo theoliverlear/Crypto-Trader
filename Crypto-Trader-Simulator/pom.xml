@@ -6,12 +6,15 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.2.2</version>
+        <version>0.3.0</version>
     </parent>
 
     <version>0.0.1</version>
     <artifactId>crypto-trader-simulator</artifactId>
     <name>Crypto-Trader-Simulator</name>
+    <description>
+        Strategy backtesting and paper-trading simulator — replay historical data and validate strategies safely.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

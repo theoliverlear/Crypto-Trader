@@ -6,13 +6,16 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.0.5</version>
+        <version>0.1.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>security-events</artifactId>
     <name>Security-Events</name>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
+    <description>
+        Security-related event contracts — authentication events, anomaly alerts, and audit messages.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

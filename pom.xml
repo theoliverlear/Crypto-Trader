@@ -5,7 +5,7 @@
 
     <groupId>org.cryptotrader</groupId>
     <artifactId>crypto-trader</artifactId>
-    <version>0.2.2</version>
+    <version>0.3.0</version>
     <packaging>pom</packaging>
     <name>Crypto-Trader</name>
     <description>
@@ -272,27 +272,27 @@
             <dependency>
                 <groupId>org.cryptotrader</groupId>
                 <artifactId>crypto-trader-security</artifactId>
-                <version>0.0.1</version>
+                <version>0.0.2</version>
             </dependency>
             <dependency>
                 <groupId>org.cryptotrader</groupId>
                 <artifactId>security-config</artifactId>
-                <version>0.0.1</version>
+                <version>0.0.2</version>
             </dependency>
             <dependency>
                 <groupId>org.cryptotrader</groupId>
                 <artifactId>security-events</artifactId>
-                <version>0.0.1</version>
+                <version>0.0.2</version>
             </dependency>
             <dependency>
                 <groupId>org.cryptotrader</groupId>
                 <artifactId>security-infrastructure</artifactId>
-                <version>0.0.1</version>
+                <version>0.0.2</version>
             </dependency>
             <dependency>
                 <groupId>org.cryptotrader</groupId>
                 <artifactId>security-models</artifactId>
-                <version>0.0.1</version>
+                <version>0.0.2</version>
             </dependency>
             <dependency>
                 <groupId>org.cryptotrader</groupId>
@@ -474,7 +474,7 @@
             <dependency>
                 <groupId>org.cryptotrader</groupId>
                 <artifactId>api-infrastructure</artifactId>
-                <version>0.0.1</version>
+                <version>0.0.2</version>
             </dependency>
             <dependency>
                 <groupId>org.cryptotrader</groupId>
@@ -541,7 +541,7 @@
             <dependency>
                 <groupId>org.cryptotrader</groupId>
                 <artifactId>api-scripts</artifactId>
-                <version>0.0.1</version>
+                <version>0.0.2</version>
             </dependency>
 
             <!-- Admin domain -->

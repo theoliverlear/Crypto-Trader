@@ -6,12 +6,15 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.2.2</version>
+        <version>0.3.0</version>
     </parent>
 
     <version>0.0.1</version>
     <artifactId>crypto-trader-console</artifactId>
     <name>Crypto-Trader-Console</name>
+    <description>
+        Command-line utilities for Crypto Trader — development helpers and maintenance scripts.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

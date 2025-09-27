@@ -7,13 +7,16 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.0.5</version>
+        <version>0.1.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>api-scripts</artifactId>
     <name>Api-Scripts</name>
-    <version>0.0.1</version>
+    <description>
+        Operational scripts and utilities for Crypto Trader APIs — maintenance, automation, and developer tooling.
+    </description>
+    <version>0.0.2</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
