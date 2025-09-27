@@ -814,6 +814,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
                 <executions>
                     <execution>
                         <id>jacoco-prepare-ut</id>
@@ -907,17 +908,6 @@
             <id>github</id>
             <name>GitHub Packages - Sigwarth-Software-Suite</name>
             <url>https://maven.pkg.github.com/theoliverlear/Sigwarth-Software-Suite</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>github</id>
-            <name>GitHub Packages - Crypto-Trader</name>
-            <url>https://maven.pkg.github.com/theoliverlear/Crypto-Trader</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
