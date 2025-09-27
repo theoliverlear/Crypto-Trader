@@ -41,20 +41,9 @@
         </repository>
         <!-- Prefer Sigwarth Suite first so com.sigwarthsoftware artifacts resolve from the correct repository -->
         <repository>
-            <id>gh-sigwarth-suite</id>
+            <id>github</id>
             <name>GitHub Packages - Sigwarth-Software-Suite</name>
             <url>https://maven.pkg.github.com/theoliverlear/Sigwarth-Software-Suite</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>gh-crypto-trader</id>
-            <name>GitHub Packages - Crypto-Trader</name>
-            <url>https://maven.pkg.github.com/theoliverlear/Crypto-Trader</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
