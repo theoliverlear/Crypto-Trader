@@ -904,7 +904,7 @@
         </repository>
         <!-- Prefer Sigwarth Suite first so com.sigwarthsoftware artifacts resolve from the correct repository -->
         <repository>
-            <id>github</id>
+            <id>gh-sigwarth-suite</id>
             <name>GitHub Packages - Sigwarth-Software-Suite</name>
             <url>https://maven.pkg.github.com/theoliverlear/Sigwarth-Software-Suite</url>
             <releases>

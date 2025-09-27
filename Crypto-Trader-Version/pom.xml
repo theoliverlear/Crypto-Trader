@@ -306,7 +306,7 @@
         </repository>
         <!-- Place Sigwarth repository first to avoid 401/403 from Crypto-Trader repo blocking fallback -->
         <repository>
-            <id>github</id>
+            <id>gh-sigwarth-suite</id>
             <name>GitHub Packages - Sigwarth-Software-Suite</name>
             <url>https://maven.pkg.github.com/theoliverlear/Sigwarth-Software-Suite</url>
             <releases>
