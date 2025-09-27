@@ -3,6 +3,8 @@ package org.cryptotrader.version.library.model.module;
 import lombok.Getter;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -12,6 +14,7 @@ public class ModuleLibrary {
             "Crypto-Trader-Admin",
             "Crypto-Trader-Api",
             "Crypto-Trader-Assets",
+            "Crypto-Trader-Console",
             "Crypto-Trader-Contact",
             "Crypto-Trader-Coverage",
             "Crypto-Trader-Data",
@@ -20,6 +23,8 @@ public class ModuleLibrary {
             "Crypto-Trader-Health",
             "Crypto-Trader-Library",
             "Crypto-Trader-Logging",
+            "Crypto-Trader-Security",
+            "Crypto-Trader-Simulator",
             "Crypto-Trader-Testing",
             "Crypto-Trader-Version"
     };
@@ -33,64 +38,43 @@ public class ModuleLibrary {
             "Api-Components",
             "Api-Config",
             "Api-Events",
+            "Api-Infrastructure",
             "Api-Models",
             "Api-Repositories",
+            "Api-Scripts",
             "Api-Services",
             "Contact-Library",
             "Contact-Events",
+            "Contact-Models",
             "Contact-Repositories",
             "Desktop-Library",
             "Desktop-Components",
             "Externals-Library",
+            "Security-Library",
+            "Security-Config",
+            "Security-Events",
+            "Security-Infrastructure",
+            "Security-Models",
+            "Security-Repositories",
+            "Security-Services",
             "Version-Library",
             "Version-Models"
     };
     
-    public static List<ModuleLibrary> MODULES = List.of(
-            new ModuleLibrary("Crypto-Trader-Admin"),
-            new ModuleLibrary("Crypto-Trader-Api"),
-            new ModuleLibrary("Crypto-Trader-Assets"),
-            new ModuleLibrary("Crypto-Trader-Contact"),
-            new ModuleLibrary("Crypto-Trader-Coverage"),
-            new ModuleLibrary("Crypto-Trader-Data"),
-            new ModuleLibrary("Crypto-Trader-Docs"),
-            new ModuleLibrary("Crypto-Trader-Engine"),
-            new ModuleLibrary("Crypto-Trader-Health"),
-            new ModuleLibrary("Crypto-Trader-Library"),
-            // Admin hierarchy
-            new ModuleLibrary("Admin-Library"),
-            new ModuleLibrary("Admin-Events"),
-            new ModuleLibrary("Admin-Models"),
-            // API hierarchy
-            new ModuleLibrary("Api-Library"),
-            new ModuleLibrary("Api-Communication"),
-            new ModuleLibrary("Api-Components"),
-            new ModuleLibrary("Api-Config"),
-            new ModuleLibrary("Api-Events"),
-            new ModuleLibrary("Api-Models"),
-            new ModuleLibrary("Api-Repositories"),
-            new ModuleLibrary("Api-Services"),
-            // Contact hierarchy
-            new ModuleLibrary("Contact-Library"),
-            new ModuleLibrary("Contact-Events"),
-            new ModuleLibrary("Contact-Models"),
-            new ModuleLibrary("Contact-Repositories"),
-            // Desktop hierarchy
-            new ModuleLibrary("Desktop-Library"),
-            new ModuleLibrary("Desktop-Components"),
-            // Other libraries
-            new ModuleLibrary("Externals-Library"),
-            new ModuleLibrary("Version-Library"),
-            new ModuleLibrary("Version-Models"),
-            // Other project modules
-            new ModuleLibrary("Crypto-Trader-Logging"),
-            new ModuleLibrary("Crypto-Trader-Mobile"),
-            new ModuleLibrary("Crypto-Trader-Testing"),
-            new ModuleLibrary("Crypto-Trader-Version"),
-            new ModuleLibrary("Crypto-Trader")
-    );
-    
+    public static List<ModuleLibrary> MODULES = getInitializedModules();
+
     private String name;
+
+    public static List<ModuleLibrary> getInitializedModules() {
+        List<ModuleLibrary> moduleLibraries = new ArrayList<>(Arrays.stream(CRYPTO_TRADER_PARENT)
+                                                                    .map(ModuleLibrary::new)
+                                                                    .toList());
+        moduleLibraries.addAll(Arrays.stream(LIBRARY_PARENT)
+                                     .map(ModuleLibrary::new)
+                                     .toList());
+        moduleLibraries.add(new ModuleLibrary("Crypto-Trader"));
+        return moduleLibraries;
+    }
 
     public static void initializeModules(List<ModuleLibrary> modules) {
         ModuleLibrary.MODULES = modules;
