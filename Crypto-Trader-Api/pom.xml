@@ -41,7 +41,7 @@
         </repository>
         <!-- Prefer Sigwarth Suite first so com.sigwarthsoftware artifacts resolve from the correct repository -->
         <repository>
-            <id>gh-sigwarth-suite</id>
+            <id>github</id>
             <name>GitHub Packages - Sigwarth-Software-Suite</name>
             <url>https://maven.pkg.github.com/theoliverlear/Sigwarth-Software-Suite</url>
             <releases>

@@ -306,7 +306,7 @@
         </repository>
         <!-- Place Sigwarth repository first to avoid 401/403 from Crypto-Trader repo blocking fallback -->
         <repository>
-            <id>gh-sigwarth-suite</id>
+            <id>github</id>
             <name>GitHub Packages - Sigwarth-Software-Suite</name>
             <url>https://maven.pkg.github.com/theoliverlear/Sigwarth-Software-Suite</url>
             <releases>
@@ -390,6 +390,9 @@
                         <arg>--add-exports=javafx.graphics/com.sun.javafx.iio.common=javafxsvg</arg>
                         <arg>--add-exports=javafx.graphics/com.sun.javafx.image=javafxsvg</arg>
                     </compilerArgs>
+                    <excludes>
+                        <exclude>org/cryptotrader/version/script/ReleaseGenerator.java</exclude>
+                    </excludes>
                 </configuration>
 
             </plugin>
