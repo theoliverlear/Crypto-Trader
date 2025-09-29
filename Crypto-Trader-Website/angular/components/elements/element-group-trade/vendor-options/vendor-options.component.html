@@ -4,6 +4,7 @@
         @for (vendor of VendorOption.values(); track vendor) {
             <vendor-option [vendorOption]="vendor"
                            (vendorSelectedEvent)="emitVendorOption($event)"
+                           [selectedVendor]="selectedVendor"
                            [isRecommended]="vendor === VendorOption.PAPER_MODE"/>
         }
     </div>
