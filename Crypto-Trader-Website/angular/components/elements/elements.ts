@@ -145,6 +145,10 @@ import {
 import {
     NavArrowsComponent
 } from "./element-group-nav/nav-arrows/nav-arrows.component";
+import {
+    TradeCheckoutComponent
+} from "./element-group-trade/trade-checkout/trade-checkout.component";
+import TradeCurrencyComponent from "./element-group-trade/trade-currency/trade-currency.component";
 
 export const elements = [
     AssetButtonComponent,
@@ -195,7 +199,9 @@ export const elements = [
     TerminalComponent,
     TierPromoComponent,
     TierPromoStripeComponent,
+    TradeCheckoutComponent,
     TradeConsoleComponent,
+    TradeCurrencyComponent,
     TraderEventBubbleComponent,
     TransparencyPromoComponent,
     VendorOptionComponent,
