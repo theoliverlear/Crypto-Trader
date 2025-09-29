@@ -23,10 +23,7 @@ search-input {
     }
     &.disabled {
         background-color: $charcoal;
-        // cant be clicked
-        //pointer-events: none;
         filter: brightness(0.7);
-        // filter to black and white
         opacity: 0.4;
         &:hover {
             cursor: not-allowed;
