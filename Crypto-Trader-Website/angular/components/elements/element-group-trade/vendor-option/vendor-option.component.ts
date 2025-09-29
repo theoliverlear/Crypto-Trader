@@ -1,7 +1,7 @@
 // vendor-option.component.ts
 import {
     Component,
-    EventEmitter,
+    EventEmitter, HostBinding,
     HostListener,
     Input,
     Output
@@ -19,9 +19,18 @@ import {TagType} from "@theoliverlear/angular-suite";
 export class VendorOptionComponent {
     @Input() vendorOption: VendorOption;
     @Input() isRecommended: boolean = true;
+    @Input() isSelected: boolean = false;
+    @Input() selectedVendor: VendorOption;
     @Output() vendorSelectedEvent: EventEmitter<VendorOption> = new EventEmitter<VendorOption>();
+    @HostBinding('class.selected') get selected(): boolean {
+        return this.selectedVendor === this.vendorOption;
+    }
     constructor() {
         
+    }
+    
+    setSelected(vendorOption: VendorOption): void {
+        this.isSelected = this.vendorOption === vendorOption;
     }
     
     @HostListener('click')
