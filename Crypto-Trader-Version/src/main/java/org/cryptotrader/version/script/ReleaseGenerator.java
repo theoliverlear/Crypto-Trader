@@ -18,8 +18,8 @@ public class ReleaseGenerator {
     
     public static void main(String[] args) {
         com.sigwarthsoftware.changelog.version.models.module.ModuleLibrary.initializeModules(getAllSigwarthModules());
-        String releaseVersion = "0.2.2";
-        CommitRange commitRange = new CommitRange("b64bee7f85e0849a3d8fd91d21cef9533e40bb63", "f3f0332c3f4b8e5001136c1e05dbd40922a1e133");
+        String releaseVersion = "0.3.0";
+        CommitRange commitRange = new CommitRange("fde9d343af0572f0b7149832e0d066ded7cd2ed8", "12c0e38530511920c6d318fcaf71df9254722e73");
         String changelog = ReleaseChangelogGenerator.getChangelog(commitRange, releaseVersion);
     }
 }
