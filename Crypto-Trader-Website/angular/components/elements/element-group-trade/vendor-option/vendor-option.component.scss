@@ -26,4 +26,13 @@ vendor-option {
         // Softer and less visible image
         //filter: drop-shadow(0 $quarter-percent $quarter-percent $sunbeam-yellow) brightness(0.9);
     }
+    &.selected {
+        background-color: $sunbeam-yellow;
+        ss-title {
+            color: gray;
+        }
+        .recommended-icon {
+            filter: drop-shadow(0 $quarter-percent $quarter-percent black) brightness(1.1);
+        }
+    }
 }
