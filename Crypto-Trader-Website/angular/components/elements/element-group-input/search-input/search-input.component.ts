@@ -1,5 +1,11 @@
 // search-input.component.ts
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {
+    Component,
+    EventEmitter,
+    HostBinding,
+    Input,
+    Output
+} from "@angular/core";
 import {FormControl} from "@angular/forms";
 import {map, Observable, startWith} from "rxjs";
 
@@ -16,6 +22,11 @@ export class SearchInputComponent {
         startWith(''),
         map(value => this._filter(value || ''))
     );
+    @Input() isEnabled: boolean = true;
+    
+    @HostBinding('class.disabled') get disabled(): boolean {
+        return !this.isEnabled;
+    }
     
     @Output() selectionChange: EventEmitter<string> = new EventEmitter();
     constructor() {
