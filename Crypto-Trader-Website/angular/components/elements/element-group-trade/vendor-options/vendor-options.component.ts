@@ -11,12 +11,14 @@ import {TagType} from "@theoliverlear/angular-suite";
 })
 export class VendorOptionsComponent {
     @Output() vendorSelectedEvent: EventEmitter<VendorOption> = new EventEmitter<VendorOption>();
+    selectedVendor: VendorOption | null = null;
     constructor() {
         
     }
 
     emitVendorOption(vendorOption: VendorOption) {
         this.vendorSelectedEvent.emit(vendorOption);
+        this.selectedVendor = vendorOption;
     }
     
     protected readonly VendorOption = VendorOption;
