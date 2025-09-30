@@ -1,5 +1,6 @@
 // trade-checkout.component.ts
-import { Component } from "@angular/core";
+import {Component, Input} from "@angular/core";
+import {DisplayCurrency} from "../../../../models/currency/types";
 
 @Component({
     selector: 'trade-checkout',
@@ -8,6 +9,7 @@ import { Component } from "@angular/core";
     standalone: false
 })
 export class TradeCheckoutComponent {
+    @Input() displayCurrency: DisplayCurrency;
     constructor() {
         
     }
