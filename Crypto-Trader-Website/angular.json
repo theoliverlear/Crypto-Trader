@@ -161,9 +161,9 @@
               "outputHashing": "none",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
+              "aot": false,
               "extractLicenses": false,
-              "vendorChunk": true,
+              "vendorChunk": false,
               "buildOptimizer": false
             }
           }
@@ -171,7 +171,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "buildTarget": "crypto-trader:build:development"
+            "buildTarget": "crypto-trader:build"
           },
           "configurations": {
             "hmr": {
@@ -182,8 +182,7 @@
               "buildTarget": "crypto-trader:build:production"
             },
             "development": {
-              "buildTarget": "crypto-trader:build:development",
-              "hmr": true
+              "buildTarget": "crypto-trader:build:development"
             }
           }
         },
