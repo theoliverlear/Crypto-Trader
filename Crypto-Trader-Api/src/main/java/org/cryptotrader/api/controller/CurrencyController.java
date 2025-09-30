@@ -77,6 +77,23 @@ public class CurrencyController {
         }
         return new ResponseEntity<>(this.currencyService.getCurrencyValuesResponse(offset), HttpStatus.OK);
     }
+    
+    @PermitAll
+    @GetMapping("/display/{code}")
+    public ResponseEntity<DisplayCurrencyResponse> getDisplayCurrency(@PathVariable("code") String code) {
+        if (code == null || code.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        Currency currency = this.currencyService.getCurrencyByCurrencyCode(code);
+        if (currency == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        DisplayCurrencyResponse response = this.currencyService.toCurrencyValueResponse(currency);
+        if (response == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
     @PermitAll
     @GetMapping("/history/{code}")
