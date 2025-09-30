@@ -10,12 +10,17 @@
     <div class="console-container">
         <div class="top-row">
             @if (shouldShowCurrencySearch()) {
-                <search-input [options]="currencyNames" [isEnabled]="isVendorSelected"/>
+                <search-input [options]="currencyNames"
+                              [isEnabled]="isVendorSelected"
+                              (selectionChange)="updateCurrency($event)"/>
             }
             <vendor-options (vendorSelectedEvent)="setVendorOption($event)"/>
         </div>
         <div class="console-body">
             <nav-arrows/>
+            @if (isCurrencySelected && displayCurrency) {
+                <trade-checkout [displayCurrency]="displayCurrency"/>
+            }
         </div>
     </div>
 </ng-container>
