@@ -8,7 +8,13 @@ import {TagType} from "@theoliverlear/angular-suite";
 import {
     CurrencyNamesService
 } from "../../../../services/net/http/currency/currency-names.service";
-import {CurrencyNames} from "../../../../models/currency/types";
+import {
+    CurrencyNames,
+    DisplayCurrency, PossibleDisplayCurrency
+} from "../../../../models/currency/types";
+import {
+    DisplayCurrencyService
+} from "../../../../services/net/http/currency/display-currency.service";
 
 @Component({
     selector: 'trade-console',
@@ -22,18 +28,44 @@ export class TradeConsoleComponent implements OnInit {
     protected isVendorSelected: boolean = false;
     protected isCurrencySelected: boolean = false;
     protected currencyNames: string[] = [];
-    constructor(private currencyNamesService: CurrencyNamesService) {
+    private _selectedCurrency: string;
+    protected displayCurrency: PossibleDisplayCurrency = null;
+    constructor(private currencyNamesService: CurrencyNamesService,
+                private displayCurrencyService: DisplayCurrencyService) {
         
+    }
+
+    protected set selectedCurrency(value: string) {
+        this._selectedCurrency = value;
+        if (value) {
+            const code: string = this.getCurrencyCode();
+            if (code) {
+                this.displayCurrencyService.getDisplayCurrency(code).subscribe({
+                    next: (displayCurrency: DisplayCurrency) => {
+                        this.displayCurrency = displayCurrency;
+                    }
+                });
+            }
+        }
+    }
+    
+    updateCurrency(newCurrency: string): void {
+        this.selectedCurrency = newCurrency;
+        this.isCurrencySelected = true;
+    }
+
+    getCurrencyCode(): string {
+        const currencyCode: string = this._selectedCurrency?.match(/.*[(](.*)[)]/)?.[1];
+        return currencyCode;
     }
     
     ngOnInit(): void {
         this.currencyNamesService.getCurrencyNames(true).subscribe({
             next: (currencyNames: CurrencyNames) => {
-                console.log(currencyNames);
                 this.currencyNames = currencyNames.currencyNames;
                 this.sortCurrencyNamesAlphabetically();
             }
-        })
+        });
     }
     
     private sortCurrencyNamesAlphabetically(): void {
