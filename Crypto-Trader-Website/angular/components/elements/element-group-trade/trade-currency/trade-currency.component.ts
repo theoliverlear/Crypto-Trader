@@ -1,9 +1,15 @@
 // trade-currency.component.ts
-import {Component, Input, OnInit} from "@angular/core";
+import {
+    Component,
+    Input,
+    OnChanges,
+    OnInit,
+    SimpleChanges
+} from "@angular/core";
 import {
     CurrencyValueWebsocketService
 } from "../../../../services/net/websocket/currency-value-websocket.service";
-import {WebSocketCapable} from "@theoliverlear/angular-suite";
+import {TagType, WebSocketCapable} from "@theoliverlear/angular-suite";
 import { Subscription } from "rxjs";
 import {
     CurrencyImageService
@@ -20,20 +26,34 @@ import {Currency, DisplayCurrency} from "../../../../models/currency/types";
     styleUrls: ['./trade-currency.component.scss'],
     standalone: false
 })
-class TradeCurrencyComponent implements WebSocketCapable, OnInit {
+class TradeCurrencyComponent implements OnInit, OnChanges {
     @Input() selectedCurrency: Currency;
     currencyValue: number = 0;
     imageAsset: ImageAsset = defaultCurrencyIcon;
-    constructor(private currencyWebSocket: CurrencyValueWebsocketService,
-                private currencyImageService: CurrencyImageService) {
+    constructor(private currencyImageService: CurrencyImageService) {
 
     }
-    
+
+    ngOnChanges(changes: SimpleChanges) {
+        const curr = changes['selectedCurrency'];
+        if (!curr || !curr.currentValue) return;
+
+        const prevCode = curr.previousValue?.currencyCode;
+        const nextCode = curr.currentValue.currencyCode;
+        if (prevCode === nextCode) return;
+
+        // Defer to avoid blocking current CD cycle (optional)
+        Promise.resolve().then(() => this.setImageAsset());
+    }
+
     ngOnInit() {
         this.setImageAsset();
     }
 
     async setImageAsset(): Promise<void> {
+        if (!this.selectedCurrency) {
+            return;
+        }
         const displayCurrency: DisplayCurrency = {
             currencyCode: this.selectedCurrency.currencyCode,
             currencyName: this.selectedCurrency.currencyName,
@@ -48,11 +68,8 @@ class TradeCurrencyComponent implements WebSocketCapable, OnInit {
         return `/assets/cryptofont/${currencyCode.toLowerCase()}.svg`;
     }
     
-    webSocketSubscriptions: Record<string, Subscription>;
-    initializeWebSockets(): void {
-        throw new Error("Method not implemented.");
-    }
 
+    protected readonly TagType = TagType;
 }
 
 export default TradeCurrencyComponent
