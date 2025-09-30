@@ -82,7 +82,7 @@ export class DisplayCurrencyComponent implements OnChanges, OnInit, AfterViewIni
         this.currencyValueWebSocket.connect();
         this.webSocketSubscriptions['currency-value'] = this.currencyValueWebSocket.getMessages().subscribe({
            next: (message) => {
-               const numeric = Number(message);
+               const numeric: number = Number(message);
                if (!isFinite(numeric)) {
                    return;
                }
@@ -131,7 +131,7 @@ export class DisplayCurrencyComponent implements OnChanges, OnInit, AfterViewIni
     }
 
     setCurrencyNumericPrice(to: number, durationMs: number = 500): void {
-        const from = this.getCurrentDisplayedNumeric();
+        const from: number = this.getCurrentDisplayedNumeric();
         if (!isFinite(from) || from === 0) {
             this.currencyPrice = this.currencyFormatter.formatCurrency(to);
             this.previousNumericPrice = to;
@@ -155,7 +155,7 @@ export class DisplayCurrencyComponent implements OnChanges, OnInit, AfterViewIni
 
     private getCurrentDisplayedNumeric(): number {
         if (this.currencyPrice) {
-            const parsed = this.parseNumeric(this.currencyPrice);
+            const parsed: number = this.parseNumeric(this.currencyPrice);
             if (isFinite(parsed)) return parsed;
         }
         
