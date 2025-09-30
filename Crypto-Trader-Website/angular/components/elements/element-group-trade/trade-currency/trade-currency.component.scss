@@ -16,6 +16,9 @@ trade-currency {
         ss-title {
             color: $pure-white;
         }
+        subtitle {
+            text-decoration: underline;
+        }
         ss-img {
             @include square-size($six-percent);
             padding: $half-percent;
