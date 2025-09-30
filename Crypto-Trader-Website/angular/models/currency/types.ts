@@ -20,6 +20,8 @@ export type DisplayCurrencyList = {
     currencies: DisplayCurrency[];
 };
 
+export type PossibleDisplayCurrency = DisplayCurrency | null;
+
 export type CurrencyPerformanceRating = 'up' | 'down' | 'neutral';
 
 export type PerformanceRating = {
