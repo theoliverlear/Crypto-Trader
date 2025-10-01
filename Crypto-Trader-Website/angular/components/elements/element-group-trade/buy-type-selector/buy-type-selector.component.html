@@ -1,5 +1,5 @@
 <!-- buy-type-selector.component.html -->
 <ng-container>
-    <buy-type [buyType]="BuyType.DOLLARS"/>
-    <buy-type [buyType]="BuyType.SHARES"/>
+    <buy-type [buyType]="BuyType.DOLLARS" (buyTypeSelectedEvent)="emitBuyType($event)"/>
+    <buy-type [buyType]="BuyType.SHARES" (buyTypeSelectedEvent)="emitBuyType($event)"/>
 </ng-container>
