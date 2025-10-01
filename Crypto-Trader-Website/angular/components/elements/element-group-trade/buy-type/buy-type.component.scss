@@ -1,0 +1,11 @@
+// buy-type.component.scss
+@use "../../../../styles/globals" as *;
+
+buy-type {
+    @include flex(center, center, row);
+    //max-width: $seven-percent;
+    @extend %nav-button;
+    ss-img {
+        @include square-size($five-percent);
+    }
+}
