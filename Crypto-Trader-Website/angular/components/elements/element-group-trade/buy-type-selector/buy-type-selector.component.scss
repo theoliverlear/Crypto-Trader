@@ -1,0 +1,16 @@
+// buy-type-selector.component.scss
+@use "../../../../styles/globals" as *;
+
+buy-type-selector {
+    @include flex(center, center, row);
+    background-color: white;
+    margin: $one-percent 0;
+    box-shadow: add-alpha($blue-gray, 0.5) 0 $quarter-percent $quarter-percent 0;
+    @extend %softer-border-radius;
+    padding: $half-percent;
+    buy-type {
+        &:first-child {
+            margin-right: $half-percent;
+        }
+    }
+}
