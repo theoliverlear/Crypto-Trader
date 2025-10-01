@@ -1,4 +1,23 @@
 <!-- trade-checkout.component.html -->
 <ng-container>
-    <trade-currency [selectedCurrency]="displayCurrency"/>
+    <div class="left-column">
+        <trade-currency [selectedCurrency]="displayCurrency"/>
+    </div>
+    <div class="center-column">
+        <div class="checkout-input">
+            <buy-type-selector (buyTypeSelectedEvent)="setBuyType($event)"/>
+            <ss-input [placeholder]="getPlaceholderText()" [inputType]="InputType.NUMBER"/>
+        </div>
+        <div class="checkout-results">
+            <div class="you-pay-div result-div">
+                <ss-title [tagType]="TagType.H5" [text]="'You Pay: '"/>
+                <ss-title [tagType]="TagType.H5" [text]="getYouPayText()"/>
+            </div>
+            <div class="you-get-div result-div">
+                <ss-title [tagType]="TagType.H5" [text]="'You Get: '"/>
+                <ss-title [tagType]="TagType.H5" [text]="getYouGetText()"/>
+            </div>
+        </div>
+        <ss-button [text]="'Checkout'" [size]="ElementSize.MEDIUM"/>
+    </div>
 </ng-container>
