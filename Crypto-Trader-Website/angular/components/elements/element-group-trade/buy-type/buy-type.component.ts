@@ -1,5 +1,11 @@
 // buy-type.component.ts
-import {Component, Input} from "@angular/core";
+import {
+    Component,
+    EventEmitter,
+    HostListener,
+    Input,
+    Output
+} from "@angular/core";
 import {BuyType} from "./models/BuyType";
 import {ElementSize} from "@theoliverlear/angular-suite";
 import {
@@ -16,8 +22,14 @@ import {
 })
 export class BuyTypeComponent {
     @Input() buyType: BuyType;
+    @Output() buyTypeSelectedEvent: EventEmitter<BuyType> = new EventEmitter<BuyType>();
     constructor() {
         
+    }
+    
+    @HostListener('click')
+    onClick(): void {
+        this.buyTypeSelectedEvent.emit(this.buyType);
     }
     
     getImageAsset(): ImageAsset {
