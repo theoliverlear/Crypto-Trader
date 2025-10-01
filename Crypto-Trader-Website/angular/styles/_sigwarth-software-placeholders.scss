@@ -1,4 +1,5 @@
 @use "globals" as *;
+@use "global-fonts" as *;
 
 %sigwarth-software-app {
     ss-anchor {
@@ -86,7 +87,7 @@
 
     ss-input {
         input {
-            width: 100%;
+            font-family: $google-sans-code-font;
             padding: simplest-calc(0.25);
             border-radius: simplest-calc(0.25);
             border: $muted-blue $thin-border solid;
