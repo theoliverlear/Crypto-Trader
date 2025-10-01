@@ -118,3 +118,8 @@ export const binanceBrandLogo: ImageAsset = {
     src: getBrandLogoPath("binance_logo.png"),
     alt: 'Binance Logo'
 };
+
+export const dollarIcon: ImageAsset = {
+    src: getIconImagePath("dollar_icon.svg"),
+    alt: 'Dollar Icon'
+};
