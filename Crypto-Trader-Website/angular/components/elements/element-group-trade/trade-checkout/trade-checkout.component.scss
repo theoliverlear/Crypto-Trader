@@ -2,5 +2,27 @@
 @use "../../../../styles/globals" as *;
 
 trade-checkout {
-    
+    @include flex(space-around, center, row);
+    width: 100%;
+    flex: 1;
+    .checkout-input {
+        height: 100%;
+        flex: 1;
+        width: 100%;
+
+        @include flex(center, center, row);
+        input {
+            margin-left: $two-percent;
+            min-width: $ten-percent;
+        }
+    }
+    .checkout-results {
+        width: 100%;
+        @include flex(center, center, column);
+        margin: $half-percent 0 $one-percent 0;
+        .result-div {
+            width: 100%;
+            @include flex(space-between, center, row);
+        }
+    }
 }
