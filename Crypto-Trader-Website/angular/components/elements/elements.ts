@@ -149,6 +149,12 @@ import {
     TradeCheckoutComponent
 } from "./element-group-trade/trade-checkout/trade-checkout.component";
 import TradeCurrencyComponent from "./element-group-trade/trade-currency/trade-currency.component";
+import {
+    BuyTypeSelectorComponent
+} from "./element-group-trade/buy-type-selector/buy-type-selector.component";
+import {
+    BuyTypeComponent
+} from "./element-group-trade/buy-type/buy-type.component";
 
 export const elements = [
     AssetButtonComponent,
@@ -163,6 +169,8 @@ export const elements = [
     AuthConsoleTabSectionComponent,
     AuthGuardPopupComponent,
     AuthInputComponent,
+    BuyTypeComponent,
+    BuyTypeSelectorComponent,
     ChartComponent,
     ContentStripeComponent,
     CurrencyWalletComponent,
@@ -206,4 +214,4 @@ export const elements = [
     TransparencyPromoComponent,
     VendorOptionComponent,
     VendorOptionsComponent,
-]
+];
