@@ -91,6 +91,8 @@
               "angular/components/elements/element-group-promo/tier-promo-stripe/tier-promo-stripe.component.scss",
               "angular/components/elements/element-group-promo/tier-promo/tier-promo.component.scss",
               "angular/components/elements/element-group-promo/transparency-promo/transparency-promo.component.scss",
+              "angular/components/elements/element-group-trade/buy-type-selector/buy-type-selector.component.scss",
+              "angular/components/elements/element-group-trade/buy-type/buy-type.component.scss",
               "angular/components/elements/element-group-trade/trade-checkout/trade-checkout.component.scss",
               "angular/components/elements/element-group-trade/trade-console/trade-console.component.scss",
               "angular/components/elements/element-group-trade/trade-currency/trade-currency.component.scss",
