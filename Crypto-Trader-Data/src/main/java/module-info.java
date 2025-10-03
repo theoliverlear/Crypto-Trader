@@ -23,6 +23,7 @@ open module org.cryptotrader.data {
     requires kotlin.stdlib;
     requires jakarta.xml.bind;
     requires jakarta.activation;
+    requires jakarta.persistence;
 
     exports org.cryptotrader.data;
     exports org.cryptotrader.data.adapter;
