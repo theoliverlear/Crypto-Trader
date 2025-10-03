@@ -74,6 +74,9 @@ public class CurrencyHarvesterService {
             log.error("Failed to update currencies. Regenerating JSON. Error: ", exception);
             this.currencyJsonGenerator.generateAndSave();
             SupportedCurrencies.loadCurrenciesFromJson();
+        } catch (RuntimeException dbEx) {
+            // Gracefully handle transient DB connectivity issues (e.g., PostgreSQL down)
+            log.warn("Database unavailable during currency update; skipping this cycle: {}", dbEx.getMessage());
         }
     }
 
