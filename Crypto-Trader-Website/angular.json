@@ -6,7 +6,8 @@
     "cache": {
       "enabled": true,
       "path": ".angular/cache"
-    }
+    },
+    "analytics": false
   },
   "projects": {
     "crypto-trader": {
