@@ -47,7 +47,6 @@ class AuthContextService(
      * This does not delete the refresh cookie; the controller handles that.
      */
     fun logout() {
-        log.info("Logout")
         try {
             val requestAttributes = RequestContextHolder.getRequestAttributes() as? ServletRequestAttributes
             val request = requestAttributes?.request
