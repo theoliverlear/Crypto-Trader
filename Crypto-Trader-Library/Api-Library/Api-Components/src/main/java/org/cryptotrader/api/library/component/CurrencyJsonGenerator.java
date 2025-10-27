@@ -3,6 +3,7 @@ package org.cryptotrader.api.library.component;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.cryptotrader.api.library.entity.currency.SupportedCurrencies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -33,6 +34,20 @@ public class CurrencyJsonGenerator {
 
     private <T> T fetchJson(String url, ParameterizedTypeReference<T> typeRef) {
         return this.restTemplate.exchange(url, HttpMethod.GET, null, typeRef).getBody();
+    }
+
+    public static void deleteExistingJson() {
+        try {
+            boolean deleted = Files.deleteIfExists(OUTPUT_PATH);
+            if (deleted) {
+                log.info("Existing JSON file deleted at {}", OUTPUT_PATH);
+            } else {
+                log.info("No existing JSON file found at {}", OUTPUT_PATH);
+            }
+        } catch (IOException exception) {
+            throw new RuntimeException("Failed to delete existing JSON file at " + OUTPUT_PATH, exception);
+        }
+        SupportedCurrencies.clearCurrencies();
     }
 
     public List<Map<String, Object>> getCurrencies() {
@@ -119,6 +134,7 @@ public class CurrencyJsonGenerator {
     }
     
     public void generateAndSave() {
+        deleteExistingJson();
         this.saveJson(this.getCurrencies());
     }
     
