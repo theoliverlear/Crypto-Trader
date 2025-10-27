@@ -7,10 +7,8 @@ spring:
     hibernate:
       ddl-auto: none
     properties:
-      # Real batching
       hibernate.generate_statistics: false
       hibernate.jdbc.use_get_generated_keys: true
-      # Prevent surprise auto-flushes
       hibernate.flushMode: COMMIT
       hibernate.jdbc.batch_size: 1000
       hibernate.order_updates: true
@@ -24,9 +22,7 @@ spring:
       maximum-pool-size: 20
       minimum-idle: 4
       connection-timeout: 10000
-      # ⬇️ Apply async commit once per connection (no per-tick native query)
       connection-init-sql: "set synchronous_commit = off"
-      # Optional: this warning is what you saw; raise or disable during startup
       leak-detection-threshold: 0  # set 0 to disable
       auto-commit: false
   task:
