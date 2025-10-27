@@ -51,6 +51,10 @@ public class SupportedCurrencies {
         for (Map<String, String> entry : currencyData) {
             String name = entry.get("name");
             String code = entry.get("code");
+            if (code != null && !code.isEmpty() && Character.isDigit(code.charAt(0))) {
+                log.warn("Skipping currency with invalid code (starts with digit): {} ({})", name, code);
+                continue;
+            }
             Currency currency;
             try {
                 currency = new Currency(name, code);
