@@ -136,6 +136,7 @@ public class CurrencyJsonGenerator {
     public void generateAndSave() {
         deleteExistingJson();
         this.saveJson(this.getCurrencies());
+        SupportedCurrencies.loadCurrenciesFromJson();
     }
     
     @SuppressWarnings("unchecked")
