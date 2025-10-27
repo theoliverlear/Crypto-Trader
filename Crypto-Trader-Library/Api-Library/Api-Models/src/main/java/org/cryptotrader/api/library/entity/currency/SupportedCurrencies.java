@@ -26,6 +26,12 @@ public class SupportedCurrencies {
             log.debug("SupportedCurrencies static load skipped (cryptotrader.loadCurrencies=false).");
         }
     }
+
+    public static void clearCurrencies() {
+        SUPPORTED_CURRENCIES.clear();
+        CURRENCY_MAP.clear();
+    }
+
     public static void loadCurrenciesFromJson() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
