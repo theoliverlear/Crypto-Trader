@@ -13,7 +13,12 @@ class CurrencyValueWebSocketHandler(
     private val currencyService: CurrencyService
 ) : WebSocketHandler<String, String>() {
     override fun makeResponse(currencyRequest: String): String {
-        val currency: Currency = this.currencyService.getCurrencyByCurrencyCode(currencyRequest)
-        return currency.value.toString()
+        try {
+            val currency: Currency = this.currencyService.getCurrencyByCurrencyCode(currencyRequest)
+            return currency.value.toString()
+        } catch (exception: NullPointerException) {
+            log.error("Error fetching currency value for code: $currencyRequest", exception)
+            return "0.00"
+        }
     }
 }
