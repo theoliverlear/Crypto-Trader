@@ -17,6 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -58,10 +59,12 @@ public class CurrencyHarvesterService {
     //--------------------------Save-Currencies-------------------------------
     @Scheduled(fixedRate = 5000)
     public void saveCurrencies() {
+        Optional<String> possibleProblemCurrency = Optional.empty();
         try {
             log.info("Updating currencies...");
             Map<String, Currency> currencies = this.currencyDataRetriever.getUpdatedCurrencies();
             for (Currency currency : SupportedCurrencies.SUPPORTED_CURRENCIES) {
+                possibleProblemCurrency = Optional.of(currency.getCurrencyCode());
                 Currency previousCurrency = Currency.from(currency);
                 String currencyCode = currency.getCurrencyCode();
                 Currency updatedCurrency = currencies.get(currencyCode);
@@ -72,8 +75,13 @@ public class CurrencyHarvesterService {
             this.snapshotService.saveSnapshot(currencies);
         } catch (NullPointerException exception) {
             log.error("Failed to update currencies. Regenerating JSON. Error: ", exception);
-            this.currencyJsonGenerator.generateAndSave();
-            SupportedCurrencies.loadCurrenciesFromJson();
+            if (possibleProblemCurrency.isPresent()) {
+                log.error("Problematic currency code: {}", possibleProblemCurrency.get());
+                SupportedCurrencies.popCurrency(possibleProblemCurrency.get());
+            }
+//            this.currencyJsonGenerator.generateAndSave();
+//            SupportedCurrencies.loadCurrenciesFromJson();
+
         } catch (RuntimeException dbEx) {
             // Gracefully handle transient DB connectivity issues (e.g., PostgreSQL down)
             log.warn("Database unavailable during currency update; skipping this cycle: {}", dbEx.getMessage());
