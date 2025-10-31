@@ -6,24 +6,32 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 public class SupportedCurrencies {
     //============================-Constants-=================================
-    public static final List<Currency> SUPPORTED_CURRENCIES = new ArrayList<>();
+    public static final Set<Currency> SUPPORTED_CURRENCIES = new HashSet<>();
     private static final Map<String, Currency> CURRENCY_MAP = new HashMap<>();
     private static final String JSON_FILE_PATH = "src/main/resources/static/currencies.json";
     public static final Currency BITCOIN = new Currency("Bitcoin", "BTC");
+    private static final int MAX_CURRENCIES = 500;
     //==========================-Static-Actions-==============================
     static {
         if (Boolean.parseBoolean(System.getProperty("cryptotrader.loadCurrencies", "false"))) {
             loadCurrenciesFromJson();
         } else {
             log.debug("SupportedCurrencies static load skipped (cryptotrader.loadCurrencies=false).");
+        }
+    }
+
+    public static void popCurrency(String code) {
+        Currency currency = CURRENCY_MAP.remove(code);
+        if (currency != null) {
+            SUPPORTED_CURRENCIES.remove(currency);
+            log.info("Popped currency: {} ({})", currency.getName(), code);
+        } else {
+            log.warn("Currency with code {} not found to pop.", code);
         }
     }
 
@@ -71,5 +79,8 @@ public class SupportedCurrencies {
             log.info("Loaded currency: {} ({})", name, code);
         }
         log.info("Loaded {} currencies from JSON.", SUPPORTED_CURRENCIES.size());
+        if (SUPPORTED_CURRENCIES.size() > MAX_CURRENCIES) {
+            log.warn("Loaded currency count ({}) exceeds maximum ({}).", SUPPORTED_CURRENCIES.size(), MAX_CURRENCIES);
+        }
     }
 }
