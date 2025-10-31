@@ -12,7 +12,7 @@ import org.cryptotrader.api.library.model.http.ApiDataRetriever;
 
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -129,7 +129,7 @@ public class Currency {
     }
 
     public static Currency fromExisting(String currencyCode) {
-        List<Currency> currencies = SupportedCurrencies.SUPPORTED_CURRENCIES;
+        Set<Currency> currencies = SupportedCurrencies.SUPPORTED_CURRENCIES;
         return currencies.stream()
                 .filter(currency -> currency.getCurrencyCode().equalsIgnoreCase(currencyCode))
                 .findFirst()
