@@ -6,7 +6,9 @@
     <div class="center-column">
         <div class="checkout-input">
             <buy-type-selector (buyTypeSelectedEvent)="setBuyType($event)"/>
-            <ss-input [placeholder]="getPlaceholderText()" [inputType]="InputType.NUMBER"/>
+            <ss-input [placeholder]="getPlaceholderText()"
+                      [inputType]="InputType.NUMBER"
+            (inputEvent)="setFromInput($event)"/>
         </div>
         <div class="checkout-results">
             <div class="you-pay-div result-div">
