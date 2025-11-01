@@ -17,9 +17,14 @@ export class TradeCheckoutComponent {
     @Input() displayCurrency: DisplayCurrency;
     numDollars: number = 0;
     numShares: number = 0;
+    numFeeDollars: number = 0;
     protected buyType: BuyType = BuyType.DOLLARS;
     constructor(private currencyFormatter: CurrencyFormatterService) {
         
+    }
+
+    hasVendorFee(): boolean {
+        return this.numFeeDollars > 0;
     }
 
     setFromInput(input: any): void {
@@ -37,7 +42,12 @@ export class TradeCheckoutComponent {
     setBuyType(buyType: BuyType): void {
         this.buyType = buyType;
     }
-    
+
+    getVendorFee(): string {
+        // TODO: Implement vendor fee fetching from API.
+        return '';
+    }
+
     getYouPayText(): string {
         if (this.buyType === BuyType.SHARES) {
             const numDollars: number = this.displayCurrency.value * this.numShares;
