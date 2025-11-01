@@ -19,6 +19,12 @@
                 <ss-title [tagType]="TagType.H5" [text]="'You Get: '"/>
                 <ss-title [tagType]="TagType.H5" [text]="getYouGetText()"/>
             </div>
+            @if (hasVendorFee()) {
+                <div class="fee-div result-div">
+                    <ss-title [tagType]="TagType.H5" [text]="'Vendor Fee: '"/>
+                    <ss-title [tagType]="TagType.H5" [text]="getVendorFee()"/>
+                </div>
+            }
         </div>
         <ss-button [text]="'Checkout'" [size]="ElementSize.MEDIUM"/>
     </div>
