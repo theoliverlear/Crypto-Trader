@@ -21,9 +21,6 @@
             @if (isCurrencySelected && displayCurrency) {
                 <trade-checkout [displayCurrency]="displayCurrency"/>
             }
-            @if (!isCurrencySelected || !displayCurrency) {
-                <trade-checkout [displayCurrency]="{currencyName: 'Test', currencyCode: 'TEST', value: 100.5634, logoUrl: ''}"/>
-            }
         </div>
     </div>
 </ng-container>
