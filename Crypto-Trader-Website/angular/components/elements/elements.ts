@@ -155,6 +155,9 @@ import {
 import {
     BuyTypeComponent
 } from "./element-group-trade/buy-type/buy-type.component";
+import {
+    TradeCheckoutConfirmPanelComponent
+} from "./element-group-trade/trade-checkout-confirm-panel/trade-checkout-confirm-panel.component";
 
 export const elements = [
     AssetButtonComponent,
@@ -208,6 +211,7 @@ export const elements = [
     TierPromoComponent,
     TierPromoStripeComponent,
     TradeCheckoutComponent,
+    TradeCheckoutConfirmPanelComponent,
     TradeConsoleComponent,
     TradeCurrencyComponent,
     TraderEventBubbleComponent,
