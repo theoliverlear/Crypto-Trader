@@ -59,31 +59,27 @@ public class CurrencyHarvesterService {
     //--------------------------Save-Currencies-------------------------------
     @Scheduled(fixedRate = 5000)
     public void saveCurrencies() {
-        Optional<String> possibleProblemCurrency = Optional.empty();
         try {
             log.info("Updating currencies...");
             Map<String, Currency> currencies = this.currencyDataRetriever.getUpdatedCurrencies();
             for (Currency currency : SupportedCurrencies.SUPPORTED_CURRENCIES) {
-                possibleProblemCurrency = Optional.of(currency.getCurrencyCode());
-                Currency previousCurrency = Currency.from(currency);
-                String currencyCode = currency.getCurrencyCode();
-                Currency updatedCurrency = currencies.get(currencyCode);
-                currency.setValue(updatedCurrency.getValue());
-                this.currencyService.saveCurrency(currency);
-                this.currencyService.saveUniqueCurrencyIfNew(currency, previousCurrency, updatedCurrency);
+                try {
+                    Currency previousCurrency = Currency.from(currency);
+                    String currencyCode = currency.getCurrencyCode();
+                    Currency updatedCurrency = currencies.get(currencyCode);
+                    currency.setValue(updatedCurrency.getValue());
+                    this.currencyService.saveCurrency(currency);
+                    this.currencyService.saveUniqueCurrencyIfNew(currency, previousCurrency, updatedCurrency);
+                } catch (NullPointerException exception) {
+                    log.error("Problematic currency: {}", currency.getCurrencyCode());
+//                    SupportedCurrencies.popCurrency(currency.getCurrencyCode());
+                }
+                
             }
             this.snapshotService.saveSnapshot(currencies);
         } catch (NullPointerException exception) {
             log.error("Failed to update currencies. Regenerating JSON. Error: ", exception);
-            if (possibleProblemCurrency.isPresent()) {
-                log.error("Problematic currency code: {}", possibleProblemCurrency.get());
-                SupportedCurrencies.popCurrency(possibleProblemCurrency.get());
-            }
-//            this.currencyJsonGenerator.generateAndSave();
-//            SupportedCurrencies.loadCurrenciesFromJson();
-
         } catch (RuntimeException dbEx) {
-            // Gracefully handle transient DB connectivity issues (e.g., PostgreSQL down)
             log.warn("Database unavailable during currency update; skipping this cycle: {}", dbEx.getMessage());
         }
     }
