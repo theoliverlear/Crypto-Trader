@@ -19,6 +19,7 @@ export class TradeCheckoutComponent {
     numShares: number = 0;
     numFeeDollars: number = 0;
     protected buyType: BuyType = BuyType.DOLLARS;
+    protected showCheckoutPanel: boolean = false;
     constructor(private currencyFormatter: CurrencyFormatterService) {
         
     }
