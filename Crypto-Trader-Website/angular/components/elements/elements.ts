@@ -158,6 +158,9 @@ import {
 import {
     TradeCheckoutConfirmPanelComponent
 } from "./element-group-trade/trade-checkout-confirm-panel/trade-checkout-confirm-panel.component";
+import {
+    TradeCheckoutDetailsComponent
+} from "./element-group-trade/trade-checkout-details/trade-checkout-details.component";
 
 export const elements = [
     AssetButtonComponent,
@@ -212,6 +215,7 @@ export const elements = [
     TierPromoStripeComponent,
     TradeCheckoutComponent,
     TradeCheckoutConfirmPanelComponent,
+    TradeCheckoutDetailsComponent,
     TradeConsoleComponent,
     TradeCurrencyComponent,
     TraderEventBubbleComponent,
