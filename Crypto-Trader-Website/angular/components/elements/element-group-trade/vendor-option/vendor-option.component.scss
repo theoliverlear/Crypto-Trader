@@ -7,8 +7,9 @@ vendor-option {
     @extend %nav-button;
     position: relative;
     //scale: 1.5;
-    min-width: $five-percent;
-    min-height: $six-percent;
+    min-width: $six-percent;
+    min-height: calc($six-percent * 1.08);
+    padding: $half-percent;
     //@include square-size($five-percent);
     ss-img {
         padding: calc($quarter-percent);
