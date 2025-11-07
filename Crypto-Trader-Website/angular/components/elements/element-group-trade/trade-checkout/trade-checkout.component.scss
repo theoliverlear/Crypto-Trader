@@ -5,6 +5,9 @@ trade-checkout {
     @include flex(space-around, center, row);
     width: 100%;
     flex: 1;
+    trade-currency {
+        margin-right: $one-percent;
+    }
     .checkout-input {
         height: 100%;
         flex: 1;
