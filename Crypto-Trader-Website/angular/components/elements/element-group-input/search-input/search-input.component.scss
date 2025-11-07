@@ -3,7 +3,8 @@
 
 search-input {
     background-color: #D0D2DC;
-    min-width: $fifteen-percent;
+    min-width: $twenty-percent;
+    min-height: $four-percent;
     @extend %softer-border-radius;
     //box-shadow: $charcoal 0 0 $quarter-percent;
     .search-input-field {
@@ -36,5 +37,6 @@ search-input {
 
 .mat-mdc-form-field-subscript-wrapper.mat-mdc-form-field-bottom-align {
     background-color: #D0D2DC;
-    min-width: $fifteen-percent;
+    min-width: $twenty-percent;
+    min-height: $four-percent;
 }
