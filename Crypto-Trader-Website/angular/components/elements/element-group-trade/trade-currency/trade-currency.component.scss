@@ -45,7 +45,9 @@ trade-currency {
 
         border: $thinnest-border solid $light-charcoal;
         box-shadow: $light-charcoal $quarter-percent $quarter-percent 0 0;
-        min-width: $fifteen-percent;
+        min-width: calc($fourteen-percent * 1.25);
+        min-height: calc($fifteen-percent);
+        max-width: $twenty-five-percent;
         ss-title {
             color: $charcoal;
         }
