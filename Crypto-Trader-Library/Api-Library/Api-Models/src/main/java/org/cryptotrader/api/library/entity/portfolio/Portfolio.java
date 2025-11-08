@@ -104,15 +104,25 @@ public class Portfolio extends Identifiable implements UpdatableValues {
 
     //-----------------------Add-Portfolio-History----------------------------
     public void addPortfolioHistory(PortfolioHistory portfolioHistory) {
+        if (portfolioHistory == null) {
+            throw new IllegalArgumentException("Portfolio history cannot be null.");
+        }
         this.portfolioHistory.add(portfolioHistory);
     }
     //-----------------------------Add-Asset----------------------------------
     public void addAsset(PortfolioAsset asset) {
+        if (asset == null) {
+            throw new IllegalArgumentException("Asset cannot be null.");
+        }
+        asset.setPortfolio(this);
         this.assets.add(asset);
         this.updateValues();
     }
     //----------------------------Remove-Asset--------------------------------
     public boolean removeAsset(PortfolioAsset asset) {
+        if (asset == null) {
+            throw new IllegalArgumentException("Asset cannot be null.");
+        }
         boolean removed = this.assets.remove(asset);
         if (removed) {
             this.updateValues();
@@ -138,11 +148,6 @@ public class Portfolio extends Identifiable implements UpdatableValues {
     public static double getTotalPortfolioValue(List<PortfolioAsset> assets) {
         double dollarBalance = getTotalDollarValue(assets);
         double shareBalance = getTotalShareValue(assets);
-//        for (PortfolioAsset asset : assets) {
-//            asset.updateValues();
-//            dollarBalance += asset.getAssetWalletDollars();
-//            shareBalance += asset.getSharesValueInDollars();
-//        }
         return dollarBalance + shareBalance;
     }
 
@@ -175,17 +180,18 @@ public class Portfolio extends Identifiable implements UpdatableValues {
     public void updateValues() {
         this.dollarBalance = 0;
         this.shareBalance = 0;
-        for (PortfolioAsset asset : this.assets) {
+        this.assets.forEach(asset -> {
             asset.updateValues();
             this.dollarBalance += asset.getAssetWalletDollars();
             this.shareBalance += asset.getSharesValueInDollars();
-        }
+        });
         this.totalWorth = this.dollarBalance + this.shareBalance;
         this.lastUpdated = LocalDateTime.now();
     }
     //------------------------------Equals------------------------------------
     @Override
     public boolean equals(Object object) {
+        if (this == object) return true;
         if (object instanceof Portfolio portfolio) {
             boolean sameDollarBalance = this.dollarBalance == portfolio.dollarBalance;
             boolean sameShareBalance = this.shareBalance == portfolio.shareBalance;
