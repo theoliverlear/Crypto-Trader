@@ -1,6 +1,10 @@
 package org.cryptotrader.engine.services;
 
 import lombok.extern.slf4j.Slf4j;
+import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset;
+import org.cryptotrader.api.library.entity.portfolio.PortfolioAssetHistory;
+import org.cryptotrader.api.library.entity.portfolio.PortfolioHistory;
+import org.cryptotrader.api.library.model.trade.TradingEngine;
 import org.cryptotrader.api.library.services.PortfolioService;
 import org.cryptotrader.api.library.entity.portfolio.Portfolio;
 import org.cryptotrader.api.library.model.trade.CryptoTrader;
@@ -17,7 +21,7 @@ import java.util.List;
 @ConditionalOnProperty(name = "cryptotrader.engine.trading.enabled", havingValue = "true", matchIfMissing = true)
 @Slf4j
 public class PortfolioTraderService {
-    private PortfolioService portfolioService;
+    private final PortfolioService portfolioService;
     private List<Portfolio> allUsersPortfolios;
     private CryptoTrader cryptoTrader;
     
@@ -53,31 +57,30 @@ public class PortfolioTraderService {
         for (Trader trader : this.cryptoTrader.getTraders()) {
             Portfolio previousPortfolio = Portfolio.from(trader.getPortfolio());
             System.out.println(previousPortfolio);
-            // TODO: Reimplement using TradingEngine interface.
-//            for (AssetTrader assetTrader : trader.getAssetTraders()) {
-//                PortfolioAsset previousAsset = PortfolioAsset.from(assetTrader.getAsset());
-//                boolean tradeOccurred = assetTrader.trade();
-//                assetTrader.getAsset().updateValues();
-//                trader.getPortfolio().updateValues();
-//                if (!previousAsset.equals(assetTrader.getAsset())) {
-//                    PortfolioAssetHistory portfolioAssetHistory = new PortfolioAssetHistory(assetTrader.getAsset(), tradeOccurred);
-//                    PortfolioAssetHistory previousPortfolioAssetHistory = this.getLatestPortfolioAssetHistory(assetTrader.getAsset());
-//                    this.setPortfolioValueChange(previousPortfolioAssetHistory, portfolioAssetHistory);
-//                    assetTrader.getAsset().addPortfolioAssetHistory(portfolioAssetHistory);
-//                    PortfolioHistory previousPortfolioHistory = this.getLatestPortfolioHistory(trader.getPortfolio());
-//                    PortfolioHistory portfolioHistory = new PortfolioHistory(trader.getPortfolio(), tradeOccurred);
-//                    if (previousPortfolioHistory != null) {
-//                        portfolioHistory.calculateValueChange(previousPortfolioHistory);
-//                    } else {
-//                        portfolioHistory.setValueChange(0);
-//                    }
-//                    trader.getPortfolio().addPortfolioHistory(portfolioHistory);
-//                    this.savePortfolioAsset(assetTrader.getAsset());
-//                    this.savePortfolio(trader.getPortfolio());
-//                    this.savePortfolioAssetHistory(portfolioAssetHistory);
-//                    this.savePortfolioHistory(portfolioHistory);
-//                }
-//            }
+            for (TradingEngine assetTrader : trader.getAssetTraders()) {
+                PortfolioAsset previousAsset = PortfolioAsset.from(assetTrader.getAsset());
+                boolean tradeOccurred = assetTrader.trade();
+                assetTrader.getAsset().updateValues();
+                trader.getPortfolio().updateValues();
+                if (!previousAsset.equals(assetTrader.getAsset())) {
+                    PortfolioAssetHistory portfolioAssetHistory = new PortfolioAssetHistory(assetTrader.getAsset(), tradeOccurred);
+                    PortfolioAssetHistory previousPortfolioAssetHistory = this.portfolioService.getLatestPortfolioAssetHistory(assetTrader.getAsset());
+                    this.portfolioService.setPortfolioValueChange(previousPortfolioAssetHistory, portfolioAssetHistory);
+                    assetTrader.getAsset().addPortfolioAssetHistory(portfolioAssetHistory);
+                    PortfolioHistory previousPortfolioHistory = this.portfolioService.getLatestPortfolioHistory(trader.getPortfolio());
+                    PortfolioHistory portfolioHistory = new PortfolioHistory(trader.getPortfolio(), tradeOccurred);
+                    if (previousPortfolioHistory != null) {
+                        portfolioHistory.calculateValueChange(previousPortfolioHistory);
+                    } else {
+                        portfolioHistory.setValueChange(0);
+                    }
+                    trader.getPortfolio().addPortfolioHistory(portfolioHistory);
+                    this.portfolioService.savePortfolioAsset(assetTrader.getAsset());
+                    this.portfolioService.savePortfolio(trader.getPortfolio());
+                    this.portfolioService.savePortfolioAssetHistory(portfolioAssetHistory);
+                    this.portfolioService.savePortfolioHistory(portfolioHistory);
+                }
+            }
         }
     }
 
