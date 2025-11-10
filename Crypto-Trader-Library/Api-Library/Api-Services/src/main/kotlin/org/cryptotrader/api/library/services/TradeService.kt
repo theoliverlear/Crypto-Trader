@@ -5,6 +5,7 @@ import org.cryptotrader.api.library.entity.currency.Currency
 import org.cryptotrader.api.library.entity.portfolio.Portfolio
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset
 import org.cryptotrader.api.library.entity.user.ProductUser
+import org.cryptotrader.api.library.entity.vendor.SupportedVendors
 import org.springframework.stereotype.Service
 
 @Service
@@ -47,7 +48,10 @@ class TradeService(
                                                            .build()
         portfolioAsset.updateValues()
         userPortfolio.addAsset(portfolioAsset)
+        portfolioAsset.vendor = SupportedVendors.from(tradeRequest.vendor)
         this.portfolioService.savePortfolioAsset(portfolioAsset)
+        userPortfolio.updateValues()
+        this.portfolioService.savePortfolio(userPortfolio)
         return true
     }
 
