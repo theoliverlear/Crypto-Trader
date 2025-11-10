@@ -7,6 +7,7 @@ import org.cryptotrader.api.library.services.TradeService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -17,7 +18,7 @@ class TradeController(
     val authContextService: AuthContextService
 ){
     @PostMapping("/checkout")
-    fun checkout(tradeRequest: TradeRequest): ResponseEntity<OperationSuccessfulResponse> {
+    fun checkout(@RequestBody tradeRequest: TradeRequest): ResponseEntity<OperationSuccessfulResponse> {
         val isLoggedIn: Boolean = this.authContextService.isUserAuthenticated()
         if (!isLoggedIn) {
             return ResponseEntity(OperationSuccessfulResponse(false), HttpStatus.UNAUTHORIZED)
