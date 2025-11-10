@@ -1,6 +1,8 @@
 // trade-checkout-details.component.ts
-import { Component, Input, OnChanges, OnDestroy, OnInit,
-    SimpleChange, SimpleChanges} from "@angular/core";
+import {
+    Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output,
+    SimpleChange, SimpleChanges
+} from "@angular/core";
 import {
     TagType,
     InputType,
@@ -19,6 +21,11 @@ import {
 import {
     NumberTweenService
 } from "../../../../services/ui/number-tween.service";
+import {TradeCheckout} from "../../../../models/trade/TradeCheckout";
+import {TradeCheckoutRequest} from "../../../../models/trade/types";
+import {
+    TradeCheckoutService
+} from "../../../../services/net/http/trade/trade-checkout.service";
 
 @Component({
     selector: 'trade-checkout-details',
@@ -35,20 +42,38 @@ export class TradeCheckoutDetailsComponent implements WebSocketCapable, OnInit, 
     youPayText: string = '';
     youGetText: string = '';
 
+    private tradeCheckout: TradeCheckout = new TradeCheckout();
+    @Output() tradeCheckoutChange: EventEmitter<TradeCheckout> = new EventEmitter<TradeCheckout>();
     protected buyType: BuyType = BuyType.DOLLARS;
     private priceAnimationSub: Subscription | null = null;
     private destroy$: Subject<void> = new Subject<void>();
 
     constructor(private currencyFormatter: CurrencyFormatterService,
                 private currencyValueWebSocket: CurrencyValueWebsocketService,
-                private numberTween: NumberTweenService) {
+                private numberTween: NumberTweenService,
+                private tradeCheckoutService: TradeCheckoutService) {
 
     }
 
+    attemptCheckout() {
+        try {
+            const tradeRequest: TradeCheckoutRequest = this.tradeCheckout.getRequest();
+            this.tradeCheckoutService.checkout(tradeRequest).subscribe({
+                next: (response) => {
+                    console.log("Trade checkout successful:", response);
+                }
+            });
+        } catch (error) {
+            console.error("Failed to create trade checkout request:", error);
+            return;
+        }
+    }
+    
     ngOnChanges(changes: SimpleChanges): void {
         const displayCurrencyChange: SimpleChange = changes['displayCurrency'];
         if (!displayCurrencyChange || !displayCurrencyChange.currentValue) return;
         this.displayCurrency = displayCurrencyChange.currentValue;
+        this.tradeCheckout.currencyCode = this.displayCurrency.currencyCode;
     }
 
     ngOnDestroy(): void {
@@ -139,8 +164,10 @@ export class TradeCheckoutDetailsComponent implements WebSocketCapable, OnInit, 
         }
         if (this.buyType === BuyType.DOLLARS) {
             this.numDollars = inputAsNumber;
+            this.tradeCheckout.numDollars = inputAsNumber;
         } else {
             this.numShares = inputAsNumber;
+            this.tradeCheckout.numShares = inputAsNumber;
         }
         this.youPayText = this.getYouPayText();
         this.youGetText = this.getYouGetText();
@@ -149,10 +176,14 @@ export class TradeCheckoutDetailsComponent implements WebSocketCapable, OnInit, 
     setBuyType(buyType: BuyType): void {
         if (this.buyType === BuyType.DOLLARS) {
             this.numShares = this.numDollars;
+            this.tradeCheckout.numShares = this.numDollars;
             this.numDollars = 0;
+            this.tradeCheckout.numShares = 0;
         } else {
             this.numDollars = this.numShares;
+            this.tradeCheckout.numDollars = this.numShares;
             this.numShares = 0;
+            this.tradeCheckout.numShares = 0;
         }
         this.buyType = buyType;
         this.updateTradeTexts();
