@@ -24,63 +24,6 @@ export class TradeCheckoutComponent {
         
     }
 
-    hasVendorFee(): boolean {
-        return this.numFeeDollars > 0;
-    }
-
-    setFromInput(input: any): void {
-        const inputAsNumber: number = Number(input);
-        if (isNaN(inputAsNumber)) {
-            return;
-        }
-        if (this.buyType === BuyType.DOLLARS) {
-            this.numDollars = inputAsNumber;
-        } else {
-            this.numShares = inputAsNumber;
-        }
-    }
-
-    setBuyType(buyType: BuyType): void {
-        this.buyType = buyType;
-    }
-
-    getVendorFee(): string {
-        // TODO: Implement vendor fee fetching from API.
-        return '';
-    }
-
-    getYouPayText(): string {
-        if (this.buyType === BuyType.SHARES) {
-            const numDollars: number = this.displayCurrency.value * this.numShares;
-            return this.currencyFormatter.formatCurrency(numDollars);
-        } else {
-            return this.currencyFormatter.formatCurrency(this.numDollars);
-        }
-    }
-    
-    getYouGetText(): string {
-        if (this.buyType === BuyType.SHARES) {
-            const numDecimals: number = this.getNumDecimals(this.numShares);
-            return this.numShares.toFixed(numDecimals) + " " + this.displayCurrency.currencyCode;
-        } else {
-            const numShares: number = this.numDollars / this.displayCurrency.value;
-            const numDecimals: number = this.getNumDecimals(numShares);
-            return String(numShares.toFixed(numDecimals)) + " " + this.displayCurrency.currencyCode;
-        }
-    }
-
-    getNumDecimals(numShares: number): number {
-        return numShares < 1 ? 10 : 0;
-    }
-
-    getPlaceholderText(): string {
-        if (this.buyType === BuyType.DOLLARS) {
-            return "# of Dollars";
-        } else {
-            return "# of Shares";
-        }
-    }
-
     protected readonly ElementSize = ElementSize;
     protected readonly InputType = InputType;
     protected readonly TagType = TagType;
