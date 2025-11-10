@@ -44,7 +44,8 @@ public class PortfolioService {
     //============================-Methods-===================================
 
 
-    private void setPortfolioValueChange(PortfolioAssetHistory previousPortfolioAssetHistory, PortfolioAssetHistory portfolioAssetHistory) {
+    public void setPortfolioValueChange(PortfolioAssetHistory previousPortfolioAssetHistory,
+                                        PortfolioAssetHistory portfolioAssetHistory) {
         if (previousPortfolioAssetHistory != null) {
             portfolioAssetHistory.calculateValueChange(previousPortfolioAssetHistory);
         } else {
