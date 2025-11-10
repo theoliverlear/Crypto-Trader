@@ -21,11 +21,16 @@ private fun getBaseOverride(): String? {
 }
 
 internal fun getUrl(service: CryptoTraderService): String {
+    val host = if (service === CryptoTraderService.DATA) {
+        System.getenv("CT_DATA_HOST")
+    } else {
+        "localhost"
+    }
     val base = getBaseOverride()
     return if (base != null) {
         URI.create(base).resolve("/actuator/health").toString()
     } else {
-        "http://localhost:${service.port}/actuator/health"
+        "http://${host}:${service.port}/actuator/health"
     }
 }
 
