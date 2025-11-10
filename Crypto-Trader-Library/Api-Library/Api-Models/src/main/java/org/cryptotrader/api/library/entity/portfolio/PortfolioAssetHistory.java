@@ -22,7 +22,7 @@ public class PortfolioAssetHistory extends Identifiable implements SequentiallyV
     @ManyToOne
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "currency_code", nullable = false)
     private Currency currency;
     @Column(name = "shares", columnDefinition = "DECIMAL(34, 18)")
