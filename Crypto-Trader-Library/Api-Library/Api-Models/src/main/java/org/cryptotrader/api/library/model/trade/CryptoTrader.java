@@ -3,15 +3,14 @@ package org.cryptotrader.api.library.model.trade;
 import lombok.Getter;
 import lombok.Setter;
 import org.cryptotrader.api.library.entity.portfolio.Portfolio;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: Make this a component or service within the Spring framework. This
-//       will allow for the JPA repository to be autowired and used to
-//       persist the currency data.
 @Getter
 @Setter
+@Component
 public class CryptoTrader {
     //============================-Variables-=================================
     private List<Trader> traders;
