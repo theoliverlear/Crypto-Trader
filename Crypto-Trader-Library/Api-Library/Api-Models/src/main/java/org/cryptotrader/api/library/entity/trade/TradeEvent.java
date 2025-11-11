@@ -48,4 +48,8 @@ public class TradeEvent extends Identifiable {
         this.sharesChange = sharesChange;
         this.tradeTime = tradeTime;
     }
+    
+    public static TradeType getTradeType(PortfolioAssetHistory portfolioAssetHistory) {
+        return portfolioAssetHistory.getShares() > 0 ? TradeType.BUY : TradeType.SELL;
+    }
 }
