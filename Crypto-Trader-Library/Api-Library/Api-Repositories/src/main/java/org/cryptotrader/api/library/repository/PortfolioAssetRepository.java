@@ -4,6 +4,8 @@ package org.cryptotrader.api.library.repository;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 
 public interface PortfolioAssetRepository extends JpaRepository<PortfolioAsset, Long> {
     //============================-Methods-===================================
@@ -16,4 +18,6 @@ public interface PortfolioAssetRepository extends JpaRepository<PortfolioAsset, 
     boolean existsByCurrencyName(String currencyName);
     //-----------Get-Portfolio-Asset-By-Portfolio-And-Currency----------------
     PortfolioAsset getPortfolioAssetByPortfolioIdAndCurrencyName(Long portfolioId, String currencyName);
+    
+    List<PortfolioAsset> findAllByPortfolioId(Long portfolioId);
 }
