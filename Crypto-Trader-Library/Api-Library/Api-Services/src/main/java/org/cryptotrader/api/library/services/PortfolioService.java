@@ -10,6 +10,7 @@ import org.cryptotrader.api.library.entity.portfolio.Portfolio;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAssetHistory;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioHistory;
+import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.api.library.repository.PortfolioAssetHistoryRepository;
 import org.cryptotrader.api.library.repository.PortfolioAssetRepository;
 import org.cryptotrader.api.library.repository.PortfolioHistoryRepository;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -129,9 +131,16 @@ public class PortfolioService {
     }
     //-----------------------Get-Portfolio-History----------------------------
     public List<PortfolioHistory> getPortfolioHistory(Portfolio portfolio) {
-        return this.portfolioHistoryRepository.findAllByPortfolioId(portfolio.getId());
+        return this.getPortfolioHistory(portfolio.getId());
+    }
+
+    public List<PortfolioHistory> getPortfolioHistory(Long portfolioId) {
+        return this.portfolioHistoryRepository.findAllByPortfolioId(portfolioId);
     }
     
+    public List<PortfolioAsset> getAssetsByPortfolio(Long portfolioId) {
+        return this.portfolioAssetRepository.findAllByPortfolioId(portfolioId);
+    }
     //------------------------Get-Portfolio-Profit----------------------------
     public double getPortfolioProfit(Portfolio portfolio) {
         PortfolioHistory initialPortfolioHistory = this.portfolioHistoryRepository.getFirstByPortfolioId(portfolio.getId());
@@ -153,5 +162,14 @@ public class PortfolioService {
     //----------------Get-Portfolio-Asset-By-Currency-Name--------------------
     public PortfolioAsset getPortfolioAssetByCurrencyName(Portfolio portfolio, String currencyName) {
         return this.portfolioAssetRepository.getPortfolioAssetByPortfolioIdAndCurrencyName(portfolio.getId(), currencyName);
+    }
+    
+    public Optional<PortfolioAsset> getPortfolioAssetByHistory(PortfolioAssetHistory portfolioAssetHistory) {
+        Long portfolioAssetId = portfolioAssetHistory.getPortfolioAsset().getId();
+        return this.portfolioAssetRepository.findById(portfolioAssetId);
+    }
+    
+    public ProductUser getProductUserByAsset(PortfolioAsset portfolioAsset) {
+        return portfolioAsset.getPortfolio().getUser();
     }
 }
