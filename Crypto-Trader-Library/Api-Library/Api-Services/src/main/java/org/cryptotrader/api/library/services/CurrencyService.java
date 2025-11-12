@@ -105,14 +105,18 @@ public class CurrencyService {
     
     public List<String> getCurrencyNames(boolean withCode) {
         return this.getAllCurrencies().stream().map(currency -> {
-            String nameString = currency.getName();
-            if (withCode) {
-                nameString = nameString + " (" + currency.getCurrencyCode() + ")";
-            }
-            return nameString;
+            return this.getCurrencyName(withCode, currency);
         }).toList();
     }
-    
+
+    public String getCurrencyName(boolean withCode, Currency currency) {
+        String nameString = currency.getName();
+        if (withCode) {
+            nameString = nameString + " (" + currency.getCurrencyCode() + ")";
+        }
+        return nameString;
+    }
+
     public List<Currency> getAllCurrencies() {
         return this.currencyRepository.findAll();
     }
