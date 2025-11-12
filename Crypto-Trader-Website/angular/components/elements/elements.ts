@@ -161,6 +161,9 @@ import {
 import {
     TradeCheckoutDetailsComponent
 } from "./element-group-trade/trade-checkout-details/trade-checkout-details.component";
+import {
+    TraderEventFilterBarComponent
+} from "./element-group-trader/trader-event-filter-bar/trader-event-filter-bar.component";
 
 export const elements = [
     AssetButtonComponent,
@@ -219,6 +222,7 @@ export const elements = [
     TradeConsoleComponent,
     TradeCurrencyComponent,
     TraderEventBubbleComponent,
+    TraderEventFilterBarComponent,
     TransparencyPromoComponent,
     VendorOptionComponent,
     VendorOptionsComponent,
