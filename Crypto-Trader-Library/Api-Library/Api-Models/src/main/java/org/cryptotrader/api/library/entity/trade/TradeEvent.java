@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.cryptotrader.api.library.entity.Identifiable;
+import org.cryptotrader.api.library.entity.portfolio.Portfolio;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAssetHistory;
 
 import java.time.LocalDateTime;
@@ -13,7 +14,10 @@ import java.time.LocalDateTime;
 @Setter
 @Table(name = "trade_events")
 public class TradeEvent extends Identifiable {
-    @JoinColumn(name = "portfolio_asset_id", nullable = false)
+    @JoinColumn(name = "portfolio_id", nullable = false)
+    @ManyToOne
+    private Portfolio portfolio;
+    @JoinColumn(name = "portfolio_asset_history_id", nullable = false)
     @OneToOne
     private PortfolioAssetHistory assetHistory;
     @Enumerated(EnumType.STRING)
@@ -42,6 +46,7 @@ public class TradeEvent extends Identifiable {
                       double sharesChange,
                       LocalDateTime tradeTime) {
         super();
+        this.portfolio = assetHistory.getPortfolio();
         this.assetHistory = assetHistory;
         this.tradeType = tradeType;
         this.valueChange = valueChange;
