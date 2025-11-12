@@ -102,6 +102,7 @@
               "angular/components/elements/element-group-trade/vendor-option/vendor-option.component.scss",
               "angular/components/elements/element-group-trade/vendor-options/vendor-options.component.scss",
               "angular/components/elements/element-group-trader/trader-event-bubble/trader-event-bubble.component.scss",
+              "angular/components/elements/element-group-trader/trader-event-filter-bar/trader-event-filter-bar.component.scss",
               "angular/components/elements/loading-wheel/loading-wheel.component.scss",
               "angular/components/elements/popup/popup.component.scss",
               "angular/components/pages/account/account.component.scss",
