@@ -1,7 +1,125 @@
 // trader-event-bubble.component.scss
 @use "../../../../styles/globals" as *;
+@use "../../../../styles/gradients/global_gradient_placeholders" as *;
 
 
 trader-event-bubble {
+    @include flex(center, center, column);
+    padding: $one-percent $one-half-percent;
+    @extend %soft-border-radius;
+    background-color: $air-blue;
+    margin: $half-percent 0;
+    min-width: $twenty-five-percent;
+    ss-title {
+        //width: 100%;
+    }
+    .trade-title-details {
+        @include flex(space-around, center, row);
+        @extend %softer-border-radius;
+        background-color: $muted-blue;
+        padding: $half-percent;
+        ss-img {
+            background-color: transparent;
+            box-shadow: none;
+            @include square-size($two-percent);
+            //margin-right: $half-percent;
+            img {
+                //filter: invert(0);
+            }
+        }
+        .trade-title-details-text {
+            @include flex(center, center, column);
+            margin-right: $half-percent;
+            ss-title h6 {
+                color: white;
+            }
+        }
 
+    }
+    .value-change-div {
+        width: 100%;
+        margin: $half-percent 0;
+        @include flex(flex-end, center, row);
+        .trade-value {
+            @include flex(flex-end, center, row);
+            width: 100%;
+            h4 {
+                //color: $mint-green;
+                //text-decoration: underline;
+                text-align: right;
+                @extend %signature-brand-gradient-text-smallest-reflection;
+            }
+        }
+
+    }
+    .trade-title {
+        width: 100%;
+        @include flex(space-between, center, row);
+        .currency-name-div {
+            @include flex(flex-start, center, row);
+            //margin-right: $five-percent;
+            @extend %softer-border-radius;
+            background-color: $pure-white;
+            padding: calc($half-percent * 0.75) $one-half-percent calc($half-percent * 0.75) $one-percent;
+
+            ss-title h4 {
+                color: gray;
+                //margin-right: $two-percent;
+            }
+            ss-img {
+                padding: calc($quarter-percent * 1.25) calc($quarter-percent * 1.65);
+                margin-right: $half-percent;
+                @include square-size($two-percent);
+                //@extend %light-logo-gradient;
+
+                //background-color: $mint-green;
+                //margin-right: $half-percent;
+
+                //box-shadow: $blue-gray 0 $eighth-percent $eighth-percent;
+                //background-color: add-alpha-opaque($light-charcoal, 0.5, $air-blue);
+                img {
+                    filter: invert(0.5);
+                }
+            }
+        }
+        .combined-image-div {
+            @include flex(center, center, row);
+            @extend %softer-border-radius;
+            //background-color: $pure-white;
+            padding: calc($half-percent * 0.75) $quarter-percent;
+            &:not(:last-child) {
+                border-radius: $quarter-percent 0 0 $quarter-percent;
+                border-right: $very-thin-border solid $alabaster-stone;
+            }
+            * > {
+                min-width: $two-percent;
+            }
+            ss-img {
+                padding: calc($quarter-percent * 1.25) calc($quarter-percent * 1.65);
+                @include square-size($two-percent);
+                //@extend %light-logo-gradient;
+
+                //background-color: $mint-green;
+                //margin-right: $half-percent;
+
+                //box-shadow: $blue-gray 0 $eighth-percent $eighth-percent;
+                //background-color: add-alpha-opaque($light-charcoal, 0.5, $air-blue);
+                img {
+                    filter: invert(0.5);
+                }
+
+            }
+        }
+
+
+    }
+
+    .trade-time-div {
+        width: 100%;
+        @include flex(space-between, center, row);
+
+    }
+    accordion {
+        width: 100%;
+    }
 }
