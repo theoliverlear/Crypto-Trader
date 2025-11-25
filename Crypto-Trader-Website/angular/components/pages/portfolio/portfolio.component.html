@@ -1,9 +1,5 @@
 <ng-container>
-    <content-stripe id="portfolio-builder-title-stripe">
-        <div class="portfolio-builder-header">
-            <ss-title [tagType]="TagType.H3" [text]="'Portfolio Builder'"/>
-            <subtitle [text]="'Select the currencies you would like to have traded.'" [tagType]="TagType.H5"/>
-        </div>
-    </content-stripe>
+    <page-title-stripe [pageTitle]="'Portfolio Builder'"
+                       [pageSubtitle]="'Select the currencies you would like to have traded.'"/>
     <portfolio-stats-section/>
 </ng-container>
