@@ -1,0 +1,17 @@
+// accordion.component.scss
+@use "../../../styles/globals" as *;
+
+accordion {
+    display: block;
+    margin: $half-percent 0;
+}
+
+
+mat-expansion-panel-header {
+    padding: 0 24px;
+    height: 64px;
+}
+
+::ng-deep .mat-expansion-panel-body {
+    padding: 0 24px 16px;
+}
