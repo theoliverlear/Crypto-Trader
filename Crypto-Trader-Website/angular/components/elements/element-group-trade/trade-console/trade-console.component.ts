@@ -86,6 +86,14 @@ export class TradeConsoleComponent implements OnInit {
         this.isVendorSelected = true;
         this.currentTitle = TradeConsoleTitles.CURRENCY;
     }
+    
+    clearContainer(): void {
+        this.selectedVendor = null;
+        this.isVendorSelected = false;
+        this.isCurrencySelected = false;
+        this.displayCurrency = null;
+    }
+    
 
     protected readonly TagType = TagType;
 }
