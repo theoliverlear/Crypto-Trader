@@ -6,7 +6,7 @@ import {
     Input,
     Output
 } from "@angular/core";
-import {AuthType} from "@theoliverlear/angular-suite";
+import {AuthType, TagType} from "@theoliverlear/angular-suite";
 
 @Component({
     selector: 'auth-console-tab',
@@ -27,4 +27,6 @@ export class AuthConsoleTabComponent {
     onClick(): void {
         this.emitAuthTabClicked();
     }
+
+    protected readonly TagType = TagType;
 }
