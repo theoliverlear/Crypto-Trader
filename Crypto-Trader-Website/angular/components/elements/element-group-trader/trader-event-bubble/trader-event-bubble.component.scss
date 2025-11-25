@@ -70,48 +70,11 @@ trader-event-bubble {
                 padding: calc($quarter-percent * 1.25) calc($quarter-percent * 1.65);
                 margin-right: $half-percent;
                 @include square-size($two-percent);
-                //@extend %light-logo-gradient;
-
-                //background-color: $mint-green;
-                //margin-right: $half-percent;
-
-                //box-shadow: $blue-gray 0 $eighth-percent $eighth-percent;
-                //background-color: add-alpha-opaque($light-charcoal, 0.5, $air-blue);
                 img {
                     filter: invert(0.5);
                 }
             }
         }
-        .combined-image-div {
-            @include flex(center, center, row);
-            @extend %softer-border-radius;
-            //background-color: $pure-white;
-            padding: calc($half-percent * 0.75) $quarter-percent;
-            &:not(:last-child) {
-                border-radius: $quarter-percent 0 0 $quarter-percent;
-                border-right: $very-thin-border solid $alabaster-stone;
-            }
-            * > {
-                min-width: $two-percent;
-            }
-            ss-img {
-                padding: calc($quarter-percent * 1.25) calc($quarter-percent * 1.65);
-                @include square-size($two-percent);
-                //@extend %light-logo-gradient;
-
-                //background-color: $mint-green;
-                //margin-right: $half-percent;
-
-                //box-shadow: $blue-gray 0 $eighth-percent $eighth-percent;
-                //background-color: add-alpha-opaque($light-charcoal, 0.5, $air-blue);
-                img {
-                    filter: invert(0.5);
-                }
-
-            }
-        }
-
-
     }
 
     .trade-time-div {
