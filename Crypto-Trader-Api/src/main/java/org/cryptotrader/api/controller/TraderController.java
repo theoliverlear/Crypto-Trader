@@ -1,5 +1,6 @@
 package org.cryptotrader.api.controller;
 //=================================-Imports-==================================
+import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.api.library.communication.response.TradeEventListResponse;
 import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.api.library.services.AuthContextService;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/trader")
 public class TraderController {
@@ -30,6 +32,8 @@ public class TraderController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         ProductUser user = this.authContextService.getAuthenticatedProductUser();
-        return new ResponseEntity<>(this.traderService.getTradeEvents(user), HttpStatus.OK);
+        TradeEventListResponse tradeEvents = this.traderService.getTradeEvents(user);
+        log.info("Retrieved {} trade events.", tradeEvents.getEvents().size());
+        return new ResponseEntity<>(tradeEvents, HttpStatus.OK);
     }
 }
