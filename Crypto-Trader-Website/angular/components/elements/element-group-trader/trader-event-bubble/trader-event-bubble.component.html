@@ -1,1 +1,28 @@
 <!-- trader-event-bubble.component.html -->
+<ng-container>
+    <div class="trade-title">
+        <div class="currency-name-div">
+            @if (shouldLoadImage()) {
+                <ss-img [imageAsset]="getCurrencyImageAsset()"/>
+            }
+            <ss-title [text]="getCurrencyName()" [tagType]="TagType.H4"/>
+        </div>
+        <div class="trade-title-details">
+            <div class="trade-title-details-text">
+                <ss-title [text]="getCurrencyCode()" [tagType]="TagType.H6"/>
+                <ss-title [text]="getTradeType()" [tagType]="TagType.H6"/>
+            </div>
+            <ss-img [imageAsset]="getVendorImageAsset()"/>
+        </div>
+    </div>
+    <div class="value-change-div">
+        <ss-title [text]="getValueChange()" [tagType]="TagType.H4" class="trade-value"/>
+    </div>
+    <div class="trade-time-div">
+        <subtitle [text]="getTradeDay()" [tagType]="TagType.P"/>
+        <ss-title [text]="getTradeTime()" [tagType]="TagType.P"/>
+    </div>
+    <accordion [title]="'Trade Details'" [description]="'Click to expand'">
+        <ss-title [text]="getSharesChange()" [tagType]="TagType.P"/>
+    </accordion>
+</ng-container>
