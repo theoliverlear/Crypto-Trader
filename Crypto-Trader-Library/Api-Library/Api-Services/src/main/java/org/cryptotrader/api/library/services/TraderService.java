@@ -42,13 +42,16 @@ public class TraderService {
     }
 
     public TradeEventResponse toTradeEventResponse(TradeEvent tradeEvent) {
+        String currencyName = this.currencyService.getCurrencyName(true,
+                                                                   tradeEvent.getAssetHistory().getCurrency());
         return new TradeEventResponse(
-                this.currencyService.getCurrencyName(true, 
-                        tradeEvent.getAssetHistory().getCurrency()), 
-                        tradeEvent.getValueChange(),
-                        tradeEvent.getSharesChange(),
-                        tradeEvent.getTradeTime(),
-                        tradeEvent.getTradeType().getName()
+                tradeEvent.getId(),
+                currencyName,
+                tradeEvent.getValueChange(),
+                tradeEvent.getSharesChange(),
+                tradeEvent.getTradeTime(),
+                tradeEvent.getTradeType().getName(),
+                tradeEvent.getAssetHistory().getVendor()
         );
     }
 }
