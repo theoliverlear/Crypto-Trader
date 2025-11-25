@@ -36,6 +36,10 @@ import {
 } from "@angular/material/autocomplete";
 import { MatIconModule } from '@angular/material/icon';
 import {MatIconButton} from "@angular/material/button";
+import { MatSelectModule } from "@angular/material/select";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 /**
  * APP_INITIALIZER: ensure we have a DPoP key and try to refresh the access token
@@ -74,6 +78,10 @@ export function appInit(): () => Promise<void> {
         AngularSuiteModule,
         MatFormField,
         MatInput,
+        MatSelectModule,
+        MatSlideToggleModule,
+        MatExpansionModule,
+        MatProgressSpinnerModule,
         ReactiveFormsModule,
         MatAutocompleteTrigger,
         MatOption,
