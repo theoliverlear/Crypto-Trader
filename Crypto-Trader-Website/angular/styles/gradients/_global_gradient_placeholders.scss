@@ -35,3 +35,9 @@
     $shadow-offset: calc(#{globals.$quarter-percent} / 2);
     text-shadow: globals.add-alpha(black, 0.1) $shadow-offset $shadow-offset;
 }
+
+%signature-brand-gradient-text-smallest-reflection {
+    @include mixins.gradient-text(vars.$regular-logo);
+    $shadow-offset: calc(#{globals.$quarter-percent} / 4);
+    text-shadow: globals.add-alpha(black, 0.1) $shadow-offset $shadow-offset;
+}
