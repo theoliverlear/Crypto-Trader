@@ -77,11 +77,9 @@ class RefreshTokenService(
      * @return RotationResult containing the new record on success; null record means invalid/reuse (family revoked)
      */
     fun validateAndRotate(presentedId: String, presentedJkt: String?): RotationResult {
+        // Unknown id: cannot know family. Best-effort: reject as reuse attempt.
         val record = this.records[presentedId]
-        if (record == null) {
-            // Unknown id: cannot know family. Best-effort: reject as reuse attempt.
-            return RotationResult(null, reuseDetected = true)
-        }
+            ?: return RotationResult(null, reuseDetected = true)
         if (record.revoked || record.isExpired() || record.used) {
             this.revokeFamily(record.familyId)
             return RotationResult(null, reuseDetected = true)
