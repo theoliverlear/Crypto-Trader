@@ -17,7 +17,7 @@ auth-console-tab {
     background-color: $pure-white;
     box-shadow: $blue-gray $simplest-quarter-percent calc($simplest-quarter-percent * -1) 0 0;
     padding: $half-percent $simplest-one-percent $quarter-percent $simplest-one-percent;
-    width: simple-calc(6, 1.75);
+    width: simple-calc(6, 2.75);
     text-align: center;
     transition: box-shadow, transform, margin-top, margin-left, transform, padding-bottom, 0.3s;
     transform: none;
