@@ -11,6 +11,7 @@ import {TokenStorageService} from "../../../../auth/token-storage.service";
 import {DpopKeyService} from "../../../../auth/dpop/dpop-key.service";
 import {DpopProofService} from "../../../../auth/dpop/dpop-proof.service";
 import {Observable} from "rxjs";
+import {RefreshCoordinatorService} from "../../../../auth/refresh/refresh-coordinator.service";
 
 @Injectable({
     providedIn: 'root'
@@ -19,12 +20,16 @@ export class TokenRefreshService extends HttpClientService<any, AuthResponse> {
     private static readonly URL: string = `${environment.apiUrl}/auth/refresh`;
     constructor(private tokenStore: TokenStorageService,
                 private keys: DpopKeyService,
-                private proofs: DpopProofService) {
+                private proofs: DpopProofService,
+                private coordinator: RefreshCoordinatorService) {
         super(TokenRefreshService.URL);
     }
 
     public refreshToken(): Observable<string> {
-        return new Observable<string>((subscriber) => {
+        // Wrap the actual refresh call with a cross-tab single-flight coordinator
+        // to prevent concurrent refresh attempts that could reuse the same cookie
+        // and trigger family revocation on the server.
+        return this.coordinator.singleFlight(() => new Observable<string>((subscriber) => {
             (async () => {
                 await this.keys.ensureKeys();
                 const current = this.tokenStore.getToken() || undefined;
@@ -53,6 +58,6 @@ export class TokenRefreshService extends HttpClientService<any, AuthResponse> {
                     }
                 })
             })();
-        });
+        }));
     }
 }
