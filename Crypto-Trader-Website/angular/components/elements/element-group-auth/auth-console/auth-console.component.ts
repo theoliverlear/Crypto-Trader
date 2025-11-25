@@ -71,12 +71,12 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy, OnInit
                     this.saveToken(authResponse);
                     this.router.navigate(['/portfolio']);
                 } else {
-                    this.emitAuthPopup(AuthPopup.USERNAME_OR_EMAIL_EXISTS);
+                    this.emitAuthPopup(AuthPopup.INVALID_USERNAME_OR_PASSWORD);
                 }
             },
             error: (err) => {
                 console.error('[HTTP][login] error:', err);
-                this.emitAuthPopup(AuthPopup.USERNAME_OR_EMAIL_EXISTS);
+                this.emitAuthPopup(AuthPopup.INVALID_USERNAME_OR_PASSWORD);
             }
         });
     }
