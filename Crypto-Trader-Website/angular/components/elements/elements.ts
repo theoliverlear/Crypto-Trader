@@ -164,8 +164,19 @@ import {
 import {
     TraderEventFilterBarComponent
 } from "./element-group-trader/trader-event-filter-bar/trader-event-filter-bar.component";
+import {
+    PageTitleStripeComponent
+} from "./page-title-stripe/page-title-stripe.component";
+import {
+    TraderReportComponent
+} from "./element-group-trader/element-group-trader-report/trader-report/trader-report.component";
+import {
+    TraderReportRangeSelectorComponent
+} from "./element-group-trader/element-group-trader-report/trader-report-range-selector/trader-report-range-selector.component";
+import {AccordionComponent} from "./accordion/accordion.component";
 
 export const elements = [
+    AccordionComponent,
     AssetButtonComponent,
     AssetButtonsComponent,
     AssetFieldComponent,
@@ -194,6 +205,7 @@ export const elements = [
     NavBarItemComponent,
     NavBarProfilePictureComponent,
     NavConsoleComponent,
+    PageTitleStripeComponent,
     PaperModePromoComponent,
     PerformanceArrowComponent,
     PerformanceChartComponent,
@@ -223,6 +235,8 @@ export const elements = [
     TradeCurrencyComponent,
     TraderEventBubbleComponent,
     TraderEventFilterBarComponent,
+    TraderReportComponent,
+    TraderReportRangeSelectorComponent,
     TransparencyPromoComponent,
     VendorOptionComponent,
     VendorOptionsComponent,
