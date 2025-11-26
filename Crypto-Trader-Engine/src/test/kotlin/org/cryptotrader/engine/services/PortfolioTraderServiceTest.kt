@@ -59,23 +59,21 @@ class PortfolioTraderServiceTest : CryptoTraderTest() {
                 shares = 1.5
                 totalValueInDollars = 150.0
             }
-
             `when`(portfolioService.getLatestPreviousAssetHistoryWithShares(
                 any(PortfolioAssetHistory::class.java)
-            ))
-                .thenReturn(previous)
+            )).thenReturn(previous)
+            `when`(portfolioService.getLatestPortfolioAssetHistory(asset)).thenReturn(previous)
             `when`(portfolioService.getLatestPortfolioHistory(portfolio)).thenReturn(null as PortfolioHistory?)
             invokeSaveAssetChanges(trader, asset, true)
 
-            val prevCaptor = ArgumentCaptor.forClass(PortfolioAssetHistory::class.java)
-            val currCaptor = ArgumentCaptor.forClass(PortfolioAssetHistory::class.java)
-            verify(portfolioService).setPortfolioValueChange(prevCaptor.capture(), currCaptor.capture())
+            val prevSharesCaptor = ArgumentCaptor.forClass(PortfolioAssetHistory::class.java)
+            val currSharesCaptor = ArgumentCaptor.forClass(PortfolioAssetHistory::class.java)
+            verify(portfolioService).setPortfolioSharesChange(prevSharesCaptor.capture(), currSharesCaptor.capture())
 
-            val usedPrev = prevCaptor.value
-            val current = currCaptor.value
-            assertNotNull(current)
-            assertEquals(previous.shares, usedPrev.shares, 1e-9)
-            assertEquals(1.0, current.sharesChange, 1e-9)
+            val usedPrevForShares = prevSharesCaptor.value
+            val currentForShares = currSharesCaptor.value
+            assertNotNull(currentForShares)
+            assertEquals(previous.shares, usedPrevForShares.shares, 1e-9)
 
             verify(portfolioService).savePortfolioAsset(asset)
             verify(portfolioService).savePortfolio(portfolio)
@@ -106,12 +104,15 @@ class PortfolioTraderServiceTest : CryptoTraderTest() {
 
             // Act
             invokeSaveAssetChanges(trader, asset, true)
-
-            val savedHistoryCaptor = ArgumentCaptor.forClass(PortfolioAssetHistory::class.java)
-            verify(portfolioService).savePortfolioAssetHistory(savedHistoryCaptor.capture())
-            val saved = savedHistoryCaptor.value
-            assertNotNull(saved)
-            assertEquals(5.0, saved.sharesChange, 1e-9) // 10 - 5 = 5
+            
+            val prevSharesCaptor = ArgumentCaptor.forClass(PortfolioAssetHistory::class.java)
+            val currSharesCaptor = ArgumentCaptor.forClass(PortfolioAssetHistory::class.java)
+            verify(portfolioService).setPortfolioSharesChange(prevSharesCaptor.capture(), currSharesCaptor.capture())
+            val usedPrev = prevSharesCaptor.value
+            assertNotNull(usedPrev)
+            assertEquals(5.0, usedPrev.shares, 1e-9) // baseline is 6pm with 5 shares
+            // And history is persisted
+            verify(portfolioService).savePortfolioAssetHistory(any(PortfolioAssetHistory::class.java))
         }
 
         @Test
