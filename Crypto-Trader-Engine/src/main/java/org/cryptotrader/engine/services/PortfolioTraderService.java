@@ -91,7 +91,7 @@ public class PortfolioTraderService {
         PortfolioAssetHistory previousPortfolioAssetHistory = this.portfolioService.getLatestPortfolioAssetHistory(traderAsset);
         PortfolioAssetHistory previousWithShares = this.getLastPortfolioAssetWithSharesSinceTime(portfolioAssetHistory);
         this.portfolioService.setPortfolioValueChange(previousPortfolioAssetHistory, portfolioAssetHistory);
-        this.portfolioService.setPortfolioShareChange(previousWithShares, portfolioAssetHistory);
+        this.portfolioService.setPortfolioSharesChange(previousWithShares, portfolioAssetHistory);
         traderAsset.addPortfolioAssetHistory(portfolioAssetHistory);
         Portfolio traderPortfolio = trader.getPortfolio();
         PortfolioHistory previousPortfolioHistory = this.portfolioService.getLatestPortfolioHistory(traderPortfolio);
