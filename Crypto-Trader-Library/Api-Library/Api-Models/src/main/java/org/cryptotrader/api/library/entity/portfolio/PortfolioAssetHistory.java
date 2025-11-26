@@ -92,8 +92,16 @@ public class PortfolioAssetHistory extends Identifiable implements SequentiallyV
         if (previousHistory == null) {
             this.valueChange = 0;
         } else {
-            this.sharesChange = this.shares - previousHistory.getShares();
             this.valueChange = this.totalValueInDollars - previousHistory.getTotalValueInDollars();
+        }
+    }
+    
+    public void calculateShareChange(PortfolioAssetHistory previousHistoryWithShares) {
+        if (previousHistoryWithShares == null) {
+            this.sharesChange = 0;
+        } else {
+            double delta = this.shares - previousHistoryWithShares.getShares();
+            this.sharesChange = Math.max(delta, 0);
         }
     }
 }
