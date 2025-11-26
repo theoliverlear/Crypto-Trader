@@ -98,8 +98,43 @@ export class TraderEventBubbleComponent {
         }
     }
     
+    hasNoChange(): boolean {
+        return this.tradeEvent.sharesChange === 0 && this.tradeEvent.valueChange === 0;
+    }
+    
+    getNoChangeText(): string {
+        return "No Change";
+    }
+    
     getSharesChange(): string {
-        return this.tradeEvent.sharesChange.toString();
+        let numDecimals: number = 2;
+        if (this.tradeEvent.sharesChange < 1) {
+            let sharesString: string = this.tradeEvent.sharesChange.toString().split(".")[1];
+            if (sharesString !== undefined) {
+                numDecimals = sharesString.length;
+                for (let i = 0; i < numDecimals; i++) {
+                    if (sharesString[i] !== "0") {
+                        numDecimals = i + 1;
+                        break;
+                    }
+                }
+            }
+        }
+        const sharesFormatter = new Intl.NumberFormat('en-US', {
+            style: 'decimal',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: numDecimals
+        });
+        const sharesChange: number = sharesFormatter.format(this.tradeEvent.sharesChange) as unknown as number;
+        return "+" + sharesChange.toString() + " " + this.getCurrencyCode();
+    }
+    
+    isSharesChange(): boolean {
+        return !this.isValueChange() && this.tradeEvent.sharesChange !== 0;
+    }
+    
+    isValueChange(): boolean {
+        return this.tradeEvent.valueChange !== 0;
     }
     
     protected readonly TagType = TagType;
