@@ -16,7 +16,15 @@
         </div>
     </div>
     <div class="value-change-div">
-        <ss-title [text]="getValueChange()" [tagType]="TagType.H4" class="trade-value"/>
+        @if (isValueChange()) {
+            <ss-title [text]="getValueChange()" [tagType]="TagType.H4" class="trade-value"/>
+        }
+        @if (isSharesChange()) {
+            <ss-title [text]="getSharesChange()" [tagType]="TagType.H4" class="trade-value"/>
+        }
+        @if (hasNoChange()) {
+            <ss-title [text]="getNoChangeText()" [tagType]="TagType.H4" class="trade-value"/>
+        }
     </div>
     <div class="trade-time-div">
         <subtitle [text]="getTradeDay()" [tagType]="TagType.P"/>
