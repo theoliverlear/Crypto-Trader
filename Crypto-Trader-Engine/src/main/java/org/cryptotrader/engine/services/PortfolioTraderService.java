@@ -70,7 +70,6 @@ public class PortfolioTraderService {
     public void triggerAllTraders() {
         for (Trader trader : this.cryptoTrader.getTraders()) {
             Portfolio previousPortfolio = Portfolio.from(trader.getPortfolio());
-            System.out.println(previousPortfolio);
             for (TradingEngine assetTrader : trader.getAssetTraders()) {
                 this.triggerTrader(trader, assetTrader);
             }
@@ -90,12 +89,14 @@ public class PortfolioTraderService {
     private void saveAssetChanges(Trader trader, PortfolioAsset traderAsset, boolean tradeOccurred) {
         PortfolioAssetHistory portfolioAssetHistory = new PortfolioAssetHistory(traderAsset, tradeOccurred);
         PortfolioAssetHistory previousPortfolioAssetHistory = this.portfolioService.getLatestPortfolioAssetHistory(traderAsset);
+        PortfolioAssetHistory previousWithShares = this.getLastPortfolioAssetWithSharesSinceTime(portfolioAssetHistory);
         this.portfolioService.setPortfolioValueChange(previousPortfolioAssetHistory, portfolioAssetHistory);
+        this.portfolioService.setPortfolioShareChange(previousWithShares, portfolioAssetHistory);
         traderAsset.addPortfolioAssetHistory(portfolioAssetHistory);
         Portfolio traderPortfolio = trader.getPortfolio();
         PortfolioHistory previousPortfolioHistory = this.portfolioService.getLatestPortfolioHistory(traderPortfolio);
         PortfolioHistory portfolioHistory = new PortfolioHistory(traderPortfolio, tradeOccurred);
-        setValueChange(previousPortfolioHistory, portfolioHistory);
+        this.setValueChange(previousPortfolioHistory, portfolioHistory);
         traderPortfolio.addPortfolioHistory(portfolioHistory);
         this.saveAll(traderAsset, traderPortfolio, portfolioAssetHistory, portfolioHistory);
         if (tradeOccurred) {
@@ -121,12 +122,30 @@ public class PortfolioTraderService {
         this.tradeEventService.saveTradeEvent(tradeEvent);
     }
 
-    private static void setValueChange(PortfolioHistory previousPortfolioHistory, PortfolioHistory portfolioHistory) {
+
+    private void setValueChange(PortfolioHistory previousPortfolioHistory, PortfolioHistory portfolioHistory) {
         if (previousPortfolioHistory != null) {
             portfolioHistory.calculateValueChange(previousPortfolioHistory);
         } else {
             portfolioHistory.setValueChange(0);
         }
+    }
+    
+    private void setSharesChange(PortfolioAssetHistory portfolioHistory) {
+        PortfolioAssetHistory historyWithShares = getLastPortfolioAssetWithSharesSinceTime(portfolioHistory);
+        if (historyWithShares != null) {
+            portfolioHistory.calculateShareChange(historyWithShares);
+        } else {
+            portfolioHistory.setSharesChange(0);
+        }
+    }
+    
+    /**
+     * Returns the most recent preceding history entry for the same asset where shares != 0.
+     * Used as the baseline for calculating deltas on a new history entry.
+     */
+    private PortfolioAssetHistory getLastPortfolioAssetWithSharesSinceTime(PortfolioAssetHistory assetToLookRetrospectively) {
+        return this.portfolioService.getLatestPreviousAssetHistoryWithShares(assetToLookRetrospectively);
     }
 
     private void saveAll(PortfolioAsset traderAsset,
