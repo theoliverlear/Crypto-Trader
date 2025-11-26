@@ -155,6 +155,7 @@ class PortfolioServiceTest : CryptoTraderTest() {
             }
 
             portfolioService.setPortfolioValueChange(previous, current)
+            portfolioService.setPortfolioSharesChange(previous, current)
 
             assertEquals(60.0, current.valueChange, 1e-9)
             assertEquals(0.5, current.sharesChange, 1e-9)
