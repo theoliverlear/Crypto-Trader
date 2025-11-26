@@ -46,12 +46,25 @@ public class PortfolioService {
     //============================-Methods-===================================
 
 
+    /**
+     * Calculate and set value and share deltas on the current history entry using an optional previous entry.
+     * If no previous is provided, the current entry's valueChange is set to 0.
+     */
     public void setPortfolioValueChange(PortfolioAssetHistory previousPortfolioAssetHistory,
                                         PortfolioAssetHistory portfolioAssetHistory) {
         if (previousPortfolioAssetHistory != null) {
             portfolioAssetHistory.calculateValueChange(previousPortfolioAssetHistory);
         } else {
             portfolioAssetHistory.setValueChange(0);
+        }
+    }
+    
+    public void setPortfolioSharesChange(PortfolioAssetHistory previousAssetWithShares,
+                                         PortfolioAssetHistory portfolioAssetHistory) {
+        if (previousAssetWithShares != null) {
+            portfolioAssetHistory.calculateShareChange(previousAssetWithShares);
+        } else {
+            portfolioAssetHistory.setSharesChange(0);
         }
     }
 
@@ -93,6 +106,22 @@ public class PortfolioService {
     }
     public PortfolioAssetHistory getLatestPortfolioAssetHistory(PortfolioAsset portfolioAsset) {
         return this.portfolioAssetHistoryRepository.findFirstByPortfolioAssetIdOrderByLastUpdatedDesc(portfolioAsset.getId());
+    }
+    
+    /**
+     * Find the most recent preceding history entry for the same asset where shares != 0.
+     * Returns null when input is incomplete or no such entry exists.
+     */
+    public PortfolioAssetHistory getLatestPreviousAssetHistoryWithShares(PortfolioAssetHistory currentHistory) {
+        if (currentHistory == null || currentHistory.getPortfolioAsset() == null || currentHistory.getLastUpdated() == null) {
+            return null;
+        }
+        Long assetId = currentHistory.getPortfolioAsset().getId();
+        List<PortfolioAssetHistory> list = this.portfolioAssetHistoryRepository.findLatestWithSharesBefore(assetId, currentHistory.getLastUpdated());
+        if (list == null || list.isEmpty()) {
+            return null;
+        }
+        return list.getFirst();
     }
     public PortfolioHistory getLatestPortfolioHistory(Portfolio portfolio) {
         return this.portfolioHistoryRepository.findFirstByPortfolioIdOrderByLastUpdatedDesc(portfolio.getId());
