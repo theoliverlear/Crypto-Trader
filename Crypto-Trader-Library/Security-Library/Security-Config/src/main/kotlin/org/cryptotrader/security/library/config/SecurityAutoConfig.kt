@@ -1,5 +1,7 @@
 package org.cryptotrader.security.library.config
 
+import org.cryptotrader.security.library.entity.key.EncryptedKey
+import org.cryptotrader.security.library.entity.key.KeyEncrypter
 import org.cryptotrader.security.library.infrastructure.IpBanFilter
 import org.cryptotrader.security.library.service.EncryptionService
 import org.cryptotrader.security.library.service.InMemoryIpBanService
@@ -18,7 +20,9 @@ import org.springframework.context.annotation.PropertySource
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.cryptotrader.security.library.repository.BannedIpAddressesRepository
 import org.cryptotrader.security.library.event.SecurityEventLogger
+import org.springframework.beans.factory.InitializingBean
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean
+import java.util.Base64
 
 @AutoConfiguration
 @EnableConfigurationProperties(SecurityPropertiesConfig::class)
@@ -27,8 +31,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean
     factory = YamlPropertySourceFactory::class
 )
 open class SecurityAutoConfig {
-
-    // --- JPA (optional) ---
+    
     @Configuration
     @ConditionalOnClass(LocalContainerEntityManagerFactoryBean::class)
     @ConditionalOnBean(type = ["javax.sql.DataSource"])
@@ -73,9 +76,26 @@ open class SecurityAutoConfig {
     ): FilterRegistrationBean<IpBanFilter> {
         val registration = FilterRegistrationBean(filter)
         registration.order = -100
-        // Use a unique registration name to avoid clashes with auto-registered filter bean name
         registration.setName("securityIpBanFilter")
         registration.isEnabled = properties.bans.enabled
         return registration
+    }
+
+    @Bean
+    open fun configureEntityEncryption(encryptionService: EncryptionService): InitializingBean {
+        return InitializingBean {
+            EncryptedKey.setEncrypterDelegate(object : KeyEncrypter {
+                override fun encrypt(key: String): String {
+                    val encryptedBytes: ByteArray = encryptionService.encrypt(key.toByteArray(Charsets.UTF_8))
+                    return Base64.getEncoder().encodeToString(encryptedBytes)
+                }
+
+                override fun decrypt(key: String): String {
+                    val decodedBytes: ByteArray = Base64.getDecoder().decode(key)
+                    val decryptedBytes: ByteArray = encryptionService.decrypt(decodedBytes)
+                    return String(decryptedBytes, Charsets.UTF_8)
+                }
+            })
+        }
     }
 }
