@@ -11,7 +11,6 @@ import org.cryptotrader.api.library.entity.user.builder.ProductUserBuilder;
 
 import java.time.LocalDateTime;
 
-// TODO: Refactor from User.java
 @Entity
 @Table(name = "product_users")
 @Getter
