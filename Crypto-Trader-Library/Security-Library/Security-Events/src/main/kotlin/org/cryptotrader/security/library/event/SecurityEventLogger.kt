@@ -1,6 +1,6 @@
 package org.cryptotrader.security.library.event
 
-import org.cryptotrader.security.library.entity.BannedIpAddress
+import org.cryptotrader.security.library.entity.ip.BannedIpAddress
 import org.cryptotrader.security.library.repository.BannedIpAddressesRepository
 import org.slf4j.LoggerFactory
 import org.springframework.context.event.EventListener
