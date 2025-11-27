@@ -1,4 +1,4 @@
-package org.cryptotrader.security.library.entity;
+package org.cryptotrader.security.library.entity.ip;
 
 
 import jakarta.persistence.*;
