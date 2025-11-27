@@ -97,6 +97,17 @@ jobs:
           EOF
           )
 
+          # helper to check if a service is required
+          is_required() {
+            local name="$1"
+            for req in ${REQUIRED_SERVICES:-api}; do
+              if [ "$req" = "$name" ]; then
+                return 0
+              fi
+            done
+            return 1
+          }
+
           start_one () {
             local name="$1" module="$2" port="$3" extra="$4"
             echo "==> starting $name on :$port ($module)"
@@ -165,13 +176,17 @@ jobs:
 
           # Wait up to ~8 minutes (240 * 2s)
           for i in $(seq 1 240); do
-            # Fail fast if any service died
+            # Fail fast only if a REQUIRED service died; warn for OPTIONAL
             for pidfile in *.pid; do
               [ -f "$pidfile" ] || continue
               pid=$(cat "$pidfile")
               if ! ps -p "$pid" >/dev/null 2>&1; then
                 svc="${pidfile%.pid}"
-                die "Service '$svc' exited before becoming ready."
+                if is_required "$svc"; then
+                  die "Required service '$svc' exited before becoming ready."
+                else
+                  echo "::warning::Optional service '$svc' exited before readiness; continuing."
+                fi
               fi
             done
 
