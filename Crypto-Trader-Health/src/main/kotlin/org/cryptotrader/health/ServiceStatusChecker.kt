@@ -21,7 +21,10 @@ private fun getBaseOverride(): String? {
 }
 
 internal fun getUrl(service: CryptoTraderService): String {
-    val host = if (service === CryptoTraderService.DATA) {
+    if (service === CryptoTraderService.DOCS) {
+        return "https://theoliverlear.github.io/Crypto-Trader/"
+    }
+    val host: String = if (service === CryptoTraderService.DATA) {
         System.getenv("CT_DATA_HOST")
     } else {
         "localhost"
