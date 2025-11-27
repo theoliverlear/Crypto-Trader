@@ -111,11 +111,21 @@ jobs:
           start_one () {
             local name="$1" module="$2" port="$3" extra="$4"
             echo "==> starting $name on :$port ($module)"
-            nohup mvn -B -s .github/maven-settings.xml -DskipTests \
-              -f "$module/pom.xml" -am \
-              -Dspring-boot.run.profiles=docs \
-              -Dspring-boot.run.arguments="--server.port=$port $extra" \
-              spring-boot:run > "$name.log" 2>&1 &
+            if [ "$name" = "data" ]; then
+              # Data service: set JVM system property so pre-Spring generator is disabled
+              nohup mvn -B -s .github/maven-settings.xml -DskipTests \
+                -f "$module/pom.xml" -am \
+                -Dspring-boot.run.profiles=docs \
+                -Dspring-boot.run.jvmArguments="-Dcryptotrader.loadCurrencies=false" \
+                -Dspring-boot.run.arguments="--server.port=$port $extra" \
+                spring-boot:run > "$name.log" 2>&1 &
+            else
+              nohup mvn -B -s .github/maven-settings.xml -DskipTests \
+                -f "$module/pom.xml" -am \
+                -Dspring-boot.run.profiles=docs \
+                -Dspring-boot.run.arguments="--server.port=$port $extra" \
+                spring-boot:run > "$name.log" 2>&1 &
+            fi
             echo $! > "$name.pid"
           }
 
