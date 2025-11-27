@@ -126,6 +126,10 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-docs</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
