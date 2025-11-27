@@ -20,6 +20,8 @@ spring:
     exclude:
       - org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration
       - org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration
+  main:
+    lazy-initialization: true
 
 cryptotrader:
   engine:
