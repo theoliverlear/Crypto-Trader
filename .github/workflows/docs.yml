@@ -36,6 +36,15 @@ jobs:
       APP_NAME: ${{ secrets.APP_NAME }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       SECURITY_HONEYPOT_PATHS: ${{ secrets.SECURITY_HONEYPOT_PATHS }}
+      # Docs workflow configuration
+      # Minimum number of bytes for an OpenAPI document to be considered "ready" (tiny skeletons will be treated as not ready)
+      OPENAPI_MIN_BYTES: "512"
+      # Which services must be ready for the job to proceed
+      REQUIRED_SERVICES: "api data contact"
+      # Optional services – probed and collected, but do not gate readiness
+      OPTIONAL_SERVICES: "engine"
+      # When true, proceed even if some REQUIRED specs are missing (will emit warnings instead of failing)
+      ALLOW_PARTIAL_DOCS: "false"
     outputs:
       pages_enabled: ${{ steps.pages.outcome }}
       site_ready: ${{ steps.verify_site.outputs.site_ready }}
@@ -112,6 +121,7 @@ jobs:
 
           probe() {
             local port="$1"
+            local min=${OPENAPI_MIN_BYTES:-512}
             # Consider endpoint ready only if response body is non-empty (>20 bytes)
             local tmp=".probe_${port}.out"
             rm -f "$tmp"
@@ -122,7 +132,7 @@ jobs:
               case "$sz" in
                 ''|*[!0-9]*) sz=0 ;;
               esac
-              if [ "$sz" -gt 20 ]; then rm -f "$tmp"; echo ok; return; fi
+              if [ "$sz" -gt "$min" ]; then rm -f "$tmp"; echo ok; return; fi
               # YAML empty; try JSON
               rm -f "$tmp"
               if curl -fsS "http://localhost:${port}/v3/api-docs" -o "$tmp"; then
@@ -131,7 +141,7 @@ jobs:
                   ''|*[!0-9]*) sz=0 ;;
                 esac
                 rm -f "$tmp"
-                if [ "$sz" -gt 20 ]; then echo ok; else echo no; fi
+                if [ "$sz" -gt "$min" ]; then echo ok; else echo no; fi
               else
                 rm -f "$tmp" 2>/dev/null || true
                 echo no
@@ -145,7 +155,7 @@ jobs:
                   ''|*[!0-9]*) sz=0 ;;
                 esac
                 rm -f "$tmp"
-                if [ "$sz" -gt 20 ]; then echo ok; else echo no; fi
+                if [ "$sz" -gt "$min" ]; then echo ok; else echo no; fi
               else
                 rm -f "$tmp" 2>/dev/null || true
                 echo no
@@ -171,15 +181,31 @@ jobs:
             C=$(probe 18083)
 
             echo "probe #$i  A=$A D=$D E=$E C=$C"
-            if [ "$A$D$E$C" = "okokokok" ]; then
-              echo "All APIs are up"
+
+            # Check readiness only for required services
+            all_required_ready=true
+            for req in ${REQUIRED_SERVICES:-api}; do
+              case "$req" in
+                api)     [ "$A" = ok ] || all_required_ready=false ;;
+                data)    [ "$D" = ok ] || all_required_ready=false ;;
+                engine)  [ "$E" = ok ] || all_required_ready=false ;;
+                contact) [ "$C" = ok ] || all_required_ready=false ;;
+              esac
+            done
+
+            if $all_required_ready; then
+              echo "All required services are ready: ${REQUIRED_SERVICES}"
               break
             fi
             sleep 2
           done
 
-          if [ "$A$D$E$C" != "okokokok" ]; then
-            die "Timed out waiting for APIs to start."
+          if ! $all_required_ready; then
+            if [ "${ALLOW_PARTIAL_DOCS}" = "true" ]; then
+              echo "::warning::Timed out waiting for all required services; proceeding due to ALLOW_PARTIAL_DOCS=true"
+            else
+              die "Timed out waiting for required services to start: ${REQUIRED_SERVICES}"
+            fi
           fi
 
       # Generate OpenAPI + move into docs via the Docs module (keeps your POM behavior)
@@ -223,6 +249,33 @@ jobs:
             fi
           }
 
+          # Utility: file size
+          size_of() {
+            local f="$1"
+            if [ -f "$f" ]; then wc -c < "$f" 2>/dev/null || echo 0; else echo 0; fi
+          }
+
+          # Generate a small stub OpenAPI file for services without HTTP controllers
+          generate_stub() {
+            local name="$1"; shift
+            local title="$1"; shift
+            local description="$1"; shift || true
+            local file="$BASE/openapi-${name}.yaml"
+            # Write a minimal OpenAPI 3.0 document without using shell heredocs (avoids YAML parser confusion)
+            : > "$file"
+            printf '%s\n' \
+              "openapi: 3.0.3" \
+              "info:" \
+              "  title: ${title}" \
+              "  version: 0.0.0" \
+              "  description: ${description}" \
+              "servers: []" \
+              "paths: {}" \
+              "components: {}" \
+              > "$file"
+            echo "::warning::Generated stub spec for ${name} at $file (no HTTP endpoints yet)"
+          }
+
           status=0
           fetch_if_missing api 18080   || status=1
           fetch_if_missing data 18081  || status=1
@@ -232,12 +285,38 @@ jobs:
           echo "Specs in docs:"
           ls -l "$BASE" || true
 
-          # Require all specs to exist and be non-empty
-          for s in api data engine contact; do
+          min=${OPENAPI_MIN_BYTES:-512}
+          # Validate REQUIRED specs by size; OPTIONAL specs may be stubbed
+          for s in ${REQUIRED_SERVICES:-api}; do
             f="$BASE/openapi-$s.yaml"
-            if [ ! -s "$f" ]; then
-              echo "::error::Required spec missing or empty: $f"; status=1
+            sz=$(size_of "$f")
+            if [ "$sz" -lt "$min" ]; then
+              if [ "${ALLOW_PARTIAL_DOCS}" = "true" ]; then
+                echo "::warning::Required spec too small or missing ($sz bytes < $min): $f"
+              else
+                echo "::error::Required spec too small or missing ($sz bytes < $min): $f"; status=1
+              fi
             fi
+          done
+
+          # Optional services handling (Engine)
+          for s in ${OPTIONAL_SERVICES:-}; do
+            f="$BASE/openapi-$s.yaml"
+            sz=$(size_of "$f")
+            if [ "$sz" -lt "$min" ]; then
+              if [ "$s" = "engine" ]; then
+                generate_stub engine "Crypto Trader Engine API" "No HTTP endpoints yet."
+              else
+                echo "::warning::Optional spec missing or small for $s; leaving as-is"
+              fi
+            fi
+          done
+
+          echo "Spec sizes and hashes:"
+          for f in "$BASE"/openapi-*.yaml; do
+            [ -f "$f" ] || continue
+            wc -c "$f" | awk '{print "bytes:", $1, "file:", $2}'
+            sha256sum "$f" || true
           done
           exit "$status"
 
