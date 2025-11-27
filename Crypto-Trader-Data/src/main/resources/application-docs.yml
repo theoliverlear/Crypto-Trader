@@ -20,6 +20,11 @@ spring:
     exclude:
       - org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration
       - org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration
+  task:
+    scheduling:
+      enabled: false
+  main:
+    lazy-initialization: true
 
 cryptotrader:
   loadCurrencies: false
