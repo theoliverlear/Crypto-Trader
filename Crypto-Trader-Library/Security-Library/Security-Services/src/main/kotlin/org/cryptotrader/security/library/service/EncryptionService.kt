@@ -13,7 +13,11 @@ class EncryptionService(
     private val keysetPath: String
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
-    private val aead: Aead by lazy { this.createAeadFromKeyset() }
+    private lateinit var aead: Aead
+    
+    init { 
+        this.createAeadFromKeyset() 
+    }
 
     fun encrypt(bytes: ByteArray, keyAlias: String? = null): ByteArray {
         return this.aead.encrypt(bytes, null)
