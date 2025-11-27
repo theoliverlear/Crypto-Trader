@@ -4,5 +4,6 @@ open module org.cryptotrader.security.library.models {
     requires kotlin.stdlib;
     requires transitive org.cryptotrader.api.library.models;
 
-    exports org.cryptotrader.security.library.entity;
+    exports org.cryptotrader.security.library.entity.ip;
+    exports org.cryptotrader.security.library.entity.key;
 }
