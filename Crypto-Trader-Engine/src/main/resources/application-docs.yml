@@ -1,0 +1,7 @@
+server:
+  port: 18082
+
+cryptotrader:
+  engine:
+    trading:
+      enabled: false
