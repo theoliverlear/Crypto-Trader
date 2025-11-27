@@ -186,53 +186,60 @@ jobs:
       - name: Build docs module (generate OpenAPI + copy to docs)
         run: mvn -B -s .github/maven-settings.xml -DskipTests -Ddocs.skipOpenapi=false -f Crypto-Trader-Docs/pom.xml -N verify
 
-      # Ensure the spec exists in docs while services are still up (fallback to live only here)
-      - name: Ensure CT API spec exists (while services are up)
+      # Ensure specs for all services exist in docs while services are still up (fallback to live only here)
+      - name: Ensure OpenAPI specs exist (while services are up)
         run: |
           set -euo pipefail
-          FILE="Crypto-Trader-Docs/docs/api/openapi-api.yaml"
-          TMP="${FILE}.tmp"
-          mkdir -p "$(dirname "$FILE")"
 
-          if [ ! -s "$FILE" ]; then
-            echo "Spec missing in docs; attempting to pull from live API (yaml, then json)…"
-            # Try YAML first
-            if curl -fsS http://localhost:18080/v3/api-docs.yaml -o "$TMP"; then
-              if [ -s "$TMP" ]; then
-                mv -f "$TMP" "$FILE"
+          BASE="Crypto-Trader-Docs/docs/api"
+          mkdir -p "$BASE"
+
+          fetch_if_missing() {
+            local name="$1" port="$2"
+            local file="$BASE/openapi-${name}.yaml"
+            local tmp="$file.tmp"
+            if [ -s "$file" ]; then
+              echo "Found existing spec for $name at $file"
+              return 0
+            fi
+            echo "Spec for $name missing; attempting to pull from :$port (yaml, then json)…"
+            if curl -fsS "http://localhost:${port}/v3/api-docs.yaml" -o "$tmp"; then
+              if [ -s "$tmp" ]; then
+                mv -f "$tmp" "$file"; echo "Saved $file (yaml)"; return 0
               else
-                echo "YAML fetch returned empty body; trying JSON…"
-                rm -f "$TMP"
-                if curl -fsS http://localhost:18080/v3/api-docs -o "$TMP"; then
-                  if [ -s "$TMP" ]; then
-                    # ReDoc accepts JSON as well; store JSON at .yaml path
-                    mv -f "$TMP" "$FILE"
-                  else
-                    echo "::error::JSON fetch also returned empty body."
-                    rm -f "$TMP"
-                  fi
-                else
-                  echo "::error::JSON fetch failed."
-                fi
+                echo "YAML empty for $name; trying JSON…"; rm -f "$tmp"
               fi
             else
-              echo "YAML fetch failed; trying JSON…"
-              if curl -fsS http://localhost:18080/v3/api-docs -o "$TMP"; then
-                if [ -s "$TMP" ]; then
-                  mv -f "$TMP" "$FILE"
-                else
-                  echo "::error::JSON fetch returned empty body."
-                  rm -f "$TMP"
-                fi
-              else
-                echo "::error::JSON fetch failed."
-              fi
+              echo "YAML fetch failed for $name; trying JSON…"
             fi
-          fi
+            if curl -fsS "http://localhost:${port}/v3/api-docs" -o "$tmp"; then
+              if [ -s "$tmp" ]; then
+                mv -f "$tmp" "$file"; echo "Saved $file (json->yaml path)"; return 0
+              else
+                echo "::error::JSON fetch returned empty body for $name"; rm -f "$tmp"; return 1
+              fi
+            else
+              echo "::error::JSON fetch failed for $name"; return 1
+            fi
+          }
 
-          echo "Spec in docs:"
-          ls -l "$FILE"
-          test -s "$FILE"
+          status=0
+          fetch_if_missing api 18080   || status=1
+          fetch_if_missing data 18081  || status=1
+          fetch_if_missing engine 18082|| status=1
+          fetch_if_missing contact 18083|| status=1
+
+          echo "Specs in docs:"
+          ls -l "$BASE" || true
+
+          # Require all specs to exist and be non-empty
+          for s in api data engine contact; do
+            f="$BASE/openapi-$s.yaml"
+            if [ ! -s "$f" ]; then
+              echo "::error::Required spec missing or empty: $f"; status=1
+            fi
+          done
+          exit "$status"
 
       - name: Stop services
         if: always()
@@ -284,22 +291,24 @@ jobs:
         working-directory: Crypto-Trader-Docs
         run: mkdocs build --site-dir site
 
-      # Copy spec from docs into built site; DO NOT fetch live here
-      - name: Copy spec into site/api and verify
+      # Copy all specs from docs into built site; DO NOT fetch live here
+      - name: Copy specs into site/api and verify
         run: |
           set -euo pipefail
-          SRC="Crypto-Trader-Docs/docs/api/openapi-api.yaml"
+          SRC_DIR="Crypto-Trader-Docs/docs/api"
           DST_DIR="Crypto-Trader-Docs/site/api"
           mkdir -p "$DST_DIR"
-          cp -fv "$SRC" "$DST_DIR/openapi-api.yaml"
+          cp -fv "$SRC_DIR"/openapi-*.yaml "$DST_DIR/"
 
           # prevent Jekyll munging
           touch "Crypto-Trader-Docs/site/.nojekyll"
 
-          # prove it’s in the artifact
+          # prove they’re in the artifact
           ls -l "$DST_DIR"
-          sha256sum "$DST_DIR/openapi-api.yaml"
-          test -s "$DST_DIR/openapi-api.yaml"
+          for f in "$DST_DIR"/openapi-*.yaml; do
+            [ -s "$f" ] || { echo "::error::Empty spec in site: $f"; exit 1; }
+            sha256sum "$f"
+          done
 
       - name: Configure Pages
         id: pages
