@@ -9,14 +9,6 @@ spring:
       cache:
         cachecontrol:
           max-age: 0s
-  devtools:
-    restart:
-      enabled: false
-      poll-interval: 2s
-      additional-paths: "src/main/java,src/main/resources"
-      exclude: ""
-    livereload:
-      enabled: false
   thymeleaf:
     cache: false
   freemarker:
