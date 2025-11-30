@@ -42,6 +42,15 @@
         <module>Security-Library/Security-Services</module>
         <module>Security-Library/Security-Infrastructure</module>
         <module>Security-Library/Security-Repositories</module>
+        <module>Data-Library</module>
+        <module>Data-Library/Data-Models</module>
+        <module>Data-Library/Data-Services</module>
+        <module>Data-Library/Data-Repositories</module>
+        <module>Data-Library/Data-Communication</module>
+        <module>Data-Library/Data-Components</module>
+        <module>Universal-Library</module>
+        <module>Universal-Library/Universal-Models</module>
+        <module>Universal-Library/Universal-Extensions</module>
     </modules>
 
     <artifactId>crypto-trader-library</artifactId>
