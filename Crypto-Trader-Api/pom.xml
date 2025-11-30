@@ -55,6 +55,14 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>data-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>data-models</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>
         </dependency>
@@ -235,6 +243,10 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
+            <artifactId>data-components</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
             <artifactId>security-config</artifactId>
         </dependency>
         <dependency>
@@ -244,6 +256,10 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>security-repositories</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-models</artifactId>
         </dependency>
     </dependencies>
     <build>
