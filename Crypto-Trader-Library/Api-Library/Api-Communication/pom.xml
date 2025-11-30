@@ -23,6 +23,14 @@
     <dependencies>
         <dependency>
             <groupId>org.cryptotrader</groupId>
+            <artifactId>data-models</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-models</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
             <artifactId>api-models</artifactId>
         </dependency>
         <dependency>
