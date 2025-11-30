@@ -3,6 +3,8 @@ open module org.cryptotrader.api.library.communication {
     requires static lombok;
     requires static com.fasterxml.jackson.annotation;
     requires org.cryptotrader.api.library.models;
+    requires org.cryptotrader.data.library.models;
+    requires org.cryptotrader.universal.library.models;
     
     exports org.cryptotrader.api.library.communication.request;
     exports org.cryptotrader.api.library.communication.request.alias;
