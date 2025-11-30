@@ -8,7 +8,7 @@ import org.cryptotrader.api.library.events.publisher.UserEventsPublisher;
 import org.cryptotrader.api.library.communication.request.SignupRequest;
 import org.cryptotrader.api.library.communication.request.LoginRequest;
 import org.cryptotrader.api.library.communication.response.AuthResponse;
-import org.cryptotrader.api.library.model.http.PayloadStatusResponse;
+import org.cryptotrader.universal.library.model.http.PayloadStatusResponse;
 import org.cryptotrader.api.library.entity.user.SafePassword;
 import org.cryptotrader.test.CryptoTraderTest;
 import org.junit.jupiter.api.BeforeEach;
