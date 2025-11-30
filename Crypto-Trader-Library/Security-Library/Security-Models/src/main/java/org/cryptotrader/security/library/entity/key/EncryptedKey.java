@@ -4,9 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.cryptotrader.api.library.entity.Identifiable;
+import org.cryptotrader.universal.library.entity.Identifiable;
 import org.cryptotrader.api.library.entity.user.ProductUser;
-import org.cryptotrader.api.library.entity.user.User;
 
 // Encrypts API keys
 @Entity
