@@ -1,11 +1,11 @@
 package org.cryptotrader.data;
 
+import org.cryptotrader.data.library.component.CurrencyDataRetriever;
 import org.cryptotrader.test.CryptoTraderTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
-import org.cryptotrader.api.library.component.CurrencyDataRetriever;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
