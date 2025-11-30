@@ -1,8 +1,8 @@
 package org.cryptotrader.api.controller.websocket
 
 import com.sigwarthsoftware.springboot.websocket.WebSocketHandler
-import org.cryptotrader.api.library.entity.currency.Currency
-import org.cryptotrader.api.library.services.CurrencyService
+import org.cryptotrader.data.library.entity.currency.Currency
+import org.cryptotrader.data.library.services.CurrencyService
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
