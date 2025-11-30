@@ -1,6 +1,7 @@
-package org.cryptotrader.api.library.component
+package org.cryptotrader.data.library.components
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.cryptotrader.data.library.component.CurrencyJsonGenerator
 import org.cryptotrader.test.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach

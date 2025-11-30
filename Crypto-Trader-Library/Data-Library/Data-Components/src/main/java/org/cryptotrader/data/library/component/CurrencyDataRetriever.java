@@ -1,11 +1,11 @@
-package org.cryptotrader.api.library.component;
+package org.cryptotrader.data.library.component;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.cryptotrader.data.library.entity.currency.Currency;
+import org.cryptotrader.data.library.entity.currency.SupportedCurrencies;
+import org.cryptotrader.data.library.model.http.ApiDataRetriever;
 import org.springframework.stereotype.Component;
-import org.cryptotrader.api.library.entity.currency.Currency;
-import org.cryptotrader.api.library.entity.currency.SupportedCurrencies;
-import org.cryptotrader.api.library.model.http.ApiDataRetriever;
 
 import java.io.IOException;
 import java.util.*;

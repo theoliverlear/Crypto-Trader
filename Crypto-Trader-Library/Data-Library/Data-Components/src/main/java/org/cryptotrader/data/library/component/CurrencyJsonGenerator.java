@@ -1,9 +1,9 @@
-package org.cryptotrader.api.library.component;
+package org.cryptotrader.data.library.component;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.api.library.entity.currency.SupportedCurrencies;
+import org.cryptotrader.data.library.entity.currency.SupportedCurrencies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;

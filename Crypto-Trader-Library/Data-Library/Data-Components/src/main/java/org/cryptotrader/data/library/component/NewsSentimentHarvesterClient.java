@@ -1,4 +1,4 @@
-package org.cryptotrader.api.library.component;
+package org.cryptotrader.data.library.component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -6,10 +6,10 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.cryptotrader.data.library.communication.request.NewsSentimentHarvestRequest;
+import org.cryptotrader.data.library.communication.request.NewsSentimentTargetedHarvestRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.cryptotrader.api.library.communication.request.NewsSentimentHarvestRequest;
-import org.cryptotrader.api.library.communication.request.NewsSentimentTargetedHarvestRequest;
 
 import java.io.IOException;
 import java.net.URI;
