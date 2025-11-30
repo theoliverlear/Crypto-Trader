@@ -52,6 +52,12 @@
 | Contact-Events          | v.v.v   |
 | Contact-Models          | v.v.v   |
 | Contact-Repositories    | v.v.v   |
+| Data-Library            | v.v.v   |
+| Data-Communication      | v.v.v   |
+| Data-Components         | v.v.v   |
+| Data-Models             | v.v.v   |
+| Data-Repositories       | v.v.v   |
+| Data-Services           | v.v.v   |
 | Desktop-Library         | v.v.v   |
 | Desktop-Components      | v.v.v   |
 | Desktop-Styles          | v.v.v   |     
@@ -63,6 +69,9 @@
 | Security-Models         | v.v.v   |
 | Security-Repositories   | v.v.v   |
 | Security-Services       | v.v.v   |
+| Universal-Library       | v.v.v   |
+| Universal-Extensions    | v.v.v   |
+| Universal-Models        | v.v.v   |
 | Version-Library         | v.v.v   |
 | Version-Models          | v.v.v   |
 
@@ -260,6 +269,36 @@
 - Bullet
 - Bullet
 
+### [Data Library](Crypto-Trader-Library/Data-Library)
+- Bullet
+- Bullet
+- Bullet
+
+### [Data Communication](Crypto-Trader-Library/Data-Library/Data-Communication)
+- Bullet
+- Bullet
+- Bullet
+
+### [Data Components](Crypto-Trader-Library/Data-Library/Data-Components)
+- Bullet
+- Bullet
+- Bullet
+
+### [Data Models](Crypto-Trader-Library/Data-Library/Data-Models)
+- Bullet
+- Bullet
+- Bullet
+
+### [Data Repositories](Crypto-Trader-Library/Data-Library/Data-Repositories)
+- Bullet
+- Bullet
+- Bullet
+
+### [Data Services](Crypto-Trader-Library/Data-Library/Data-Services)
+- Bullet
+- Bullet
+- Bullet
+
 ### [Desktop Library](Crypto-Trader-Library/Desktop-Library)
 - Bullet
 - Bullet
@@ -311,6 +350,21 @@
 - Bullet
 
 ### [Security Services](Crypto-Trader-Library/Security-Library/Security-Services)
+- Bullet
+- Bullet
+- Bullet
+
+### [Universal Library](Crypto-Trader-Library/Universal-Library)
+- Bullet
+- Bullet
+- Bullet
+
+### [Universal Extensions](Crypto-Trader-Library/Universal-Library/Universal-Extensions)
+- Bullet
+- Bullet
+- Bullet
+
+### [Universal Models](Crypto-Trader-Library/Universal-Library/Universal-Models)
 - Bullet
 - Bullet
 - Bullet
