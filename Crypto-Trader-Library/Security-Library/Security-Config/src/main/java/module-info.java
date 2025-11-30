@@ -11,6 +11,8 @@ open module org.cryptotrader.security.library.config {
     requires org.cryptotrader.security.library.events;
     requires org.cryptotrader.security.library.infrastructure;
     requires org.cryptotrader.security.library.services;
+    requires org.cryptotrader.security.library.models;
+    requires org.cryptotrader.universal.library.models;
 
     exports org.cryptotrader.security.library.config;
 }
