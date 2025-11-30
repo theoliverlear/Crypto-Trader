@@ -1,18 +1,20 @@
 package org.cryptotrader.api.library.services
 
 import org.cryptotrader.api.library.communication.request.TradeRequest
-import org.cryptotrader.api.library.entity.currency.Currency
+import org.cryptotrader.data.library.entity.currency.Currency
 import org.cryptotrader.api.library.entity.portfolio.Portfolio
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset
 import org.cryptotrader.api.library.entity.user.ProductUser
 import org.cryptotrader.api.library.entity.vendor.SupportedVendors
+import org.cryptotrader.data.library.services.CurrencyService
 import org.springframework.stereotype.Service
 
 @Service
 class TradeService(
     private val authContextService: AuthContextService,
     private val portfolioService: PortfolioService,
-    private val currencyService: CurrencyService) {
+    private val currencyService: CurrencyService
+) {
     fun checkout(tradeRequest: TradeRequest): Boolean {
         val isLoggedIn: Boolean = this.authContextService.isUserAuthenticated()
         if (!isLoggedIn) {
