@@ -16,7 +16,7 @@ class EncryptionService(
     private lateinit var aead: Aead
     
     init { 
-        this.createAeadFromKeyset() 
+        this.aead = this.createAeadFromKeyset()
     }
 
     fun encrypt(bytes: ByteArray, keyAlias: String? = null): ByteArray {
