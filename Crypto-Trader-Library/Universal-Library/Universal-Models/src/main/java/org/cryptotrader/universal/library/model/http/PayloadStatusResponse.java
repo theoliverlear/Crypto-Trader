@@ -1,4 +1,4 @@
-package org.cryptotrader.api.library.model.http;
+package org.cryptotrader.universal.library.model.http;
 
 import lombok.Getter;
 import lombok.Setter;

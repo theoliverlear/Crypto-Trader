@@ -1,4 +1,4 @@
-package org.cryptotrader.api.library.model.http;
+package org.cryptotrader.universal.library.model.http;
 
 public enum AuthStatus {
     AUTHORIZED(true),

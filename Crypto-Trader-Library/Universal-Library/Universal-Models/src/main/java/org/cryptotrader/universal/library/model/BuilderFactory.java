@@ -1,4 +1,4 @@
-package org.cryptotrader.api.library.model;
+package org.cryptotrader.universal.library.model;
 
 /**
  * Generic factory interface for building objects.

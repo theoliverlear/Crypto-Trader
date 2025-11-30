@@ -1,4 +1,4 @@
-package org.cryptotrader.api.library.entity;
+package org.cryptotrader.universal.library.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
