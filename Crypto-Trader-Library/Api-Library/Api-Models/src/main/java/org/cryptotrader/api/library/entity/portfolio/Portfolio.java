@@ -7,9 +7,9 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.cryptotrader.api.library.entity.Identifiable;
 import org.cryptotrader.api.library.entity.portfolio.builder.PortfolioBuilder;
 import org.cryptotrader.api.library.entity.user.ProductUser;
+import org.cryptotrader.universal.library.entity.Identifiable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

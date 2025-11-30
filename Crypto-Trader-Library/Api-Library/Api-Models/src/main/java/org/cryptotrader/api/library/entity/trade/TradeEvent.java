@@ -3,7 +3,7 @@ package org.cryptotrader.api.library.entity.trade;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.cryptotrader.api.library.entity.Identifiable;
+import org.cryptotrader.universal.library.entity.Identifiable;
 import org.cryptotrader.api.library.entity.portfolio.Portfolio;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAssetHistory;
 

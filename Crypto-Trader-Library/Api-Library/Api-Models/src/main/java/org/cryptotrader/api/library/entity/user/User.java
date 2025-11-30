@@ -7,7 +7,7 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
-import org.cryptotrader.api.library.entity.Identifiable;
+import org.cryptotrader.universal.library.entity.Identifiable;
 
 import java.time.LocalDateTime;
 

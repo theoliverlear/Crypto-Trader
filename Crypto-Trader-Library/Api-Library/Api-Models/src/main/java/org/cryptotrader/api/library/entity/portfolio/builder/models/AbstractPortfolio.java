@@ -4,7 +4,7 @@ import org.cryptotrader.api.library.entity.portfolio.Portfolio;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioHistory;
 import org.cryptotrader.api.library.entity.user.ProductUser;
-import org.cryptotrader.api.library.model.BuilderFactory;
+import org.cryptotrader.universal.library.model.BuilderFactory;
 
 import java.time.LocalDateTime;
 import java.util.List;

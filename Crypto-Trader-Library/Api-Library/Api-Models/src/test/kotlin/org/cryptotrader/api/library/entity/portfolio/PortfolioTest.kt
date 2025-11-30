@@ -1,7 +1,7 @@
 package org.cryptotrader.api.library.entity.portfolio
 
 import org.assertj.core.api.Assertions.assertThat
-import org.cryptotrader.api.library.entity.currency.Currency
+import org.cryptotrader.data.library.entity.currency.Currency
 import org.cryptotrader.api.library.entity.user.ProductUser
 import org.cryptotrader.test.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.assertEquals

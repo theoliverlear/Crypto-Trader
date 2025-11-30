@@ -8,11 +8,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.cryptotrader.api.library.entity.Identifiable;
-import org.cryptotrader.api.library.entity.currency.Currency;
-import org.cryptotrader.api.library.entity.currency.SupportedCurrencies;
+import org.cryptotrader.data.library.entity.currency.Currency;
+import org.cryptotrader.data.library.entity.currency.SupportedCurrencies;
 import org.cryptotrader.api.library.entity.vendor.SupportedVendors;
 import org.cryptotrader.api.library.entity.vendor.Vendor;
+import org.cryptotrader.universal.library.entity.Identifiable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

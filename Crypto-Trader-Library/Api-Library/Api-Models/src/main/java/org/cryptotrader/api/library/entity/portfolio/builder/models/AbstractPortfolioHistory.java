@@ -2,7 +2,7 @@ package org.cryptotrader.api.library.entity.portfolio.builder.models;
 
 import org.cryptotrader.api.library.entity.portfolio.Portfolio;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioHistory;
-import org.cryptotrader.api.library.model.BuilderFactory;
+import org.cryptotrader.universal.library.model.BuilderFactory;
 
 import java.time.LocalDateTime;
 
