@@ -26,7 +26,11 @@
     <dependencies>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>api-services</artifactId>
+            <artifactId>data-communication</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>data-services</artifactId>
         </dependency>
         <dependency>
             <groupId>org.junit.platform</groupId>
