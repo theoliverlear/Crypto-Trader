@@ -7,7 +7,7 @@ import org.cryptotrader.api.library.communication.request.UserRequest;
 import org.cryptotrader.api.library.communication.response.AuthResponse;
 import org.cryptotrader.api.library.entity.user.SafePassword;
 import org.cryptotrader.api.library.entity.user.ProductUser;
-import org.cryptotrader.api.library.model.http.PayloadStatusResponse;
+import org.cryptotrader.universal.library.model.http.PayloadStatusResponse;
 import org.cryptotrader.api.library.services.jwt.JwtTokenService;
 import org.cryptotrader.test.CryptoTraderTest;
 import org.junit.jupiter.api.AfterAll;
