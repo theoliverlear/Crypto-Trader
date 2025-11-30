@@ -10,7 +10,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 @SpringBootApplication
 @Import(SecurityAutoConfiguration::class)
 @EnableJpaRepositories(basePackages = ["org.cryptotrader.security.library.repository"])
-@EntityScan(basePackages = ["org.cryptotrader.security.library.entity", "org.cryptotrader.api.library.entity"])
+@EntityScan(basePackages = ["org.cryptotrader.security.library.entity",
+    "org.cryptotrader.api.library.entity",
+    "org.cryptotrader.data.library.entity"])
 open class CryptoTraderSecurityApplication
 
 fun main(args: Array<String>) {
