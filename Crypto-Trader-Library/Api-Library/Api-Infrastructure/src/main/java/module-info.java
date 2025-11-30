@@ -12,8 +12,12 @@ open module org.cryptotrader.api.library.infrastructure {
     requires org.cryptotrader.api.library.models;
     requires org.cryptotrader.api.library.scripts;
     requires org.cryptotrader.api.library.components;
+    requires org.cryptotrader.universal.library.models;
     requires com.auth0.jwt;
 
     exports org.cryptotrader.api.library.infrastructure;
     exports org.cryptotrader.api.library.infrastructure.dpop;
+    exports org.cryptotrader.api.library.infrastructure.alias;
+    exports org.cryptotrader.api.library.infrastructure.config;
+    exports org.cryptotrader.api.library.infrastructure.extension;
 }
