@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/trade")
 class TradeController(
-    val tradeService: TradeService,
-    val authContextService: AuthContextService
+    private val tradeService: TradeService,
+    private val authContextService: AuthContextService
 ){
     @PostMapping("/checkout")
     fun checkout(@RequestBody tradeRequest: TradeRequest): ResponseEntity<OperationSuccessfulResponse> {
