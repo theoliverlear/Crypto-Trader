@@ -3,15 +3,15 @@ package org.cryptotrader.api.controller;
 import jakarta.annotation.security.PermitAll;
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.api.library.communication.response.*;
-import org.cryptotrader.api.library.model.currency.PerformanceRating;
-import org.cryptotrader.api.library.services.CurrencyService;
+import org.cryptotrader.data.library.model.currency.PerformanceRating;
+import org.cryptotrader.data.library.services.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.cryptotrader.api.library.communication.request.AssetValueRequest;
-import org.cryptotrader.api.library.entity.currency.Currency;
+import org.cryptotrader.data.library.entity.currency.Currency;
 
 import java.util.List;
 
