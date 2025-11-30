@@ -1,6 +1,6 @@
 package org.cryptotrader.data;
 
-import org.cryptotrader.api.library.component.CurrencyJsonGenerator;
+import org.cryptotrader.data.library.component.CurrencyJsonGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -12,14 +12,20 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableAsync
 @EnableScheduling
-@EntityScan(basePackages = "org.cryptotrader.api.library.entity")
+@EntityScan(basePackages = {
+        "org.cryptotrader.api.library.entity",
+        "org.cryptotrader.data.library.entity"
+})
 @ComponentScan(basePackages = {
         "org.cryptotrader.api.library.component",
-        "org.cryptotrader.data",
         "org.cryptotrader.api.library",
+        "org.cryptotrader.data.library",
+        "org.cryptotrader.data.library.services",
+        "org.cryptotrader.data.library.component"
 })
 @EnableJpaRepositories(basePackages = {
-        "org.cryptotrader.api.library.repository"
+        "org.cryptotrader.api.library.repository",
+        "org.cryptotrader.data.library.repository"
 })
 public class CryptoTraderDataApplication {
     public static void main(String[] args) {
@@ -27,7 +33,7 @@ public class CryptoTraderDataApplication {
         if (loadCurrencies) {
             CurrencyJsonGenerator.standalone().generateAndSave();
         }
-        // Rely on standard Spring Boot externalized configuration (application.yml)
+        enableCurrencyHarvesting();
         SpringApplication.run(CryptoTraderDataApplication.class, args);
     }
 
@@ -36,5 +42,9 @@ public class CryptoTraderDataApplication {
         String loadCurrenciesSetting = System.getProperty("cryptotrader.loadCurrencies", loadCurrenciesEnv);
         boolean loadCurrencies = Boolean.parseBoolean(loadCurrenciesSetting);
         return loadCurrencies;
+    }
+    
+    private static void enableCurrencyHarvesting() {
+        System.setProperty("cryptotrader.harvest.currency", "true");
     }
 }
