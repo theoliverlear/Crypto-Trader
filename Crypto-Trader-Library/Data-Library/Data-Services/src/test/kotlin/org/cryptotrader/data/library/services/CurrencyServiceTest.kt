@@ -1,18 +1,21 @@
-package org.cryptotrader.api.library.services
+package org.cryptotrader.data.library.services
 
+import org.cryptotrader.data.library.component.CurrencyDataRetriever
+import org.cryptotrader.data.library.component.CurrencyJsonGenerator
+import org.cryptotrader.data.library.component.MarketSnapshotsBackfiller
+import org.cryptotrader.data.library.entity.currency.Currency
+import org.cryptotrader.data.library.entity.currency.CurrencyHistory
+import org.cryptotrader.data.library.repository.CurrencyHistoryRepository
+import org.cryptotrader.data.library.repository.CurrencyRepository
+import org.cryptotrader.data.library.repository.UniqueCurrencyHistoryRepository
+import org.cryptotrader.data.library.repository.UniqueCurrencyRepository
 import org.cryptotrader.test.CryptoTraderTest
-import org.cryptotrader.api.library.repository.*
-import org.cryptotrader.api.library.component.*
-import org.cryptotrader.api.library.entity.currency.Currency
-import org.cryptotrader.api.library.entity.currency.CurrencyHistory
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
 
 @DisplayName("Currency Service")
 class CurrencyServiceTest : CryptoTraderTest() {
@@ -63,15 +66,15 @@ class CurrencyServiceTest : CryptoTraderTest() {
     @DisplayName("Should get the top ten currencies with ten or more" +
             " currencies in the database")
     fun getTopTenCurrencies_GetsTopTenCurrencies_DatabaseHasTenCurrencies() {
-        `when`(this.currencyRepository.findTop10ByOrderByValueDesc()).thenReturn(
+        Mockito.`when`(this.currencyRepository.findTop10ByOrderByValueDesc()).thenReturn(
             topTenCurrenciesList
         )
         val actualCurrencyList: List<Currency> = this.currencyService.topTenCurrencies
         val actualSize: Int = actualCurrencyList.size
         val expectedSize = 10
-        assertEquals(expectedSize, actualSize)
+        Assertions.assertEquals(expectedSize, actualSize)
 
-        assertEquals(actualCurrencyList, topTenCurrenciesList)
+        Assertions.assertEquals(actualCurrencyList, topTenCurrenciesList)
     }
 
     @Test
@@ -81,7 +84,8 @@ class CurrencyServiceTest : CryptoTraderTest() {
         val previousCurrency: Currency = Currency.builder().currencyCode("BTC").value(1.0).build()
         val updatedCurrency: Currency = Currency.builder().currencyCode("BTC").value(2.0).build()
         this.currencyService.saveCurrencyIfNew(currency, previousCurrency, updatedCurrency)
-        verify(this.currencyRepository).save(currency)
-        verify(this.currencyHistoryRepository).save(Mockito.isA(CurrencyHistory::class.java))
+        Mockito.verify(this.currencyRepository).save(currency)
+        Mockito.verify(this.currencyHistoryRepository)
+            .save(Mockito.isA(CurrencyHistory::class.java))
     }
 }

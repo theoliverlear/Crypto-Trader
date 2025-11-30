@@ -1,10 +1,10 @@
-package org.cryptotrader.api.library.services;
+package org.cryptotrader.data.library.services;
 
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.api.library.communication.request.TrainingSessionRequest;
-import org.cryptotrader.api.library.entity.training.TrainingSession;
-import org.cryptotrader.api.library.entity.training.builder.TrainingSessionBuilder;
-import org.cryptotrader.api.library.repository.TrainingSessionRepository;
+import org.cryptotrader.data.library.communication.request.TrainingSessionRequest;
+import org.cryptotrader.data.library.entity.training.TrainingSession;
+import org.cryptotrader.data.library.entity.training.builder.TrainingSessionBuilder;
+import org.cryptotrader.data.library.repository.TrainingSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,9 +1,9 @@
-package org.cryptotrader.api.library.services;
+package org.cryptotrader.data.library.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.api.library.services.models.MarketSnapshotOperations;
-import org.cryptotrader.api.library.entity.currency.Currency;
+import org.cryptotrader.data.library.entity.currency.Currency;
+import org.cryptotrader.data.library.services.models.MarketSnapshotOperations;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;

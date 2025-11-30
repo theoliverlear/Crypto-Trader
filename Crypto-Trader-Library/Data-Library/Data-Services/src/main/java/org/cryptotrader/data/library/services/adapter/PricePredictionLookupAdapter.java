@@ -1,9 +1,9 @@
-package org.cryptotrader.data.adapter;
+package org.cryptotrader.data.library.services.adapter;
 
 import lombok.RequiredArgsConstructor;
-import org.cryptotrader.api.library.services.PricePredictionService;
-import org.cryptotrader.api.library.entity.prediction.PricePrediction;
-import org.cryptotrader.api.library.entity.prediction.PricePredictionLookup;
+import org.cryptotrader.data.library.entity.prediction.PricePrediction;
+import org.cryptotrader.data.library.entity.prediction.PricePredictionLookup;
+import org.cryptotrader.data.library.services.PricePredictionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

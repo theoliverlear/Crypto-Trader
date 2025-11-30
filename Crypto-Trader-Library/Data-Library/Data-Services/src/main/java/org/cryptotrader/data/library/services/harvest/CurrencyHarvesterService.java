@@ -1,26 +1,27 @@
-package org.cryptotrader.data.service;
+package org.cryptotrader.data.library.services.harvest;
 
 import lombok.extern.slf4j.Slf4j;
-import org.cryptotrader.api.library.entity.currency.Currency;
-import org.cryptotrader.api.library.entity.currency.SupportedCurrencies;
-import org.cryptotrader.api.library.services.CurrencyService;
-import org.cryptotrader.api.library.services.models.MarketSnapshotOperations;
-import org.cryptotrader.api.library.component.CurrencyDataRetriever;
-import org.cryptotrader.api.library.component.CurrencyJsonGenerator;
-import org.cryptotrader.api.library.component.MarketSnapshotsBackfiller;
-import org.cryptotrader.api.library.repository.CurrencyHistoryRepository;
-import org.cryptotrader.api.library.repository.CurrencyRepository;
-import org.cryptotrader.api.library.repository.UniqueCurrencyHistoryRepository;
-import org.cryptotrader.api.library.repository.UniqueCurrencyRepository;
+import org.cryptotrader.data.library.component.CurrencyDataRetriever;
+import org.cryptotrader.data.library.component.CurrencyJsonGenerator;
+import org.cryptotrader.data.library.component.MarketSnapshotsBackfiller;
+import org.cryptotrader.data.library.entity.currency.Currency;
+import org.cryptotrader.data.library.entity.currency.SupportedCurrencies;
+import org.cryptotrader.data.library.repository.CurrencyHistoryRepository;
+import org.cryptotrader.data.library.repository.CurrencyRepository;
+import org.cryptotrader.data.library.repository.UniqueCurrencyHistoryRepository;
+import org.cryptotrader.data.library.repository.UniqueCurrencyRepository;
+import org.cryptotrader.data.library.services.CurrencyService;
+import org.cryptotrader.data.library.services.models.MarketSnapshotOperations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @Slf4j
+@ConditionalOnProperty(name = "cryptotrader.harvest.currency", havingValue = "true", matchIfMissing = false)
 public class CurrencyHarvesterService {
     //============================-Variables-=================================
     private final CurrencyRepository currencyRepository;
