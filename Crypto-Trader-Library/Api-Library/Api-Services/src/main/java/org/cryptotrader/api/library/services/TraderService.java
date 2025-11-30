@@ -5,6 +5,7 @@ import org.cryptotrader.api.library.communication.response.TradeEventResponse;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset;
 import org.cryptotrader.api.library.entity.trade.TradeEvent;
 import org.cryptotrader.api.library.entity.user.ProductUser;
+import org.cryptotrader.data.library.services.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

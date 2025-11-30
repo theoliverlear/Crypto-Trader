@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.api.library.communication.request.PortfolioAssetRequest;
 import org.cryptotrader.api.library.communication.response.PortfolioAssetHistoryResponse;
 import org.cryptotrader.api.library.communication.response.PortfolioHistoryResponse;
-import org.cryptotrader.api.library.entity.currency.Currency;
+import org.cryptotrader.data.library.entity.currency.Currency;
 import org.cryptotrader.api.library.entity.portfolio.Portfolio;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAssetHistory;
@@ -15,6 +15,7 @@ import org.cryptotrader.api.library.repository.PortfolioAssetHistoryRepository;
 import org.cryptotrader.api.library.repository.PortfolioAssetRepository;
 import org.cryptotrader.api.library.repository.PortfolioHistoryRepository;
 import org.cryptotrader.api.library.repository.PortfolioRepository;
+import org.cryptotrader.data.library.services.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
