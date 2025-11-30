@@ -30,14 +30,19 @@ import static org.cryptotrader.health.ServiceStatusChecker.isServiceAlive;
 @SpringBootApplication
 @EnableAsync
 @EnableScheduling
-@EntityScan(basePackages = "org.cryptotrader.api.library.entity")
+@EntityScan(basePackages = {
+        "org.cryptotrader.api.library.entity",
+        "org.cryptotrader.data.library.entity"
+})
 @ComponentScan(basePackages = {
         "org.cryptotrader.api.library.component",
         "org.cryptotrader.engine",
         "org.cryptotrader.api.library",
+        "org.cryptotrader.data.library"
 })
 @EnableJpaRepositories(basePackages = {
-        "org.cryptotrader.api.library.repository"
+        "org.cryptotrader.api.library.repository",
+        "org.cryptotrader.data.library.repository"
 })
 public class CryptoTraderEngineApplication {
     public static void main(String[] args) {
@@ -45,11 +50,16 @@ public class CryptoTraderEngineApplication {
         if (!tradingEnabled) {
             disableTrading();
         }
+        disableCurrencyHarvesting();
         SpringApplication.run(CryptoTraderEngineApplication.class, args);
     }
 
     private static void disableTrading() {
         System.setProperty("spring.task.scheduling.enabled", "false");
+    }
+    
+    private static void disableCurrencyHarvesting() {
+        System.setProperty("cryptotrader.harvest.currency", "false");
     }
 
     private static boolean isTradingEnabled() {
