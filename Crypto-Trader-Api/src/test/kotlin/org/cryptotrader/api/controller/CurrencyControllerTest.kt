@@ -6,9 +6,9 @@ import org.cryptotrader.api.library.communication.response.DisplayCurrencyListRe
 import org.cryptotrader.api.library.communication.response.DisplayCurrencyResponse
 import org.cryptotrader.api.library.communication.response.PerformanceRatingResponse
 import org.cryptotrader.api.library.communication.response.TimeValueResponse
-import org.cryptotrader.api.library.entity.currency.Currency
-import org.cryptotrader.api.library.model.currency.PerformanceRating
-import org.cryptotrader.api.library.services.CurrencyService
+import org.cryptotrader.data.library.entity.currency.Currency
+import org.cryptotrader.data.library.model.currency.PerformanceRating
+import org.cryptotrader.data.library.services.CurrencyService
 import org.cryptotrader.test.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
