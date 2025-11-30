@@ -1,6 +1,6 @@
-package org.cryptotrader.api.library.repository;
+package org.cryptotrader.data.library.repository;
 
-import org.cryptotrader.api.library.entity.currency.UniqueCurrency;
+import org.cryptotrader.data.library.entity.currency.UniqueCurrency;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UniqueCurrencyRepository extends JpaRepository<UniqueCurrency, Long> {
