@@ -8,15 +8,19 @@ import lombok.Getter;
 import lombok.Setter;
 import org.cryptotrader.api.library.entity.portfolio.Portfolio;
 import org.cryptotrader.api.library.entity.user.builder.ProductUserBuilder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "product_users")
 @Getter
 @Setter
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class ProductUser extends User {
+public class ProductUser extends User implements UserDetails {
     //============================-Variables-=================================
     @Column(name = "email")
     private String email;
@@ -82,7 +86,17 @@ public class ProductUser extends User {
         return new ProductUserBuilder();
     }
 
-    
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getPassword() {
+        return this.safePassword.getEncodedPassword();
+    }
+
+
     //============================-Overrides-=================================
 
     //------------------------------Equals------------------------------------
