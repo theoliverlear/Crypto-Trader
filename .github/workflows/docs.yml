@@ -91,7 +91,7 @@ jobs:
 
           SERVICES=$(cat <<'EOF'
           api      Crypto-Trader-Api      18080   ""
-          data     Crypto-Trader-Data     18081   "--cryptotrader.loadCurrencies=false"
+          data     Crypto-Trader-Data     18081   "--cryptotrader..load.currency=false"
           engine   Crypto-Trader-Engine   18082   "--cryptotrader.engine.trading.enabled=false"
           contact  Crypto-Trader-Contact  18083   "--cryptotrader.engine.trading.enabled=false"
           EOF
@@ -116,7 +116,7 @@ jobs:
               nohup mvn -B -s .github/maven-settings.xml -DskipTests \
                 -f "$module/pom.xml" -am \
                 -Dspring-boot.run.profiles=docs \
-                -Dspring-boot.run.jvmArguments="-Dcryptotrader.loadCurrencies=false" \
+                -Dspring-boot.run.jvmArguments="-Dcryptotrader.load.currency=false" \
                 -Dspring-boot.run.arguments="--server.port=$port $extra" \
                 spring-boot:run > "$name.log" 2>&1 &
             else
