@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -33,7 +34,36 @@ public class TraderController {
         }
         ProductUser user = this.authContextService.getAuthenticatedProductUser();
         TradeEventListResponse tradeEvents = this.traderService.getTradeEvents(user);
-        log.info("Retrieved {} trade events.", tradeEvents.getEvents().size());
+        logTradeEvents(tradeEvents);
         return new ResponseEntity<>(tradeEvents, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/events/batch", params = {"offset", "limit"})
+    public ResponseEntity<TradeEventListResponse> getBatchEvents(@RequestParam(value = "offset", defaultValue = "0") int offset,
+                                                                 @RequestParam(value = "limit", defaultValue = "10") int limit) {
+        boolean isAuthorized = this.authContextService.isAuthenticated();
+        if (!isAuthorized) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        ProductUser user = this.authContextService.getAuthenticatedProductUser();
+        TradeEventListResponse tradeEvents = this.traderService.getTradeEvents(user, offset, limit);
+        logTradeEvents(tradeEvents);
+        return new ResponseEntity<>(tradeEvents, HttpStatus.OK);
+    }
+
+    
+    @RequestMapping("/events/exists")
+    public ResponseEntity<Boolean> hasEvents() {
+        boolean isAuthorized = this.authContextService.isAuthenticated();
+        if (!isAuthorized) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        ProductUser user = this.authContextService.getAuthenticatedProductUser();
+        boolean hasEvents = this.traderService.userHasTrades(user);
+        return new ResponseEntity<>(hasEvents, HttpStatus.OK);
+    }
+    
+    private static void logTradeEvents(TradeEventListResponse tradeEvents) {
+        log.info("Retrieved {} trade events.", tradeEvents.getEvents().size());
     }
 }
