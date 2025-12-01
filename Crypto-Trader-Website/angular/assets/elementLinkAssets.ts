@@ -35,14 +35,19 @@ export const portfolioElementLink = new ElementLink('/portfolio',
 export const tradeElementLink = new ElementLink('/trade',
     TargetType.SELF,
     false
-)
+);
+
+export const statisticsElementLink = new ElementLink('/statistics',
+    TargetType.SELF,
+    false
+);
 
 export const navBarCurrenciesTextLink = new TextElementLink('/currencies',
     TargetType.SELF,
     false,
     'Currencies',
     TagType.H4,
-)
+);
 
 export const navBarPortfolioTextLink = new TextElementLink('/portfolio',
     TargetType.SELF,
