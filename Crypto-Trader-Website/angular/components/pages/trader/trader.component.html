@@ -3,13 +3,16 @@
     <page-title-stripe [pageTitle]="'Trader'" [pageSubtitle]="'Browse and Filter Your Trade History.'"/>
 <!--    TODO: Put this on the left. If thin, then on top.-->
     <trader-event-filter-bar/>
-    @if (!getTradeEvents() || getTradeEvents().length === 0) {
+    @if (hasTradeEvents !== undefined && !hasTradeEvents) {
         <ss-paragraph [text]="'No trades found.'"/>
     } @else {
         @if (getTradeEvents()) {
+            <div class="trade-event-bubbles" [@listStagger]="getTradeEvents().length">
             @for (tradeEvent of getTradeEvents(); track tradeEvent.id) {
                 <trader-event-bubble [tradeEvent]="tradeEvent"/>
             }
+            </div>
         }
+        <loading-wheel [visible]="isFetching"/>
     }
 </ng-container>
