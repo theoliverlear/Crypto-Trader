@@ -70,6 +70,7 @@
 | Security-Repositories   | v.v.v   |
 | Security-Services       | v.v.v   |
 | Universal-Library       | v.v.v   |
+| Universal-Components    | v.v.v   |
 | Universal-Extensions    | v.v.v   |
 | Universal-Models        | v.v.v   |
 | Version-Library         | v.v.v   |
@@ -355,6 +356,11 @@
 - Bullet
 
 ### [Universal Library](Crypto-Trader-Library/Universal-Library)
+- Bullet
+- Bullet
+- Bullet
+
+### [Universal Components](Crypto-Trader-Library/Universal-Library/Universal-Components)
 - Bullet
 - Bullet
 - Bullet
