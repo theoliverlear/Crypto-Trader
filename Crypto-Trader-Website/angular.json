@@ -117,6 +117,7 @@
               "angular/components/pages/home/home.component.scss",
               "angular/components/pages/not-found/not-found.component.scss",
               "angular/components/pages/portfolio/portfolio.component.scss",
+              "angular/components/pages/statistics/statistics.component.scss",
               "angular/components/pages/terms-of-service/terms-of-service.component.scss",
               "angular/components/pages/trade/trade.component.scss",
               "angular/components/pages/trader/trader.component.scss",
