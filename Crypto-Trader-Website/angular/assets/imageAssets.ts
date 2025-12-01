@@ -123,3 +123,13 @@ export const dollarIcon: ImageAsset = {
     src: getIconImagePath("dollar_icon.svg"),
     alt: 'Dollar Icon'
 };
+
+export const circleCheckmarkIcon: ImageAsset = {
+    src: getIconImagePath("circle_checkmark_icon.svg"),
+    alt: 'Circle Checkmark Icon'
+};
+
+export const bookIcon: ImageAsset = {
+    src: getIconImagePath("book_icon.svg"),
+    alt: 'Book Icon'
+};
