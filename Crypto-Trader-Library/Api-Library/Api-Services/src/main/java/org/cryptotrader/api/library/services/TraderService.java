@@ -2,14 +2,12 @@ package org.cryptotrader.api.library.services;
 
 import org.cryptotrader.api.library.communication.response.TradeEventListResponse;
 import org.cryptotrader.api.library.communication.response.TradeEventResponse;
-import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset;
 import org.cryptotrader.api.library.entity.trade.TradeEvent;
 import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.data.library.services.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,9 +24,14 @@ public class TraderService {
         this.currencyService = currencyService;
         this.tradeEventService = tradeEventService;
     }
-
+    
     public TradeEventListResponse getTradeEvents(ProductUser user) {
         List<TradeEvent> tradeEvents = this.getAllTradeEvents(user);
+        return this.toTradeEventListResponse(tradeEvents);
+    }
+
+    public TradeEventListResponse getTradeEvents(ProductUser user, int offset, int limit) {
+        List<TradeEvent> tradeEvents = this.tradeEventService.getSelectionByProductUser(user, offset, limit);
         return this.toTradeEventListResponse(tradeEvents);
     }
     public List<TradeEvent> getAllTradeEvents(ProductUser user) {
@@ -54,5 +57,9 @@ public class TraderService {
                 tradeEvent.getTradeType().getName(),
                 tradeEvent.getAssetHistory().getVendor()
         );
+    }
+    
+    public boolean userHasTrades(ProductUser user) {
+        return this.tradeEventService.userHasTrades(user);
     }
 }
