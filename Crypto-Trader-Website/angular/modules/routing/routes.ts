@@ -28,6 +28,9 @@ import {DashboardGuard} from "../../services/guard/dashboard.guard";
 import {
     DashboardComponent
 } from "../../components/pages/dashboard/dashboard.component";
+import {
+    StatisticsComponent
+} from "../../components/pages/statistics/statistics.component";
 
 
 const isDevelopment = true;
@@ -128,10 +131,21 @@ export const tradeRoute: Route = {
 export const dashboardRoute: Route = {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [],
+    canActivate: isDevelopment ? [] : [AuthGuard],
     data: {
         meta: {
             title: 'Dashboard | Crypto Trader'
+        },
+    }
+};
+
+export const statisticsRoute: Route = {
+    path: 'statistics',
+    component: StatisticsComponent,
+    canActivate: isDevelopment ? [] : [AuthGuard],
+    data: {
+        meta: {
+            title: 'Statistics | Crypto Trader'
         },
     }
 };
@@ -146,4 +160,5 @@ export const routes: Routes = [
     traderRoute,
     tradeRoute,
     dashboardRoute,
+    statisticsRoute
 ];
