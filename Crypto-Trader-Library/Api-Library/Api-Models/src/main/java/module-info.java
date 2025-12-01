@@ -13,6 +13,7 @@ open module org.cryptotrader.api.library.models {
     requires org.hibernate.orm.core;
     requires org.cryptotrader.data.library.models;
     requires org.cryptotrader.universal.library.models;
+    requires spring.security.core;
 
     exports org.cryptotrader.api.library.entity.portfolio;
     exports org.cryptotrader.api.library.entity.portfolio.builder;
