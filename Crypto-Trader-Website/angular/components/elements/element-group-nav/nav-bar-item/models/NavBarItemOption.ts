@@ -1,19 +1,21 @@
 import {
     coinIcon,
     ImageAsset, exchangeArrowsIcon, stockScaleIcon,
-    walletIcon
+    walletIcon, circleCheckmarkIcon
 } from "../../../../../assets/imageAssets";
 import {ElementLink} from "@theoliverlear/angular-suite";
 import {
     currenciesElementLink,
-    portfolioElementLink, tradeElementLink, traderElementLink
+    portfolioElementLink,
+    statisticsElementLink, tradeElementLink, traderElementLink
 } from "../../../../../assets/elementLinkAssets";
 
 export enum NavBarItemOption {
     CURRENCIES = "Currencies",
     PORTFOLIO = "Portfolio",
     TRADER = "Trader",
-    TRADE = "Trade"
+    TRADE = "Trade",
+    STATISTICS = "Statistics"
 }
 export namespace NavBarItemOption {
     export function getImageAsset(option: NavBarItemOption): ImageAsset {
@@ -23,9 +25,11 @@ export namespace NavBarItemOption {
             case NavBarItemOption.PORTFOLIO:
                 return walletIcon;
             case NavBarItemOption.TRADER:
-                return stockScaleIcon;
+                return circleCheckmarkIcon;
             case NavBarItemOption.TRADE:
                 return exchangeArrowsIcon;
+            case NavBarItemOption.STATISTICS:
+                return stockScaleIcon;
             default:
                 throw new Error("Invalid option: " + option);
         }
@@ -41,6 +45,8 @@ export namespace NavBarItemOption {
                 return traderElementLink;
             case NavBarItemOption.TRADE:
                 return tradeElementLink;
+            case NavBarItemOption.STATISTICS:
+                return statisticsElementLink;
             default:
                 throw new Error("Invalid option: " + option);
         }
@@ -51,7 +57,8 @@ export namespace NavBarItemOption {
             NavBarItemOption.CURRENCIES,
             NavBarItemOption.PORTFOLIO,
             NavBarItemOption.TRADER,
-            NavBarItemOption.TRADE
+            NavBarItemOption.TRADE,
+            NavBarItemOption.STATISTICS
         ];
     }
 }
