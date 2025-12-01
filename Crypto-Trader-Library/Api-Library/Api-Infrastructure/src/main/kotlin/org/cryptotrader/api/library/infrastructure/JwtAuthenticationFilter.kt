@@ -52,17 +52,7 @@ class JwtAuthenticationFilter(
         try {
             val accessToken: String? = this.extractAuthorizationToken(request)
             if (!accessToken.isNullOrBlank()) {
-                if (this.tokenBlacklistService.isBlacklisted(accessToken)) {
-                    SecurityContextHolder.clearContext()
-                } else {
-                    val jwtClaims: JwtClaims = this.jwtTokenService.validateAndParse(accessToken)
-                    val productUser: ProductUser? = this.resolveUserFromClaims(jwtClaims)
-                    if (isValidUser(productUser, jwtClaims)) {
-                        this.authenticate(productUser, request)
-                    } else {
-                        SecurityContextHolder.clearContext()
-                    }
-                }
+                this.handleTokenAuthentication(accessToken, request)
             } else {
                 SecurityContextHolder.clearContext()
             }
@@ -71,6 +61,21 @@ class JwtAuthenticationFilter(
             log.debug("JWT authentication failed; proceeding unauthenticated", ex)
         }
         filterChain.doFilter(request, response)
+    }
+
+    private fun handleTokenAuthentication(accessToken: String,
+                                          request: HttpServletRequest) {
+        if (this.tokenBlacklistService.isBlacklisted(accessToken)) {
+            SecurityContextHolder.clearContext()
+        } else {
+            val jwtClaims: JwtClaims = this.jwtTokenService.validateAndParse(accessToken)
+            val productUser: ProductUser? = this.resolveUserFromClaims(jwtClaims)
+            if (isValidUser(productUser, jwtClaims)) {
+                this.authenticate(productUser, request)
+            } else {
+                SecurityContextHolder.clearContext()
+            }
+        }
     }
 
     @OptIn(ExperimentalContracts::class)
@@ -104,9 +109,10 @@ class JwtAuthenticationFilter(
         val authentication = UsernamePasswordAuthenticationToken(
             productUser,
             null,
-            emptyList()
+            productUser.authorities
         )
         authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
         SecurityContextHolder.getContext().authentication = authentication
+        log.debug("Authenticated user {}", productUser.email)
     }
 }
