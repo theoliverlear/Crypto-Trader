@@ -55,7 +55,7 @@ Notes:
 - On startup, the module can generate/update supported currencies via 
   `CurrencyJsonGenerator`; control with env var 
   `CRYPTO_TRADER_LOAD_CURRENCIES` or JVM flag 
-  `-Dcryptotrader.loadCurrencies=false`.
+  `-Dcryptotrader.load.currency=false`.
 - OpenAPI docs and Actuator endpoints are available for internal use.
 
 ## 🔗 Where it fits in the platform

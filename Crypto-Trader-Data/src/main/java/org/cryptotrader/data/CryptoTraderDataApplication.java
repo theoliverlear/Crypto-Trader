@@ -39,7 +39,7 @@ public class CryptoTraderDataApplication {
 
     private static boolean shouldLoadCurrencies() {
         String loadCurrenciesEnv = System.getenv().getOrDefault("CRYPTO_TRADER_LOAD_CURRENCIES", "true");
-        String loadCurrenciesSetting = System.getProperty("cryptotrader.loadCurrencies", loadCurrenciesEnv);
+        String loadCurrenciesSetting = System.getProperty("cryptotrader.load.currency", loadCurrenciesEnv);
         boolean loadCurrencies = Boolean.parseBoolean(loadCurrenciesSetting);
         return loadCurrencies;
     }

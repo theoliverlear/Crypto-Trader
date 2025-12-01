@@ -16,6 +16,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 open class CryptoTraderSecurityApplication
 
 fun main(args: Array<String>) {
-    System.setProperty("cryptotrader.loadCurrencies", "false")
+    System.setProperty("cryptotrader.load.currency", "false")
     runApplication<CryptoTraderSecurityApplication>(*args)
 }

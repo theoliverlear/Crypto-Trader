@@ -18,11 +18,11 @@ public class SupportedCurrencies {
     private static final int MAX_CURRENCIES = 500;
     //==========================-Static-Actions-==============================
     static {
-        boolean loadCurrencies = Boolean.parseBoolean(System.getProperty("cryptotrader.loadCurrencies", "false"));
+        boolean loadCurrencies = Boolean.parseBoolean(System.getProperty("cryptotrader.load.currency", "false"));
         if (loadCurrencies) {
             loadCurrenciesFromJson();
         } else {
-            log.debug("SupportedCurrencies static load skipped (cryptotrader.loadCurrencies=false).");
+            log.debug("SupportedCurrencies static load skipped (cryptotrader.load.currency=false).");
         }
     }
 
@@ -42,9 +42,13 @@ public class SupportedCurrencies {
     }
 
     public static void loadCurrenciesFromJson() {
+        loadCurrenciesFromJson(JSON_FILE_PATH);
+    }
+
+    public static void loadCurrenciesFromJson(final String jsonPath) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            File jsonFile = new File(JSON_FILE_PATH);
+            File jsonFile = new File(jsonPath);
             if (!jsonFile.exists()) {
                 log.error("Currency JSON file not found. Using empty list.");
                 return;

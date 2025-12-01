@@ -33,7 +33,7 @@ public class CryptoTraderApiApplication {
     }
 
     private static void blockCurrencyLoading() {
-        System.setProperty("cryptotrader.loadCurrencies", "false");
+        System.setProperty("cryptotrader.load.currency", "false");
     }
     
     private static void blockCurrencyHarvesting() {
