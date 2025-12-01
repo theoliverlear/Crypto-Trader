@@ -1,6 +1,6 @@
 // currencies.component.ts 
-import {Component, HostListener, OnInit} from "@angular/core";
-import { animate, query, stagger, style, transition, trigger } from "@angular/animations";
+import { Component, HostListener, OnInit } from "@angular/core";
+import { listStagger } from "../../animations/animations";
 import {
     DisplayCurrenciesService
 } from "../../../services/net/http/currency/display-currencies.service";
@@ -14,18 +14,7 @@ import {
     standalone: false,
     templateUrl: './currencies.component.html',
     styleUrls: ['./currencies.component.scss'],
-    animations: [
-        trigger('listStagger', [
-            transition('* => *', [
-                query(':enter', [
-                    style({ opacity: 0, transform: 'translateY(8px)' }),
-                    stagger(800, [
-                        animate('600ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
-                    ])
-                ], { optional: true })
-            ])
-        ])
-    ]
+    animations: [listStagger]
 })
 export class CurrenciesComponent implements OnInit {
     currencies: DisplayCurrencyList = { currencies: [] };
@@ -132,11 +121,11 @@ export class CurrenciesComponent implements OnInit {
         }, 1000);
     }
 
-    onCurrencyLoaded(paycheckId: number): void {
-        if (this.loadingStatus.hasOwnProperty(paycheckId)) {
-            this.loadingStatus[paycheckId] = true;
+    onCurrencyLoaded(currencyId: number): void {
+        if (this.loadingStatus.hasOwnProperty(currencyId)) {
+            this.loadingStatus[currencyId] = true;
         }
-        if (this.allPaychecksLoaded() && this.isFetching) {
+        if (this.allCurrenciesLoaded() && this.isFetching) {
             this.isFetching = false;
         }
         if (!this.isLoaded && this.initialCurrenciesLoaded()) {
@@ -144,7 +133,7 @@ export class CurrenciesComponent implements OnInit {
         }
     }
 
-    private allPaychecksLoaded(): boolean {
+    private allCurrenciesLoaded(): boolean {
         return Object.values(this.loadingStatus).every((value: boolean): boolean => value);
     }
 
