@@ -27,4 +27,5 @@ spring:
       enabled: false
 
 cryptotrader:
-  loadCurrencies: false
+  load:
+    currency: false
