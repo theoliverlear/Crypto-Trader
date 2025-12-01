@@ -8,6 +8,17 @@ home {
     ss-anchor.home-buttons {
         background-color: add-alpha-opaque($sunbeam-yellow, 0.5, $pure-white);
         max-height: $three-half-percent;
+        padding: $quarter-percent $one-percent;
+        &:hover {
+            $box-shadow-size: simplest-calc(0.25);
+            box-shadow: add-alpha-opaque($sunbeam-yellow, 0.75, $pure-white) $box-shadow-size $box-shadow-size 0 0;
+            cursor: pointer;
+        }
+        &:active {
+            box-shadow: none;
+            $top-and-right: simplest-calc(0.25);
+            transform: translate($top-and-right, $top-and-right);
+        }
     }
     .intro-text-div {
         @include flex(space-around, center, column);
