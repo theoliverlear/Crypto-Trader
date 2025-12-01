@@ -51,6 +51,7 @@
         <module>Universal-Library</module>
         <module>Universal-Library/Universal-Models</module>
         <module>Universal-Library/Universal-Extensions</module>
+        <module>Universal-Library/Universal-Components</module>
     </modules>
 
     <artifactId>crypto-trader-library</artifactId>
