@@ -18,18 +18,20 @@
 
     ss-button {
         @include flex(center, center, row);
-        box-sizing: border-box;
+        //box-sizing: border-box;
         position: relative;
-        border-radius: simplest-calc(0.5);
+        border-radius: simplest-calc(0.25);
         transition: background-color, box-shadow, transform, 0.3s;
-        padding: simplest-calc(0.5) simplest-calc(1);
+        //padding: simplest-calc(0.15) simplest-calc(0.2);
+        padding: $half-percent;
         background-color: $muted-blue;
         flex-basis: $ten-percent;
         h1, h2, h3, h4, h5, h6 {
             min-width: 11ch;
             max-height: 2ch;
             color: $pure-white;
-            @extend %soft-text-shadow;
+            @extend %softer-text-shadow;
+            font-weight: 200;
         }
         &:hover {
             $box-shadow-size: simplest-calc(0.25);
