@@ -1,4 +1,4 @@
-package org.cryptotrader.api.library.component.config;
+package org.cryptotrader.universal.library.component.config;
 
 import org.apache.http.client.methods.*;
 import org.apache.http.impl.client.CloseableHttpClient;
