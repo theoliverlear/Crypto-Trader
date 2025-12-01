@@ -9,6 +9,7 @@ import {AccountComponent} from "./account/account.component";
 import {ConsoleComponent} from "./console/console.component";
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import {TradeComponent} from "./trade/trade.component";
+import {StatisticsComponent} from "./statistics/statistics.component";
 
 export const pages = [
     AccountComponent,
@@ -19,6 +20,7 @@ export const pages = [
     HomeComponent,
     NotFoundComponent,
     PortfolioComponent,
+    StatisticsComponent,
     TermsOfServiceComponent,
     TradeComponent,
     TraderComponent,
