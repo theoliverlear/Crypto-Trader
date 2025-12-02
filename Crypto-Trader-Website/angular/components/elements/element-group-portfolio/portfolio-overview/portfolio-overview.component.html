@@ -1,0 +1,28 @@
+<!-- portfolio-overview.component.html -->
+<ng-container>
+    <ss-title [text]="'Your Portfolio'" [tagType]="TagType.H2" class="portfolio-title"/>
+    <div class="portfolio-field">
+        <ss-title [text]="'Value in Dollars'" [tagType]="TagType.H5"/>
+        <ss-title [text]="getDollarBalance()" [tagType]="TagType.H5"/>
+    </div>
+    <hr/>
+    <div class="portfolio-field">
+        <ss-title [text]="'Value in Shares'" [tagType]="TagType.H5"/>
+        <ss-title [text]="getSharesBalance()" [tagType]="TagType.H5"/>
+    </div>
+    <hr/>
+    <div class="portfolio-field total-worth-field">
+        <ss-title [text]="'Total Worth'" [tagType]="TagType.H4"/>
+        <ss-title [text]="getTotalWorth()" [tagType]="TagType.H4" class="total-worth"/>
+    </div>
+    <div class="currency-images">
+        @if (hasCurrencies()) {
+            @for (assetImagePrice of currencyImagesValues; track assetImagePrice) {
+                <div class="portfolio-asset-value-image">
+                    <ss-img [imageAsset]="assetImagePrice[1]"/>
+                    <ss-title [text]="assetImagePrice[0]" [tagType]="TagType.H5"/>
+                </div>
+            }
+        }
+    </div>
+</ng-container>

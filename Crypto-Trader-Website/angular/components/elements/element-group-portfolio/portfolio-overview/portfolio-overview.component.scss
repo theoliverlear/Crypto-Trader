@@ -1,0 +1,58 @@
+// portfolio-overview.component.scss
+@use "../../../../styles/globals" as *;
+@use "../../../../styles/gradients/global_gradient_placeholders" as *;
+@use "../../../../styles/backgrounds/global_background_placeholders" as *;
+
+portfolio-overview {
+    @include flex(center, center, column);
+    @extend %softer-border-radius;
+    background-color: add-alpha-opaque($alabaster-stone, 0.85, $pure-white);
+    padding: $one-percent;
+    min-width: $fifty-percent;
+    .portfolio-title {
+        @extend %signature-brand-gradient-text-small-reflection;
+    }
+    .portfolio-field {
+        @include flex(space-betwen, center, row);
+        width: 100%;
+        ss-title:nth-child(1) {
+            flex: 1;
+            @include flex(flex-start, center, row);
+        }
+        &.total-worth-field {
+            //@include flex(center, center, column);
+            .total-worth {
+                @extend %signature-brand-gradient-text-small-reflection;
+            }
+        }
+    }
+    hr {
+        border: $very-thin-border $charcoal solid;
+        width: 95%;
+    }
+    .currency-images {
+        @include flex(space-around, center, row);
+        max-width: 80vw;
+        overflow-x: auto;
+        width: 100%;
+        margin: $half-percent 0;
+        padding: $half-percent 0;
+        //background-image: linear-gradient(to right, $pure-white  50%, $alabaster-stone);
+        background-color: add-alpha-opaque($alabaster-stone, 0.5, $pure-white);
+        border: $very-thin-border $absolute-black solid;
+        box-shadow: $quarter-percent $quarter-percent 0 $absolute-black;
+        @extend %blue-center-reflection;
+        @extend %softer-border-radius;
+
+        ss-img {
+            @include square-size($four-percent);
+            border-radius: 50%;
+            padding: $quarter-percent;
+            background-color: $air-blue;
+        }
+        .portfolio-asset-value-image {
+            @include flex(center, center, column);
+
+        }
+    }
+}
