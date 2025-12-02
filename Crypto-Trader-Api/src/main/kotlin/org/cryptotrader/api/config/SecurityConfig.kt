@@ -17,6 +17,7 @@ import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 
 /**
@@ -28,6 +29,7 @@ import org.springframework.security.config.http.SessionCreationPolicy
  */
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 open class SecurityConfig {
     //------------------------Security-Filter-Chain---------------------------
     @Bean
