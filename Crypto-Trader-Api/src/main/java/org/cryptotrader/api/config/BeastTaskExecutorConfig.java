@@ -18,9 +18,9 @@ public class BeastTaskExecutorConfig {
     @Bean(name = "taskExecutor")
     public TaskExecutor beastThreadPoolTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(36);
-        executor.setMaxPoolSize(100);
-        executor.setQueueCapacity(5000);
+        executor.setCorePoolSize(8);
+        executor.setMaxPoolSize(16);
+        executor.setQueueCapacity(2000);
         executor.setThreadNamePrefix("Beast-");
         executor.initialize();
         return executor;
