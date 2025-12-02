@@ -62,6 +62,7 @@ open module org.cryptotrader.api {
     requires org.cryptotrader.api.library.infrastructure;
     requires org.cryptotrader.api.library.events;
     requires org.cryptotrader.api.library.config;
+    requires org.cryptotrader.universal.library.components;
     requires io.swagger.v3.oas.annotations;
     requires org.cryptotrader.docs;
     
@@ -73,6 +74,7 @@ open module org.cryptotrader.api {
     requires org.cryptotrader.data.library.models;
     requires org.cryptotrader.data.library.components;
     requires org.cryptotrader.universal.library.models;
+    requires spring.data.commons;
 
     exports org.cryptotrader.api;
     exports org.cryptotrader.api.config;
