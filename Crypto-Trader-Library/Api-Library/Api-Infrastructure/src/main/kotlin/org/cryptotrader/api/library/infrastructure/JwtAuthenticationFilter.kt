@@ -113,6 +113,6 @@ class JwtAuthenticationFilter(
         )
         authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
         SecurityContextHolder.getContext().authentication = authentication
-        log.debug("Authenticated user {}", productUser.email)
+        log.debug("Authenticated user ({}): {}", productUser.id, productUser.email)
     }
 }
