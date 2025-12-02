@@ -6,6 +6,10 @@ import org.cryptotrader.api.library.entity.user.ProductUser
 import org.cryptotrader.api.library.services.jwt.JwtTokenService
 import org.cryptotrader.api.library.model.jwt.JwtClaims
 import org.cryptotrader.api.library.services.jwt.TokenBlacklistService
+import org.cryptotrader.universal.library.extension.string.getBearerToken
+import org.cryptotrader.universal.library.extension.string.getDpopToken
+import org.cryptotrader.universal.library.extension.string.isBearer
+import org.cryptotrader.universal.library.extension.string.isDpop
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AnonymousAuthenticationToken
@@ -71,13 +75,12 @@ class AuthContextService(
     }
 
     fun getAuthenticatedProductUser(): ProductUser? {
-        if (!isAuthenticated()) return null
+        if (!this.isAuthenticated()) return null
         val auth: Authentication = SecurityContextHolder.getContext().authentication ?: return null
         return when (val principal = auth.principal) {
             is ProductUser -> principal
             is UserDetails -> {
-                // username may be email or username in your system
-                val username = principal.username
+                val username: String = principal.username
                 runCatching { this.productUserService.getUserByEmail(username) }.getOrNull()
                     ?: runCatching { this.productUserService.getUserByUsername(username) }.getOrNull()
             }
@@ -94,12 +97,11 @@ class AuthContextService(
     fun isUserAuthenticated(): Boolean = this.getAuthenticatedProductUser() != null
     
     private fun extractTokenFromRequest(request: HttpServletRequest): String? {
-        // 1) Authorization header: support both schemes
-        val authHeader = request.getHeader("Authorization")
+        val authHeader: String? = request.getHeader("Authorization")
         val tokenFromHeader = authHeader?.let {
             when {
-                it.isBearer() -> it.substringAfter("Bearer ")
-                it.isDpop() -> it.substringAfter("DPoP ")
+                it.isBearer() -> it.getBearerToken()
+                it.isDpop() -> it.getDpopToken()
                 else -> it
             }
         }
@@ -122,8 +124,8 @@ class AuthContextService(
                     val cookieValue = cookie?.value?.trim()
                     if (!cookieValue.isNullOrBlank()) {
                         return when {
-                            cookieValue.isBearer() -> cookieValue.substringAfter("Bearer ").trim()
-                            cookieValue.isDpop() -> cookieValue.substringAfter("DPoP ").trim()
+                            cookieValue.isBearer() -> cookieValue.getBearerToken()
+                            cookieValue.isDpop() -> cookieValue.getDpopToken()
                             else -> cookieValue
                         }
                     }
@@ -133,6 +135,3 @@ class AuthContextService(
         return null
     }
 }
-
-fun String.isBearer(): Boolean = this.startsWith("Bearer ")
-fun String.isDpop(): Boolean = this.startsWith("DPoP ")
