@@ -33,9 +33,9 @@ public class Portfolio extends Identifiable implements UpdatableValues {
     private double totalWorth;
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
-    @OneToMany(mappedBy = "portfolio", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "portfolio", fetch = FetchType.LAZY)
     private List<PortfolioAsset> assets;
-    @OneToMany(mappedBy = "portfolio", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "portfolio", fetch = FetchType.LAZY)
     private List<PortfolioHistory> portfolioHistory;
     //===========================-Constructors-===============================
     public Portfolio() {
