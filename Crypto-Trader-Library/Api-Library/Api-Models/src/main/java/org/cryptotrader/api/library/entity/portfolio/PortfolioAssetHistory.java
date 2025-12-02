@@ -40,7 +40,7 @@ public class PortfolioAssetHistory extends Identifiable implements SequentiallyV
     @Column(name = "share_change", columnDefinition = "DECIMAL(34, 18)")
     private double sharesChange;
     @Column(name = "trade_occurred")
-    boolean tradeOccurred;
+    private boolean tradeOccurred;
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "name", column = @Column(name = "vendor_name", length = 255)),
