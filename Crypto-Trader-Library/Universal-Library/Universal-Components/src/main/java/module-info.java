@@ -1,4 +1,4 @@
-module org.cryptotrader.universal.library.component {
+module org.cryptotrader.universal.library.components {
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires static lombok;
