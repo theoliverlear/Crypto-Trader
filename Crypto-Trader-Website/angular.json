@@ -82,6 +82,7 @@
               "angular/components/elements/element-group-portfolio/portfolio-chart/portfolio-chart.component.scss",
               "angular/components/elements/element-group-portfolio/portfolio-input/portfolio-input.component.scss",
               "angular/components/elements/element-group-portfolio/portfolio-kill-switch/portfolio-kill-switch.component.scss",
+              "angular/components/elements/element-group-portfolio/portfolio-overview/portfolio-overview.component.scss",
               "angular/components/elements/element-group-portfolio/portfolio-section-selector-bubble/portfolio-section-selector-bubble.component.scss",
               "angular/components/elements/element-group-portfolio/portfolio-section-selector/portfolio-section-selector.component.scss",
               "angular/components/elements/element-group-portfolio/portfolio-section/portfolio-section.component.scss",
