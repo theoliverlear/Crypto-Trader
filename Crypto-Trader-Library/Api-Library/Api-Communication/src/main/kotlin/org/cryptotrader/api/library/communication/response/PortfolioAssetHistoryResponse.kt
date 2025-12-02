@@ -1,6 +1,6 @@
 package org.cryptotrader.api.library.communication.response
 
-import java.time.LocalDateTime
+import org.cryptotrader.api.library.entity.portfolio.PortfolioAssetHistory
 
 data class PortfolioAssetHistoryResponse (
     val currencyCode: String,
@@ -13,5 +13,19 @@ data class PortfolioAssetHistoryResponse (
     val tradeOccurred: Boolean,
     val vendorName: String,
     val vendorRate: Double,
-    val lastUpdated: LocalDateTime
-)
+    val lastUpdated: String
+) {
+    constructor(portfolioAssetHistory: PortfolioAssetHistory) : this(
+        portfolioAssetHistory.currency.currencyCode,
+        portfolioAssetHistory.shares,
+        portfolioAssetHistory.sharesValueInDollars,
+        portfolioAssetHistory.assetWalletDollars,
+        portfolioAssetHistory.targetPrice,
+        portfolioAssetHistory.valueChange,
+        portfolioAssetHistory.sharesChange,
+        portfolioAssetHistory.isTradeOccurred,
+        portfolioAssetHistory.vendor.name,
+        portfolioAssetHistory.vendor.rate,
+        portfolioAssetHistory.lastUpdated.toString()
+    )
+}
