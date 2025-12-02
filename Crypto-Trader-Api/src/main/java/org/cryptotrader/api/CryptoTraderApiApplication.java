@@ -32,6 +32,7 @@ public class CryptoTraderApiApplication {
         SpringApplication.run(CryptoTraderApiApplication.class, args);
     }
 
+    // TODO: Migrate to a universal module. (Universal-Scripts)
     private static void blockCurrencyLoading() {
         System.setProperty("cryptotrader.load.currency", "false");
     }
