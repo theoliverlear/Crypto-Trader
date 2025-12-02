@@ -25,10 +25,19 @@ export class NavBarComponent implements OnInit {
         
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
+        this.listenForAuthStatus();
+        this.verifyLoginStatus();
+    }
+
+    private listenForAuthStatus(): void {
         this.loggedInService.getAuthState().subscribe((authStatus: boolean) => {
             this.isLoggedIn = authStatus;
         });
+    }
+
+    public verifyLoginStatus(): void {
+        console.log('Verifying login status...');
         this.loggedInService.isLoggedIn().subscribe();
     }
 
