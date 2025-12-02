@@ -174,6 +174,9 @@ import {
     TraderReportRangeSelectorComponent
 } from "./element-group-trader/element-group-trader-report/trader-report-range-selector/trader-report-range-selector.component";
 import {AccordionComponent} from "./accordion/accordion.component";
+import {
+    PortfolioOverviewComponent
+} from "./element-group-portfolio/portfolio-overview/portfolio-overview.component";
 
 export const elements = [
     AccordionComponent,
@@ -217,6 +220,7 @@ export const elements = [
     PortfolioChartComponent,
     PortfolioInputComponent,
     PortfolioKillSwitchComponent,
+    PortfolioOverviewComponent,
     PortfolioSectionComponent,
     PortfolioSectionSelectorBubbleComponent,
     PortfolioSectionSelectorComponent,
