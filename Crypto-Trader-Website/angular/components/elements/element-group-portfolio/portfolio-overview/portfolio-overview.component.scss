@@ -25,6 +25,9 @@ portfolio-overview {
                 @extend %signature-brand-gradient-text-small-reflection;
             }
         }
+        &.last-trade-field {
+            margin: calc($quarter-percent / 2) 0 0 0;
+        }
     }
     hr {
         border: $very-thin-border $charcoal solid;
