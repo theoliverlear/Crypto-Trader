@@ -30,8 +30,28 @@ you.
   - Combines price action with additional context (e.g., news sentiment) to
     inform entries and exits.
   - Built to seek the most robust strategies from multiple signal sources.
+  - Access to Beast Mode compute tier for ultra‑fast trades.
 
-_Important:_ Past results and backtests do not guarantee future performance. 
+## ⚡ Beast Mode, Elite Trades for Elite Members
+Love Crypto? Then you'll love Beast Mode. Beast Mode is our premium compute 
+tier for Elite members. Your strategies run on dedicated, high‑performance 
+infrastructure tuned for ultra‑low latency and high‑throughput execution. 
+Faster trades means better more opportunities for profitable contracts. 
+High-compute means Deep Learning models can train and run much faster. Crypto
+Trader wants to offer the best possible for all levels of trader interest, and
+so, if you are a Beast Trader, try Beast Mode.
+
+What you get:
+- Priority execution queues for faster order placement during market spikes.
+- Accelerated signal processing and model refresh on high‑core, 
+  high‑RAM servers.
+- Lower‑latency market data ingestion and routing paths.
+- Automatic burst scaling under heavy load.
+
+Who can use it:
+- Available to Elite tier members. No extra setup required.
+
+_Important:_ Past results and backtests do not guarantee future performance.
 Always start in paper mode. Liability is your own.
 
 ## ✅ Why you should have it!
