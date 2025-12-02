@@ -1,23 +1,32 @@
 spring:
   datasource:
     hikari:
-      maximum-pool-size: 60
-      minimum-idle: 20
+      maximum-pool-size: 12
+      minimum-idle: 4
+      connection-timeout: 2000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      keepalive-time: 300000
+      data-source-properties:
+        reWriteBatchedInserts: true
+        tcpKeepAlive: true
+        socketTimeout: 30
 
   jpa:
     properties:
       hibernate:
         jdbc:
-          batch_size: 100
+          batch_size: 50
+          fetch_size: 1000
         order_inserts: true
         order_updates: true
 
   task:
     execution:
       pool:
-        core-size: 36
-        max-size: 100
-        queue-capacity: 10000
+        core-size: 8
+        max-size: 16
+        queue-capacity: 2000
     scheduling:
       pool:
-        size: 10
+        size: 6
