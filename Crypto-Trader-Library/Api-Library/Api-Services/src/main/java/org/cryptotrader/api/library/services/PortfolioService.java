@@ -81,7 +81,7 @@ public class PortfolioService {
                 portfolioAssetHistory.isTradeOccurred(),
                 portfolioAssetHistory.getVendor().getName(),
                 portfolioAssetHistory.getVendor().getRate(),
-                portfolioAssetHistory.getLastUpdated()
+                portfolioAssetHistory.getLastUpdated().toString()
         );
     }
     
