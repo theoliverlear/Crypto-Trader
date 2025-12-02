@@ -10,10 +10,20 @@ export class CurrencyImageService {
 
     }
 
-    async resolveImageAsset(currency: DisplayCurrency): Promise<ImageAsset> {
+    async resolveImageAsset(currency: DisplayCurrency | string): Promise<ImageAsset> {
+        let src: string;
+        let alt: string;
+        if (typeof currency === 'string') {
+            src = `/assets/cryptofont/${currency.toLowerCase()}.svg`;
+            alt = currency + " logo";
+        } else {
+            src = currency.logoUrl;
+            alt = currency.currencyName + " logo";
+        }
+        
         let imageAsset: ImageAsset = {
-            src: currency.logoUrl,
-            alt: currency.currencyName + " logo",
+            src: src,
+            alt: alt,
         };
         const imageLoads: boolean = await this.imageLoads(imageAsset.src);
         if (!imageLoads) {
