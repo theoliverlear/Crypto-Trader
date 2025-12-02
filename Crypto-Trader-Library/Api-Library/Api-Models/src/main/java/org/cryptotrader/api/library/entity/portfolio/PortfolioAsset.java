@@ -45,7 +45,7 @@ public class PortfolioAsset extends Identifiable implements UpdatableValues {
     private double targetPrice;
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
-    @OneToMany(mappedBy = "portfolioAsset", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "portfolioAsset", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PortfolioAssetHistory> assetHistory;
     @Embedded
     @AttributeOverrides({
