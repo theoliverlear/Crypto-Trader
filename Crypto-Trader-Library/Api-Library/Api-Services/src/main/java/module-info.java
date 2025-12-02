@@ -22,6 +22,7 @@ open module org.cryptotrader.api.library.services {
     requires org.cryptotrader.universal.library.models;
     requires org.cryptotrader.data.library.models;
     requires org.cryptotrader.data.library.services;
+    requires org.cryptotrader.universal.library.extensions;
 
     exports org.cryptotrader.api.library.services.jwt;
     exports org.cryptotrader.api.library.services;
