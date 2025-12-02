@@ -8,6 +8,8 @@ import org.cryptotrader.api.library.services.TraderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,13 +28,9 @@ public class TraderController {
         this.authContextService = authContextService;
     }
     
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping("/events/all")
-    public ResponseEntity<TradeEventListResponse> getAllEvents() {
-        boolean isAuthorized = this.authContextService.isAuthenticated();
-        if (!isAuthorized) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-        ProductUser user = this.authContextService.getAuthenticatedProductUser();
+    public ResponseEntity<TradeEventListResponse> getAllEvents(@AuthenticationPrincipal ProductUser user) {
         TradeEventListResponse tradeEvents = this.traderService.getTradeEvents(user);
         logTradeEvents(tradeEvents);
         return new ResponseEntity<>(tradeEvents, HttpStatus.OK);
@@ -51,14 +49,9 @@ public class TraderController {
         return new ResponseEntity<>(tradeEvents, HttpStatus.OK);
     }
 
-    
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping("/events/exists")
-    public ResponseEntity<Boolean> hasEvents() {
-        boolean isAuthorized = this.authContextService.isAuthenticated();
-        if (!isAuthorized) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-        ProductUser user = this.authContextService.getAuthenticatedProductUser();
+    public ResponseEntity<Boolean> hasEvents(@AuthenticationPrincipal ProductUser user) {
         boolean hasEvents = this.traderService.userHasTrades(user);
         return new ResponseEntity<>(hasEvents, HttpStatus.OK);
     }
