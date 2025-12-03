@@ -133,3 +133,8 @@ export const bookIcon: ImageAsset = {
     src: getIconImagePath("book_icon.svg"),
     alt: 'Book Icon'
 };
+
+export const electricPlugIcon: ImageAsset = {
+    src: getIconImagePath("electric_plug_icon.svg"),
+    alt: 'Electric Plug Icon'
+};
