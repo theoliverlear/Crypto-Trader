@@ -1,1 +1,8 @@
 <!-- portfolio-asset-list.component.html -->
+<ng-container>
+    @if (hasAssets()) {
+        @for (asset of assets; track asset.id) {
+            <portfolio-asset [asset]="asset" [isFirst]="asset.id === assets[0].id"/>
+        }
+    }
+</ng-container>
