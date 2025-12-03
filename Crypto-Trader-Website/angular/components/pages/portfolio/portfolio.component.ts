@@ -28,6 +28,10 @@ export class PortfolioComponent implements OnInit {
             this.portfolio = data;
         });
     }
-
+    
+    hasCurrencies() {
+        return this.portfolio.assets.length > 0;
+    }
+    
     protected readonly TagType = TagType;
 }
