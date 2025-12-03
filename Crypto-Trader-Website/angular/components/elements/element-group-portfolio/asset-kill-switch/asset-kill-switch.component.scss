@@ -2,5 +2,25 @@
 @use "../../../../styles/globals" as *;
 
 asset-kill-switch {
-    
+    @include flex(center, center, row);
+    background-color: $mint-green;
+    @include square-size($two-percent);
+    padding: $quarter-percent;
+    @extend %softer-border-radius;
+    @extend %light-box-shadow;
+    transition: transform 0.2s;
+    ss-img {
+        img {
+            filter: invert(1);
+        }
+    }
+    &.is-killed {
+        background-color: $red-orange;
+    }
+    &:hover {
+        cursor: pointer;
+    }
+    &:active {
+        transform: scale(0.9);
+    }
 }
