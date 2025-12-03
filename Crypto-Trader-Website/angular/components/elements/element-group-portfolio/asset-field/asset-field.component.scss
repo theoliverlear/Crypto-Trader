@@ -1,6 +1,22 @@
 // asset-field.component.scss
 @use "../../../../styles/globals" as *;
+@use "../../../../styles/gradients/global_gradient_placeholders" as *;
 
 asset-field {
-    
+    @include flex(center, center, column);
+    width: 100%;
+    &.highlighted-field {
+        .field-text {
+            @extend %signature-brand-gradient-text-small-reflection;
+        }
+    }
+    ss-title {
+        @include flex(flex-start, center, row);
+        flex: 1;
+        width: 100%;
+        h1, h2, h3, h4, h5, h6 {
+            text-align: left;
+            width: 100%;
+        }
+    }
 }
