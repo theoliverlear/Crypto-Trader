@@ -2,5 +2,10 @@
     <page-title-stripe [pageTitle]="'Portfolio Manager'"
                        [pageSubtitle]="'Select your assets and choose how they\'re traded.'"/>
     <portfolio-overview [portfolio]="portfolio"/>
+    <div class="portfolio-assets">
+        @if (hasCurrencies()) {
+            <portfolio-asset-list [assets]="portfolio.assets"/>
+        }
+    </div>
     <portfolio-stats-section/>
 </ng-container>
