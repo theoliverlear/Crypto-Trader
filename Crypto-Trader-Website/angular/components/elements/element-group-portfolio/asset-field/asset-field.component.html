@@ -1,1 +1,8 @@
 <!-- asset-field.component.html -->
+<ng-container>
+    @if (showFieldTitle) {
+        <ss-title [text]="fieldType" [tagType]="TagType.H6"/>
+        <hr/>
+    }
+    <ss-title [text]="getFieldText()" [tagType]="TagType.H6" class="field-text"/>
+</ng-container>
