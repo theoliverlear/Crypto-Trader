@@ -2,5 +2,13 @@
 @use "../../../../styles/globals" as *;
 
 asset-field-list {
-    
+    @include flex(center, center, row);
+    width: 100%;
+    .field-list {
+        @include flex(center, center, row);
+        width: 100%;
+        asset-field {
+            flex: 1;
+        }
+    }
 }
