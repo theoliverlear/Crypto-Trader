@@ -78,6 +78,7 @@
               "angular/components/elements/element-group-portfolio/element-group-performance/performance-chart/performance-chart.component.scss",
               "angular/components/elements/element-group-portfolio/element-group-performance/performance-section/performance-section.component.scss",
               "angular/components/elements/element-group-portfolio/portfolio-asset-list/portfolio-asset-list.component.scss",
+              "angular/components/elements/element-group-portfolio/portfolio-asset-search-bar/portfolio-asset-search-bar.component.scss",
               "angular/components/elements/element-group-portfolio/portfolio-asset/portfolio-asset.component.scss",
               "angular/components/elements/element-group-portfolio/portfolio-chart/portfolio-chart.component.scss",
               "angular/components/elements/element-group-portfolio/portfolio-input/portfolio-input.component.scss",
