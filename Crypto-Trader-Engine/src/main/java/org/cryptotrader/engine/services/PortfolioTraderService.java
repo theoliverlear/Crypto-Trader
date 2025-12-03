@@ -1,5 +1,6 @@
 package org.cryptotrader.engine.services;
 
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAssetHistory;
@@ -16,6 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,18 +32,28 @@ public class PortfolioTraderService {
     private List<Portfolio> allUsersPortfolios;
     private final TradeEventService tradeEventService;
     private final CryptoTrader cryptoTrader;
+    private final PlatformTransactionManager transactionManager;
 
     @Autowired
     public PortfolioTraderService(PortfolioService portfolioService,
                                   TradeEventService tradeEventService,
-                                  CryptoTrader cryptoTrader) {
+                                  CryptoTrader cryptoTrader,
+                                  PlatformTransactionManager transactionManager) {
         this.portfolioService = portfolioService;
         this.tradeEventService = tradeEventService;
         this.cryptoTrader = cryptoTrader;
-        this.initPortfolios();
-        this.initCryptoTrader();
+        this.transactionManager = transactionManager;
     }
 
+    @PostConstruct
+    public void init() {
+        new TransactionTemplate(this.transactionManager).execute(status -> {
+            this.initPortfolios();
+            this.initCryptoTrader();
+            return null;
+        });
+    }
+    
     private void initCryptoTrader() {
         for (Portfolio portfolio : this.allUsersPortfolios) {
             this.cryptoTrader.addTrader(new Trader(portfolio));
@@ -56,6 +70,7 @@ public class PortfolioTraderService {
     //--------------------------Trade-Portfolios------------------------------
     // TODO: Different tiers get different intervals.
     @Scheduled(fixedRate = 5000)
+    @Transactional
     public synchronized void tradePortfolios() {
         this.cryptoTrader.getTraders().clear();
         this.allUsersPortfolios = this.portfolioService.getAllPortfolios();
