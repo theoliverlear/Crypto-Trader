@@ -27,3 +27,7 @@ spring:
               dlqName: ct.example.v1.DLT
 management:
   endpoints.web.exposure.include: health,info
+cryptotrader:
+  engine:
+    trading:
+      enabled: true
