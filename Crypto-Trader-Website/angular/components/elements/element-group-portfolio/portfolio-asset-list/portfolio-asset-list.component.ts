@@ -1,5 +1,6 @@
 // portfolio-asset-list.component.ts
-import { Component } from "@angular/core";
+import {Component, Input} from "@angular/core";
+import {PortfolioAsset} from "../../../../models/portfolio/types";
 
 @Component({
     selector: 'portfolio-asset-list',
@@ -8,7 +9,12 @@ import { Component } from "@angular/core";
     standalone: false
 })
 export class PortfolioAssetListComponent {
+    @Input() assets: PortfolioAsset[] = [];
     constructor() {
         
+    }
+    
+    hasAssets(): boolean {
+        return this.assets.length > 0;
     }
 }
