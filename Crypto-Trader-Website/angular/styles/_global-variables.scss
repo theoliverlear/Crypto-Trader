@@ -1,8 +1,10 @@
 @use "global-functions" as *;
+@use "@theoliverlear/styles-suite/sigwarth-variables" as *;
 
 $pure-white: #ffffff;
 $air-blue: #d6e6f3;
 $ivory-white: #f4f0e0;
+$off-white: add-alpha-opaque($alabaster-stone, 0.85, $pure-white);
 $soft-grey: hsl(180, 10%, 74%);
 $muted-blue: rgba(64, 116, 168, 1);
 $muted-blue-half-opacity: rgba(64, 116, 168, 0.5);
