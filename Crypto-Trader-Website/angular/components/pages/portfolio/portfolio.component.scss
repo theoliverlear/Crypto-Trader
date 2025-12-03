@@ -4,19 +4,15 @@
 
 
 portfolio {
-    #portfolio-builder-title-stripe {
-        //background-color: $muted-blue;
-        //background-image: linear-gradient(to right, $muted-blue 50%, $blue-gray);
-        background-image: linear-gradient(to right, $blue-gray  50%, $muted-blue);
-        box-shadow: $eighth-percent 0 $half-percent add-alpha(black, 0.4);
-        padding: simple-calc(3.25, 0.15) 0;
-        margin: simple-calc(1, 0.5) 0;
-        ss-title {
-            @extend %signature-brand-gradient-text;
-        }
-        .portfolio-builder-header {
-            width: 100%;
-            @include flex(center, center, column);
+    .portfolio-assets {
+        background-color: $off-white;
+        @extend %softer-border-radius;
+        padding: $one-percent;
+        width: $seventy-percent;
+        margin: $one-percent 0;
+        hr {
+            border: $very-thin-border $charcoal solid;
+            width: 95%;
         }
     }
 }
