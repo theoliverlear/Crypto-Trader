@@ -177,6 +177,9 @@ import {AccordionComponent} from "./accordion/accordion.component";
 import {
     PortfolioOverviewComponent
 } from "./element-group-portfolio/portfolio-overview/portfolio-overview.component";
+import {
+    PortfolioAssetSearchBarComponent
+} from "./element-group-portfolio/portfolio-asset-search-bar/portfolio-asset-search-bar.component";
 
 export const elements = [
     AccordionComponent,
@@ -217,6 +220,7 @@ export const elements = [
     PopupComponent,
     PortfolioAssetComponent,
     PortfolioAssetListComponent,
+    PortfolioAssetSearchBarComponent,
     PortfolioChartComponent,
     PortfolioInputComponent,
     PortfolioKillSwitchComponent,
