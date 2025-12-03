@@ -1,1 +1,8 @@
 <!-- asset-field-list.component.html -->
+<ng-container>
+    <div class="field-list">
+        @for (field of PortfolioAssetFieldType.values(); track field) {
+            <asset-field [fieldType]="field" [asset]="asset" [showFieldTitle]="showFieldTitles"/>
+        }
+    </div>
+</ng-container>
