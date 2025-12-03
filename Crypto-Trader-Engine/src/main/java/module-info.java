@@ -21,6 +21,7 @@ open module org.cryptotrader.engine {
     requires jakarta.activation;
     requires org.apache.tomcat.embed.core;
     requires org.apache.tomcat.embed.websocket;
+    requires spring.tx;
 
     exports org.cryptotrader.engine;
     exports org.cryptotrader.engine.services;
