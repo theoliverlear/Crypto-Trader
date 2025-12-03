@@ -2,5 +2,6 @@
 @use "../../../../styles/globals" as *;
 
 portfolio-asset {
-    
+    @include flex(center, center, column);
+    width: 100%;
 }
