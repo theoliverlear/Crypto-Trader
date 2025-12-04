@@ -4,15 +4,8 @@
 
 
 portfolio {
-    .portfolio-assets {
-        background-color: $off-white;
-        @extend %softer-border-radius;
-        padding: $one-percent;
-        width: $seventy-percent;
-        margin: $one-percent 0;
-        hr {
-            border: $very-thin-border $charcoal solid;
-            width: 95%;
-        }
+    hr {
+        border: $very-thin-border $charcoal solid;
+        width: 95%;
     }
 }
