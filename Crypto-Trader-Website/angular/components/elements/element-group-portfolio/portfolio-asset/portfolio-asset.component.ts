@@ -1,6 +1,7 @@
 // portfolio-asset.component.ts
-import { Component, Input } from "@angular/core";
+import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {PortfolioAsset} from "../../../../models/portfolio/types";
+import {AssetFieldSortType} from "../../../../models/sort/types";
 
 @Component({
     selector: 'portfolio-asset',
@@ -22,7 +23,13 @@ export class PortfolioAssetComponent {
         vendorName: ""
     };
     @Input() isFirst: boolean = false;
+    @Input() currentSort: AssetFieldSortType;
+    @Output() onSortClick: EventEmitter<AssetFieldSortType> = new EventEmitter<AssetFieldSortType>();
     constructor() {
         
+    }
+    
+    emitSortClick(sortType: AssetFieldSortType): void {
+        this.onSortClick.emit(sortType);
     }
 }
