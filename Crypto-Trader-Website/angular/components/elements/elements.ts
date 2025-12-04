@@ -180,6 +180,12 @@ import {
 import {
     PortfolioAssetSearchBarComponent
 } from "./element-group-portfolio/portfolio-asset-search-bar/portfolio-asset-search-bar.component";
+import {
+    PortfolioAssetsReportComponent
+} from "./element-group-portfolio/portfolio-assets-report/portfolio-assets-report.component";
+import {
+    SimpleSortIconComponent
+} from "./simple-sort-icon/simple-sort-icon.component";
 
 export const elements = [
     AccordionComponent,
@@ -221,6 +227,7 @@ export const elements = [
     PortfolioAssetComponent,
     PortfolioAssetListComponent,
     PortfolioAssetSearchBarComponent,
+    PortfolioAssetsReportComponent,
     PortfolioChartComponent,
     PortfolioInputComponent,
     PortfolioKillSwitchComponent,
@@ -233,6 +240,7 @@ export const elements = [
     PortfolioStatisticsSectionComponent,
     ProfilePictureComponent,
     SearchInputComponent,
+    SimpleSortIconComponent,
     TerminalComponent,
     TierPromoComponent,
     TierPromoStripeComponent,
