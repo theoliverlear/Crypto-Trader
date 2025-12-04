@@ -7,7 +7,7 @@ import {
     OnChanges,
     Output, SimpleChanges
 } from "@angular/core";
-import {SimpleSortState} from "../../../models/SimpleSortState";
+import {SimpleSortState} from "../../../models/sort/SimpleSortState";
 
 @Component({
     selector: 'simple-sort-icon',
