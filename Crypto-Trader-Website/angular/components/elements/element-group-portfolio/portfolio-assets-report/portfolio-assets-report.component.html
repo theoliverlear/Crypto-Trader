@@ -1,0 +1,7 @@
+<!-- portfolio-assets-report.component.html -->
+<ng-container>
+    <ss-title [text]="'Your Assets'" [tagType]="TagType.H3" class="report-title"/>
+    @if (hasCurrencies()) {
+        <portfolio-asset-list [assets]="portfolio.assets"/>
+    }
+</ng-container>
