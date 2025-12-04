@@ -10,6 +10,10 @@ asset-field {
             @extend %signature-brand-gradient-text-small-reflection;
         }
     }
+    .field-type-with-icon {
+        @include flex(center, center, row);
+        width: 90%;
+    }
     ss-title {
         @include flex(flex-start, center, row);
         flex: 1;
