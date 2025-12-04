@@ -1,5 +1,11 @@
 // asset-field.component.ts
- import {Component, HostBinding, Input} from "@angular/core";
+ import {
+    Component,
+    EventEmitter,
+    HostBinding,
+    Input,
+    Output
+} from "@angular/core";
 import {PortfolioAssetFieldType} from "./models/PortfolioAssetFieldType";
 import {TagType} from "@theoliverlear/angular-suite";
 import {PortfolioAsset} from "../../../../models/portfolio/types";
@@ -12,6 +18,8 @@ import {
 import {
     TimeFormatterService
 } from "../../../../services/ui/time-formatter.service";
+import {AssetFieldSortType} from "../../../../models/sort/types";
+import {SimpleSortState} from "../../../../models/sort/SimpleSortState";
 
 @Component({
     selector: 'asset-field',
@@ -23,6 +31,8 @@ export class AssetFieldComponent {
     @Input() fieldType: PortfolioAssetFieldType;
     @Input() asset: PortfolioAsset;
     @Input() showFieldTitle: boolean = true;
+    @Input() currentSort: AssetFieldSortType = [PortfolioAssetFieldType.CURRENCY_NAME, SimpleSortState.NONE];
+    @Output() onSortClick: EventEmitter<AssetFieldSortType> = new EventEmitter<AssetFieldSortType>();
     @HostBinding("class.highlighted-field") get isHighlighted(): boolean {
         return this.fieldType === PortfolioAssetFieldType.TOTAL_VALUE ||
                this.fieldType === PortfolioAssetFieldType.SHARES;
@@ -53,6 +63,21 @@ export class AssetFieldComponent {
         }
     }
 
+    emitSortClick(sortState: SimpleSortState): void {
+        this.onSortClick.emit([this.fieldType, sortState] as AssetFieldSortType);
+    }
+    
+    getCurrentIconState(): SimpleSortState {
+        if (!this.currentSort) {
+            return SimpleSortState.NONE;
+        }
+        if (this.currentSort[0] === this.fieldType) {
+            return this.currentSort[1];
+        } else {
+            return SimpleSortState.NONE;
+        }
+    }
+    
     private getCurrencyName(): string {
         return this.asset.currencyName + " (" + this.asset.currencyCode + ")";
     }
