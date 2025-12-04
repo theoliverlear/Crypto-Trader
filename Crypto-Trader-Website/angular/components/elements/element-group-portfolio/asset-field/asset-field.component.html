@@ -1,8 +1,14 @@
 <!-- asset-field.component.html -->
 <ng-container>
     @if (showFieldTitle) {
-        <ss-title [text]="fieldType" [tagType]="TagType.H6"/>
+        <div class="field-type-with-icon">
+            <ss-title [text]="fieldType" [tagType]="TagType.H6"/>
+            <simple-sort-icon [currentSortState]="getCurrentIconState()"
+                              (sortStateChanged)="emitSortClick($event)"/>
+        </div>
         <hr/>
     }
-    <ss-title [text]="getFieldText()" [tagType]="TagType.H6" class="field-text"/>
+    <ss-title [text]="getFieldText()"
+              [tagType]="TagType.H6"
+              class="field-text"/>
 </ng-container>
