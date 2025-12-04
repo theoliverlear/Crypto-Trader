@@ -1,9 +1,10 @@
 // asset-field-list.component.ts
-import {Component, Input} from "@angular/core";
+import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {PortfolioAsset} from "../../../../models/portfolio/types";
 import {
     PortfolioAssetFieldType
 } from "../asset-field/models/PortfolioAssetFieldType";
+import {AssetFieldSortType} from "../../../../models/sort/types";
 
 @Component({
     selector: 'asset-field-list',
@@ -26,9 +27,15 @@ export class AssetFieldListComponent {
         vendorName: ""
     };
     @Input() showFieldTitles: boolean = true;
+    @Input() currentSort: AssetFieldSortType;
+    @Output() onSortClick: EventEmitter<AssetFieldSortType> = new EventEmitter<AssetFieldSortType>();
     constructor() {
         
     }
 
+   emitSortClick(sortType: AssetFieldSortType): void {
+        this.onSortClick.emit(sortType);
+   }
+    
     protected readonly PortfolioAssetFieldType = PortfolioAssetFieldType;
 }
