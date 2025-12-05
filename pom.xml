@@ -230,6 +230,37 @@
                 <version>2.8.9</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>console-communication</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>console-components</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>console-events</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>console-models</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>console-services</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>console-library</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+
             <!-- ===== JSON/XML/YAML & Config ===== -->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
