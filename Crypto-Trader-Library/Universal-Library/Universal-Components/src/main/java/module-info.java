@@ -13,7 +13,9 @@ module org.cryptotrader.universal.library.components {
     requires kotlin.stdlib;
     requires spring.boot.autoconfigure;
     requires spring.cloud.stream;
-    
+    requires spring.integration.core;
+    requires spring.messaging;
+
     exports org.cryptotrader.universal.library.component;
     exports org.cryptotrader.universal.library.component.config;
 }
