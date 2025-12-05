@@ -6,6 +6,8 @@ enum class CryptoTraderService(val port: Int) {
     API(8080),
     DATA(8085),
     ENGINE(8086),
+    CONTACT(8087),
+    CONSOLE(8088),
     DOCS(443);
     companion object {
         const val PREFIX = "Crypto Trader"
