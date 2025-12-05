@@ -33,6 +33,9 @@ you.
   - Access to Beast Mode compute tier for ultra‑fast trades.
 
 ## ⚡ Beast Mode, Elite Trades for Elite Members
+
+<img src="Crypto-Trader-Assets/src/main/resources/assets/images/logos/beast_mode/beast_mode_logo_cropped_transparent.png" alt="Crypto Trader Logo" width="320">
+
 Love Crypto? Then you'll love Beast Mode. Beast Mode is our premium compute 
 tier for Elite members. Your strategies run on dedicated, high‑performance 
 infrastructure tuned for ultra‑low latency and high‑throughput execution. 
