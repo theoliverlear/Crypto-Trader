@@ -18,6 +18,7 @@ open module org.cryptotrader.console.library.services {
     requires org.cryptotrader.console.library.models;
     requires org.cryptotrader.data.library.services;
     requires org.cryptotrader.data.library.components;
+    requires org.cryptotrader.data.library.models;
     
     exports org.cryptotrader.console.library.services;
 }
