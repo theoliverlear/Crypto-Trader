@@ -113,22 +113,234 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-test-junit5</artifactId>
-            <version>2.2.0</version>
-            <scope>test</scope>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>data-services</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.10.0</version>
-            <scope>test</scope>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>data-models</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>
-            <version>2.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.oshai</groupId>
+            <artifactId>kotlin-logging-jvm</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sigwarthsoftware</groupId>
+            <artifactId>spring-boot-websocket</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-kotlin</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-reflect</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-stream-kafka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>api-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-components</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>api-events</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>api-infrastructure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>api-models</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>api-repositories</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>api-communication</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>api-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>api-components</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-loader-tools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-testing</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-logging</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>crypto-trader-docs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.activation</groupId>
+            <artifactId>jakarta.activation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>data-components</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>security-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>security-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>security-repositories</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-models</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>console-communication</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>console-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>console-models</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>console-events</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>console-components</artifactId>
         </dependency>
     </dependencies>
-
 </project>
