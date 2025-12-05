@@ -1,5 +1,6 @@
 // terminal.component.scss
 @use "../../../../styles/globals" as *;
+@import '@xterm/xterm/css/xterm.css';
 
 terminal {
     @include flex(center, center, column);
@@ -7,12 +8,34 @@ terminal {
     @extend %fill-container;
     flex: 1;
     height: 100%;
+    min-height: 0;
+    padding: $quarter-percent;
+    box-sizing: border-box;
     .terminal-wrap {
         @extend %fill-container;
         flex: 1;
         height: 100%;
+        min-height: 0;
+        @include flex(center, center, column);
         .term-host {
             @extend %fill-container;
+            display: flex;
+            flex: 1 1 auto;
+            min-height: 0;
+            align-items: stretch;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            .xterm-viewport {
+                overflow: hidden;
+                width: 100% !important;
+                max-width: 100%;
+                box-sizing: border-box;
+                padding: 0;
+                margin: 0;
+                border: 0;
+                scrollbar-gutter: stable both-edges;
+            }
             .xterm-helper-textarea {
                 //display: none;
                 opacity: 0;
@@ -20,7 +43,25 @@ terminal {
             .xterm-screen {
                 @extend %fill-container;
                 flex: 1;
+                min-height: 0;
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+            > .xterm {
+                flex: 1 1 auto;
+                width: 100% !important;
+                max-width: 100%;
+                box-sizing: border-box;
+                padding: 0;
+                margin: 0;
+                border: 0;
             }
         }
     }
+}
+
+html body app div.scroll-container console terminal div.terminal-wrap div.term-host {
+    @extend %fill-container;
+    min-height: 0;
 }
