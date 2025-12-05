@@ -14,7 +14,7 @@ class ConsoleCommandService @Autowired constructor(
     fun executeCommand(command: ConsoleCommandRequest): ConsoleCommandResponse {
         return when (commandParser.parseCommand(command.command)) {
             SupportedConsoleCommand.HELP -> ConsoleCommandResponse("The event chain succeeded.", null)
-            SupportedConsoleCommand.CURRENCY -> currencyCommandService.executeCommand(command.command)
+            SupportedConsoleCommand.CURRENCY -> this.currencyCommandService.executeCommand(command.command)
             else -> ConsoleCommandResponse("The event chain succeeded.", null)
         }
     }
