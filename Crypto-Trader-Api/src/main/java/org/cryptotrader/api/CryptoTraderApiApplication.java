@@ -23,7 +23,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         "org.cryptotrader.data.library.services",
         "org.cryptotrader.data.library.services.harvest",
         "org.cryptotrader.data.library.component",
-        "org.cryptotrader.security.library.service"
+        "org.cryptotrader.security.library.service",
+        "org.cryptotrader.console.library.component",
+        "org.cryptotrader.universal.library.component"
 })
 public class CryptoTraderApiApplication {
     public static void main(String[] args) {
