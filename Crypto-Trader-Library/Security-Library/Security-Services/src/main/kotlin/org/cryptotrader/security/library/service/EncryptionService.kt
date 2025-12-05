@@ -16,7 +16,10 @@ class EncryptionService(
     private lateinit var aead: Aead
     
     init { 
-        this.aead = this.createAeadFromKeyset()
+        val shouldCreateKey: Boolean = System.getProperty("cryptotrader.load.aead")?.toBoolean() ?: false
+        if (shouldCreateKey) {
+            this.aead = this.createAeadFromKeyset() 
+        }
     }
 
     fun encrypt(bytes: ByteArray, keyAlias: String? = null): ByteArray {
