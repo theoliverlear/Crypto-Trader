@@ -76,6 +76,9 @@ open module org.cryptotrader.api {
     requires org.cryptotrader.universal.library.models;
     requires spring.data.commons;
 
+    requires org.cryptotrader.console.library.communication;
+    requires org.cryptotrader.console.library.components;
+    
     exports org.cryptotrader.api;
     exports org.cryptotrader.api.config;
     exports org.cryptotrader.api.controller;
