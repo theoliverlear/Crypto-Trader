@@ -31,16 +31,33 @@ spring:
     function:
       sanitization:
         enabled: false
+      definition: consoleRepliesConsumer
     stream:
       function:
         sanitizing:
           enabled: false
       defaultBinder: kafka
       bindings:
-        # PRODUCER
         userRegistered-out-0:
           destination: ct.user.registered.v1
           contentType: application/json
+
+        consoleRequests-out-0:
+          destination: ct.console.requests
+          contentType: application/json
+
+        consoleRepliesConsumer-in-0:
+          destination: ct.console.replies
+          group: crypto-trader-api-console-replies
+          contentType: application/json
+
+        contactCreated-in-0:
+          destination: ct.contact.created.v1
+          contentType: application/json
+        orderFilled-in-0:
+          destination: ct.order.filled.v1
+          contentType: application/json
+
       kafka:
         binder:
           brokers: localhost:9092
@@ -91,6 +108,8 @@ cryptotrader:
       enabled: true
     websocket:
       enabled: true
+  load:
+    aead: true
   cors:
     allowed-origins: "http://localhost:4200"
     allowed-headers: "authorization,dpop,content-type"
