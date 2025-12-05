@@ -150,6 +150,7 @@
     "chart.js": "^4.4.6",
     "chartjs-adapter-date-fns": "^3.0.0",
     "chartjs-plugin-zoom": "^2.0.1",
+    "cli-color": "^2.0.4",
     "core-js": "^3.38.1",
     "crypto-js": "^4.2.0",
     "crypto-trader-assets": "file:../Crypto-Trader-Assets/src/main/resources",
