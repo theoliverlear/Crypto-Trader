@@ -1,4 +1,4 @@
-module org.cryptotrader.console.library.services {
+open module org.cryptotrader.console.library.services {
     requires java.sql;
     requires static lombok;
     requires spring.beans;
@@ -14,6 +14,10 @@ module org.cryptotrader.console.library.services {
     requires com.auth0.jwt;
     requires spring.data.commons;
     requires org.cryptotrader.console.library.communication;
+    requires org.cryptotrader.api.library.communication;
+    requires org.cryptotrader.console.library.models;
+    requires org.cryptotrader.data.library.services;
+    requires org.cryptotrader.data.library.components;
     
     exports org.cryptotrader.console.library.services;
 }
