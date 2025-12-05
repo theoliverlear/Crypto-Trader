@@ -1,0 +1,27 @@
+server:
+  port: 8088
+
+spring:
+  application:
+    name: crypto-trader-console
+
+  cloud:
+    function:
+      definition: consoleRequestsConsumer
+    stream:
+      enabled: true
+      defaultBinder: kafka
+      bindings:
+        consoleRequestsConsumer-in-0:
+          destination: ct.console.requests
+          group: crypto-trader-console
+          contentType: application/json
+
+        consoleReplies-out-0:
+          destination: ct.console.replies
+          contentType: application/json
+
+      kafka:
+        binder:
+          brokers: localhost:9092
+
