@@ -56,6 +56,14 @@
     <dependencies>
         <dependency>
             <groupId>org.cryptotrader</groupId>
+            <artifactId>console-components</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>console-events</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
             <artifactId>data-services</artifactId>
         </dependency>
         <dependency>
