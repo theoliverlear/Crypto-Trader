@@ -52,6 +52,12 @@
         <module>Universal-Library/Universal-Models</module>
         <module>Universal-Library/Universal-Extensions</module>
         <module>Universal-Library/Universal-Components</module>
+        <module>Console-Library</module>
+        <module>Console-Library/Console-Models</module>
+        <module>Console-Library/Console-Communication</module>
+        <module>Console-Library/Console-Services</module>
+        <module>Console-Library/Console-Components</module>
+        <module>Console-Library/Console-Events</module>
     </modules>
 
     <artifactId>crypto-trader-library</artifactId>
