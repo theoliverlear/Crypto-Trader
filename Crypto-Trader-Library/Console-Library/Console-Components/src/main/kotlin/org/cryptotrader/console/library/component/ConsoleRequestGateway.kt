@@ -27,14 +27,26 @@ class ConsoleRequestGateway @Autowired constructor(
         consoleTextCommand: ConsoleCommandRequest,
         timeout: Duration = Duration.ofSeconds(15)
     ): ConsoleCommandResponse {
+        return this.execute(consoleTextCommand, timeout, null)
+    }
+
+    fun execute(
+        consoleTextCommand: ConsoleCommandRequest,
+        timeout: Duration = Duration.ofSeconds(15),
+        authorizationHeader: String?
+    ): ConsoleCommandResponse {
 
         val correlationId: String = UUID.randomUUID().toString()
         val future = CompletableFuture<ConsoleCommandResponse>()
         this.pendingReplies[correlationId] = future
 
-        val headers: Map<String, Any> = mapOf<String, Any>(
+        val headersMutable = mutableMapOf<String, Any>(
             "correlationId" to correlationId
         )
+        if (!authorizationHeader.isNullOrBlank()) {
+            headersMutable["Authorization"] = authorizationHeader
+        }
+        val headers: Map<String, Any> = headersMutable
 
         log.debug(
             "Publishing console command correlationId={} text={}",
