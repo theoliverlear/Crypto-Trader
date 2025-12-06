@@ -9,13 +9,15 @@ import org.springframework.stereotype.Service
 @Service
 class ConsoleCommandService @Autowired constructor(
     private val commandParser: ConsoleCommandParser,
-    private val currencyCommandService: CurrencyCommandService
+    private val currencyCommandService: CurrencyCommandService,
+    private val portfolioCommandService: PortfolioCommandService
 ) {
     fun executeCommand(command: ConsoleCommandRequest): ConsoleCommandResponse {
         return when (commandParser.parseCommand(command.command)) {
-            SupportedConsoleCommand.HELP -> ConsoleCommandResponse("The event chain succeeded.", null)
+            SupportedConsoleCommand.HELP -> ConsoleCommandResponse("The event chain succeeded.")
             SupportedConsoleCommand.CURRENCY -> this.currencyCommandService.executeCommand(command.command)
-            else -> ConsoleCommandResponse("The event chain succeeded.", null)
+            SupportedConsoleCommand.PORTFOLIO -> this.portfolioCommandService.executeCommand(command.command)
+            else -> ConsoleCommandResponse("Unknown command: $command")
         }
     }
 }
