@@ -2,5 +2,5 @@ package org.cryptotrader.console.library.communication.response
 
 data class ConsoleCommandResponse(
     val consoleOutput: String,
-    val payload: Any?
+    val payload: Any? = null
 )
