@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RestController
 import java.time.Duration
 
@@ -26,10 +27,17 @@ class ConsoleController @Autowired constructor(
     
     @PermitAll
     @PostMapping("/execute")
-    fun executeCommand(@RequestBody commandRequest: ConsoleCommandRequest): ResponseEntity<ConsoleCommandResponse> {
+    fun executeCommand(
+        @RequestBody commandRequest: ConsoleCommandRequest,
+        @RequestHeader(value = "Authorization", required = false) authorizationHeader: String?
+    ): ResponseEntity<ConsoleCommandResponse> {
         log.info("Received console command: {}", commandRequest.command)
         try {
-            val result: ConsoleCommandResponse = this.consoleRequestGateway.execute(commandRequest, Duration.ofSeconds(15))
+            val result: ConsoleCommandResponse = this.consoleRequestGateway.execute(
+                commandRequest,
+                Duration.ofSeconds(15),
+                authorizationHeader
+            )
             return ResponseEntity.ok(result)
         } catch (exception: Exception) {
             log.error("Error executing console command: {}", commandRequest.command, exception)
