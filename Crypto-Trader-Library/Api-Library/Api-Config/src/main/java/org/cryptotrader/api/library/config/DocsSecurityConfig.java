@@ -17,37 +17,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(name = "cryptotrader.api.security.enabled", havingValue = "true", matchIfMissing = true)
-public class SecurityConfig {
+public class DocsSecurityConfig {
     //==============================-Beans-===================================
 
     //------------------------Security-Filter-Chain---------------------------
-//    @Bean
-//    @ConditionalOnMissingBean(SecurityFilterChain.class)
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        // Scope this filter chain to only API docs and actuator endpoints to avoid overlapping with
-//        // application-level SecurityFilterChain definitions.
-    ////        http.securityMatcher(
-    ////                "/swagger-ui/**",
-    ////                "/v3/api-docs/**",
-    ////                "/v3/api-docs.yaml",
-    ////                "/actuator/health",
-    ////                "/actuator/info",
-    ////                // Any endpoint
-    ////                "/**"
-    ////        );
-    ////        http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
-    ////           .csrf(AbstractHttpConfigurer::disable);
-//
-//        http.securityMatcher(
-//                "/swagger-ui/**",
-//                "/v3/api-docs/**",
-//                "/v3/api-docs.yaml",
-//                "/actuator/**"
-//        );
-//        http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
-//           .csrf(AbstractHttpConfigurer::disable);
-//        return http.build();
-//    }
     @Bean
     @Order(1)
     public SecurityFilterChain docsAndActuator(HttpSecurity http) throws Exception {
