@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Import;
         ApplicationTestYamlConfig.class,
         CorsConfig.class,
         HttpClientConfig.class,
-        SecurityConfig.class
+        DocsSecurityConfig.class
 })
 public class ApiConfigAutoConfiguration {
 }
