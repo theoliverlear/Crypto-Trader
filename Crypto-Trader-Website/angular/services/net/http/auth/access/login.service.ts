@@ -23,11 +23,6 @@ export class LoginService extends HttpClientService<LoginRequest, AuthResponse> 
         super(LoginService.URL);
     }
 
-    // public login(request: LoginRequest, _persist: PersistMethod = 'session'): Observable<AuthResponse> {
-    //     // Delegate to AuthService to include DPoP headers and in-memory token storage
-    //     return this.auth.login(request);
-    // }
-
     public login(request: LoginRequest) {
         return new Observable<AuthResponse>((subscriber) => {
             (async () => {
