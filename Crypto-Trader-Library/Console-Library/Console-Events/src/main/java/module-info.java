@@ -6,6 +6,7 @@ open module org.cryptotrader.console.library.events {
     requires org.cryptotrader.console.library.communication;
     requires org.slf4j;
     requires org.cryptotrader.universal.library.components;
+    requires org.cryptotrader.console.library.components;
     requires org.cryptotrader.console.library.services;
     
     exports org.cryptotrader.console.library.events;
