@@ -5,6 +5,9 @@ spring:
   application:
     name: crypto-trader-console
 
+  aop:
+    proxy-target-class: true
+
   cloud:
     function:
       definition: consoleRequestsConsumer
@@ -24,4 +27,11 @@ spring:
       kafka:
         binder:
           brokers: localhost:9092
+
+security:
+  jwt:
+    jwks-uri: http://localhost:8080/.well-known/jwks.json
+    issuers: http://localhost:8080,https://api.cryptotrader.com
+    issuer: https://api.cryptotrader.com
+    audience: crypto-trader-api
 
