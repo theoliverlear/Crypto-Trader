@@ -11,6 +11,7 @@ import {AuthResponse} from "../../../../../models/auth/types";
 import {TokenStorageService} from "../../../../auth/token-storage.service";
 import {DpopKeyService} from "../../../../auth/dpop/dpop-key.service";
 import {DpopProofService} from "../../../../auth/dpop/dpop-proof.service";
+import {LoggedInService} from "../status/logged-in.service";
 
 @Injectable({
     providedIn: 'root'
@@ -20,18 +21,16 @@ export class LogoutService extends HttpClientService<any, AuthResponse> {
 
     constructor(private tokenStore: TokenStorageService,
                 private keys: DpopKeyService,
-                private proofs: DpopProofService) {
+                private proofs: DpopProofService,
+                private loggedInService: LoggedInService) {
         super(LogoutService.URL);
     }
 
     public logout(): Observable<AuthResponse> {
-        // return this.auth.logout().pipe(map(() => {
-        //     return ({authorized: false} as AuthResponse);
-        // }));
         return new Observable<AuthResponse>((subscriber) => {
             (async () => {
                 await this.keys.ensureKeys();
-                const current = this.tokenStore.getToken() || undefined;
+                const current: string = this.tokenStore.getToken() || undefined;
                 const dpop: string = await this.proofs.buildProof('POST', LogoutService.URL);
                 let headers: HttpHeaders = new HttpHeaders({
                     'DPoP': dpop
@@ -49,10 +48,13 @@ export class LogoutService extends HttpClientService<any, AuthResponse> {
                         this.keys.clear();
                         subscriber.next(response);
                         subscriber.complete();
+                        this.loggedInService.isLoggedIn();
                     },
                     error: (error) => {
                         this.keys.clear();
-                        subscriber.error(error);
+                        if (error.status !== 401) {
+                            subscriber.error(error);
+                        }
                     }
                 });
             })();
