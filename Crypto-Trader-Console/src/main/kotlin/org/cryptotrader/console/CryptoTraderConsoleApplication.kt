@@ -5,17 +5,29 @@ import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.runApplication
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
-@SpringBootApplication(scanBasePackages = ["org.cryptotrader.console.library.component",
+@SpringBootApplication(scanBasePackages = [
+    "org.cryptotrader.console.library.component",
     "org.cryptotrader.console.library.services",
     "org.cryptotrader.console.library.model",
     "org.cryptotrader.console.library.communication",
     "org.cryptotrader.console.library.events",
+    "org.cryptotrader.api.library.component",
+    "org.cryptotrader.api.library.services",
     "org.cryptotrader.data.library.services",
     "org.cryptotrader.data.library.component",
-    "org.cryptotrader.universal.library.component"])
-@EnableJpaRepositories(basePackages = ["org.cryptotrader.data.library.repository"])
-@EntityScan(basePackages = ["org.cryptotrader.data.library.model",
-    "org.cryptotrader.data.library.entity"])
+    "org.cryptotrader.universal.library.component",
+    "org.cryptotrader.api.library.events"
+])
+@EnableJpaRepositories(basePackages = [
+    "org.cryptotrader.data.library.repository",
+    "org.cryptotrader.api.library.repository"
+])
+@EntityScan(basePackages = [
+    "org.cryptotrader.data.library.model",
+    "org.cryptotrader.data.library.entity",
+    "org.cryptotrader.api.library.model",
+    "org.cryptotrader.api.library.entity"
+])
 open class CryptoTraderConsoleApplication
 
 fun main(args: Array<String>) {
