@@ -2,6 +2,7 @@ package org.cryptotrader.console.library.services
 
 import org.cryptotrader.api.library.communication.response.CurrencyNamesResponse
 import org.cryptotrader.console.library.communication.response.ConsoleCommandResponse
+import org.cryptotrader.console.library.services.models.ConsoleCommandExecutor
 import org.cryptotrader.data.library.entity.currency.Currency
 import org.cryptotrader.data.library.services.CurrencyService
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service
 @Service
 class CurrencyCommandService @Autowired constructor(
     private val currencyService: CurrencyService
-) {
+) : ConsoleCommandExecutor  {
     private fun isListCommand(command: String): Boolean {
         return command == "currency list"
     }
@@ -19,16 +20,17 @@ class CurrencyCommandService @Autowired constructor(
         return command.contains("currency show")
     }
     
-    fun executeCommand(command: String): ConsoleCommandResponse {
-        when {
+    override fun executeCommand(command: String): ConsoleCommandResponse {
+        return when {
             isListCommand(command) -> {
-                return this.executeListCommand()
+                this.executeListCommand()
             }
+
             isShowCommand(command) -> {
-                return this.executeShowCommand(command)
+                this.executeShowCommand(command)
             }
+            else -> ConsoleCommandResponse("Unknown command: $command")
         }
-        return ConsoleCommandResponse("The event chain succeeded.", null)
     }
 
 
