@@ -41,13 +41,13 @@ class RsaKeyService(
             val keyFactory: KeyFactory = this.getRsaKeyFactory()
             this.publicKey = keyFactory.generatePublic(X509EncodedKeySpec(publicKeyBytes)) as RSAPublicKey
             this.privateKey = keyFactory.generatePrivate(PKCS8EncodedKeySpec(privateKeyBytes)) as RSAPrivateKey
-            this.kid = this.configuredKid ?: this.computeKid(this.publicKey)
+            this.kid = this.resolveKid(this.publicKey)
             log.info("Loaded RSA keys from configuration; kid={}", this.kid)
         } else {
             val keyPair: KeyPair = this.generateEphemeralKeyPair()
             this.publicKey = keyPair.public as RSAPublicKey
             this.privateKey = keyPair.private as RSAPrivateKey
-            this.kid = this.configuredKid ?: this.computeKid(this.publicKey)
+            this.kid = this.resolveKid(this.publicKey)
             log.warn("Generated ephemeral RSA key pair for JWT signing (dev only); kid={}", this.kid)
         }
     }
@@ -78,7 +78,6 @@ class RsaKeyService(
     }
 
     private fun computeKid(pub: RSAPublicKey): String {
-        // kid = base64url(SHA-256(n || e)) minimal and deterministic for our purposes
         val modulusBytes: ByteArray = pub.modulus.toByteArray()
         val exponentBytes: ByteArray = pub.publicExponent.toByteArray()
         val data = ByteArray(modulusBytes.size + exponentBytes.size)
@@ -86,6 +85,11 @@ class RsaKeyService(
         System.arraycopy(exponentBytes, 0, data, modulusBytes.size, exponentBytes.size)
         val sha = MessageDigest.getInstance("SHA-256").digest(data)
         return Base64.getUrlEncoder().withoutPadding().encodeToString(sha)
+    }
+
+    private fun resolveKid(publicKey: RSAPublicKey): String {
+        val trimmedKey: String? = this.configuredKid?.trim()
+        return if (!trimmedKey.isNullOrEmpty()) trimmedKey else computeKid(publicKey)
     }
 
     companion object {
