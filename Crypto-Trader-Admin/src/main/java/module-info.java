@@ -39,6 +39,8 @@ open module org.cryptotrader.admin {
     requires org.cryptotrader.api.library.communication;
     requires org.cryptotrader.api.library.events;
     requires org.cryptotrader.api.library.config;
+    requires org.cryptotrader.data.library.models;
+    requires org.cryptotrader.data.library.services;
     requires spring.data.jpa;
     requires org.apache.tomcat.embed.core;
 
