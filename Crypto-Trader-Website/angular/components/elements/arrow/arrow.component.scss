@@ -1,0 +1,20 @@
+// arrow.component.scss
+@use "../../../styles/globals" as *;
+
+arrow {
+    &.arrow-up {
+        transform: rotate(90deg);
+    }
+
+    &.arrow-down {
+        transform: rotate(-90deg);
+    }
+
+    &.arrow-left {
+
+    }
+
+    &.arrow-right {
+        transform: rotate(180deg);
+    }
+}
