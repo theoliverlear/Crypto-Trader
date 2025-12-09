@@ -17,6 +17,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         "org.cryptotrader.data.library.entity"
 })
 @ComponentScan(basePackages = {
+        "org.cryptotrader.data",
         "org.cryptotrader.api.library.component",
         "org.cryptotrader.api.library",
         "org.cryptotrader.data.library",
