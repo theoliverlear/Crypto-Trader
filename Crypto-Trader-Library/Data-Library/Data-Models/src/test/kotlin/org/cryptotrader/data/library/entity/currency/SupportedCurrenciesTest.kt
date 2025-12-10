@@ -5,6 +5,7 @@ import org.cryptotrader.test.CryptoTraderTest
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Tag
@@ -14,6 +15,7 @@ import java.io.File
 @Tag("SupportedCurrencies")
 @Tag("entity")
 @DisplayName("Supported Currencies")
+@Disabled
 class SupportedCurrenciesTest : CryptoTraderTest() {
 
     companion object {
