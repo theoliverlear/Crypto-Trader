@@ -13,6 +13,7 @@ class EncryptionServiceTest : CryptoTraderTest() {
 
     @BeforeEach
     fun setUp() {
+        System.setProperty("cryptotrader.load.aead", "true")
         this.encryptionService = EncryptionService("classpath:security/tink/test-aead.json")
     }
     
