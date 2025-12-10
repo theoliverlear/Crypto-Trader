@@ -4,6 +4,7 @@ import {
     PortfolioService
 } from "../../../services/net/http/portfolio/portfolio.service";
 import {Portfolio} from "../../../models/portfolio/types";
+import {defaultPortfolio} from "../../../assets/portfolioAssets";
 
 @Component({
     selector: 'portfolio',
@@ -12,13 +13,7 @@ import {Portfolio} from "../../../models/portfolio/types";
     styleUrls: ['./portfolio.component.scss']
 })
 export class PortfolioComponent implements OnInit {
-    portfolio: Portfolio = {
-        assets: [],
-        dollarBalance: 0,
-        lastUpdated: "",
-        sharesBalance: 0,
-        totalWorth: 0
-    };
+    portfolio: Portfolio = defaultPortfolio;
     constructor(private portfolioService: PortfolioService) {
 
     }
