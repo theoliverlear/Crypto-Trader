@@ -8,7 +8,7 @@ portfolio-overview {
     @extend %softer-border-radius;
     background-color: add-alpha-opaque($alabaster-stone, 0.85, $pure-white);
     padding: $one-percent;
-    min-width: $fifty-percent;
+    min-width: $sixty-percent;
     .portfolio-title {
         @extend %signature-brand-gradient-text-small-reflection;
     }
