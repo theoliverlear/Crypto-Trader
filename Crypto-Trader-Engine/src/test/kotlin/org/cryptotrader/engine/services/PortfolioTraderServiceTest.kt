@@ -1,6 +1,5 @@
 package org.cryptotrader.engine.services
 
-import org.cryptotrader.api.library.entity.currency.Currency
 import org.cryptotrader.api.library.entity.portfolio.Portfolio
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAssetHistory
@@ -9,6 +8,7 @@ import org.cryptotrader.api.library.model.trade.CryptoTrader
 import org.cryptotrader.api.library.model.trade.Trader
 import org.cryptotrader.api.library.services.PortfolioService
 import org.cryptotrader.api.library.services.TradeEventService
+import org.cryptotrader.data.library.entity.currency.Currency
 import org.cryptotrader.test.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito
 import org.mockito.Mockito.*
+import org.springframework.transaction.PlatformTransactionManager
 import java.lang.reflect.Method
 import java.time.LocalDateTime
 
@@ -31,15 +32,17 @@ class PortfolioTraderServiceTest : CryptoTraderTest() {
     private lateinit var portfolioService: PortfolioService
     private lateinit var tradeEventService: TradeEventService
     private lateinit var cryptoTrader: CryptoTrader
+    private lateinit var transactionManager: PlatformTransactionManager
 
     private lateinit var service: PortfolioTraderService
 
     @BeforeEach
     fun setup() {
-        portfolioService = mock(PortfolioService::class.java)
-        tradeEventService = mock(TradeEventService::class.java)
-        cryptoTrader = mock(CryptoTrader::class.java)
-        service = PortfolioTraderService(portfolioService, tradeEventService, cryptoTrader)
+        this.portfolioService = mock(PortfolioService::class.java)
+        this.tradeEventService = mock(TradeEventService::class.java)
+        this.cryptoTrader = mock(CryptoTrader::class.java)
+        this.transactionManager = mock(PlatformTransactionManager::class.java)
+        this.service = PortfolioTraderService(portfolioService, tradeEventService, cryptoTrader, transactionManager)
     }
 
     @Nested
