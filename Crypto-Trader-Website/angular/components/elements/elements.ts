@@ -186,9 +186,14 @@ import {
 import {
     SimpleSortIconComponent
 } from "./simple-sort-icon/simple-sort-icon.component";
+import {
+    PortfolioSectionArrowComponent
+} from "./element-group-portfolio/portfolio-section-arrow/portfolio-section-arrow.component";
+import {ArrowComponent} from "./arrow/arrow.component";
 
 export const elements = [
     AccordionComponent,
+    ArrowComponent,
     AssetButtonComponent,
     AssetButtonsComponent,
     AssetFieldComponent,
@@ -232,6 +237,7 @@ export const elements = [
     PortfolioInputComponent,
     PortfolioKillSwitchComponent,
     PortfolioOverviewComponent,
+    PortfolioSectionArrowComponent,
     PortfolioSectionComponent,
     PortfolioSectionSelectorBubbleComponent,
     PortfolioSectionSelectorComponent,
