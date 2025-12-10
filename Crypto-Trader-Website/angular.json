@@ -46,6 +46,7 @@
             "styles": [
               "angular/components/app/app.component.scss",
               "angular/components/elements/accordion/accordion.component.scss",
+              "angular/components/elements/arrow/arrow.component.scss",
               "angular/components/elements/content-stripe/content-stripe.component.scss",
               "angular/components/elements/element-group-auth/auth-console-login-section/auth-console-login-section.component.scss",
               "angular/components/elements/element-group-auth/auth-console-signup-section/auth-console-signup-section.component.scss",
@@ -85,6 +86,7 @@
               "angular/components/elements/element-group-portfolio/portfolio-input/portfolio-input.component.scss",
               "angular/components/elements/element-group-portfolio/portfolio-kill-switch/portfolio-kill-switch.component.scss",
               "angular/components/elements/element-group-portfolio/portfolio-overview/portfolio-overview.component.scss",
+              "angular/components/elements/element-group-portfolio/portfolio-section-arrow/portfolio-section-arrow.component.scss",
               "angular/components/elements/element-group-portfolio/portfolio-section-selector-bubble/portfolio-section-selector-bubble.component.scss",
               "angular/components/elements/element-group-portfolio/portfolio-section-selector/portfolio-section-selector.component.scss",
               "angular/components/elements/element-group-portfolio/portfolio-section/portfolio-section.component.scss",
