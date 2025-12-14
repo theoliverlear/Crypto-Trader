@@ -1,43 +1,43 @@
-@use "global_gradient_variables" as vars;
-@use "global_gradient_mixins" as mixins;
-@use "../globals" as globals;
+@use "./global_gradient_variables" as *;
+@use "./global_gradient_mixins" as *;
+@use "../globals" as *;
 
 
 %light-logo-gradient {
-    background-image: vars.$light-logo;
+    background-image: $light-logo;
 }
 
 %light-logo-gradient-text {
-    background: vars.$light-logo-webkit;
+    background: $light-logo-webkit;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    -webkit-text-stroke: 2px globals.add-alpha(black, 0.1);
+    -webkit-text-stroke: 2px add-alpha(black, 0.1);
 }
 
 %regular-logo-gradient {
-    background-image: vars.$regular-logo;
+    background-image: $regular-logo;
 }
 
 %regular-logo-gradient-text {
-    background: vars.$regular-logo-webkit;
+    background: $regular-logo-webkit;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    -webkit-text-stroke: 2px globals.add-alpha(black, 0.1);
+    -webkit-text-stroke: 2px add-alpha(black, 0.1);
 }
 
 %signature-brand-gradient-text {
-    @include mixins.gradient-text(vars.$regular-logo);
-    text-shadow: globals.add-alpha(black, 0.1) globals.$quarter-percent globals.$quarter-percent;
+    @include gradient-text($regular-logo);
+    text-shadow: add-alpha(black, 0.1) $quarter-percent $quarter-percent;
 }
 
 %signature-brand-gradient-text-small-reflection {
-    @include mixins.gradient-text(vars.$regular-logo);
-    $shadow-offset: calc(#{globals.$quarter-percent} / 2);
-    text-shadow: globals.add-alpha(black, 0.1) $shadow-offset $shadow-offset;
+    @include gradient-text($regular-logo);
+    $shadow-offset: calc(#{$quarter-percent} / 2);
+    text-shadow: add-alpha(black, 0.1) $shadow-offset $shadow-offset;
 }
 
 %signature-brand-gradient-text-smallest-reflection {
-    @include mixins.gradient-text(vars.$regular-logo);
-    $shadow-offset: calc(#{globals.$quarter-percent} / 4);
-    text-shadow: globals.add-alpha(black, 0.1) $shadow-offset $shadow-offset;
+    @include gradient-text($regular-logo);
+    $shadow-offset: calc(#{$quarter-percent} / 4);
+    text-shadow: add-alpha(black, 0.1) $shadow-offset $shadow-offset;
 }
