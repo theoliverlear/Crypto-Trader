@@ -1,6 +1,26 @@
 // portfolio-page-arrow.component.scss
 @use "../../../../styles/globals" as *;
+@use "../../../../styles/gradients/global_gradient_placeholders" as *;
 
-portfolio-page-arrow {
-    
+portfolio-section-arrow {
+    background-color: $off-white;
+    @include flex(center, center, column);
+    margin: 0 $half-percent;
+    @extend %softer-border-radius;
+    transition: background-color, transform, 0.1s ease-in-out;
+    arrow {
+        mat-icon {
+            filter: invert(0.5);
+        }
+        ss-title {
+            @extend %signature-brand-gradient-text-smallest-reflection;
+        }
+    }
+    &:hover {
+        cursor: pointer;
+        background-color: add-alpha-opaque($alabaster-stone, 0.5, $off-white);
+    }
+    &:active {
+        transform: scale(0.95);
+    }
 }
