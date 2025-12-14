@@ -2,19 +2,31 @@
 @use "../../../styles/globals" as *;
 
 arrow {
+    @include flex(center, center, column);
+    @extend %soft-border-radius;
+    padding: $quarter-percent;
+    margin: 0 $one-percent;
+    @include square-size($three-percent);
+    mat-icon {
+        margin: $quarter-percent 0;
+        font-size: $five-percent;
+        transform: translateX(5px);
+    }
     &.arrow-up {
-        transform: rotate(90deg);
+        mat-icon {
+            transform: rotate(90deg);
+        }
     }
 
     &.arrow-down {
-        transform: rotate(-90deg);
-    }
-
-    &.arrow-left {
-
+        mat-icon {
+            transform: rotate(-90deg);
+        }
     }
 
     &.arrow-right {
-        transform: rotate(180deg);
+        mat-icon {
+            transform: rotate(180deg) translateX(5px);
+        }
     }
 }
