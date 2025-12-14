@@ -1,4 +1,7 @@
 <!-- arrow.component.html -->
 <ng-container>
     <mat-icon>arrow_back_ios</mat-icon>
+    @if (text) {
+        <ss-title [text]="text" [tagType]="TagType.P"/>
+    }
 </ng-container>
