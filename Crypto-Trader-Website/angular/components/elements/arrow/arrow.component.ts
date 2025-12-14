@@ -1,6 +1,7 @@
 // arrow.component.ts
-import {Component, Input} from "@angular/core";
+import {Component, HostBinding, Input} from "@angular/core";
 import {ArrowDirection} from "./models/ArrowDirection";
+import {TagType} from "@theoliverlear/angular-suite";
 
 @Component({
     selector: 'arrow',
@@ -11,11 +12,13 @@ import {ArrowDirection} from "./models/ArrowDirection";
 export class ArrowComponent {
     @Input() direction: ArrowDirection = ArrowDirection.RIGHT;
     @Input() text: string | undefined
+    @HostBinding('class')
+    get hostClasses(): string {
+        return this.direction;
+    }
     constructor() {
         
     }
 
-    get classes(): string {
-        return this.direction;
-    }
+    protected readonly TagType = TagType;
 }
