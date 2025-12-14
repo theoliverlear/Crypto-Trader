@@ -5,6 +5,9 @@ import {
 } from "../../../services/net/http/portfolio/portfolio.service";
 import {Portfolio} from "../../../models/portfolio/types";
 import {defaultPortfolio} from "../../../assets/portfolioAssets";
+import {
+    PortfolioSectionArrowType
+} from "../../elements/element-group-portfolio/portfolio-section-arrow/models/PortfolioSectionArrowType";
 
 @Component({
     selector: 'portfolio',
@@ -29,4 +32,5 @@ export class PortfolioComponent implements OnInit {
     }
     
     protected readonly TagType = TagType;
+    protected readonly PortfolioSectionArrowType = PortfolioSectionArrowType;
 }
