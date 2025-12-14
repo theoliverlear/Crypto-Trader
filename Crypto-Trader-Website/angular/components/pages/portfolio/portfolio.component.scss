@@ -4,6 +4,14 @@
 
 
 portfolio {
+    .portfolio-section-container {
+        @include flex(space-around, center, row);
+        @extend %fill-container;
+        .portfolio-section-div {
+            @include flex(center, center, column);
+            @extend %fill-container;
+        }
+    }
     hr {
         border: $very-thin-border $charcoal solid;
         width: 95%;
