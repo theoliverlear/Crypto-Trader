@@ -1,8 +1,14 @@
 <ng-container>
-<!--TODO: Portfolio page can be clicked or swiped left or right. Each page is
-          different like a report page and a management page.    -->
+    <!--TODO: Portfolio page can be clicked or swiped left or right. Each page is
+              different like a report page and a management page.    -->
     <page-title-stripe [pageTitle]="'Portfolio Manager'"
                        [pageSubtitle]="'Select your assets and choose how they\'re traded.'"/>
-    <portfolio-overview [portfolio]="portfolio"/>
-    <portfolio-assets-report [portfolio]="portfolio"/>
+    <div class="portfolio-section-container">
+        <portfolio-section-arrow [sectionType]="PortfolioSectionArrowType.REPORT"/>
+        <div class="portfolio-section-div">
+            <portfolio-overview [portfolio]="portfolio"/>
+            <portfolio-assets-report [portfolio]="portfolio"/>
+        </div>
+        <portfolio-section-arrow [sectionType]="PortfolioSectionArrowType.MANAGE"/>
+    </div>
 </ng-container>
