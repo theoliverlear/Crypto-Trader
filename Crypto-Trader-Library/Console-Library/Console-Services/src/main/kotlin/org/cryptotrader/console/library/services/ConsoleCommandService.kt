@@ -13,10 +13,10 @@ class ConsoleCommandService @Autowired constructor(
     private val portfolioCommandService: PortfolioCommandService
 ) {
     fun executeCommand(command: ConsoleCommandRequest): ConsoleCommandResponse {
-        return when (commandParser.parseCommand(command.command)) {
+        return when (this.commandParser.parseCommand(command.commandText)) {
             SupportedConsoleCommand.HELP -> ConsoleCommandResponse("The event chain succeeded.")
-            SupportedConsoleCommand.CURRENCY -> this.currencyCommandService.executeCommand(command.command)
-            SupportedConsoleCommand.PORTFOLIO -> this.portfolioCommandService.executeCommand(command.command)
+            SupportedConsoleCommand.CURRENCY -> this.currencyCommandService.executeCommand(command.commandText)
+            SupportedConsoleCommand.PORTFOLIO -> this.portfolioCommandService.executeCommand(command.commandText)
             else -> ConsoleCommandResponse("Unknown command: $command")
         }
     }

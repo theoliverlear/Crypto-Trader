@@ -1,6 +1,6 @@
 package org.cryptotrader.console.library.communication.request
 
 data class ConsoleCommandRequest(
-    val command: String,
+    val commandText: String,
     var traceId: String?
 )

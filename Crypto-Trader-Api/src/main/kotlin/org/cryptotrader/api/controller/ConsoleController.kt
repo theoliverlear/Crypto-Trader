@@ -31,7 +31,7 @@ class ConsoleController @Autowired constructor(
         @RequestBody commandRequest: ConsoleCommandRequest,
         @RequestHeader(value = "Authorization", required = false) authorizationHeader: String?
     ): ResponseEntity<ConsoleCommandResponse> {
-        log.info("Received console command: {}", commandRequest.command)
+        log.info("Received console command: {}", commandRequest.commandText)
         try {
             val result: ConsoleCommandResponse = this.consoleRequestGateway.execute(
                 commandRequest,
@@ -40,7 +40,7 @@ class ConsoleController @Autowired constructor(
             )
             return ResponseEntity.ok(result)
         } catch (exception: Exception) {
-            log.error("Error executing console command: {}", commandRequest.command, exception)
+            log.error("Error executing console command: {}", commandRequest.commandText, exception)
             return ResponseEntity.badRequest().body(ConsoleCommandResponse("An error occurred: ${exception.message}", null))
         }
     }
