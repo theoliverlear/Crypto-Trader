@@ -7,6 +7,7 @@ import org.cryptotrader.api.library.services.AuthContextService
 import org.cryptotrader.api.library.services.PortfolioService
 import org.cryptotrader.console.library.communication.response.ConsoleCommandResponse
 import org.cryptotrader.console.library.services.models.ConsoleCommandExecutor
+import org.hibernate.Hibernate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -35,11 +36,7 @@ open class PortfolioCommandService @Autowired constructor(
         val currentUser: ProductUser = this.authContextService.getAuthenticatedProductUser() ?:
             return ConsoleCommandResponse("No authenticated user found.")
         val userPortfolio: Portfolio = this.portfolioService.getPortfolioByUserId(currentUser.id)
-        try {
-            userPortfolio.assets?.size
-        } catch (_: Exception) {
-
-        }
+        Hibernate.initialize(userPortfolio.assets)
         return ConsoleCommandResponse(userPortfolio.toString(),
             PortfolioResponse(userPortfolio))
     }
