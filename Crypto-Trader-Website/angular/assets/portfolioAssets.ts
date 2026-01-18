@@ -4,7 +4,7 @@ export const defaultPortfolio: Portfolio = {
     assets: [],
     dollarBalance: 0,
     lastUpdated: "",
-    sharesBalance: 0,
+    shareBalance: 0,
     totalWorth: 0
 };
 
