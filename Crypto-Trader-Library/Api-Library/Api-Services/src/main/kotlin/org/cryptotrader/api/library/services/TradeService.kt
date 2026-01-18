@@ -7,20 +7,26 @@ import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset
 import org.cryptotrader.api.library.entity.user.ProductUser
 import org.cryptotrader.api.library.entity.vendor.SupportedVendors
 import org.cryptotrader.data.library.services.CurrencyService
+import org.hibernate.Hibernate
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
-class TradeService(
+open class TradeService(
     private val authContextService: AuthContextService,
     private val portfolioService: PortfolioService,
-    private val currencyService: CurrencyService
+    private val currencyService: CurrencyService,
+    private val productUserService: ProductUserService
 ) {
-    fun checkout(tradeRequest: TradeRequest): Boolean {
+    @Transactional
+    open fun checkout(tradeRequest: TradeRequest): Boolean {
         val isLoggedIn: Boolean = this.authContextService.isUserAuthenticated()
         if (!isLoggedIn) {
             return false
         }
-        val productUser: ProductUser = this.authContextService.getAuthenticatedProductUser() ?: return false
+        val authenticatedUser: ProductUser = this.authContextService.getAuthenticatedProductUser() ?: return false
+        val productUser: ProductUser = this.productUserService.getUserById(authenticatedUser.id) ?: return false
+
         return if (this.isSharesCheckout(tradeRequest)) {
             this.sharesCheckout(tradeRequest, productUser)
         } else {
@@ -43,6 +49,9 @@ class TradeService(
     private fun sharesCheckout(tradeRequest: TradeRequest, productUser: ProductUser, numShares: Double): Boolean {
         val currencyToBuy: Currency = this.currencyService.getCurrencyByCurrencyCode(tradeRequest.currencyCode) ?: return false
         val userPortfolio: Portfolio = productUser.portfolio ?: Portfolio(productUser)
+        
+        Hibernate.initialize(userPortfolio.assets)
+
         val portfolioAsset: PortfolioAsset = PortfolioAsset.builder()
                                                            .portfolio(userPortfolio)
                                                            .currency(currencyToBuy)
