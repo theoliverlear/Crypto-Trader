@@ -1,6 +1,6 @@
 export type Portfolio = {
     dollarBalance: number;
-    sharesBalance: number;
+    shareBalance: number;
     totalWorth: number;
     lastUpdated: string;
     assets: PortfolioAsset[];
