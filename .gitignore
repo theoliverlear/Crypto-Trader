@@ -29,6 +29,8 @@ tink/
 **/*.component.css.map
 
 **/*.js
+!eslint.config.js
+!prettier.config.js
 
 **/__pycache__/
 /**/*.keras
