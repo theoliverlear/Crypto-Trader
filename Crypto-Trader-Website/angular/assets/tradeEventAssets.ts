@@ -1,11 +1,11 @@
-import {TradeEvent} from "../models/trader/types";
+import { type TradeEvent } from '@models/trader/types';
 
 export const defaultTradeEvent: TradeEvent = {
     id: 0,
-    currency: "",
+    currency: '',
     sharesChange: 0,
-    tradeTime: "",
-    tradeType: "",
+    tradeTime: '',
+    tradeType: '',
     valueChange: 0,
-    vendor: ""
+    vendor: '',
 };

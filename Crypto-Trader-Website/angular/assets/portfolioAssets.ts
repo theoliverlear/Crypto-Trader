@@ -1,22 +1,22 @@
-import {Portfolio, PortfolioAsset} from "../models/portfolio/types";
+import { type Portfolio, type PortfolioAsset } from '@models/portfolio/types';
 
 export const defaultPortfolio: Portfolio = {
     assets: [],
     dollarBalance: 0,
-    lastUpdated: "",
+    lastUpdated: '',
     shareBalance: 0,
-    totalWorth: 0
+    totalWorth: 0,
 };
 
 export const defaultPortfolioAsset: PortfolioAsset = {
     assetWalletDollars: 0,
-    currencyCode: "",
-    currencyName: "",
+    currencyCode: '',
+    currencyName: '',
     id: 0,
-    lastUpdated: "",
+    lastUpdated: '',
     shares: 0,
     sharesValueInDollars: 0,
     targetPrice: 0,
     totalValueInDollars: 0,
-    vendorName: ""
+    vendorName: '',
 };

@@ -31,110 +31,110 @@ const iconImageAssetPath: string = imageAssetPath + 'icons/';
 
 export const defaultAvatar: ImageAsset = {
     src: getIconImagePath('default_avatar.png'),
-    alt: 'Default Avatar'
+    alt: 'Default Avatar',
 };
 
 export const transparentLogo: ImageAsset = {
     src: getCryptoTraderLogo('crypto_trader_logo_cropped_transparent.png'),
-    alt: 'Transparent Logo'
-}
+    alt: 'Transparent Logo',
+};
 
 export const stockIcon: ImageAsset = {
     src: getIconImagePath('stock_icon.svg'),
-    alt: 'Stock Icon'
+    alt: 'Stock Icon',
 };
 
 export const brainIcon: ImageAsset = {
     src: getIconImagePath('brain_icon.svg'),
-    alt: 'Brain Icon'
+    alt: 'Brain Icon',
 };
 
 export const aiStarIcon: ImageAsset = {
     src: getIconImagePath('ai_star_icon.svg'),
-    alt: 'AI Star Icon'
+    alt: 'AI Star Icon',
 };
 
 export const defaultCurrencyIcon: ImageAsset = {
     src: getIconImagePath('default_currency_icon.png'),
-    alt: 'Default Currency Icon'
+    alt: 'Default Currency Icon',
 };
 
 export const upArrowIcon: ImageAsset = {
     src: getIconImagePath('up_arrow_icon.svg'),
-    alt: 'Up Arrow Icon'
+    alt: 'Up Arrow Icon',
 };
 
 export const consoleIcon: ImageAsset = {
     src: getIconImagePath('console_icon.svg'),
-    alt: 'Console Icon'
+    alt: 'Console Icon',
 };
 
 export const profileIcon: ImageAsset = {
     src: getIconImagePath('profile_icon.svg'),
-    alt: 'Profile Icon'
+    alt: 'Profile Icon',
 };
 
 export const exitIcon: ImageAsset = {
     src: getIconImagePath('white_exit_door_icon.svg'),
-    alt: 'Exit Icon'
+    alt: 'Exit Icon',
 };
 
 export const walletIcon: ImageAsset = {
     src: getIconImagePath('wallet_icon.svg'),
-    alt: 'Wallet Icon'
+    alt: 'Wallet Icon',
 };
 
 export const coinIcon: ImageAsset = {
     src: getIconImagePath('coin_icon.svg'),
-    alt: 'Coin Icon'
+    alt: 'Coin Icon',
 };
 
 export const stockScaleIcon: ImageAsset = {
     src: getIconImagePath('stock_scale_icon.svg'),
-    alt: 'Stock Scale Icon'
+    alt: 'Stock Scale Icon',
 };
 
 export const exchangeArrowsIcon: ImageAsset = {
     src: getIconImagePath('exchange_arrows_icon.svg'),
-    alt: 'Soft Exchange Arrows Icon'
+    alt: 'Soft Exchange Arrows Icon',
 };
 
 export const paperIcon: ImageAsset = {
     src: getIconImagePath('paper_icon.svg'),
-    alt: 'Paper Icon'
+    alt: 'Paper Icon',
 };
 
 export const starIcon: ImageAsset = {
     src: getIconImagePath('star_icon.png'),
-    alt: 'Star Icon'
+    alt: 'Star Icon',
 };
 
 export const coinbaseBrandLogo: ImageAsset = {
-    src: getBrandLogoPath("coinbase_logo.svg"),
-    alt: 'Coinbase Logo'
+    src: getBrandLogoPath('coinbase_logo.svg'),
+    alt: 'Coinbase Logo',
 };
 
 export const binanceBrandLogo: ImageAsset = {
-    src: getBrandLogoPath("binance_logo.png"),
-    alt: 'Binance Logo'
+    src: getBrandLogoPath('binance_logo.png'),
+    alt: 'Binance Logo',
 };
 
 export const dollarIcon: ImageAsset = {
-    src: getIconImagePath("dollar_icon.svg"),
-    alt: 'Dollar Icon'
+    src: getIconImagePath('dollar_icon.svg'),
+    alt: 'Dollar Icon',
 };
 
 export const circleCheckmarkIcon: ImageAsset = {
-    src: getIconImagePath("circle_checkmark_icon.svg"),
-    alt: 'Circle Checkmark Icon'
+    src: getIconImagePath('circle_checkmark_icon.svg'),
+    alt: 'Circle Checkmark Icon',
 };
 
 export const bookIcon: ImageAsset = {
-    src: getIconImagePath("book_icon.svg"),
-    alt: 'Book Icon'
+    src: getIconImagePath('book_icon.svg'),
+    alt: 'Book Icon',
 };
 
 export const electricPlugIcon: ImageAsset = {
-    src: getIconImagePath("electric_plug_icon.svg"),
-    alt: 'Electric Plug Icon'
+    src: getIconImagePath('electric_plug_icon.svg'),
+    alt: 'Electric Plug Icon',
 };
