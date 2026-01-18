@@ -1,0 +1,9 @@
+node_modules
+dist
+.angular
+target
+build
+.gradle
+.kotlin
+logs
+*.iml
