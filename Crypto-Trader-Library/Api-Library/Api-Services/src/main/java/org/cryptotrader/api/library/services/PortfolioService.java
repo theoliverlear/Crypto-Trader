@@ -18,6 +18,7 @@ import org.cryptotrader.api.library.repository.PortfolioRepository;
 import org.cryptotrader.data.library.services.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -137,14 +138,17 @@ public class PortfolioService {
     }
 
     //---------------------------Save-Portfolio-------------------------------
+    @Transactional
     public void savePortfolio(Portfolio portfolio) {
         this.portfolioRepository.save(portfolio);
     }
     //------------------------Save-Portfolio-Asset----------------------------
+    @Transactional
     public void savePortfolioAsset(PortfolioAsset portfolioAsset) {
         this.portfolioAssetRepository.save(portfolioAsset);
     }
     //----------------------Get-Portfolio-By-User-Id--------------------------
+    @Transactional(readOnly = true)
     public Portfolio getPortfolioByUserId(Long userId) {
         return this.portfolioRepository.findPortfolioByUserId(userId);
     }
@@ -153,6 +157,7 @@ public class PortfolioService {
         return this.portfolioRepository.findAll();
     }
     //-----------------------Add-Asset-To-Portfolio---------------------------
+    @Transactional
     public void addAssetToPortfolio(Portfolio portfolio, PortfolioAssetRequest portfolioAssetRequest) {
         Currency requestCurrency = this.currencyService.getCurrencyByName(portfolioAssetRequest.getCurrencyName());
         PortfolioAsset portfolioAsset = new PortfolioAsset(portfolio, requestCurrency, portfolioAssetRequest.getShares(), portfolioAssetRequest.getWalletDollars());
