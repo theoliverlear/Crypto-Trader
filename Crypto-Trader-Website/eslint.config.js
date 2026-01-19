@@ -1,97 +1,203 @@
 import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import prettier from 'eslint-config-prettier';
+import angular from 'angular-eslint';
+import jsdoc from 'eslint-plugin-jsdoc';
+import prettierConfig from 'eslint-config-prettier';
+import prettierPlugin from 'eslint-plugin-prettier';
 import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-    eslint.configs.recommended,
-    ...tseslint.configs.recommended,
     {
-        files: ['**/*.cjs', 'scripts/**/*.mjs', 'eslint.config.js', 'prettier.config.js'],
-        languageOptions: {
-            globals: {
-                ...globals.node,
-            },
+        linterOptions: {
+            reportUnusedDisableDirectives: true,
         },
     },
     {
+        ignores: [
+            'dist/',
+            'coverage/',
+            '.angular/',
+            'node_modules/',
+            '**/*.min.*',
+            'src/assets/',
+            'angular/**/*.js',
+        ],
+    },
+    {
         files: ['**/*.ts'],
+        extends: [
+            eslint.configs.recommended,
+            ...tseslint.configs.recommendedTypeChecked,
+            ...angular.configs.tsRecommended,
+        ],
+        processor: angular.processInlineTemplates,
         languageOptions: {
+            globals: {
+                ...globals.browser,
+            },
             parserOptions: {
                 projectService: true,
+                tsconfigRootDir: import.meta.dirname,
             },
         },
         rules: {
-            'prefer-const': 'error',
-            'max-len': ['error', {code: 100, ignoreUrls: true}],
-            semi: ['error', 'always'],
-            indent: ['error', 4, {SwitchCase: 1}],
-            quotes: ['warn', 'single', {avoidEscape: true, allowTemplateLiterals: true}],
-            'no-multiple-empty-lines': ['error', {max: 2, maxEOF: 1}],
-            'object-curly-spacing': ['error', 'never'],
-            'arrow-parens': ['error', 'as-needed'],
-            '@typescript-eslint/explicit-function-return-type': [
+            '@typescript-eslint/no-unused-vars': [
+                'warn',
+                { argsIgnorePattern: '^_' },
+            ],
+            '@typescript-eslint/consistent-type-imports': [
                 'warn',
                 {
-                    allowExpressions: true,
-                    allowTypedFunctionExpressions: true,
+                    prefer: 'type-imports',
+                    fixStyle: 'inline-type-imports',
                 },
             ],
-            '@typescript-eslint/no-explicit-any': 'error',
+            '@typescript-eslint/no-explicit-any': 'warn',
+            '@typescript-eslint/no-non-null-assertion': 'warn',
+            '@typescript-eslint/explicit-function-return-type': [
+                'error',
+                {
+                    allowExpressions: false,
+                    allowTypedFunctionExpressions: false,
+                    allowHigherOrderFunctions: false,
+                    allowDirectConstAssertionInArrowFunctions: false,
+                    allowConciseArrowFunctionExpressionsStartingWithVoid: false,
+                },
+            ],
+            'no-console': 'off',
+            'prefer-const': 'error',
             '@typescript-eslint/no-unsafe-assignment': 'warn',
             '@typescript-eslint/no-unsafe-call': 'warn',
             '@typescript-eslint/no-unsafe-member-access': 'warn',
             '@typescript-eslint/no-unsafe-return': 'warn',
             '@typescript-eslint/no-floating-promises': 'error',
             '@typescript-eslint/await-thenable': 'error',
-            '@typescript-eslint/no-misused-promises': 'error',
-            '@typescript-eslint/no-non-null-assertion': 'warn',
+            '@typescript-eslint/no-misused-promises': [
+                'error',
+                {
+                    checksVoidReturn: {
+                        attributes: false,
+                    },
+                },
+            ],
             '@typescript-eslint/no-unnecessary-condition': 'warn',
+            '@typescript-eslint/explicit-member-accessibility': [
+                'warn',
+                {
+                    accessibility: 'explicit',
+                    // defaults to private
+                    overrides: {
+                        // constructors: 'no-public',
+                    }
+                },
+            ],
+            '@typescript-eslint/typedef': [
+                'warn',
+                {
+                    arrayDestructuring: true,
+                    arrowParameter: true,
+                    memberVariableDeclaration: true,
+                    objectDestructuring: true,
+                    parameter: true,
+                    propertyDeclaration: true,
+                    variableDeclaration: true,
+                    variableDeclarationIgnoreFunction: true,
+                },
+            ],
+            '@typescript-eslint/no-inferrable-types': 'off',
+            '@typescript-eslint/prefer-readonly': 'warn',
+            'max-len': [
+                'error',
+                {
+                    code: 100,
+                    ignoreUrls: true,
+                    ignoreStrings: true,
+                    ignoreTemplateLiterals: true,
+                    ignoreRegExpLiterals: true,
+                },
+            ],
             '@typescript-eslint/member-ordering': 'off',
-            '@typescript-eslint/naming-convention': [
-                'error',
+            '@angular-eslint/prefer-inject': 'off',
+            '@angular-eslint/prefer-standalone': 'off',
+            'jsdoc/require-jsdoc': [
+                'warn',
                 {
-                    selector: 'default',
-                    format: ['camelCase'],
-                },
-                {
-                    selector: 'variable',
-                    format: ['camelCase', 'UPPER_CASE'],
-                },
-                {
-                    selector: 'parameter',
-                    format: ['camelCase'],
-                    leadingUnderscore: 'allow',
-                },
-                {
-                    selector: 'memberLike',
-                    modifiers: ['private'],
-                    format: ['camelCase'],
-                },
-                {
-                    selector: 'typeLike',
-                    format: ['PascalCase'],
-                },
-                {
-                    selector: 'property',
-                    modifiers: ['readonly'],
-                    format: ['camelCase', 'PascalCase'],
-                },
-                {
-                    selector: 'enumMember',
-                    format: ['UPPER_CASE'],
+                    publicOnly: true,
+                    require: {
+                        ArrowFunctionExpression: true,
+                        ClassDeclaration: true,
+                        ClassExpression: true,
+                        FunctionDeclaration: true,
+                        FunctionExpression: true,
+                        MethodDefinition: true,
+                    },
+                    contexts: [
+                        'TSInterfaceDeclaration',
+                        'TSEnumDeclaration',
+                        'TSTypeAliasDeclaration',
+                    ],
                 },
             ],
-            '@typescript-eslint/no-unused-vars': 'warn',
-            'space-before-function-paren': [
-                'error',
-                {
-                    anonymous: 'always',
-                    named: 'never',
-                    asyncArrow: 'always',
-                },
-            ],
+            'jsdoc/require-description': 'warn',
+            'jsdoc/require-param': 'warn',
+            'jsdoc/require-returns': 'warn',
         },
     },
-    prettier,
+    {
+        files: ['**/*.ts'],
+        plugins: {
+            jsdoc,
+        },
+    },
+    {
+        files: ['**/*.html'],
+        extends: [
+            ...angular.configs.templateRecommended,
+            ...angular.configs.templateAccessibility,
+        ],
+        rules: {},
+    },
+    {
+        files: ['**/*.spec.ts', 'src/test.ts', 'src/**/*.test.ts'],
+        rules: {
+            '@typescript-eslint/explicit-function-return-type': 'off',
+            '@typescript-eslint/no-explicit-any': 'off',
+            '@typescript-eslint/no-unused-vars': 'off',
+            'jsdoc/require-jsdoc': 'off',
+        },
+    },
+    {
+        files: [
+            '**/*.cjs',
+            'scripts/**/*.mjs',
+            'eslint.config.js',
+            'prettier.config.js',
+            'jest.config.cjs',
+        ],
+        languageOptions: {
+            globals: {
+                ...globals.node,
+            },
+        },
+        rules: {
+            'no-undef': 'off',
+            'jsdoc/require-jsdoc': 'off',
+        },
+    },
+    {
+        files: ['**/*.ts', '**/*.html'],
+        plugins: {
+            prettier: prettierPlugin,
+        },
+        rules: {
+            'prettier/prettier': 'warn',
+        },
+    },
+    {
+        files: ['**/*.html'],
+        rules: {
+            'prettier/prettier': 'off',
+        },
+    },
+    prettierConfig,
 );
