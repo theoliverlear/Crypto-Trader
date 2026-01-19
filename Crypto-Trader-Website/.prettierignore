@@ -1,9 +1,8 @@
-node_modules
 dist
-.angular
-target
+coverage
 build
-.gradle
-.kotlin
-logs
-*.iml
+.angular
+node_modules
+*.min.*
+angular/**/*.js
+!angular
