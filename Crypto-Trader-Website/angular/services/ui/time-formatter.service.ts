@@ -1,12 +1,10 @@
-import {Injectable} from "@angular/core";
+import { Injectable } from '@angular/core';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class TimeFormatterService {
-    constructor() {
-
-    }
+    constructor() {}
 
     public formatTime(time: string, showSeconds: boolean = false): string {
         if (!time) {
@@ -16,14 +14,14 @@ export class TimeFormatterService {
         if (isNaN(date.getTime())) {
             return time;
         }
-        
+
         return new Intl.DateTimeFormat('default', {
             year: 'numeric',
             month: 'numeric',
             day: 'numeric',
             hour: 'numeric',
             minute: 'numeric',
-            second: showSeconds ? 'numeric' : undefined
+            second: showSeconds ? 'numeric' : undefined,
         }).format(date);
     }
 }

@@ -1,4 +1,4 @@
-import {HistoryPoint} from "../currency/types";
+import { type HistoryPoint } from '../currency/types';
 
 export type SparkPoint = {
     date: Date | string | number;
@@ -9,7 +9,7 @@ export type Margin = {
     right: number;
     bottom: number;
     left: number;
-}
+};
 
 export type ChartDisplayProperties = {
     data: SparkPoint[] | HistoryPoint[];
@@ -19,4 +19,4 @@ export type ChartDisplayProperties = {
     margin: Margin;
     strokeWidth: number;
     textColor: string;
-}
+};

@@ -1,21 +1,26 @@
-import {
-    coinIcon,
-    ImageAsset, exchangeArrowsIcon, stockScaleIcon,
-    walletIcon, circleCheckmarkIcon
-} from "../../../../../assets/imageAssets";
-import {ElementLink} from "@theoliverlear/angular-suite";
+import { type ElementLink } from '@theoliverlear/angular-suite';
 import {
     currenciesElementLink,
     portfolioElementLink,
-    statisticsElementLink, tradeElementLink, traderElementLink
-} from "../../../../../assets/elementLinkAssets";
+    statisticsElementLink,
+    tradeElementLink,
+    traderElementLink,
+} from '@assets/elementLinkAssets';
+import {
+    circleCheckmarkIcon,
+    coinIcon,
+    exchangeArrowsIcon,
+    stockScaleIcon,
+    walletIcon,
+    type ImageAsset,
+} from '@assets/imageAssets';
 
 export enum NavBarItemOption {
-    CURRENCIES = "Currencies",
-    PORTFOLIO = "Portfolio",
-    TRADER = "Trader",
-    TRADE = "Trade",
-    STATISTICS = "Statistics"
+    CURRENCIES = 'Currencies',
+    PORTFOLIO = 'Portfolio',
+    TRADER = 'Trader',
+    TRADE = 'Trade',
+    STATISTICS = 'Statistics',
 }
 export namespace NavBarItemOption {
     export function getImageAsset(option: NavBarItemOption): ImageAsset {
@@ -31,10 +36,10 @@ export namespace NavBarItemOption {
             case NavBarItemOption.STATISTICS:
                 return stockScaleIcon;
             default:
-                throw new Error("Invalid option: " + option);
+                throw new Error('Invalid option: ' + option);
         }
     }
-    
+
     export function getElementLink(option: NavBarItemOption): ElementLink {
         switch (option) {
             case NavBarItemOption.CURRENCIES:
@@ -48,17 +53,17 @@ export namespace NavBarItemOption {
             case NavBarItemOption.STATISTICS:
                 return statisticsElementLink;
             default:
-                throw new Error("Invalid option: " + option);
+                throw new Error('Invalid option: ' + option);
         }
     }
-    
+
     export function values(): NavBarItemOption[] {
         return [
             NavBarItemOption.CURRENCIES,
             NavBarItemOption.PORTFOLIO,
             NavBarItemOption.TRADER,
             NavBarItemOption.TRADE,
-            NavBarItemOption.STATISTICS
+            NavBarItemOption.STATISTICS,
         ];
     }
 }

@@ -1,7 +1,9 @@
 <!-- portfolio-asset.component.html -->
 <ng-container>
-    <asset-field-list [asset]="asset"
-                      [showFieldTitles]="isFirst"
-                      [currentSort]="currentSort"
-                      (onSortClick)="emitSortClick($event)"/>
+    <asset-field-list
+        [asset]="asset"
+        [showFieldTitles]="isFirst"
+        [currentSort]="currentSort"
+        (onSortClick)="emitSortClick($event)"
+    />
 </ng-container>

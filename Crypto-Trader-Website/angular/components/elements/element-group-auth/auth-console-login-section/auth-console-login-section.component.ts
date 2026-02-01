@@ -1,32 +1,39 @@
-// auth-console-login-section.component.ts 
-import {Component, EventEmitter, Output} from "@angular/core";
-import {AuthInputType} from "../auth-input/models/AuthInputType";
-import {LoginCredentials} from "../../../../models/auth/LoginCredentials";
-import {ButtonText, ElementSize} from "@theoliverlear/angular-suite";
+// auth-console-login-section.component.ts
+import { Component, EventEmitter, Output } from '@angular/core';
 
+import { ButtonText, ElementSize } from '@theoliverlear/angular-suite';
+import { LoginCredentials } from '@models/auth/LoginCredentials';
+
+import { AuthInputType } from '../auth-input/models/AuthInputType';
+
+/** A section for login in the auth console.
+ *
+ */
 @Component({
     selector: 'auth-console-login-section',
     standalone: false,
     templateUrl: './auth-console-login-section.component.html',
-    styleUrls: ['./auth-console-login-section.component.scss']
+    styleUrls: ['./auth-console-login-section.component.scss'],
 })
 export class AuthConsoleLoginSectionComponent {
-    loginCredentials: LoginCredentials = new LoginCredentials();
-    @Output() loginButtonClicked: EventEmitter<LoginCredentials> = new EventEmitter<LoginCredentials>();
-    constructor() {
-        
-    }
-    emitFields() {
+    protected loginCredentials: LoginCredentials = new LoginCredentials();
+    @Output() protected loginButtonClicked: EventEmitter<LoginCredentials> =
+        new EventEmitter<LoginCredentials>();
+    constructor() {}
+
+    protected emitFields(): void {
         this.loginButtonClicked.emit(this.loginCredentials);
     }
-    
-    updateEmail(email: string): void {
+
+    protected updateEmail(email: string): void {
         this.loginCredentials.email = email;
     }
-    updatePassword(password: string): void {
+
+    protected updatePassword(password: string): void {
         this.loginCredentials.password = password;
     }
-    protected readonly AuthInputType = AuthInputType;
-    protected readonly ElementSize = ElementSize;
-    protected readonly ButtonText = ButtonText;
+
+    protected readonly AuthInputType: typeof AuthInputType = AuthInputType;
+    protected readonly ElementSize: typeof ElementSize = ElementSize;
+    protected readonly ButtonText: typeof ButtonText = ButtonText;
 }

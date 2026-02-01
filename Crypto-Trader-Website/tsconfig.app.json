@@ -1,16 +1,14 @@
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "./",
-    "types": []
-  },
-  "include": [
-    "./angular/**/*.ts"
-  ],
-  "exclude": [
-    "./node_modules",
-    "./angular/**/*.d.ts",
-    "./**/*.ts~",
-    "./**/*.*~"
-  ]
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./",
+        "types": []
+    },
+    "include": ["./angular/**/*.ts"],
+    "exclude": [
+        "./node_modules",
+        "./angular/**/*.d.ts",
+        "./**/*.ts~",
+        "./**/*.*~"
+    ]
 }

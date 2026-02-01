@@ -46,6 +46,8 @@ export default {
         '',
         '^[./]',
     ],
+    // importOrderSeparation: true,
+    // importOrderSortSpecifiers: true,
     importOrderParserPlugins: ['typescript', 'decorators-legacy'],
     importOrderTypeScriptVersion: '5.0.0',
     overrides: [

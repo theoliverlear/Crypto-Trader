@@ -1,5 +1,5 @@
 // nav-arrows.component.scss
-@use "../../../../styles/globals" as *;
+@use '../../../../styles/globals' as *;
 
 nav-arrows {
     @include flex(center, center, row);

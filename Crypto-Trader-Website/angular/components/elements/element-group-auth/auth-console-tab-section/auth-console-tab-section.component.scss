@@ -1,12 +1,12 @@
 // auth-console-tab-section-style.component.scss
-@use "../../../../styles/globals" as *;
-
+@use '../../../../styles/globals' as *;
 
 auth-console-tab-section {
     @include flex(flex-start, center, row);
     width: 100%;
     z-index: 2;
-    //margin-left: $three-percent;
+
+    // margin-left: $three-percent;
     auth-console-tab {
         margin-left: $one-half-percent;
     }

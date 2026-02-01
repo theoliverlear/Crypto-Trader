@@ -1,37 +1,42 @@
 // transparency-promo.component.scss
-@use "../../../../styles/globals" as *;
+@use '../../../../styles/globals' as *;
 
 transparency-promo {
     @include flex(center, center, column);
+
     @extend %soft-border-radius;
     padding: $one-percent;
     width: 90%;
     background-color: add-alpha($alabaster-stone, 0.2);
-
     opacity: 0;
     transform: translateY(16px);
-    transition: opacity 900ms ease-out, transform 900ms ease-out;
+    transition:
+        opacity 900ms ease-out,
+        transform 900ms ease-out;
 
     &.in-view {
         opacity: 1;
         transform: translateY(0);
     }
+
     ss-title {
-        //@extend %soft-text-shadow;
-        //text-shadow: add-alpha($charcoal, 0.1) 0 0 $half-percent;
-        //text-shadow: -2px -2px 0 #000,  /* Top-left */
-        //2px -2px 0 #000,   /* Top-right */
-        //-2px 2px 0 #000,   /* Bottom-left */
-        //2px 2px 0 #000;
+        // @extend %soft-text-shadow;
+        // text-shadow: add-alpha($charcoal, 0.1) 0 0 $half-percent;
+        // text-shadow: -2px -2px 0 #000,  /* Top-left */
+        // 2px -2px 0 #000,   /* Top-right */
+        // -2px 2px 0 #000,   /* Bottom-left */
+        // 2px 2px 0 #000;
         -webkit-text-stroke: 2px add-alpha($charcoal, 0.1);
         color: add-alpha($pure-white, 1);
         text-decoration: underline;
         margin: $half-percent 0;
     }
+
     .text-with-button-div {
         @include flex(space-around, center, column);
+
         ss-paragraph {
-            //width: 35%;
+            // width: 35%;
             flex: 2;
             margin: $half-percent $one-percent $half-percent 0;
         }
@@ -39,16 +44,23 @@ transparency-promo {
         .transparency-buttons-div {
             @include flex(space-around, center, row);
             width: 100%;
+
             ss-anchor {
-                //background-color: add-alpha-opaque($sunbeam-yellow, 0.5, $pure-white);
-                //width: $twenty-five-percent;
+                // background-color: add-alpha-opaque($sunbeam-yellow, 0.5, $pure-white);
+                // width: $twenty-five-percent;
                 max-height: $four-percent;
                 text-shadow: none;
                 color: add-alpha($pure-white, 1);
 
                 a {
-                    h1, h2, h3, h4, h5, h6 {
+                    h1,
+                    h2,
+                    h3,
+                    h4,
+                    h5,
+                    h6 {
                         min-width: 12ch;
+
                         @extend %transparent-text;
                     }
                 }

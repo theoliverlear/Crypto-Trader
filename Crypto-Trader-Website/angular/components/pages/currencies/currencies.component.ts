@@ -1,20 +1,17 @@
-// currencies.component.ts 
-import { Component, HostListener, OnInit } from "@angular/core";
-import { listStagger } from "../../animations/animations";
-import {
-    DisplayCurrenciesService
-} from "../../../services/net/http/currency/display-currencies.service";
-import {
-    CurrencyList,
-    DisplayCurrencyList
-} from "../../../models/currency/types";
+// currencies.component.ts
+import { Component, HostListener, OnInit } from '@angular/core';
+
+import { DisplayCurrenciesService } from '@http/currency/display-currencies.service';
+import { CurrencyList, DisplayCurrencyList } from '@models/currency/types';
+
+import { listStagger } from '../../animations/animations';
 
 @Component({
     selector: 'currencies',
     standalone: false,
     templateUrl: './currencies.component.html',
     styleUrls: ['./currencies.component.scss'],
-    animations: [listStagger]
+    animations: [listStagger],
 })
 export class CurrenciesComponent implements OnInit {
     currencies: DisplayCurrencyList = { currencies: [] };
@@ -27,10 +24,8 @@ export class CurrenciesComponent implements OnInit {
     private readonly pageSize: number = 10;
     hasMore: boolean = true;
     private scrollTimer: any = null;
-    constructor(private getAllCurrenciesService: DisplayCurrenciesService) {
-        
-    }
-    
+    constructor(private getAllCurrenciesService: DisplayCurrenciesService) {}
+
     @HostListener('window:scroll', [])
     onScroll() {
         if (this.scrollTimer) {
@@ -48,50 +43,57 @@ export class CurrenciesComponent implements OnInit {
             }
         }, 150);
     }
-    
+
     onError(event: Event) {
         if (event instanceof ErrorEvent) {
             console.log(event.message);
         }
     }
-    
+
     ngOnInit(): void {
         this.initializeCurrencies();
         this.loadCurrencies(0);
     }
 
     listenForCurrencies(): void {
-        this.getAllCurrenciesService.getAllCurrenciesWithOffset(0).subscribe((data: DisplayCurrencyList) => {
-            this.currencies = data;
-        });
+        this.getAllCurrenciesService
+            .getAllCurrenciesWithOffset(0)
+            .subscribe((data: DisplayCurrencyList) => {
+                this.currencies = data;
+            });
     }
 
     private loadCurrencies(offset: number): void {
         this.isFetching = true;
-        this.getAllCurrenciesService.getAllCurrenciesWithOffset(offset).subscribe({
-            next: (data: DisplayCurrencyList) => {
-                // append results
-                this.currencies.currencies = [
-                    ...(this.currencies.currencies || []),
-                    ...(data?.currencies || [])
-                ];
-                const received: number = data?.currencies?.length || 0;
-                if (received === this.pageSize) {
-                    this.offset += this.pageSize;
-                } else {
-                    // no more data to load
-                    this.hasMore = false;
-                }
-                this.isLoaded = true;
-                this.isFetching = false;
-            },
-            error: () => {
-                this.isFetching = false;
-            }
-        });
+        this.getAllCurrenciesService
+            .getAllCurrenciesWithOffset(offset)
+            .subscribe({
+                next: (data: DisplayCurrencyList) => {
+                    // append results
+                    this.currencies.currencies = [
+                        ...(this.currencies.currencies || []),
+                        ...(data?.currencies || []),
+                    ];
+                    const received: number = data?.currencies?.length || 0;
+                    if (received === this.pageSize) {
+                        this.offset += this.pageSize;
+                    } else {
+                        // no more data to load
+                        this.hasMore = false;
+                    }
+                    this.isLoaded = true;
+                    this.isFetching = false;
+                },
+                error: () => {
+                    this.isFetching = false;
+                },
+            });
     }
 
-    shouldLoadMoreCurrencies(scrollPosition: number, pageHeight: number): boolean {
+    shouldLoadMoreCurrencies(
+        scrollPosition: number,
+        pageHeight: number,
+    ): boolean {
         return scrollPosition >= pageHeight - 100;
     }
 
@@ -134,12 +136,16 @@ export class CurrenciesComponent implements OnInit {
     }
 
     private allCurrenciesLoaded(): boolean {
-        return Object.values(this.loadingStatus).every((value: boolean): boolean => value);
+        return Object.values(this.loadingStatus).every(
+            (value: boolean): boolean => value,
+        );
     }
 
     private initialCurrenciesLoaded(): boolean {
         const initialIds: number[] = this.currencyIds.slice(0, 10);
-        return initialIds.every((id: number): boolean => this.loadingStatus[id]);
+        return initialIds.every(
+            (id: number): boolean => this.loadingStatus[id],
+        );
     }
 
     private initializeCurrencies(): void {

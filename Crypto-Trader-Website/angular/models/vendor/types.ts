@@ -1,3 +1,3 @@
-import {VendorOption} from "./VendorOption";
+import { type VendorOption } from './VendorOption';
 
 export type PossibleVendor = VendorOption | null;

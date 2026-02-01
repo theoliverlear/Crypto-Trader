@@ -1,35 +1,35 @@
 // portfolio-chart.component.ts
 import {
+    AfterViewInit,
     Component,
     ElementRef,
     Input,
+    OnChanges,
     SimpleChanges,
-    ViewChild
-} from "@angular/core";
-import {Margin, SparkPoint} from "../../../../models/chart/types";
-import * as d3 from "d3";
-import {
-    CurrencyFormatterService
-} from "../../../../services/ui/currency-formatter.service";
+    ViewChild,
+} from '@angular/core';
+import * as d3 from 'd3';
+
+import { CurrencyFormatterService } from '@ui/currency-formatter.service';
+import { Margin, SparkPoint } from '@models/chart/types';
 
 @Component({
     selector: 'portfolio-chart',
     templateUrl: './portfolio-chart.component.html',
     styleUrls: ['./portfolio-chart.component.scss'],
-    standalone: false
+    standalone: false,
 })
-export class PortfolioChartComponent {
+export class PortfolioChartComponent implements OnChanges, AfterViewInit {
     @Input() data: SparkPoint[] = [];
     @Input() width: number = 120;
     @Input() height: number = 40;
     @Input() stroke: string = '#4caf50';
     @Input() strokeWidth: number = 2.0;
-    @Input() margin: Margin = {top: 20, right: 20, bottom: 20, left: 20};
+    @Input() margin: Margin = { top: 20, right: 20, bottom: 20, left: 20 };
 
-    @ViewChild('svgElement', { static: true }) chartReference!: ElementRef<SVGSVGElement>;
-    constructor(private currencyFormatter: CurrencyFormatterService) {
-
-    }
+    @ViewChild('svgElement', { static: true })
+    chartReference!: ElementRef<SVGSVGElement>;
+    constructor(private currencyFormatter: CurrencyFormatterService) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['data']) {
@@ -52,36 +52,59 @@ export class PortfolioChartComponent {
         this.resetSVG(svgElement);
         this.setDimensions(svgElement);
 
-        const graphic: any = d3.select(svgElement)
+        const graphic: any = d3
+            .select(svgElement)
             .append('g')
-            .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
+            .attr(
+                'transform',
+                `translate(${this.margin.left},${this.margin.top})`,
+            );
 
         if (!this.data || this.data.length === 0) {
             return;
         }
 
-        const parsed: {date: Date; value: number}[] = this.data.map(point => ({
-            date: point.date instanceof Date ? point.date : new Date(point.date),
-            value: point.value
-        })).filter(date => !isNaN((date.date as Date).getTime()));
+        const parsed: { date: Date; value: number }[] = this.data
+            .map((point) => ({
+                date:
+                    point.date instanceof Date
+                        ? point.date
+                        : new Date(point.date),
+                value: point.value,
+            }))
+            .filter((date) => !isNaN(date.date.getTime()));
         if (parsed.length === 0) {
             return;
         }
 
-        const xAxis: any = d3.scaleTime()
-            .domain(d3.extent(parsed, (d: {date: Date; value: number}) => d.date) as [Date, Date])
+        const xAxis: any = d3
+            .scaleTime()
+            .domain(
+                d3.extent(
+                    parsed,
+                    (d: { date: Date; value: number }) => d.date,
+                ) as [Date, Date],
+            )
             .range([0, width]);
-        const yAxis: any = d3.scaleLinear()
-            .domain(d3.extent(parsed, (d: {date: Date; value: number}) => d.value) as [number, number])
+        const yAxis: any = d3
+            .scaleLinear()
+            .domain(
+                d3.extent(
+                    parsed,
+                    (d: { date: Date; value: number }) => d.value,
+                ) as [number, number],
+            )
             .nice()
             .range([height, 0]);
 
-        const line = d3.line()
-            .x((d: any) => xAxis((d as any).date))
-            .y((d: any) => yAxis((d as any).value))
-            .defined((d: any) => Number.isFinite((d as any).value));
+        const line = d3
+            .line()
+            .x((d: any) => xAxis(d.date))
+            .y((d: any) => yAxis(d.value))
+            .defined((d: any) => Number.isFinite(d.value));
 
-        graphic.append('path')
+        graphic
+            .append('path')
             .datum(parsed as any)
             .attr('fill', 'none')
             .attr('stroke', this.stroke)
@@ -92,7 +115,8 @@ export class PortfolioChartComponent {
         const labelPadTopEm: number = 1.4;
         const labelPadBottomEm: number = -0.5;
 
-        graphic.append('text')
+        graphic
+            .append('text')
             .attr('x', width)
             .attr('y', yAxis(yMax))
             .attr('dx', '-6')
@@ -102,7 +126,8 @@ export class PortfolioChartComponent {
             .attr('font-size', 10)
             .text(this.currencyFormatter.formatCurrency(yMax));
 
-        graphic.append('text')
+        graphic
+            .append('text')
             .attr('x', width)
             .attr('y', yAxis(yMin))
             .attr('dx', '-6')
@@ -111,7 +136,6 @@ export class PortfolioChartComponent {
             .attr('fill', '#9aa0a6')
             .attr('font-size', 10)
             .text(this.currencyFormatter.formatCurrency(yMin));
-
     }
 
     private setDimensions(svgElement: SVGSVGElement) {

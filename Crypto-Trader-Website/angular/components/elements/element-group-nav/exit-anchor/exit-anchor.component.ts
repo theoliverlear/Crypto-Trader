@@ -1,26 +1,25 @@
 // exit-anchor.component.ts
-import {Component, HostListener} from "@angular/core";
-import {exitIcon} from "../../../../assets/imageAssets";
-import {homeElementLink} from "../../../../assets/elementLinkAssets";
-import {LogoutService} from "../../../../services/net/http/auth/access/logout.service";
-import {
-    TokenStorageService
-} from "../../../../services/auth/token-storage.service";
-import {AuthResponse} from "../../../../models/auth/types";
-import {Router} from "@angular/router";
+import { Component, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { homeElementLink } from '@assets/elementLinkAssets';
+import { exitIcon } from '@assets/imageAssets';
+import { LogoutService } from '@http/auth/access/logout.service';
+import { TokenStorageService } from '@auth/token-storage.service';
+import { AuthResponse } from '@models/auth/types';
 
 @Component({
     selector: 'exit-anchor',
     templateUrl: './exit-anchor.component.html',
     styleUrls: ['./exit-anchor.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class ExitAnchorComponent {
-    constructor(private logoutService: LogoutService,
-                private tokenStorageService: TokenStorageService,
-                private router: Router) {
-        
-    }
+    constructor(
+        private logoutService: LogoutService,
+        private tokenStorageService: TokenStorageService,
+        private router: Router,
+    ) {}
 
     @HostListener('click')
     onClick() {
@@ -44,10 +43,10 @@ export class ExitAnchorComponent {
                 this.router.navigate(['/authorize']).then(() => {
                     console.log('Logout complete');
                 });
-            }
+            },
         });
     }
-    
+
     protected readonly exitIcon = exitIcon;
     protected readonly homeElementLink = homeElementLink;
 }

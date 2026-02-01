@@ -1,18 +1,18 @@
 <!--===============================-Nav-Bar-===============================-->
 <ng-container>
     <nav>
-        <home-anchor/>
+        <home-anchor />
         <div class="nav-items-div">
             @for (navBarItem of NavBarItemOption.values(); track navBarItem) {
-                <nav-bar-item [navBarItemOption]="navBarItem"/>
+                <nav-bar-item [navBarItemOption]="navBarItem" />
             }
         </div>
         @if (isLoggedIn) {
-            <exit-anchor/>
+            <exit-anchor />
         }
-<!--        TODO: Add a conditional nav item for pro and elite users special
+        <!--        TODO: Add a conditional nav item for pro and elite users special
                   panel.-->
-        <nav-console/>
-        <nav-bar-profile-picture/>
+        <nav-console />
+        <nav-bar-profile-picture />
     </nav>
 </ng-container>

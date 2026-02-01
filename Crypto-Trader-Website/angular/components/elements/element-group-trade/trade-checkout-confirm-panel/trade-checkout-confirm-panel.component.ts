@@ -1,6 +1,7 @@
 // trade-checkout-confirm-panel.component.ts
-import { Component, Input } from "@angular/core";
-import {DisplayCurrency} from "../../../../models/currency/types";
+import { Component, Input } from '@angular/core';
+
+import { DisplayCurrency } from '@models/currency/types';
 
 @Component({
     selector: 'trade-checkout-confirm-panel',
@@ -12,7 +13,5 @@ export class TradeCheckoutConfirmPanelComponent {
     @Input() numDollars: number;
     @Input() numShares: number;
     @Input() displayCurrency: DisplayCurrency;
-    constructor() {
-        
-    }
+    constructor() {}
 }

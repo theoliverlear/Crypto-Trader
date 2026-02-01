@@ -1,56 +1,76 @@
 // home.component.scss
-@use "../../../styles/globals" as *;
-@use "../../../styles/gradients/global_gradient_placeholders" as *;
-@use "../../../styles/gradients/global_gradient_variables" as *;
-@use "../../../styles/gradients/global_gradient_mixins" as *;
+@use '../../../styles/globals' as *;
+@use '../../../styles/gradients/global_gradient_placeholders' as *;
+@use '../../../styles/gradients/global_gradient_variables' as *;
+@use '../../../styles/gradients/global_gradient_mixins' as *;
 
 home {
     ss-anchor.home-buttons {
         background-color: add-alpha-opaque($sunbeam-yellow, 0.5, $pure-white);
         max-height: $three-half-percent;
         padding: $quarter-percent $one-percent;
+
         &:hover {
             $box-shadow-size: simplest-calc(0.25);
-            box-shadow: add-alpha-opaque($sunbeam-yellow, 0.75, $pure-white) $box-shadow-size $box-shadow-size 0 0;
+            box-shadow: add-alpha-opaque($sunbeam-yellow, 0.75, $pure-white)
+                $box-shadow-size $box-shadow-size 0 0;
             cursor: pointer;
         }
+
         &:active {
             box-shadow: none;
+
             $top-and-right: simplest-calc(0.25);
             transform: translate($top-and-right, $top-and-right);
         }
     }
+
     .intro-text-div {
         @include flex(space-around, center, column);
+
         ss-paragraph {
             width: 60%;
-            background-color: add-alpha-opaque($muted-blue, 1 - 0.015, $pure-white);
+            background-color: add-alpha-opaque(
+                $muted-blue,
+                1 - 0.015,
+                $pure-white
+            );
             margin: $half-percent;
         }
-
     }
+
     .intro-stripe {
         @include flex(space-around, center, row);
         background-color: transparent;
-        background-image: linear-gradient(to right, $muted-blue 50%, $blue-gray);
+        background-image: linear-gradient(
+            to right,
+            $muted-blue 50%,
+            $blue-gray
+        );
+
         .title-text-div {
             @include flex(center, center, column);
-            //width: 50%;
+
+            // width: 50%;
             padding: $one-percent 0;
+
             ss-title#crypto-trader-name-title {
                 @include gradient-text($regular-logo);
-                text-shadow: add-alpha(black, 0.1) $quarter-percent $quarter-percent;
+                text-shadow: add-alpha(black, 0.1) $quarter-percent
+                    $quarter-percent;
+
                 h1 {
                     font-size: calc($h1-font-size * 1.5);
                 }
             }
 
             subtitle {
-                //align-self: flex-end;
-                //margin-left: $fifteen-percent;
+                // align-self: flex-end;
+                // margin-left: $fifteen-percent;
                 color: $alabaster-stone;
             }
         }
+
         ss-img {
             @include square-size($twelve-percent);
         }

@@ -1,8 +1,9 @@
 import 'zone.js/testing';
+
 import { getTestBed } from '@angular/core/testing';
 import {
     BrowserDynamicTestingModule,
-    platformBrowserDynamicTesting
+    platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
 
 // TODO: This generated code needs cleaning up. Works, but is not optimal.
@@ -10,12 +11,13 @@ import {
 
 getTestBed().initTestEnvironment(
     BrowserDynamicTestingModule,
-    platformBrowserDynamicTesting()
+    platformBrowserDynamicTesting(),
 );
 
 (function loadSpecs() {
     const hasRequireContext =
-        typeof require !== 'undefined' && typeof (require as any).context === 'function';
+        typeof require !== 'undefined' &&
+        typeof (require as any).context === 'function';
 
     // Helper to iterate keys and require each module
     const loadFrom = (ctx: any) => {
@@ -29,11 +31,13 @@ getTestBed().initTestEnvironment(
         // webpackContext(base, options)
         const context = (import.meta as any).webpackContext('./', {
             recursive: true,
-            regExp: /\.spec\.ts$/
+            regExp: /\.spec\.ts$/,
         });
         loadFrom(context);
     } else {
-        throw new Error('No compatible test context loader found (require.context/import.meta.webpackContext).');
+        throw new Error(
+            'No compatible test context loader found (require.context/import.meta.webpackContext).',
+        );
     }
 })();
 
@@ -46,8 +50,12 @@ getTestBed().initTestEnvironment(
 
     jasmine.getEnv().addReporter({
         specDone(result) {
-            const icon = result.status === 'passed' ? `${GREEN}✓${RESET}` :
-                result.status === 'failed' ? `${RED}✗${RESET}` : `${YELLOW}•${RESET}`;
+            const icon =
+                result.status === 'passed'
+                    ? `${GREEN}✓${RESET}`
+                    : result.status === 'failed'
+                      ? `${RED}✗${RESET}`
+                      : `${YELLOW}•${RESET}`;
             console.log(`${icon} ${result.fullName}`);
             if (result.failedExpectations?.length) {
                 for (const f of result.failedExpectations) {
@@ -57,6 +65,6 @@ getTestBed().initTestEnvironment(
                     }
                 }
             }
-        }
+        },
     });
 })();

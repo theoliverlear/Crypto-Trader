@@ -1,73 +1,107 @@
-// auth-console-signup-section.component.ts 
-import {Component, EventEmitter, Output} from "@angular/core";
-import {AuthInputType} from "../auth-input/models/AuthInputType";
+// auth-console-signup-section.component.ts
+import { Component, EventEmitter, Output } from '@angular/core';
+
 import {
     AuthPopup,
     ButtonText,
-    ElementSize
-} from "@theoliverlear/angular-suite";
-import {SignupCredentials} from "../../../../models/auth/SignupCredentials";
+    ElementSize,
+} from '@theoliverlear/angular-suite';
+import { SignupCredentials } from '@models/auth/SignupCredentials';
 
+import { AuthInputType } from '../auth-input/models/AuthInputType';
+
+/** A section for signup up in the auth console.
+ *
+ */
 @Component({
     selector: 'auth-console-signup-section',
     standalone: false,
     templateUrl: './auth-console-signup-section.component.html',
-    styleUrls: ['./auth-console-signup-section.component.scss']
+    styleUrls: ['./auth-console-signup-section.component.scss'],
 })
 export class AuthConsoleSignupSectionComponent {
-    signupCredentials: SignupCredentials = new SignupCredentials();
-    @Output() signupButtonClicked: EventEmitter<SignupCredentials> = new EventEmitter<SignupCredentials>();
-    @Output() authPopupEvent: EventEmitter<AuthPopup> = new EventEmitter<AuthPopup>();
-    constructor() {
-        
-    }
-    
-    emitAuthPopup(authPopup: AuthPopup): void {
+    protected signupCredentials: SignupCredentials = new SignupCredentials();
+    @Output() protected signupButtonClicked: EventEmitter<SignupCredentials> =
+        new EventEmitter<SignupCredentials>();
+    @Output() protected authPopupEvent: EventEmitter<AuthPopup> =
+        new EventEmitter<AuthPopup>();
+    constructor() {}
+
+    /** Emits an authorization popup event to the parent component.
+     *
+     * @param authPopup
+     */
+    protected emitAuthPopup(authPopup: AuthPopup): void {
         this.authPopupEvent.emit(authPopup);
     }
-    
-    updateAgreedTerms(agree: string): void {
+
+    /** Updates the agreed terms checkbox.
+     *
+     * @param agree
+     */
+    protected updateAgreedTerms(agree: string): void {
         this.signupCredentials.agreedTerms = Boolean(agree);
     }
 
-    updateEmail(email: string): void {
+    /** Updates the email input.
+     *
+     * @param email
+     */
+    protected updateEmail(email: string): void {
         this.signupCredentials.email = email;
         this.emitPossibleInvalidEmail();
     }
 
-    private emitPossibleInvalidEmail() {
+    /** Emits an authorization popup event if the email is invalid.
+     *
+     * @private
+     */
+    private emitPossibleInvalidEmail(): void {
         if (!this.signupCredentials.isValidEmail()) {
-            console.log("Invalid email");
+            console.log('Invalid email');
             this.emitAuthPopup(AuthPopup.INVALID_EMAIL);
         } else {
             this.emitAuthPopup(this.signupCredentials.getAnyTypingIssue());
         }
     }
 
-    updatePassword(password: string): void {
+    /** Updates the password input.
+     *
+     * @param password
+     */
+    protected updatePassword(password: string): void {
         this.signupCredentials.password = password;
         this.emitPossibleMismatch();
     }
 
+    /** Emits an authorization popup event if the passwords don't match.
+     *
+     * @private
+     */
     private emitPossibleMismatch(): void {
         if (!this.signupCredentials.isPasswordMatch()) {
-            console.log("Invalid password");
             this.emitAuthPopup(AuthPopup.PASSWORDS_DONT_MATCH);
         } else {
             this.emitAuthPopup(this.signupCredentials.getAnyTypingIssue());
         }
     }
 
-    updateConfirmPassword(confirmPassword: string): void {
+    /** Updates the confirm password input.
+     *
+     * @param confirmPassword
+     */
+    protected updateConfirmPassword(confirmPassword: string): void {
         this.signupCredentials.confirmPassword = confirmPassword;
         this.emitPossibleMismatch();
     }
-    emitFields(): void {
+    /** Emits all signup credentials to the parent component.
+     *
+     */
+    protected emitFields(): void {
         this.signupButtonClicked.emit(this.signupCredentials);
     }
 
-
-    protected readonly AuthInputType = AuthInputType;
-    protected readonly ElementSize = ElementSize;
-    protected readonly ButtonText = ButtonText;
+    protected readonly AuthInputType: typeof AuthInputType = AuthInputType;
+    protected readonly ElementSize: typeof ElementSize = ElementSize;
+    protected readonly ButtonText: typeof ButtonText = ButtonText;
 }

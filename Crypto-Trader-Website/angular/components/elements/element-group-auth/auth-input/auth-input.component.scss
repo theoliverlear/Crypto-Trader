@@ -1,20 +1,23 @@
 // auth-input-style.component.scss
-@use "../../../../styles/globals" as *;
-
+@use '../../../../styles/globals' as *;
 
 auth-input {
     @include flex(center, center, row);
     width: 100%;
     margin: $one-percent 0;
+
     @extend %soft-border-radius;
+
     ss-title.auth-input-title {
         @include flex(flex-start, center, row);
         text-align: left;
         flex: 1;
+
         h5 {
-           font-size: calc($h5-font-size * 0.9);
+            font-size: calc($h5-font-size * 0.9);
         }
     }
+
     ss-input {
         flex: 1;
     }

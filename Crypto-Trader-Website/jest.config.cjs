@@ -18,9 +18,9 @@ module.exports = {
             {
                 useESM: true,
                 tsconfig: '<rootDir>/tsconfig.json',
-                isolatedModules: true
-            }
-        ]
+                isolatedModules: true,
+            },
+        ],
     },
     extensionsToTreatAsEsm: ['.ts'],
     moduleNameMapper: {
@@ -33,14 +33,14 @@ module.exports = {
         'src/app/**/*.ts',
         '!src/app/**/*.spec.ts',
         '!src/app/**/*.module.ts',
-        '!src/environments/**'
+        '!src/environments/**',
     ],
     coverageThreshold: {
         global: {
             statements: 80,
             branches: 70,
             functions: 80,
-            lines: 80
-        }
-    }
+            lines: 80,
+        },
+    },
 };

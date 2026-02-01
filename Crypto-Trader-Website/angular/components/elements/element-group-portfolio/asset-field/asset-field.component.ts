@@ -1,72 +1,85 @@
 // asset-field.component.ts
- import {
+import {
     Component,
     EventEmitter,
     HostBinding,
     Input,
-    Output
-} from "@angular/core";
-import {PortfolioAssetFieldType} from "./models/PortfolioAssetFieldType";
-import {TagType} from "@theoliverlear/angular-suite";
-import {PortfolioAsset} from "../../../../models/portfolio/types";
-import {
-    SharesFormatterService
-} from "../../../../services/ui/shares-formatter.service";
-import {
-    CurrencyFormatterService
-} from "../../../../services/ui/currency-formatter.service";
-import {
-    TimeFormatterService
-} from "../../../../services/ui/time-formatter.service";
-import {AssetFieldSortType} from "../../../../models/sort/types";
-import {SimpleSortState} from "../../../../models/sort/SimpleSortState";
+    Output,
+} from '@angular/core';
+
+import { TagType } from '@theoliverlear/angular-suite';
+import { CurrencyFormatterService } from '@ui/currency-formatter.service';
+import { SharesFormatterService } from '@ui/shares-formatter.service';
+import { TimeFormatterService } from '@ui/time-formatter.service';
+import { PortfolioAsset } from '@models/portfolio/types';
+import { SimpleSortState } from '@models/sort/SimpleSortState';
+import { AssetFieldSortType } from '@models/sort/types';
+
+import { PortfolioAssetFieldType } from './models/PortfolioAssetFieldType';
 
 @Component({
     selector: 'asset-field',
     templateUrl: './asset-field.component.html',
     styleUrls: ['./asset-field.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class AssetFieldComponent {
     @Input() fieldType: PortfolioAssetFieldType;
     @Input() asset: PortfolioAsset;
     @Input() showFieldTitle: boolean = true;
-    @Input() currentSort: AssetFieldSortType = [PortfolioAssetFieldType.CURRENCY_NAME, SimpleSortState.NONE];
-    @Output() onSortClick: EventEmitter<AssetFieldSortType> = new EventEmitter<AssetFieldSortType>();
-    @HostBinding("class.highlighted-field") get isHighlighted(): boolean {
-        return this.fieldType === PortfolioAssetFieldType.TOTAL_VALUE ||
-               this.fieldType === PortfolioAssetFieldType.SHARES;
+    @Input() currentSort: AssetFieldSortType = [
+        PortfolioAssetFieldType.CURRENCY_NAME,
+        SimpleSortState.NONE,
+    ];
+    @Output() onSortClick: EventEmitter<AssetFieldSortType> =
+        new EventEmitter<AssetFieldSortType>();
+    @HostBinding('class.highlighted-field') get isHighlighted(): boolean {
+        return (
+            this.fieldType === PortfolioAssetFieldType.TOTAL_VALUE ||
+            this.fieldType === PortfolioAssetFieldType.SHARES
+        );
     }
-    constructor(private sharesFormatter: SharesFormatterService,
-                private currencyFormatter: CurrencyFormatterService,
-                private timeFormatter: TimeFormatterService) {
-
-    }
+    constructor(
+        private sharesFormatter: SharesFormatterService,
+        private currencyFormatter: CurrencyFormatterService,
+        private timeFormatter: TimeFormatterService,
+    ) {}
 
     getFieldText(): string {
         switch (this.fieldType) {
             case PortfolioAssetFieldType.CURRENCY_NAME:
                 return this.getCurrencyName();
             case PortfolioAssetFieldType.SHARES:
-                return this.sharesFormatter.formatShares(this.asset.shares,
-                    this.asset.currencyCode);
+                return this.sharesFormatter.formatShares(
+                    this.asset.shares,
+                    this.asset.currencyCode,
+                );
             case PortfolioAssetFieldType.TARGET_PRICE:
-                return this.currencyFormatter.formatCurrency(this.asset.targetPrice);
+                return this.currencyFormatter.formatCurrency(
+                    this.asset.targetPrice,
+                );
             case PortfolioAssetFieldType.LAST_UPDATED:
                 return this.getFormattedLastUpdated();
             case PortfolioAssetFieldType.VENDOR_NAME:
                 return this.asset.vendorName;
             case PortfolioAssetFieldType.TOTAL_VALUE:
-                return this.currencyFormatter.formatCurrency(this.asset.totalValueInDollars);
+                return this.currencyFormatter.formatCurrency(
+                    this.asset.totalValueInDollars,
+                );
             default:
-                throw new Error("Unknown PortfolioAssetFieldType: " + this.fieldType);
+                throw new Error(
+                    'Unknown PortfolioAssetFieldType: ' + this.fieldType,
+                );
         }
     }
 
     emitSortClick(sortState: SimpleSortState): void {
-        this.onSortClick.emit([this.fieldType, sortState] as AssetFieldSortType);
+        this.onSortClick.emit([
+            this.fieldType,
+            sortState,
+        ] as AssetFieldSortType);
     }
-    
+
     getCurrentIconState(): SimpleSortState {
         if (!this.currentSort) {
             return SimpleSortState.NONE;
@@ -77,13 +90,15 @@ export class AssetFieldComponent {
             return SimpleSortState.NONE;
         }
     }
-    
+
     private getCurrencyName(): string {
-        return this.asset.currencyName + " (" + this.asset.currencyCode + ")";
+        return this.asset.currencyName + ' (' + this.asset.currencyCode + ')';
     }
 
     private getFormattedLastUpdated() {
-        return this.timeFormatter.formatTime(this.asset.lastUpdated).replace(",", "");
+        return this.timeFormatter
+            .formatTime(this.asset.lastUpdated)
+            .replace(',', '');
     }
 
     protected readonly TagType = TagType;

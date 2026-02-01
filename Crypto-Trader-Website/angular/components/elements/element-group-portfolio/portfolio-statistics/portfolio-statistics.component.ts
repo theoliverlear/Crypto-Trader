@@ -1,14 +1,12 @@
 // portfolio-statistics.component.ts
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'portfolio-stats',
     templateUrl: './portfolio-statistics.component.html',
     styleUrls: ['./portfolio-statistics.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class PortfolioStatisticsComponent {
-    constructor() {
-        
-    }
+    constructor() {}
 }

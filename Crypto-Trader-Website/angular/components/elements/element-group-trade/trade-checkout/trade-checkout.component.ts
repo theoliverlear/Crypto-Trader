@@ -1,17 +1,17 @@
 // trade-checkout.component.ts
-import {Component, Input} from "@angular/core";
-import {DisplayCurrency} from "../../../../models/currency/types";
-import {BuyType} from "../buy-type/models/BuyType";
-import {ElementSize, InputType, TagType} from "@theoliverlear/angular-suite";
-import {
-    CurrencyFormatterService
-} from "../../../../services/ui/currency-formatter.service";
+import { Component, Input } from '@angular/core';
+
+import { ElementSize, InputType, TagType } from '@theoliverlear/angular-suite';
+import { CurrencyFormatterService } from '@ui/currency-formatter.service';
+import { DisplayCurrency } from '@models/currency/types';
+
+import { BuyType } from '../buy-type/models/BuyType';
 
 @Component({
     selector: 'trade-checkout',
     templateUrl: './trade-checkout.component.html',
     styleUrls: ['./trade-checkout.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class TradeCheckoutComponent {
     @Input() displayCurrency: DisplayCurrency;
@@ -20,9 +20,7 @@ export class TradeCheckoutComponent {
     numFeeDollars: number = 0;
     protected buyType: BuyType = BuyType.DOLLARS;
     protected showCheckoutPanel: boolean = false;
-    constructor(private currencyFormatter: CurrencyFormatterService) {
-        
-    }
+    constructor(private currencyFormatter: CurrencyFormatterService) {}
 
     protected readonly ElementSize = ElementSize;
     protected readonly InputType = InputType;

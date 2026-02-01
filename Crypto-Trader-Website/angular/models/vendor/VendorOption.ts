@@ -1,14 +1,14 @@
 import {
     binanceBrandLogo,
     coinbaseBrandLogo,
-    ImageAsset,
-    paperIcon
-} from "../../assets/imageAssets";
+    paperIcon,
+    type ImageAsset,
+} from '@assets/imageAssets';
 
 export enum VendorOption {
-    PAPER_MODE = "Paper Mode",
-    COINBASE = "Coinbase",
-    BINANCE = "Binance",
+    PAPER_MODE = 'Paper Mode',
+    COINBASE = 'Coinbase',
+    BINANCE = 'Binance',
 }
 export namespace VendorOption {
     export function from(value: string): VendorOption {
@@ -34,7 +34,7 @@ export namespace VendorOption {
         return [
             VendorOption.PAPER_MODE,
             VendorOption.COINBASE,
-            VendorOption.BINANCE
+            VendorOption.BINANCE,
         ];
     }
 }

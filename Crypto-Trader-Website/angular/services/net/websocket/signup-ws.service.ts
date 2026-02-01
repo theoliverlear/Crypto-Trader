@@ -1,7 +1,8 @@
-import {Injectable} from "@angular/core";
-import {WebSocketService} from "@theoliverlear/angular-suite";
-import {AuthResponse, SignupRequest} from "../../../models/auth/types";
-import {environment} from "../../../environments/environment";
+import { Injectable } from '@angular/core';
+
+import { WebSocketService } from '@theoliverlear/angular-suite';
+import { environment } from '@environments/environment';
+import { AuthResponse, SignupRequest } from '@models/auth/types';
 
 /**
  * WebSocket client for signup events/messages.
@@ -11,11 +12,14 @@ import {environment} from "../../../environments/environment";
  * auxiliary real-time flows and should not be used to transmit credentials in production.
  */
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
-export class SignupWebSocketService extends WebSocketService<SignupRequest, AuthResponse> {
+export class SignupWsService extends WebSocketService<
+    SignupRequest,
+    AuthResponse
+> {
     private static readonly URL: string = `${environment.websocketUrl}/signup`;
     constructor() {
-        super(SignupWebSocketService.URL);
+        super(SignupWsService.URL);
     }
 }

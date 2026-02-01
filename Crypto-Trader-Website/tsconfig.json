@@ -1,29 +1,43 @@
 {
-  "compilerOptions": {
-    "lib": ["dom", "es2018"],
-    "outDir": "./",
-    "rootDir": "./",
-    "noImplicitAny": true,
-    "strictNullChecks": false,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "target": "es6",
-    "allowJs": false,
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "skipLibCheck": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
-  },
-  "include": ["./angular/**/*.ts"],
-  "exclude": [
-    "./node_modules",
-    "./Crypto-Trader-Api/src/main/resources/static/script/bundle.js",
-    "./angular/**/*.js",
-    "./angular/**/*.d.ts"
-  ],
-  "angularCompilerOptions": {
-    "enableIvy": true
-  }
+    "compilerOptions": {
+        "lib": ["dom", "es2018"],
+        "outDir": "./",
+        "rootDir": "./",
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "baseUrl": "./",
+        "paths": {
+            "@app/*": ["angular/*"],
+            "@services/*": ["angular/services/*"],
+            "@assets/*": ["angular/assets/*"],
+            "@components/*": ["angular/components/*"],
+            "@environments/*": ["angular/environments/*"],
+            "@ws/*": ["angular/services/net/websocket/*"],
+            "@http/*": ["angular/services/net/http/*"],
+            "@ui/*": ["angular/services/ui/*"],
+            "@auth/*": ["angular/services/auth/*"],
+            "@guards/*": ["angular/services/guard/*"],
+            "@models/*": ["angular/models/*"]
+        },
+        "module": "esnext",
+        "target": "es6",
+        "allowJs": false,
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "skipLibCheck": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
+    },
+    "include": ["./angular/**/*.ts", "./setup-jest.ts"],
+    "exclude": [
+        "./node_modules",
+        "./Crypto-Trader-Api/src/main/resources/static/script/bundle.js",
+        "./angular/**/*.js",
+        "./angular/**/*.d.ts"
+    ],
+    "angularCompilerOptions": {
+        "enableIvy": true
+    }
 }

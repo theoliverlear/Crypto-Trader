@@ -1,7 +1,6 @@
-@use "./global_gradient_variables" as *;
-@use "./global_gradient_mixins" as *;
-@use "../globals" as *;
-
+@use './global_gradient_variables' as *;
+@use './global_gradient_mixins' as *;
+@use '../globals' as *;
 
 %light-logo-gradient {
     background-image: $light-logo;
@@ -9,7 +8,7 @@
 
 %light-logo-gradient-text {
     background: $light-logo-webkit;
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     -webkit-text-stroke: 2px add-alpha(black, 0.1);
 }
@@ -20,7 +19,7 @@
 
 %regular-logo-gradient-text {
     background: $regular-logo-webkit;
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     -webkit-text-stroke: 2px add-alpha(black, 0.1);
 }
@@ -32,12 +31,14 @@
 
 %signature-brand-gradient-text-small-reflection {
     @include gradient-text($regular-logo);
+
     $shadow-offset: calc(#{$quarter-percent} / 2);
     text-shadow: add-alpha(black, 0.1) $shadow-offset $shadow-offset;
 }
 
 %signature-brand-gradient-text-smallest-reflection {
     @include gradient-text($regular-logo);
+
     $shadow-offset: calc(#{$quarter-percent} / 4);
     text-shadow: add-alpha(black, 0.1) $shadow-offset $shadow-offset;
 }

@@ -1,4 +1,4 @@
-import {SwipeDirection} from "./models/SwipeDirection";
+import { type SwipeDirection } from './models/SwipeDirection';
 
 export interface SwipeEvent {
     direction: SwipeDirection;

@@ -1,15 +1,24 @@
+;
 /**
  * HTTP interceptor that attaches DPoP-bound Authorization headers to outgoing requests,
  * triggers proactive/reactive refresh, and ensures credentials are only sent to refresh/logout.
  */
-import {inject} from '@angular/core';
-import {HttpInterceptorFn, HttpRequest, HttpHandlerFn, HttpHeaders} from '@angular/common/http';
-import {from, Observable, of, switchMap, catchError, shareReplay, finalize} from 'rxjs';
-import {TokenStorageService} from '../auth/token-storage.service';
-import {DpopProofService} from '../auth/dpop/dpop-proof.service';
-import {TokenRefreshService} from "../net/http/auth/token/token-refresh.service";
-import {PossibleStringObservable} from "./types";
-import {PossibleString} from "../../models/types";
+import { HttpEvent, type HttpInterceptorFn, type HttpRequest } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { catchError, finalize, from, of, shareReplay, switchMap, type Observable } from 'rxjs';
+
+
+
+import { TokenRefreshService } from '@http/auth/token/token-refresh.service';
+import { DpopProofService } from '@auth/dpop/dpop-proof.service';
+import { TokenStorageService } from '@auth/token-storage.service';
+import { PossibleToken } from '@models/auth/types';
+import { type PossibleString } from '@models/types';
+
+
+
+import { type PossibleStringObservable } from './types';
+
 
 let refreshInFlight$: PossibleStringObservable = null;
 
@@ -22,9 +31,9 @@ function isExpired(token: PossibleString): boolean {
         return true;
     }
     try {
-        let decodedToken: string = atob(token.split('.')[1]
-                                             .replace(/-/g, '+')
-                                             .replace(/_/g, '/'));
+        const decodedToken: string = atob(
+            token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'),
+        );
         const payload: any = JSON.parse(decodedToken);
         const exponent: number = (payload?.exp ?? 0) * 1000;
         const skew: number = 5000; // 5s skew
@@ -39,23 +48,25 @@ function absoluteUrl(request: HttpRequest<any>): string {
     return request.urlWithParams;
 }
 
-function withDpopHeaders(request: HttpRequest<any>,
-                         dpopProofService: DpopProofService,
-                         token?: string): Observable<HttpRequest<any>> {
+function withDpopHeaders(
+    request: HttpRequest<any>,
+    dpopProofService: DpopProofService,
+    token?: string,
+): Observable<HttpRequest<any>> {
     const url: string = absoluteUrl(request);
     return from(dpopProofService.buildProof(request.method, url, token)).pipe(
-        switchMap((proof: string) => {
+        switchMap((proof: string): Observable<HttpRequest<any>> => {
             const headers: { [name: string]: string } = {
-                'DPoP': proof 
+                DPoP: proof,
             };
             if (token) {
                 headers['Authorization'] = `DPoP ${token}`;
             }
-            const cloned: HttpRequest<any> = request.clone({ 
-                setHeaders: headers 
+            const cloned: HttpRequest<any> = request.clone({
+                setHeaders: headers,
             });
             return of(cloned);
-        })
+        }),
     );
 }
 
@@ -65,11 +76,12 @@ function withDpopHeaders(request: HttpRequest<any>,
  * - Sends withCredentials only for refresh/logout endpoints
  * - Performs proactive refresh near expiry and reactive refresh on 401 (single-flight)
  */
-export const authInterceptor: HttpInterceptorFn = (request, next) => {
+export const authInterceptor: HttpInterceptorFn = (request, next): Observable<any> => {
     const tokenStore: TokenStorageService = inject(TokenStorageService);
     const dpopProofService: DpopProofService = inject(DpopProofService);
-    const tokenRefreshService: TokenRefreshService = inject(TokenRefreshService);
-    
+    const tokenRefreshService: TokenRefreshService =
+        inject(TokenRefreshService);
+
     const isAuthLogin: boolean = /\/auth\/login$/.test(request.url);
     const isAuthRefresh: boolean = /\/auth\/refresh$/.test(request.url);
     const isAuthLogout: boolean = /\/auth\/logout$/.test(request.url);
@@ -77,64 +89,81 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
 
     // Ensure refresh/logout send credentials for HttpOnly cookie
     if (isAuthRefresh || isAuthLogout) {
-        request = request.clone({ 
-            withCredentials: true 
+        request = request.clone({
+            withCredentials: true,
         });
     }
     // Skip adding Authorization for login endpoint
     if (isAuthLogin) {
         return next(request);
     }
-    
+
     // For status check, attach Bearer token (no DPoP) to allow lightweight auth
     if (isAuthStatus) {
-        const token: string = tokenStore.getToken();
+        const token: PossibleToken = tokenStore.getToken();
         if (token) {
-            const cloned = request.clone({ 
-                setHeaders: { 
-                    Authorization: `Bearer ${token}` 
-                } 
+            const cloned = request.clone({
+                setHeaders: {
+                    Authorization: `Bearer ${token}`,
+                },
             });
             return next(cloned);
         }
         return next(request);
     }
 
-    const token: string = tokenStore.getToken();
-    const proceed = (currentToken: PossibleString): Observable<any> => {
+    const token: PossibleToken = tokenStore.getToken();
+    const proceed = (currentToken: PossibleToken): Observable<any> => {
         // Always attach DPoP proof; include Authorization only when a token exists
-        return withDpopHeaders(request, dpopProofService, currentToken || undefined).pipe(
-            switchMap(requestWithHeaders => next(requestWithHeaders))
-        );
+        return withDpopHeaders(
+            request,
+            dpopProofService,
+            currentToken || undefined,
+        ).pipe(switchMap((requestWithHeaders): Observable<HttpEvent<unknown>> => next(requestWithHeaders)));
     };
-    
+
     // Proactive refresh
-    const shouldRefreshToken: boolean = token && isExpired(token) && !isAuthRefresh;
+    const shouldRefreshToken: boolean =
+        token !== null && isExpired(token) && !isAuthRefresh;
     if (shouldRefreshToken) {
         if (!refreshInFlight$) {
-            refreshInFlight$ = tokenRefreshService.refreshToken().pipe(shareReplay(1), finalize(() => {
-                return refreshInFlight$ = null;
-            }));
+            refreshInFlight$ = tokenRefreshService.refreshToken().pipe(
+                shareReplay(1),
+                finalize((): null => {
+                    return (refreshInFlight$ = null);
+                }),
+            );
         }
-        return refreshInFlight$.pipe(switchMap(newToken => proceed(newToken)));
+        return refreshInFlight$.pipe(
+            switchMap((newToken): Observable<any> => proceed(newToken)),
+        );
     }
 
     return proceed(token).pipe(
-        catchError(error => {
+        catchError((error): Observable<HttpEvent<unknown>> => {
             // Reactive refresh on 401 (once) except for logout endpoint
-            const isTokenRefreshNeeded: boolean = error?.status === 401 && !isAuthRefresh && !isAuthLogout;
+            const isTokenRefreshNeeded: boolean =
+                error?.status === 401 && !isAuthRefresh && !isAuthLogout;
             if (isTokenRefreshNeeded) {
                 if (!refreshInFlight$) {
-                    refreshInFlight$ = tokenRefreshService.refreshToken().pipe(shareReplay(1), finalize(() => {
-                        return refreshInFlight$ = null;
-                    }));
+                    refreshInFlight$ = tokenRefreshService.refreshToken().pipe(
+                        shareReplay(1),
+                        finalize((): null => {
+                            return (refreshInFlight$ = null);
+                        }),
+                    );
                 }
                 return refreshInFlight$.pipe(
-                    switchMap(newToken => withDpopHeaders(request, dpopProofService, newToken)),
-                    switchMap(cloned => next(cloned))
+                    switchMap((newToken): Observable<HttpRequest<any>> =>
+                        withDpopHeaders(request, dpopProofService, newToken),
+                    ),
+                    switchMap(
+                        (cloned): Observable<HttpEvent<unknown>> =>
+                            next(cloned),
+                    ),
                 );
             }
             throw error;
-        })
+        }),
     );
 };

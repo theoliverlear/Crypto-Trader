@@ -2,11 +2,13 @@
 <ng-container>
     <div class="field-list">
         @for (field of PortfolioAssetFieldType.values(); track field) {
-            <asset-field [fieldType]="field"
-                         [asset]="asset"
-                         [showFieldTitle]="showFieldTitles"
-                         [currentSort]="currentSort"
-                         (onSortClick)="emitSortClick($event)"/>
+            <asset-field
+                [fieldType]="field"
+                [asset]="asset"
+                [showFieldTitle]="showFieldTitles"
+                [currentSort]="currentSort"
+                (onSortClick)="emitSortClick($event)"
+            />
         }
     </div>
 </ng-container>

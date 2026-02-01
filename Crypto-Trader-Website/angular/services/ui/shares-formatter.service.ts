@@ -1,21 +1,19 @@
-import {Injectable} from "@angular/core";
+import { Injectable } from '@angular/core';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class SharesFormatterService {
-    constructor() {
-        
-    }
-    
+    constructor() {}
+
     public formatShares(shares: number, currencyCode: string): string {
         let numDecimals: number = 2;
         if (shares < 1) {
-            let sharesString: string = shares.toString().split(".")[1];
+            const sharesString: string = shares.toString().split('.')[1];
             if (sharesString !== undefined) {
                 numDecimals = sharesString.length;
                 for (let i = 0; i < numDecimals; i++) {
-                    if (sharesString[i] !== "0") {
+                    if (sharesString[i] !== '0') {
                         numDecimals = i + 1;
                         break;
                     }
@@ -24,10 +22,11 @@ export class SharesFormatterService {
         }
         const sharesFormatter = new Intl.NumberFormat('en-US', {
             style: 'decimal',
+            useGrouping: true,
             minimumFractionDigits: 0,
-            maximumFractionDigits: numDecimals
+            maximumFractionDigits: numDecimals,
         });
-        const sharesChange: number = sharesFormatter.format(shares) as unknown as number;
-        return sharesChange.toString() + " " + currencyCode.toUpperCase();
+        const sharesChange: string = sharesFormatter.format(shares);
+        return sharesChange + ' ' + currencyCode.toUpperCase();
     }
 }

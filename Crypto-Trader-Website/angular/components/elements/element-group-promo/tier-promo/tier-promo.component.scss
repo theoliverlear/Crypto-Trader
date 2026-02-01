@@ -1,37 +1,40 @@
 // tier-promo.component.scss
-@use "../../../../styles/globals" as *;
+@use '../../../../styles/globals' as *;
 
 tier-promo {
     @include flex(center, center, column);
     max-width: 30vw;
+
     @extend %soft-border-radius;
-    //background-color: $darker-black-shadow;
+
+    // background-color: $darker-black-shadow;
     margin: 0 $half-percent;
     padding: $one-percent $half-percent;
+
     ss-title {
         margin: $quarter-percent;
     }
+
     ss-paragraph {
         max-width: $twenty-percent;
     }
+
     ss-img {
         @include square-size($six-percent);
-
         background-image: radial-gradient(
-                        114.74% 114.74% at 96.86% 3.84%,
-                        #C0ECD7 0%,
-                        #6FC164 30%,
-                        #3EB98D 60%,
-                        #26929D 100%
+            114.74% 114.74% at 96.86% 3.84%,
+            #c0ecd7 0%,
+            #6fc164 30%,
+            #3eb98d 60%,
+            #26929d 100%
         );
-
         background-repeat: no-repeat;
         background-size: cover;
-
         padding: $half-percent;
         box-shadow: $blue-gray $quarter-percent $quarter-percent 0 0;
+
         img {
-            //filter: invert(0.75);
+            // filter: invert(0.75);
         }
     }
 }

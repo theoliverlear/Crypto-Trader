@@ -1,3 +1,6 @@
+/** The type of input field for authentication.
+ *
+ */
 export enum AuthInputType {
     USERNAME = 'Username',
     PASSWORD = 'Password',

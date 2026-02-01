@@ -1,25 +1,37 @@
-// auth-console-tab-section.component.ts 
-import {Component, EventEmitter, Output} from "@angular/core";
-import {AuthType, AuthPopup} from "@theoliverlear/angular-suite";
+// auth-console-tab-section.component.ts
+import { Component, EventEmitter, Output } from '@angular/core';
 
+import { AuthPopup, AuthType } from '@theoliverlear/angular-suite';
+
+/** A section that contains tabs for switching between auth types.
+ *
+ */
 @Component({
     selector: 'auth-console-tab-section',
     standalone: false,
     templateUrl: './auth-console-tab-section.component.html',
-    styleUrls: ['./auth-console-tab-section.component.scss']
+    styleUrls: ['./auth-console-tab-section.component.scss'],
 })
 export class AuthConsoleTabSectionComponent {
-    @Output() authTypeClicked: EventEmitter<AuthType> = new EventEmitter<AuthType>();
-    constructor() {
-        
-    }
-    emitAuthTypeClicked(authType: AuthType): void {
+    @Output() protected authTypeClicked: EventEmitter<AuthType> =
+        new EventEmitter<AuthType>();
+    constructor() {}
+    /** Emits the auth type when clicked.
+     *
+     * @param authType
+     */
+    protected emitAuthTypeClicked(authType: AuthType): void {
         this.authTypeClicked.emit(authType);
     }
-    setAuthType(authType: AuthType): void {
+    // TODO: This method is duplicated. Refactor.
+    /** Emits the auth type when clicked.
+     *
+     * @param authType
+     */
+    protected setAuthType(authType: AuthType): void {
         this.emitAuthTypeClicked(authType);
     }
 
-    protected readonly AuthType = AuthType;
-    protected readonly AuthPopup = AuthPopup;
+    protected readonly AuthType: typeof AuthType = AuthType;
+    protected readonly AuthPopup: typeof AuthPopup = AuthPopup;
 }

@@ -1,7 +1,8 @@
-import {Injectable} from "@angular/core";
-import {WebSocketService} from "@theoliverlear/angular-suite";
-import {AuthResponse, LoginRequest} from "../../../models/auth/types";
-import {environment} from "../../../environments/environment";
+import { Injectable } from '@angular/core';
+
+import { WebSocketService } from '@theoliverlear/angular-suite';
+import { environment } from '@environments/environment';
+import { AuthResponse, LoginRequest } from '@models/auth/types';
 
 /**
  * WebSocket client for the legacy login channel.
@@ -13,11 +14,14 @@ import {environment} from "../../../environments/environment";
  *   raw credentials over the wire.
  */
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
-export class LoginWebSocketService extends WebSocketService<LoginRequest, AuthResponse> {
+export class LoginWsService extends WebSocketService<
+    LoginRequest,
+    AuthResponse
+> {
     private static readonly URL: string = `${environment.websocketUrl}/login`;
     constructor() {
-        super(LoginWebSocketService.URL);
+        super(LoginWsService.URL);
     }
 }

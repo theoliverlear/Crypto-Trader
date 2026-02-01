@@ -1,7 +1,6 @@
-import {
-    CurrencyFormatterService
-} from "../../../services/ui/currency-formatter.service";
-import {TestBed} from "@angular/core/testing";
+import { TestBed } from '@angular/core/testing';
+
+import { CurrencyFormatterService } from '@ui/currency-formatter.service';
 
 describe('CurrencyFormatterService', () => {
     let service: CurrencyFormatterService;
@@ -24,6 +23,6 @@ describe('CurrencyFormatterService', () => {
             const amount: number = 0.0000459;
             const formattedAmount: string = service.formatCurrency(amount);
             expect(formattedAmount).toBe('$0.0000459');
-        })
+        });
     });
 });

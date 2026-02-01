@@ -1,4 +1,4 @@
 export enum PortfolioSectionArrowType {
-    REPORT = "Report",
-    MANAGE = "Manage"
+    REPORT = 'Report',
+    MANAGE = 'Manage',
 }

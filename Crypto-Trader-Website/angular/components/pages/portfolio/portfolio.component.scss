@@ -1,17 +1,20 @@
 // portfolio.component.scss
-@use "../../../styles/globals" as *;
-@use "../../../styles/gradients/global_gradient_placeholders" as *;
-
+@use '../../../styles/globals' as *;
+@use '../../../styles/gradients/global_gradient_placeholders' as *;
 
 portfolio {
     .portfolio-section-container {
         @include flex(space-around, center, row);
+
         @extend %fill-container;
+
         .portfolio-section-div {
             @include flex(center, center, column);
+
             @extend %fill-container;
         }
     }
+
     hr {
         border: $very-thin-border $charcoal solid;
         width: 95%;

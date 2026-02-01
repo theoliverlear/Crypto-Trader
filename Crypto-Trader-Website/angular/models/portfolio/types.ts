@@ -7,7 +7,7 @@ export type Portfolio = {
 };
 
 export type PortfolioAsset = {
-    id: number,
+    id: number;
     currencyName: string;
     currencyCode: string;
     shares: number;

@@ -1,17 +1,15 @@
-import {Injectable} from "@angular/core";
+import { Injectable } from '@angular/core';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class PathVerifierService {
-    constructor() {
+    constructor() {}
 
+    public isAngularAsset(path: string): boolean {
+        return path.includes('assets/');
     }
 
-    public isAngularAsset(path: string) {
-       return path.includes("assets/");
-    }
-    
     public isValidPath(path: string): boolean {
         try {
             new URL(path);
@@ -21,11 +19,10 @@ export class PathVerifierService {
         }
     }
 
-    
     public async angularAssetExists(path: string): Promise<boolean> {
         return await this.isValidLink(path);
     }
-    
+
     public async isValidLink(link: string): Promise<boolean> {
         const response: Response = await fetch(link);
         return response.ok;

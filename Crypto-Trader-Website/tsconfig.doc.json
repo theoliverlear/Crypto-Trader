@@ -1,0 +1,9 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "declaration": false,
+        "noEmit": true
+    },
+    "include": ["angular/**/*.ts"],
+    "exclude": ["node_modules", "angular/**/*.spec.ts", "angular/test/**"]
+}

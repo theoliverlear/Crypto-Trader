@@ -2,38 +2,25 @@ import {
     Component,
     EventEmitter,
     Input,
-    OnDestroy, OnInit,
-    Output
-} from "@angular/core";
+    OnDestroy,
+    Output,
+} from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+
 import {
     AuthPopup,
     AuthType,
-    WebSocketCapable
-} from "@theoliverlear/angular-suite";
-import {
-    SignupWebSocketService
-} from "../../../../services/net/websocket/signup-websocket.service";
-import {Subscription} from "rxjs";
-import {SignupCredentials} from "../../../../models/auth/SignupCredentials";
-import {
-    AuthResponse,
-    LoginRequest,
-    SignupRequest
-} from "../../../../models/auth/types";
-import {Router} from "@angular/router";
-import {LoginCredentials} from "../../../../models/auth/LoginCredentials";
-import {
-    TokenStorageService
-} from "../../../../services/auth/token-storage.service";
-import {LoginService} from "../../../../services/net/http/auth/access/login.service";
-import {SignupService} from "../../../../services/net/http/auth/access/signup.service";
+    WebSocketCapable,
+} from '@theoliverlear/angular-suite';
+import { SignupWsService } from '@ws/signup-ws.service';
+import { LoginService } from '@http/auth/access/login.service';
+import { SignupService } from '@http/auth/access/signup.service';
+import { TokenStorageService } from '@auth/token-storage.service';
+import { LoginCredentials } from '@models/auth/LoginCredentials';
+import { SignupCredentials } from '@models/auth/SignupCredentials';
+import { AuthResponse, LoginRequest, SignupRequest } from '@models/auth/types';
 
-@Component({
-    selector: 'auth-console',
-    standalone: false,
-    templateUrl: './auth-console.component.html',
-    styleUrls: ['./auth-console.component.scss']
-})
 /**
  * Authentication console component for the landing/authorize page.
  *
@@ -43,135 +30,189 @@ import {SignupService} from "../../../../services/net/http/auth/access/signup.se
  * - Avoids sending credentials over WebSockets; only the signup WS is used for
  *   ancillary messages, while login/signup are performed over HTTP.
  */
-export class AuthConsoleComponent implements WebSocketCapable, OnDestroy, OnInit {
-    @Input() currentAuthType: AuthType = AuthType.SIGN_UP;
-    @Output() authPopupEvent: EventEmitter<AuthPopup> = new EventEmitter<AuthPopup>();
-    attempts: number = 0;
-    webSocketSubscriptions: Record<string, Subscription> = {};
-    constructor(private signupWebSocket: SignupWebSocketService,
-                private signupService: SignupService,
-                private loginService: LoginService,
-                private router: Router,
-                private tokenStorageService: TokenStorageService) {
+@Component({
+    selector: 'auth-console',
+    standalone: false,
+    templateUrl: './auth-console.component.html',
+    styleUrls: ['./auth-console.component.scss'],
+})
+export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
+    @Input() protected currentAuthType: AuthType = AuthType.SIGN_UP;
+    @Output() protected authPopupEvent: EventEmitter<AuthPopup> =
+        new EventEmitter<AuthPopup>();
+    protected attempts: number = 0;
+    public webSocketSubscriptions: Record<string, Subscription> = {};
+    constructor(
+        private readonly signupWebSocket: SignupWsService,
+        private readonly signupService: SignupService,
+        private readonly loginService: LoginService,
+        private readonly router: Router,
+        private readonly tokenStorageService: TokenStorageService,
+    ) {}
 
-    }
-    
-    attemptLogin(loginCredentials: LoginCredentials): void {
+    /** Attempts to log in a user with input credentials.
+     *
+     * @param loginCredentials
+     */
+    protected attemptLogin(loginCredentials: LoginCredentials): void {
         if (loginCredentials.isFilledFields()) {
-            this.login(loginCredentials.getRequest())
+            this.login(loginCredentials.getRequest());
         } else {
             this.emitAuthPopup(AuthPopup.FILL_ALL_FIELDS);
         }
     }
-    
-    login(loginRequest: LoginRequest): void {
+
+    /** Logs in a user with a provided request.
+     *
+     * @param loginRequest
+     */
+    private login(loginRequest: LoginRequest): void {
         this.loginService.login(loginRequest).subscribe({
-            next: (authResponse: AuthResponse) => {
-                if (authResponse?.authorized) {
+            next: (authResponse: AuthResponse): void => {
+                if (authResponse.authorized) {
                     this.saveToken(authResponse);
-                    this.router.navigate(['/portfolio']);
+                    void this.router.navigate(['/portfolio']);
                 } else {
                     this.emitAuthPopup(AuthPopup.INVALID_USERNAME_OR_PASSWORD);
                 }
             },
-            error: (err) => {
+            error: (err): void => {
                 console.error('[HTTP][login] error:', err);
                 this.emitAuthPopup(AuthPopup.INVALID_USERNAME_OR_PASSWORD);
-            }
+            },
         });
     }
-    
-    saveToken(authResponse: AuthResponse) {
+
+    /** Saves authorization token from controller response.
+     *
+     * @param authResponse
+     */
+    private saveToken(authResponse: AuthResponse): void {
         if (authResponse.token) {
             this.tokenStorageService.setToken(authResponse.token);
         }
     }
-    
-    attemptSignup(signupCredentials: SignupCredentials): void {
+
+    /** Attempts to sign up a user with input credentials.
+     *
+     * @param signupCredentials
+     */
+    protected attemptSignup(signupCredentials: SignupCredentials): void {
         if (signupCredentials.getAnyIssue() === AuthPopup.NONE) {
             this.signup(signupCredentials.getSignupRequest());
         } else {
             this.emitAuthPopup(signupCredentials.getAnyIssue());
         }
     }
-    
-    signup(signupRequest: SignupRequest) {
-        console.log("Sending signup request via HTTP /auth/signup");
+
+    /** Signs up a user with a provided request.
+     *
+     * @param signupRequest
+     */
+    private signup(signupRequest: SignupRequest): void {
+        console.log('Sending signup request via HTTP /auth/signup');
         this.signupService.signup(signupRequest).subscribe({
-            next: (authResponse: AuthResponse) => {
-                if (authResponse?.authorized) {
+            next: (authResponse: AuthResponse): void => {
+                if (authResponse.authorized) {
                     this.saveToken(authResponse);
-                    this.router.navigate(['/portfolio']);
+                    void this.router.navigate(['/portfolio']);
                 } else {
                     this.emitAuthPopup(AuthPopup.USERNAME_OR_EMAIL_EXISTS);
                 }
             },
-            error: (err) => {
+            error: (err): void => {
                 console.error('[HTTP][signup] error:', err);
                 this.emitAuthPopup(AuthPopup.USERNAME_OR_EMAIL_EXISTS);
-            }
+            },
         });
     }
 
-    emitAuthPopup(authPopup: AuthPopup): void {
+    /** Emits an authorization popup event to the parent component.
+     *
+     * @param authPopup
+     */
+    protected emitAuthPopup(authPopup: AuthPopup): void {
         this.authPopupEvent.emit(authPopup);
     }
 
-    setAuthType(authType: AuthType): void {
+    /** Updates the current authentication type.
+     *
+     * @param authType
+     */
+    protected setAuthType(authType: AuthType): void {
         this.emitAuthPopup(AuthPopup.NONE);
         this.currentAuthType = authType;
     }
-    isSignupSection(): boolean {
+    /** Returns whether the current authentication type is signup.
+     * @returns {boolean}
+     */
+    protected isSignupSection(): boolean {
         return this.currentAuthType === AuthType.SIGN_UP;
     }
-    isLoginSection(): boolean {
+    /** Returns whether the current authentication type is login.
+     * @returns {boolean}
+     *
+     */
+    protected isLoginSection(): boolean {
         return this.currentAuthType === AuthType.LOGIN;
     }
 
-    ngOnInit(): void {
-        // No WebSocket auth; using HTTP + DPoP
-    }
-    initializeWebSockets(): void {
+    /** Initializes WebSocket subscriptions for authentication.
+     *
+     */
+    public initializeWebSockets(): void {
         console.log('[WS] Connecting signup socket…');
         this.signupWebSocket.connect();
-        this.webSocketSubscriptions['signup'] = this.signupWebSocket.getMessages().subscribe({
-            next: (authResponse: AuthResponse) => {
-                console.log('[WS][signup] message:', authResponse);
-                if (!authResponse) {
-                    return;
-                }
-                if (authResponse.authorized) {
-                    console.log("[WS][signup] Authorized");
-                    this.saveToken(authResponse);
-                    this.router.navigate(['/portfolio']);
-                } else {
-                    console.log("[WS][signup] Not authorized");
-                    if (this.attempts !== 0) {
-                        this.emitAuthPopup(AuthPopup.USERNAME_OR_EMAIL_EXISTS);
+        this.webSocketSubscriptions['signup'] = this.signupWebSocket
+            .getMessages()
+            .subscribe({
+                next: (authResponse: AuthResponse): void => {
+                    console.log('[WS][signup] message:', authResponse);
+                    if (!authResponse) {
+                        return;
                     }
+                    if (authResponse.authorized) {
+                        console.log('[WS][signup] Authorized');
+                        this.saveToken(authResponse);
+                        void this.router.navigate(['/portfolio']);
+                    } else {
+                        console.log('[WS][signup] Not authorized');
+                        if (this.attempts !== 0) {
+                            this.emitAuthPopup(
+                                AuthPopup.USERNAME_OR_EMAIL_EXISTS,
+                            );
+                        }
+                    }
+                },
+                error: (error): void => {
+                    console.log('[WS][signup] error:', error);
+                },
+                complete: (): void => {
+                    console.log('[WS][signup] complete');
+                },
+            });
+    }
+
+    /**
+     *
+     */
+    public ngOnDestroy(): void {
+        Object.values(this.webSocketSubscriptions).forEach(
+            (sub: Subscription): void => {
+                try {
+                    sub.unsubscribe();
+                } catch {
+                    /* empty */
                 }
             },
-            error: (error) => {
-                console.log('[WS][signup] error:', error);
-            },
-            complete: () => {
-                console.log('[WS][signup] complete');
-            }
-        });
-    }
-
-    ngOnDestroy(): void {
-        Object.values(this.webSocketSubscriptions).forEach((sub) => {
-            try { 
-                sub?.unsubscribe(); 
-            } catch {}
-        });
+        );
         this.webSocketSubscriptions = {};
-        try { 
-            this.signupWebSocket.disconnect(); 
-        } catch {}
+        try {
+            this.signupWebSocket.disconnect();
+        } catch {
+            /* empty */
+        }
     }
 
-
-    protected readonly AuthPopup = AuthPopup;
+    protected readonly AuthPopup: typeof AuthPopup = AuthPopup;
 }

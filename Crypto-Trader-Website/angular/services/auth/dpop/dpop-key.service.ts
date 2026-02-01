@@ -1,7 +1,9 @@
-import {Injectable} from "@angular/core";
-import {environment} from "../../../environments/environment";
-import {DpopKeyStoreService} from "./dpop-key-store.service";
-import {PossibleCryptoKeyPair, PossibleJsonWebKey} from "./types";
+import { Injectable } from '@angular/core';
+
+import { environment } from '@environments/environment';
+
+import { DpopKeyStoreService } from './dpop-key-store.service';
+import { PossibleCryptoKeyPair, PossibleJsonWebKey } from './types';
 
 /**
  * Manages the client's DPoP key pair using WebCrypto.
@@ -13,7 +15,7 @@ import {PossibleCryptoKeyPair, PossibleJsonWebKey} from "./types";
  * Note: Uses ECDSA P-256 and converts DER WebCrypto signatures to JOSE (r|s) format.
  */
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class DpopKeyService {
     private keyPair: PossibleCryptoKeyPair = null;
@@ -37,22 +39,28 @@ export class DpopKeyService {
                     this.cachedJkt = null;
                     return;
                 }
-            } catch { /* ignore */ }
+            } catch {
+                /* ignore */
+            }
         }
 
         // Generate a new EC P-256 key pair for ES256
         this.keyPair = await crypto.subtle.generateKey(
             {
                 name: 'ECDSA',
-                namedCurve: 'P-256'
+                namedCurve: 'P-256',
             },
             false, // private key non-extractable
-            ['sign', 'verify']
-        ) as CryptoKeyPair;
+            ['sign', 'verify'],
+        );
 
         // Persist if enabled
         if (environment.persistDpopKey) {
-            try { await this.store.save(this.keyPair); } catch { /* ignore */ }
+            try {
+                await this.store.save(this.keyPair);
+            } catch {
+                /* ignore */
+            }
         }
 
         this.cachedJwk = null;
@@ -63,14 +71,17 @@ export class DpopKeyService {
     async getPublicJwk(): Promise<JsonWebKey> {
         await this.ensureKeys();
         if (!this.cachedJwk) {
-            this.cachedJwk = await crypto.subtle.exportKey('jwk', this.keyPair!.publicKey);
+            this.cachedJwk = await crypto.subtle.exportKey(
+                'jwk',
+                this.keyPair!.publicKey,
+            );
             // normalize fields for EC
             this.cachedJwk.kty = 'EC';
             (this.cachedJwk as any).alg = 'ES256';
             (this.cachedJwk as any).key_ops = ['verify'];
             (this.cachedJwk as any).ext = true;
         }
-        return this.cachedJwk!;
+        return this.cachedJwk;
     }
 
     /** Compute and cache the RFC7638 JWK thumbprint (jkt). */
@@ -79,7 +90,10 @@ export class DpopKeyService {
         const jwk: any = await this.getPublicJwk();
         // Canonical JSON with required members for EC in lexicographic order: {"crv":"P-256","kty":"EC","x":"...","y":"..."}
         const canonical = `{"crv":"${jwk.crv}","kty":"EC","x":"${jwk.x}","y":"${jwk.y}"}`;
-        const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(canonical));
+        const digest = await crypto.subtle.digest(
+            'SHA-256',
+            new TextEncoder().encode(canonical),
+        );
         this.cachedJkt = base64url(new Uint8Array(digest));
         return this.cachedJkt;
     }
@@ -91,7 +105,7 @@ export class DpopKeyService {
         const derSig = await crypto.subtle.sign(
             { name: 'ECDSA', hash: 'SHA-256' },
             this.keyPair!.privateKey,
-            data
+            data,
         );
         const jose = derToJose(new Uint8Array(derSig), 32);
         return base64url(jose);
@@ -119,14 +133,23 @@ export function base64url(bytesOrString: Uint8Array | string): string {
     let str = '';
     const chunk = 0x8000;
     for (let i = 0; i < bytes.length; i += chunk) {
-        str += String.fromCharCode.apply(null, Array.from(bytes.subarray(i, i + chunk)) as unknown as number[]);
+        str += String.fromCharCode.apply(
+            null,
+            Array.from(bytes.subarray(i, i + chunk)) as unknown as number[],
+        );
     }
-    const b64 = btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+    const b64 = btoa(str)
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=+$/g, '');
     return b64;
 }
 
 /** Convert ASN.1/DER ECDSA signature to JOSE r|s raw format of fixed size. Accepts raw r||s too. */
-function derToJose(derSignature: Uint8Array, coordinateSize: number = 32): Uint8Array {
+function derToJose(
+    derSignature: Uint8Array,
+    coordinateSize: number = 32,
+): Uint8Array {
     // Accept already-raw signatures (r||s) of expected length
     if (derSignature.length === coordinateSize * 2) {
         return derSignature;
@@ -142,7 +165,7 @@ function derToJose(derSignature: Uint8Array, coordinateSize: number = 32): Uint8
     }
 
     // Read DER length (short or long form)
-    let lengthByte = buf[offset++];
+    const lengthByte = buf[offset++];
     let sequenceLength = 0;
     if (lengthByte < 0x80) {
         sequenceLength = lengthByte;
@@ -155,12 +178,12 @@ function derToJose(derSignature: Uint8Array, coordinateSize: number = 32): Uint8
     }
 
     if (buf[offset++] !== 0x02) throw new Error('Invalid DER r INTEGER');
-    let rLength = buf[offset++];
+    const rLength = buf[offset++];
     let rInteger = buf.slice(offset, offset + rLength);
     offset += rLength;
 
     if (buf[offset++] !== 0x02) throw new Error('Invalid DER s INTEGER');
-    let sLength = buf[offset++];
+    const sLength = buf[offset++];
     let sInteger = buf.slice(offset, offset + sLength);
 
     // Strip leading zeros if present (ensures positive INTEGER)

@@ -1,25 +1,27 @@
 <!-- trade-console.component.html -->
 <ng-container>
     <div class="trade-console-title-div">
-        <ss-title [tagType]="TagType.H3" [text]="currentTitle.title"/>
+        <ss-title [tagType]="TagType.H3" [text]="currentTitle.title" />
         @if (currentTitle.subtitle) {
-            <subtitle [tagType]="TagType.P" [text]="currentTitle.subtitle"/>
+            <subtitle [tagType]="TagType.P" [text]="currentTitle.subtitle" />
         }
     </div>
-    <hr/>
+    <hr />
     <div class="console-container">
         <div class="top-row">
             @if (shouldShowCurrencySearch()) {
-                <search-input [options]="currencyNames"
-                              [isEnabled]="isVendorSelected"
-                              (selectionChange)="updateCurrency($event)"/>
+                <search-input
+                    [options]="currencyNames"
+                    [isEnabled]="isVendorSelected"
+                    (selectionChange)="updateCurrency($event)"
+                />
             }
-            <vendor-options (vendorSelectedEvent)="setVendorOption($event)"/>
+            <vendor-options (vendorSelectedEvent)="setVendorOption($event)" />
         </div>
         <div class="console-body">
-            <nav-arrows/>
+            <nav-arrows />
             @if (isCurrencySelected && displayCurrency) {
-                <trade-checkout [displayCurrency]="displayCurrency"/>
+                <trade-checkout [displayCurrency]="displayCurrency" />
             }
         </div>
     </div>

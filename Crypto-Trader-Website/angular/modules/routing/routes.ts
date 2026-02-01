@@ -1,40 +1,22 @@
-import {Route, Routes} from "@angular/router";
-import {HomeComponent} from "../../components/pages/home/home.component";
-import {
-    PortfolioComponent
-} from "../../components/pages/portfolio/portfolio.component";
-import {AuthGuard} from "../../services/guard/auth.guard";
-import {
-    AccountComponent
-} from "../../components/pages/account/account.component";
-import {
-    AuthorizeComponent
-} from "../../components/pages/authorize/authorize.component";
-import {
-    TraderComponent
-} from "../../components/pages/trader/trader.component";
-import {
-    TermsOfServiceComponent
-} from "../../components/pages/terms-of-service/terms-of-service.component";
-import {
-    CurrenciesComponent
-} from "../../components/pages/currencies/currencies.component";
-import {
-    ConsoleComponent
-} from "../../components/pages/console/console.component";
-import {TradeComponent} from "../../components/pages/trade/trade.component";
-import {AccountGuard} from "../../services/guard/account.guard";
-import {DashboardGuard} from "../../services/guard/dashboard.guard";
-import {
-    DashboardComponent
-} from "../../components/pages/dashboard/dashboard.component";
-import {
-    StatisticsComponent
-} from "../../components/pages/statistics/statistics.component";
+import { type Route, type Routes } from '@angular/router';
 
+import { AccountComponent } from '@components/pages/account/account.component';
+import { AuthorizeComponent } from '@components/pages/authorize/authorize.component';
+import { ConsoleComponent } from '@components/pages/console/console.component';
+import { CurrenciesComponent } from '@components/pages/currencies/currencies.component';
+import { DashboardComponent } from '@components/pages/dashboard/dashboard.component';
+import { HomeComponent } from '@components/pages/home/home.component';
+import { PortfolioComponent } from '@components/pages/portfolio/portfolio.component';
+import { StatisticsComponent } from '@components/pages/statistics/statistics.component';
+import { TermsOfServiceComponent } from '@components/pages/terms-of-service/terms-of-service.component';
+import { TradeComponent } from '@components/pages/trade/trade.component';
+import { TraderComponent } from '@components/pages/trader/trader.component';
+import { environment } from '@environments/environment';
+import { AccountGuard } from '@guards/account.guard';
+import { AuthGuard } from '@guards/auth.guard';
+import { DashboardGuard } from '@guards/dashboard.guard';
 
-const isDevelopment = true;
-
+const isDevelopment: boolean = environment.environmentName === 'development';
 
 export const accountRoute: Route = {
     path: 'account',
@@ -43,9 +25,9 @@ export const accountRoute: Route = {
     canActivate: [AuthGuard],
     data: {
         meta: {
-            title: 'Account | Crypto Trader'
+            title: 'Account | Crypto Trader',
         },
-    }
+    },
 };
 export const authorizeRoute: Route = {
     path: 'authorize',
@@ -53,9 +35,9 @@ export const authorizeRoute: Route = {
     canActivate: isDevelopment ? [] : [AccountGuard],
     data: {
         meta: {
-            title: 'Authorize | Crypto Trader'
+            title: 'Authorize | Crypto Trader',
         },
-    }
+    },
 };
 export const homeRoute: Route = {
     path: '',
@@ -63,9 +45,9 @@ export const homeRoute: Route = {
     canActivate: isDevelopment ? [] : [DashboardGuard],
     data: {
         meta: {
-            title: 'Crypto Trader'
+            title: 'Crypto Trader',
         },
-    }
+    },
 };
 export const portfolioRoute: Route = {
     path: 'portfolio',
@@ -73,28 +55,28 @@ export const portfolioRoute: Route = {
     canActivate: isDevelopment ? [] : [AuthGuard],
     data: {
         meta: {
-            title: 'Portfolio | Crypto Trader'
+            title: 'Portfolio | Crypto Trader',
         },
-    }
+    },
 };
 export const termsOfServiceRoute: Route = {
     path: 'terms',
     component: TermsOfServiceComponent,
     data: {
         meta: {
-            title: 'Terms of Service | Crypto Trader'
+            title: 'Terms of Service | Crypto Trader',
         },
-    }
-}
+    },
+};
 export const traderRoute: Route = {
     path: 'trader',
     component: TraderComponent,
     canActivate: isDevelopment ? [] : [AuthGuard],
     data: {
         meta: {
-            title: 'Trader | Crypto Trader'
+            title: 'Trader | Crypto Trader',
         },
-    }
+    },
 };
 
 export const currenciesRoute: Route = {
@@ -102,9 +84,9 @@ export const currenciesRoute: Route = {
     component: CurrenciesComponent,
     data: {
         meta: {
-            title: 'Currencies | Crypto Trader'
+            title: 'Currencies | Crypto Trader',
         },
-    }
+    },
 };
 
 export const consoleRoute: Route = {
@@ -113,9 +95,9 @@ export const consoleRoute: Route = {
     canActivate: isDevelopment ? [] : [AuthGuard],
     data: {
         meta: {
-            title: 'Console | Crypto Trader'
+            title: 'Console | Crypto Trader',
         },
-    }
+    },
 };
 export const tradeRoute: Route = {
     path: 'trade',
@@ -123,9 +105,9 @@ export const tradeRoute: Route = {
     canActivate: isDevelopment ? [] : [AuthGuard],
     data: {
         meta: {
-            title: 'Trade | Crypto Trader'
+            title: 'Trade | Crypto Trader',
         },
-    }
+    },
 };
 
 export const dashboardRoute: Route = {
@@ -134,9 +116,9 @@ export const dashboardRoute: Route = {
     canActivate: isDevelopment ? [] : [AuthGuard],
     data: {
         meta: {
-            title: 'Dashboard | Crypto Trader'
+            title: 'Dashboard | Crypto Trader',
         },
-    }
+    },
 };
 
 export const statisticsRoute: Route = {
@@ -145,9 +127,9 @@ export const statisticsRoute: Route = {
     canActivate: isDevelopment ? [] : [AuthGuard],
     data: {
         meta: {
-            title: 'Statistics | Crypto Trader'
+            title: 'Statistics | Crypto Trader',
         },
-    }
+    },
 };
 export const routes: Routes = [
     accountRoute,
@@ -160,5 +142,5 @@ export const routes: Routes = [
     traderRoute,
     tradeRoute,
     dashboardRoute,
-    statisticsRoute
+    statisticsRoute,
 ];

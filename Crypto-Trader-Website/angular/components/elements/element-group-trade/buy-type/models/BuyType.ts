@@ -1,4 +1,4 @@
 export enum BuyType {
-    DOLLARS = "DOLLARS",
-    SHARES = "SHARES"
+    DOLLARS = 'DOLLARS',
+    SHARES = 'SHARES',
 }

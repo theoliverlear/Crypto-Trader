@@ -1,16 +1,16 @@
-import {Injectable} from "@angular/core";
+import { Injectable } from '@angular/core';
 import {
     ActivatedRouteSnapshot,
     CanActivate,
     Router,
-    RouterStateSnapshot
-} from "@angular/router";
-import {catchError, map, Observable, Subject} from "rxjs";
-import {LoggedInService} from "../net/http/auth/status/logged-in.service";
-import {TokenStorageService} from "../auth/token-storage.service";
+    RouterStateSnapshot,
+} from '@angular/router';
+import { catchError, map, Observable, Subject } from 'rxjs';
+
+import { LoggedInService } from '@http/auth/status/logged-in.service';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 /**
  * Route guard that checks server-side auth status before activating a protected route.
@@ -22,36 +22,35 @@ import {TokenStorageService} from "../auth/token-storage.service";
  */
 export class AuthGuard implements CanActivate {
     authBlocked$: Subject<void> = new Subject<void>();
-    constructor(private router: Router,
-                private loggedInService: LoggedInService) {
-        
-    }
-    
+    constructor(
+        private router: Router,
+        private loggedInService: LoggedInService,
+    ) {}
+
     getAuthBlocked(): Observable<void> {
         return this.authBlocked$.asObservable();
     }
-    
-    canActivate(route: ActivatedRouteSnapshot,
-                state: RouterStateSnapshot): Observable<boolean> {
+
+    canActivate(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot,
+    ): Observable<boolean> {
         return this.loggedInService.isLoggedIn().pipe(
-            map(authResponse => {
+            map((authResponse) => {
                 if (authResponse.authorized) {
                     return true;
                 } else {
                     this.authBlocked$.next(undefined);
-                    this.router.navigate(['/authorize']).then(navigated => {
-                        return false;
-                    });
+                    this.router.navigate(['/authorize']);
+                    return false;
                 }
             }),
             catchError(() => {
-                this.router.navigate(['/authorize']).then(navigated => {
-                    
-                });
-                return new Observable<boolean>(observer => {
+                this.router.navigate(['/authorize']).then((navigated) => {});
+                return new Observable<boolean>((observer) => {
                     observer.next(false);
                 });
-            })
+            }),
         );
     }
 }

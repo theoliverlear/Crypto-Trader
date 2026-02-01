@@ -1,5 +1,5 @@
 // portfolio-asset.component.scss
-@use "../../../../styles/globals" as *;
+@use '../../../../styles/globals' as *;
 
 portfolio-asset {
     @include flex(center, center, column);

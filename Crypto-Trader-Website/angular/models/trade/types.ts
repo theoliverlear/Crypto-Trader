@@ -1,8 +1,8 @@
-import {VendorOption} from "../vendor/VendorOption";
+import { type VendorOption } from '../vendor/VendorOption';
 
 export type TradeCheckoutRequest = {
-    numDollars: number,
-    numShares: number,
-    currencyCode: string,
-    vendor: VendorOption,
+    numDollars: number;
+    numShares: number;
+    currencyCode: string;
+    vendor: VendorOption;
 };

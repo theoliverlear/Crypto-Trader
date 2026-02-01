@@ -1,41 +1,40 @@
 // asset-field-list.component.ts
-import {Component, EventEmitter, Input, Output} from "@angular/core";
-import {PortfolioAsset} from "../../../../models/portfolio/types";
-import {
-    PortfolioAssetFieldType
-} from "../asset-field/models/PortfolioAssetFieldType";
-import {AssetFieldSortType} from "../../../../models/sort/types";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+
+import { PortfolioAsset } from '@models/portfolio/types';
+import { AssetFieldSortType } from '@models/sort/types';
+
+import { PortfolioAssetFieldType } from '../asset-field/models/PortfolioAssetFieldType';
 
 @Component({
     selector: 'asset-field-list',
     templateUrl: './asset-field-list.component.html',
     styleUrls: ['./asset-field-list.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class AssetFieldListComponent {
     // TODO: Put repeated default PortfolioAsset in assets file.
     @Input() asset: PortfolioAsset = {
         id: 0,
-        currencyName: "",
-        currencyCode: "",
+        currencyName: '',
+        currencyCode: '',
         shares: 0,
         sharesValueInDollars: 0,
         assetWalletDollars: 0,
         totalValueInDollars: 0,
         targetPrice: 0,
-        lastUpdated: "",
-        vendorName: ""
+        lastUpdated: '',
+        vendorName: '',
     };
     @Input() showFieldTitles: boolean = true;
     @Input() currentSort: AssetFieldSortType;
-    @Output() onSortClick: EventEmitter<AssetFieldSortType> = new EventEmitter<AssetFieldSortType>();
-    constructor() {
-        
+    @Output() onSortClick: EventEmitter<AssetFieldSortType> =
+        new EventEmitter<AssetFieldSortType>();
+    constructor() {}
+
+    emitSortClick(sortType: AssetFieldSortType): void {
+        this.onSortClick.emit(sortType);
     }
 
-   emitSortClick(sortType: AssetFieldSortType): void {
-        this.onSortClick.emit(sortType);
-   }
-    
     protected readonly PortfolioAssetFieldType = PortfolioAssetFieldType;
 }

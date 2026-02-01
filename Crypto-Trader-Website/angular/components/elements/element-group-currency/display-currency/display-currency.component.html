@@ -2,25 +2,34 @@
 <ng-container>
     <div class="display-action-div">
         <div class="image-code-div">
-            <ss-img [imageAsset]="imageAsset"/>
-            <ss-title [tagType]="TagType.H4" [text]="currency.currencyCode"/>
+            <ss-img [imageAsset]="imageAsset" />
+            <ss-title [tagType]="TagType.H4" [text]="currency.currencyCode" />
         </div>
         <div class="display-currency-title">
-            <ss-title class="display-currency-name"
-                      [tagType]="TagType.H3"
-                      [text]="currency.currencyName"/>
+            <ss-title
+                [tagType]="TagType.H3"
+                [text]="currency.currencyName"
+                class="display-currency-name"
+            />
             <div class="currency-price-div">
-                <subtitle [tagType]="TagType.H4" [text]="currencyPrice" class="currency-price"/>
-                <performance-arrow [performance]="performance" [includePercent]="true"/>
+                <subtitle
+                    [tagType]="TagType.H4"
+                    [text]="currencyPrice"
+                    class="currency-price"
+                />
+                <performance-arrow
+                    [performance]="performance"
+                    [includePercent]="true"
+                />
             </div>
             <div class="currency-action-buttons-div">
-<!--                TODO: On click should open the trade page loaded in paper
+                <!--                TODO: On click should open the trade page loaded in paper
                           mode with the currency selected using request
                           params.-->
-                <ss-button [text]="'TRADE'" [size]="ElementSize.SMALL"/>
+                <ss-button [text]="'TRADE'" [size]="ElementSize.SMALL" />
             </div>
         </div>
     </div>
 
-    <day-currency-chart [properties]="chartProperties"/>
+    <day-currency-chart [properties]="chartProperties" />
 </ng-container>

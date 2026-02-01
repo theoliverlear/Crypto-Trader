@@ -1,6 +1,7 @@
-import {Injectable} from "@angular/core";
-import {BehaviorSubject, Observable} from "rxjs";
-import {PersistMethod, PossibleToken} from "../../models/auth/types";
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+
+import { PersistMethod, PossibleToken } from '@models/auth/types';
 
 /**
  * In-memory-only access token storage. No localStorage/sessionStorage usage.

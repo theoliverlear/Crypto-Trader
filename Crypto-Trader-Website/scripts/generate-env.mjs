@@ -2,12 +2,15 @@
 // Reads values from process.env with sensible defaults.
 // This script is intentionally minimal and framework-agnostic.
 
-import { mkdirSync, writeFileSync, existsSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { config } from 'dotenv';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+config({ path: resolve(__dirname, '..', '.env') });
 
 function boolFromEnv(val, fallback = false) {
     if (val === undefined) return fallback;
@@ -17,11 +20,29 @@ function boolFromEnv(val, fallback = false) {
 
 const ENV = {
     // Common
-    API_URL: process.env.WEBSITE_API_URL || process.env.API_URL || 'http://localhost:3000/api',
-    DATA_URL: process.env.WEBSITE_DATA_URL || process.env.DATA_URL || (process.env.WEBSITE_API_URL || process.env.API_URL || 'http://localhost:3000/api'),
-    WEBSOCKET_URL: process.env.WEBSITE_WEBSOCKET_URL || process.env.WEBSOCKET_URL || 'ws://localhost:3000/ws',
-    ENABLE_DEBUG: boolFromEnv(process.env.WEBSITE_ENABLE_DEBUG ?? process.env.ENABLE_DEBUG, true),
-    FEATURE_FLAG: boolFromEnv(process.env.WEBSITE_FEATURE_FLAG ?? process.env.FEATURE_FLAG, false),
+    ENVIRONMENT: process.env.ENVIRONMENT || 'development',
+    API_URL:
+        process.env.WEBSITE_API_URL ||
+        process.env.API_URL ||
+        'http://localhost:3000/api',
+    DATA_URL:
+        process.env.WEBSITE_DATA_URL ||
+        process.env.DATA_URL ||
+        process.env.WEBSITE_API_URL ||
+        process.env.API_URL ||
+        'http://localhost:3000/api',
+    WEBSOCKET_URL:
+        process.env.WEBSITE_WEBSOCKET_URL ||
+        process.env.WEBSOCKET_URL ||
+        'ws://localhost:3000/ws',
+    ENABLE_DEBUG: boolFromEnv(
+        process.env.WEBSITE_ENABLE_DEBUG ?? process.env.ENABLE_DEBUG,
+        true,
+    ),
+    FEATURE_FLAG: boolFromEnv(
+        process.env.WEBSITE_FEATURE_FLAG ?? process.env.FEATURE_FLAG,
+        false,
+    ),
 };
 
 const outDir = resolve(__dirname, '..', 'angular', 'environments');
@@ -29,10 +50,20 @@ if (!existsSync(outDir)) {
     mkdirSync(outDir, { recursive: true });
 }
 
-function fileContent({ production, apiUrl, dataUrl, websocketUrl, enableDebug, featureFlag, persistDpopKey }) {
+function fileContent({
+    production,
+    environmentName,
+    apiUrl,
+    dataUrl,
+    websocketUrl,
+    enableDebug,
+    featureFlag,
+    persistDpopKey,
+}) {
     // Produce a TypeScript module exporting the environment object.
     return `export const environment = {
   production: ${production},
+  environmentName: ${JSON.stringify(environmentName)},
   apiUrl: ${JSON.stringify(apiUrl)},
   dataUrl: ${JSON.stringify(dataUrl)},
   websocketUrl: ${JSON.stringify(websocketUrl)},
@@ -48,36 +79,65 @@ const files = [
         name: 'environment.ts',
         data: fileContent({
             production: false,
+            environmentName: ENV.ENVIRONMENT,
             apiUrl: ENV.API_URL,
             dataUrl: ENV.DATA_URL,
             websocketUrl: ENV.WEBSOCKET_URL,
             enableDebug: ENV.ENABLE_DEBUG,
             featureFlag: ENV.FEATURE_FLAG,
-            persistDpopKey: true
+            persistDpopKey: true,
         }),
     },
     {
         name: 'environment.dev.ts',
         data: fileContent({
             production: false,
+            environmentName: 'development',
             apiUrl: ENV.API_URL,
             dataUrl: ENV.DATA_URL,
             websocketUrl: ENV.WEBSOCKET_URL,
             enableDebug: ENV.ENABLE_DEBUG,
             featureFlag: ENV.FEATURE_FLAG,
-            persistDpopKey: false
+            persistDpopKey: false,
         }),
     },
     {
         name: 'environment.prod.ts',
         data: fileContent({
             production: true,
-            apiUrl: process.env.WEBSITE_API_URL_PROD || process.env.API_URL_PROD || ENV.API_URL.replace('http://', 'https://').replace(':3000', ''),
-            dataUrl: process.env.WEBSITE_DATA_URL_PROD || process.env.DATA_URL_PROD || (process.env.WEBSITE_API_URL_PROD || process.env.API_URL_PROD || ENV.DATA_URL).replace('http://', 'https://').replace(':3000', ''),
-            websocketUrl: process.env.WEBSOCKET_URL_PROD || process.env.WEBSOCKET_URL_PROD || ENV.WEBSOCKET_URL.replace('http://', 'https://').replace(':3000', ''),
-            enableDebug: boolFromEnv(process.env.WEBSITE_ENABLE_DEBUG_PROD ?? process.env.ENABLE_DEBUG_PROD, false),
-            featureFlag: boolFromEnv(process.env.WEBSITE_FEATURE_FLAG_PROD ?? process.env.FEATURE_FLAG_PROD, true),
-            persistDpopKey: true
+            environmentName: 'production',
+            apiUrl:
+                process.env.WEBSITE_API_URL_PROD ||
+                process.env.API_URL_PROD ||
+                ENV.API_URL.replace('http://', 'https://').replace(':3000', ''),
+            dataUrl:
+                process.env.WEBSITE_DATA_URL_PROD ||
+                process.env.DATA_URL_PROD ||
+                (
+                    process.env.WEBSITE_API_URL_PROD ||
+                    process.env.API_URL_PROD ||
+                    ENV.DATA_URL
+                )
+                    .replace('http://', 'https://')
+                    .replace(':3000', ''),
+            websocketUrl:
+                process.env.WEBSOCKET_URL_PROD ||
+                process.env.WEBSOCKET_URL_PROD ||
+                ENV.WEBSOCKET_URL.replace('http://', 'https://').replace(
+                    ':3000',
+                    '',
+                ),
+            enableDebug: boolFromEnv(
+                process.env.WEBSITE_ENABLE_DEBUG_PROD ??
+                    process.env.ENABLE_DEBUG_PROD,
+                false,
+            ),
+            featureFlag: boolFromEnv(
+                process.env.WEBSITE_FEATURE_FLAG_PROD ??
+                    process.env.FEATURE_FLAG_PROD,
+                true,
+            ),
+            persistDpopKey: true,
         }),
     },
 ];

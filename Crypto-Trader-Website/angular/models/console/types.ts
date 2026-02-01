@@ -1,8 +1,8 @@
 export type ConsoleCommandRequest = {
-    command: string
+    command: string;
 };
 
 export type ConsoleCommandResponse = {
-    consoleOutput: string,
-    payload?: any
+    consoleOutput: string;
+    payload?: any;
 };

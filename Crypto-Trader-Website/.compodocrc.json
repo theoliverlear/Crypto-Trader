@@ -1,0 +1,17 @@
+{
+    "name": "Crypto Trader Website",
+    "tsconfig": "tsconfig.doc.json",
+    "output": "docs",
+    "theme": "material",
+    "hideGenerator": true,
+    "disableSourceCode": false,
+    "disableGraph": false,
+    "disableCoverage": false,
+    "disablePrivate": true,
+    "disableInternal": true,
+    "disableLifeCycleHooks": true,
+    "disableRoutesGraph": false,
+    "pageTitle": "Crypto Trader Website Reference",
+    "gaID": "",
+    "gaSite": ""
+}

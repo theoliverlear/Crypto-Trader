@@ -1,15 +1,17 @@
-import {TradeCheckoutRequest} from "./types";
-import {VendorOption} from "../vendor/VendorOption";
+import { VendorOption } from '../vendor/VendorOption';
+import { type TradeCheckoutRequest } from './types';
 
 export class TradeCheckout {
     private _numDollars: number;
     private _numShares: number;
     private _currencyCode: string;
     private _vendor: VendorOption;
-    constructor(numDollars: number = 0,
-                numShares: number = 0,
-                currencyCode: string = '',
-                vendor: VendorOption = VendorOption.PAPER_MODE) {
+    constructor(
+        numDollars: number = 0,
+        numShares: number = 0,
+        currencyCode: string = '',
+        vendor: VendorOption = VendorOption.PAPER_MODE,
+    ) {
         this._numDollars = numDollars;
         this._numShares = numShares;
         this._currencyCode = currencyCode;
@@ -37,21 +39,22 @@ export class TradeCheckout {
     set numDollars(value: number) {
         this._numDollars = value;
     }
-    
+
     get vendor(): VendorOption {
         return this._vendor;
     }
-    
+
     set vendor(value: VendorOption) {
         this._vendor = value;
     }
-    
+
     allFilledFields(): boolean {
-        const hasSharesOrDollars: boolean = this._numShares > 0 || this._numDollars > 0;
+        const hasSharesOrDollars: boolean =
+            this._numShares > 0 || this._numDollars > 0;
         const hasCurrencyCode: boolean = this._currencyCode.length > 0;
         return hasSharesOrDollars && hasCurrencyCode;
     }
-    
+
     getRequest(): TradeCheckoutRequest {
         if (!this.allFilledFields()) {
             throw new Error('Not all fields are filled.');

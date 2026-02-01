@@ -1,18 +1,17 @@
 // nav-console.component.ts
-import { Component } from "@angular/core";
-import {consoleElementLink} from "../../../../assets/elementLinkAssets";
-import {consoleIcon} from "../../../../assets/imageAssets";
+import { Component } from '@angular/core';
+
+import { consoleElementLink } from '@assets/elementLinkAssets';
+import { consoleIcon } from '@assets/imageAssets';
 
 @Component({
     selector: 'nav-console',
     templateUrl: './nav-console.component.html',
     styleUrls: ['./nav-console.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class NavConsoleComponent {
-    constructor() {
-        
-    }
+    constructor() {}
 
     protected readonly consoleElementLink = consoleElementLink;
     protected readonly consoleIcon = consoleIcon;

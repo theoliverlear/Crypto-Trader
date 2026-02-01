@@ -1,6 +1,16 @@
 <!-- auth-console-login-section.component.html -->
 <ng-container>
-    <auth-input [authInputType]="AuthInputType.EMAIL" (inputChange)="updateEmail($event)"/>
-    <auth-input [authInputType]="AuthInputType.PASSWORD" (inputChange)="updatePassword($event)"/>
-    <ss-button (buttonClick)="emitFields()" [size]="ElementSize.MEDIUM" [text]="ButtonText.LOGIN"/>
+    <auth-input
+        [authInputType]="AuthInputType.EMAIL"
+        (inputChange)="updateEmail($event)"
+    />
+    <auth-input
+        [authInputType]="AuthInputType.PASSWORD"
+        (inputChange)="updatePassword($event)"
+    />
+    <ss-button
+        [size]="ElementSize.MEDIUM"
+        [text]="ButtonText.LOGIN"
+        (buttonClick)="emitFields()"
+    />
 </ng-container>

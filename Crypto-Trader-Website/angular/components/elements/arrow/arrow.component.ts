@@ -1,24 +1,31 @@
 // arrow.component.ts
-import {Component, HostBinding, Input} from "@angular/core";
-import {ArrowDirection} from "./models/ArrowDirection";
-import {TagType} from "@theoliverlear/angular-suite";
+import { Component, HostBinding, Input } from '@angular/core';
 
+import { TagType } from '@theoliverlear/angular-suite';
+import { PossibleString } from '@models/types';
+
+import { ArrowDirection } from './models/ArrowDirection';
+
+/** Base arrow icon that points a certain direction.
+ *
+ */
 @Component({
     selector: 'arrow',
     templateUrl: './arrow.component.html',
     styleUrls: ['./arrow.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class ArrowComponent {
-    @Input() direction: ArrowDirection = ArrowDirection.RIGHT;
-    @Input() text: string | undefined
+    @Input() protected direction: ArrowDirection = ArrowDirection.RIGHT;
+    @Input() protected text: PossibleString;
+    /** Binds the direction to the host element's class.
+     *  @returns The direction class as a string.
+     */
     @HostBinding('class')
-    get hostClasses(): string {
+    public get hostClasses(): string {
         return this.direction;
     }
-    constructor() {
-        
-    }
+    constructor() {}
 
-    protected readonly TagType = TagType;
+    protected readonly TagType: typeof TagType = TagType;
 }

@@ -1,55 +1,84 @@
-import {Component, Input, OnInit, ViewChild} from "@angular/core";
-import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
-import {filter, map, mergeMap} from "rxjs";
-import {AuthGuard} from "../../services/guard/auth.guard";
-import {DelayService} from "@theoliverlear/angular-suite";
-import {
-    NavBarComponent
-} from "../elements/element-group-nav/nav-bar/nav-bar.component";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Data, NavigationEnd, Router } from '@angular/router';
+import { filter, map, mergeMap, Observable } from 'rxjs';
 
+import { DelayService } from '@theoliverlear/angular-suite';
+import { AuthGuard } from '@guards/auth.guard';
+
+import { NavBarComponent } from '../elements/element-group-nav/nav-bar/nav-bar.component';
+
+/** The root component of the application.
+ *
+ */
 @Component({
     selector: 'app',
     standalone: false,
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+    styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-    showAuthGuardPopup: boolean = false;
-    title: string;
-    @ViewChild(NavBarComponent) navBar: NavBarComponent;
-    
-    constructor(private router: Router, 
-                private activatedRoot: ActivatedRoute,
-                private authGuard: AuthGuard,
-                private delayService: DelayService) {
-        
-    }
-    
-    updateNavBar(): void {
+    protected showAuthGuardPopup: boolean = false;
+    protected title: string;
+    @ViewChild(NavBarComponent) private readonly navBar: NavBarComponent;
+
+    constructor(
+        private readonly router: Router,
+        private readonly activatedRoot: ActivatedRoute,
+        private readonly authGuard: AuthGuard,
+        private readonly delayService: DelayService,
+    ) {}
+
+    /** Updates the nav bar with certain content if a user is logged in.
+     *
+     */
+    private updateNavBar(): void {
         this.navBar.verifyLoginStatus();
     }
-    
-    ngOnInit(): void {
-        this.router.events.pipe(filter((event) => event instanceof NavigationEnd),
-            map(() => this.activatedRoot),
-            map((route) => {
-                while (route.firstChild) {
-                    route = route.firstChild;
-                }
-                return route;
-            }),
-            mergeMap((route) => route.data)
-        ).subscribe((data) => {
-            const metaInfo = data['meta'] || {};
-            this.title = metaInfo['title'] || 'Crypto Trader';
-            this.updateNavBar();
-        });
-        this.authGuard.getAuthBlocked().subscribe((authBlocked: undefined) => {
-            this.triggerAuthPopup();
-        })
+
+    /** Setup router and popups on init.
+     *
+     */
+    public ngOnInit(): void {
+        this.router.events
+            .pipe(
+                filter(
+                    // eslint-disable-next-line @typescript-eslint/typedef
+                    (event): event is NavigationEnd =>
+                        event instanceof NavigationEnd,
+                ),
+                map((): ActivatedRoute => this.activatedRoot),
+                map((route: ActivatedRoute): ActivatedRoute => {
+                    while (route.firstChild) {
+                        route = route.firstChild;
+                    }
+                    return route;
+                }),
+                mergeMap(
+                    (route: ActivatedRoute): Observable<Data> => route.data,
+                ),
+            )
+            .subscribe((data: Data): void => {
+                type Meta = {
+                    title: string;
+                    description: string;
+                    roles: string[];
+                };
+                const metaInfo: Meta = (data['meta'] || {}) as Meta;
+                this.title = metaInfo['title'] || 'Crypto Trader';
+                this.updateNavBar();
+            });
+        this.authGuard
+            .getAuthBlocked()
+            /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+            .subscribe((authBlocked: undefined): void => {
+                void this.triggerAuthPopup();
+            });
     }
-    
-    async triggerAuthPopup(): Promise<void> {
+
+    /** Triggers the auth guard popup to alert the user that they need to login.
+     *
+     */
+    private async triggerAuthPopup(): Promise<void> {
         this.showAuthGuardPopup = true;
         await this.delayService.delay(4200);
         this.showAuthGuardPopup = false;

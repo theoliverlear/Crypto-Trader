@@ -1,36 +1,32 @@
-import {Component, OnInit} from "@angular/core";
-import {TagType} from "@theoliverlear/angular-suite";
-import {
-    PortfolioService
-} from "../../../services/net/http/portfolio/portfolio.service";
-import {Portfolio} from "../../../models/portfolio/types";
-import {defaultPortfolio} from "../../../assets/portfolioAssets";
-import {
-    PortfolioSectionArrowType
-} from "../../elements/element-group-portfolio/portfolio-section-arrow/models/PortfolioSectionArrowType";
+import { Component, OnInit } from '@angular/core';
+
+import { TagType } from '@theoliverlear/angular-suite';
+import { defaultPortfolio } from '@assets/portfolioAssets';
+import { PortfolioService } from '@http/portfolio/portfolio.service';
+import { Portfolio } from '@models/portfolio/types';
+
+import { PortfolioSectionArrowType } from '../../elements/element-group-portfolio/portfolio-section-arrow/models/PortfolioSectionArrowType';
 
 @Component({
     selector: 'portfolio',
     standalone: false,
     templateUrl: './portfolio.component.html',
-    styleUrls: ['./portfolio.component.scss']
+    styleUrls: ['./portfolio.component.scss'],
 })
 export class PortfolioComponent implements OnInit {
     portfolio: Portfolio = defaultPortfolio;
-    constructor(private portfolioService: PortfolioService) {
+    constructor(private portfolioService: PortfolioService) {}
 
-    }
-    
     ngOnInit(): void {
         this.portfolioService.getPortfolio().subscribe((data: Portfolio) => {
             this.portfolio = data;
         });
     }
-    
+
     hasCurrencies() {
         return this.portfolio.assets.length > 0;
     }
-    
+
     protected readonly TagType = TagType;
     protected readonly PortfolioSectionArrowType = PortfolioSectionArrowType;
 }

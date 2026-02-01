@@ -4,52 +4,61 @@ import {
     Component,
     ElementRef,
     OnDestroy,
-    ViewChild
-} from "@angular/core";
-import { CryptoTraderConsole } from "../../../../models/console/CryptoTraderConsole";
-import {
-    ConsoleCommandService
-} from "../../../../services/net/http/console/console-command.service";
-import {AuthService} from "../../../../services/net/http/auth/auth.service";
-import {
-    LoggedInService
-} from "../../../../services/net/http/auth/status/logged-in.service";
-import {
-    TokenStorageService
-} from "../../../../services/auth/token-storage.service";
+    ViewChild,
+} from '@angular/core';
 
+import { AuthService } from '@http/auth/auth.service';
+import { LoggedInService } from '@http/auth/status/logged-in.service';
+import { ConsoleCommandService } from '@http/console/console-command.service';
+import { TokenStorageService } from '@auth/token-storage.service';
+import { CryptoTraderConsole } from '@models/console/CryptoTraderConsole';
+
+/** A terminal component that displays the console.
+ *
+ */
 @Component({
     selector: 'terminal',
     templateUrl: './terminal.component.html',
     styleUrls: ['./terminal.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class TerminalComponent implements AfterViewInit, OnDestroy {
-    @ViewChild('host', { static: true }) host!: ElementRef<HTMLDivElement>;
-    private terminal: CryptoTraderConsole;
+    @ViewChild('host', { static: true })
+    protected host!: ElementRef<HTMLDivElement>;
+    private terminal: CryptoTraderConsole | undefined = undefined;
     private resizeHandler?: () => void;
-    constructor(private consoleCommandService: ConsoleCommandService,
-                private authService: AuthService,
-                private loggedInService: LoggedInService,
-                private tokenStorageService: TokenStorageService) {
-        
-    }
-    ngAfterViewInit(): void {
-        this.terminal = new CryptoTraderConsole(this.host, 
-                                                this.consoleCommandService,
-                                                this.authService,
-                                                this.loggedInService,
-                                                this.tokenStorageService);
-        this.resizeHandler = this.onResize.bind(this);
-        window.addEventListener('resize', this.resizeHandler, { passive: true });
-        requestAnimationFrame(() => this.terminal?.fit());
-        setTimeout(() => this.terminal?.fit(), 0);
+    constructor(
+        private readonly consoleCommandService: ConsoleCommandService,
+        private readonly authService: AuthService,
+        private readonly loggedInService: LoggedInService,
+        private readonly tokenStorageService: TokenStorageService,
+    ) {}
+    /** After the view is initialized, create the terminal and add a resize
+     *  handler.
+     */
+    public ngAfterViewInit(): void {
+        this.terminal = new CryptoTraderConsole(
+            this.host,
+            this.consoleCommandService,
+            this.authService,
+            this.loggedInService,
+            this.tokenStorageService,
+        );
+        this.resizeHandler = this.onResize.bind(this) as () => void;
+        window.addEventListener('resize', this.resizeHandler, {
+            passive: true,
+        });
+        requestAnimationFrame((): void => this.terminal?.fit());
+        setTimeout((): void => this.terminal?.fit(), 0);
     }
 
     private onResize(): void {
-        return this.terminal.fit();
+        return this.terminal?.fit();
     }
-    ngOnDestroy(): void {
+    /** On destruction, dispose the terminal and remove the resize handler.
+     *
+     */
+    public ngOnDestroy(): void {
         if (this.resizeHandler) {
             window.removeEventListener('resize', this.resizeHandler);
             this.resizeHandler = undefined;

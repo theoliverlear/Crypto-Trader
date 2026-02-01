@@ -5,9 +5,13 @@ import {
     TextElementLink,
 } from '@theoliverlear/angular-suite';
 
-export const homeElementLink = new ElementLink('/', TargetType.SELF, false);
+export const homeElementLink: ElementLink = new ElementLink(
+    '/',
+    TargetType.SELF,
+    false,
+);
 
-export const navBarHomeLink = new TextElementLink(
+export const navBarHomeLink: TextElementLink = new TextElementLink(
     '',
     TargetType.SELF,
     false,
@@ -15,37 +19,37 @@ export const navBarHomeLink = new TextElementLink(
     TagType.H4,
 );
 
-export const currenciesElementLink = new ElementLink(
+export const currenciesElementLink: ElementLink = new ElementLink(
     '/currencies',
     TargetType.SELF,
     false,
 );
 
-export const traderElementLink = new ElementLink(
+export const traderElementLink: ElementLink = new ElementLink(
     '/trader',
     TargetType.SELF,
     false,
 );
 
-export const portfolioElementLink = new ElementLink(
+export const portfolioElementLink: ElementLink = new ElementLink(
     '/portfolio',
     TargetType.SELF,
     false,
 );
 
-export const tradeElementLink = new ElementLink(
+export const tradeElementLink: ElementLink = new ElementLink(
     '/trade',
     TargetType.SELF,
     false,
 );
 
-export const statisticsElementLink = new ElementLink(
+export const statisticsElementLink: ElementLink = new ElementLink(
     '/statistics',
     TargetType.SELF,
     false,
 );
 
-export const navBarCurrenciesTextLink = new TextElementLink(
+export const navBarCurrenciesTextLink: TextElementLink = new TextElementLink(
     '/currencies',
     TargetType.SELF,
     false,
@@ -53,27 +57,27 @@ export const navBarCurrenciesTextLink = new TextElementLink(
     TagType.H4,
 );
 
-export const navBarPortfolioTextLink = new TextElementLink(
+export const navBarPortfolioTextLink: TextElementLink = new TextElementLink(
     '/portfolio',
     TargetType.SELF,
     false,
     'Portfolio',
     TagType.H4,
 );
-export const navBarTraderTextLink = new TextElementLink(
+export const navBarTraderTextLink: TextElementLink = new TextElementLink(
     '/trader',
     TargetType.SELF,
     false,
     'Trader',
     TagType.H4,
 );
-export const navBarAccountLink = new ElementLink(
+export const navBarAccountLink: ElementLink = new ElementLink(
     '/account',
     TargetType.SELF,
     false,
 );
 
-export const getStartedElementLink = new TextElementLink(
+export const getStartedElementLink: TextElementLink = new TextElementLink(
     '/authorize',
     TargetType.SELF,
     false,
@@ -81,7 +85,7 @@ export const getStartedElementLink = new TextElementLink(
     TagType.H4,
 );
 
-export const repositoryElementLink = new TextElementLink(
+export const repositoryElementLink: TextElementLink = new TextElementLink(
     'https://github.com/theoliverlear/Crypto-Trader',
     TargetType.BLANK,
     false,
@@ -89,7 +93,7 @@ export const repositoryElementLink = new TextElementLink(
     TagType.H4,
 );
 
-export const docsElementLink = new TextElementLink(
+export const docsElementLink: TextElementLink = new TextElementLink(
     'https://theoliverlear.github.io/Crypto-Trader/',
     TargetType.BLANK,
     false,
@@ -97,7 +101,7 @@ export const docsElementLink = new TextElementLink(
     TagType.H4,
 );
 
-export const consoleElementLink = new ElementLink(
+export const consoleElementLink: ElementLink = new ElementLink(
     '/console',
     TargetType.SELF,
     false,

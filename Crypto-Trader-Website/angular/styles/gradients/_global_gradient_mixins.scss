@@ -1,4 +1,4 @@
-@use "global_gradient_variables" as *;
+@use 'global_gradient_variables' as *;
 
 @mixin crypto-logo-linear-gradient($angle: 0deg) {
     background-image: linear-gradient($angle, $crypto-logo-stops...);
@@ -15,6 +15,6 @@
 @mixin gradient-text($background) {
     background-image: $background;
     background-clip: text;
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }

@@ -10,36 +10,42 @@
  * UI and networking logic. Changing the bootstrap order or removing APP_INITIALIZER would
  * reintroduce the “signed out after reload” symptom because access tokens are in‑memory only.
  */
-import {APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA, inject} from "@angular/core";
-import {BrowserModule} from "@angular/platform-browser";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {AppRouting} from "./routing/app-routing.module";
-import {RouterOutlet} from "@angular/router";
-import {CommonModule, NgOptimizedImage} from "@angular/common";
-import {HttpClientModule, provideHttpClient, withFetch, withInterceptors} from "@angular/common/http";
-import {services} from "../services/services";
-import {BaseChartDirective} from "ng2-charts";
-import { AngularSuiteModule } from "@theoliverlear/angular-suite";
-import {AppComponent} from "../components/app/app.component";
-import {directives} from "../directives/directives";
-import {elements} from "../components/elements/elements";
-import {pages} from "../components/pages/pages";
-import {authInterceptor} from "../services/intercept/auth.interceptor";
-import { AuthService } from "../services/net/http/auth/auth.service";
-import { DpopKeyService } from "../services/auth/dpop/dpop-key.service";
-import {MatFormField, MatInput, MatSuffix} from "@angular/material/input";
+import { CommonModule } from '@angular/common';
+import {
+    HttpClientModule,
+    provideHttpClient,
+    withFetch,
+    withInterceptors,
+} from '@angular/common/http';
+import { APP_INITIALIZER, inject, NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
     MatAutocomplete,
     MatAutocompleteTrigger,
-    MatOption
-} from "@angular/material/autocomplete";
+    MatOption,
+} from '@angular/material/autocomplete';
+import { MatIconButton } from '@angular/material/button';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
-import {MatIconButton} from "@angular/material/button";
-import { MatSelectModule } from "@angular/material/select";
-import {MatSlideToggleModule} from "@angular/material/slide-toggle";
-import {MatExpansionModule} from "@angular/material/expansion";
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import { MatFormField, MatInput, MatSuffix } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterOutlet } from '@angular/router';
+import { BaseChartDirective } from 'ng2-charts';
+
+import { AngularSuiteModule } from '@theoliverlear/angular-suite';
+import { authInterceptor } from '@services/intercept/auth.interceptor';
+import { services } from '@services/services';
+import { AppComponent } from '@components/app/app.component';
+import { elements } from '@components/elements/elements';
+import { pages } from '@components/pages/pages';
+import { AuthService } from '@http/auth/auth.service';
+import { DpopKeyService } from '@auth/dpop/dpop-key.service';
+
+import { AppRouting } from './routing/app-routing.module';
 
 /**
  * APP_INITIALIZER: ensure we have a DPoP key and try to refresh the access token
@@ -52,7 +58,10 @@ export function appInit(): () => Promise<void> {
         try {
             await keys.ensureKeys();
             await new Promise<void>((resolve) => {
-                auth.refresh().subscribe({ next: () => resolve(), error: () => resolve() });
+                auth.refresh().subscribe({
+                    next: () => resolve(),
+                    error: () => resolve(),
+                });
             });
         } catch {
             // ignore startup refresh errors
@@ -61,11 +70,7 @@ export function appInit(): () => Promise<void> {
 }
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        ...elements,
-        ...pages,
-    ],
+    declarations: [AppComponent, ...elements, ...pages],
     imports: [
         CommonModule,
         BrowserModule,
@@ -88,7 +93,7 @@ export function appInit(): () => Promise<void> {
         MatAutocomplete,
         MatIconModule,
         MatIconButton,
-        MatSuffix
+        MatSuffix,
     ],
     providers: [
         ...services,
@@ -97,10 +102,8 @@ export function appInit(): () => Promise<void> {
     ],
     bootstrap: [AppComponent],
     exports: [],
-    schemas: []
+    schemas: [],
 })
 export class CryptoTraderModule {
-    constructor() {
-        
-    }
+    constructor() {}
 }

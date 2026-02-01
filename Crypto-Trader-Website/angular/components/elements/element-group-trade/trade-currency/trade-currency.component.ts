@@ -1,39 +1,34 @@
 // trade-currency.component.ts
 import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
     Component,
     Input,
     OnChanges,
+    OnDestroy,
     OnInit,
+    SimpleChange,
     SimpleChanges,
-    ChangeDetectionStrategy, SimpleChange, OnDestroy, AfterViewInit
-} from "@angular/core";
-import {
-    CurrencyValueWebsocketService
-} from "../../../../services/net/websocket/currency-value-websocket.service";
-import {TagType, WebSocketCapable} from "@theoliverlear/angular-suite";
-import {interval, Subject, Subscription, takeUntil} from "rxjs";
-import {
-    CurrencyImageService
-} from "../../../../services/ui/currency-image.service";
-import {
-    defaultCurrencyIcon,
-    ImageAsset
-} from "../../../../assets/imageAssets";
-import {Currency, DisplayCurrency} from "../../../../models/currency/types";
-import {
-    CurrencyFormatterService
-} from "../../../../services/ui/currency-formatter.service";
-import {
-    NumberTweenService
-} from "../../../../services/ui/number-tween.service";
+} from '@angular/core';
+import { interval, Subject, Subscription, takeUntil } from 'rxjs';
+
+import { TagType, WebSocketCapable } from '@theoliverlear/angular-suite';
+import { defaultCurrencyIcon, ImageAsset } from '@assets/imageAssets';
+import { CurrencyValueWsService } from '@ws/currency-value-ws.service';
+import { CurrencyFormatterService } from '@ui/currency-formatter.service';
+import { CurrencyImageService } from '@ui/currency-image.service';
+import { NumberTweenService } from '@ui/number-tween.service';
+import { Currency, DisplayCurrency } from '@models/currency/types';
 
 @Component({
     selector: 'trade-currency',
     templateUrl: './trade-currency.component.html',
     styleUrls: ['./trade-currency.component.scss'],
-    standalone: false
+    standalone: false,
 })
-class TradeCurrencyComponent implements OnInit, OnChanges, WebSocketCapable, OnDestroy {
+class TradeCurrencyComponent
+    implements OnInit, OnChanges, WebSocketCapable, OnDestroy
+{
     @Input() selectedCurrency: Currency;
     currencyValue: number = 0;
     protected currencyPrice: string = '$0.00';
@@ -42,51 +37,59 @@ class TradeCurrencyComponent implements OnInit, OnChanges, WebSocketCapable, OnD
     private currentNumericPrice: number = 0;
     private priceAnimationSub: Subscription | null = null;
     private destroy$: Subject<void> = new Subject<void>();
-    constructor(private currencyImageService: CurrencyImageService,
-                private currencyValueWebSocket: CurrencyValueWebsocketService,
-                private currencyFormatter: CurrencyFormatterService,
-                private numberTween: NumberTweenService) {
-
-    }
+    constructor(
+        private currencyImageService: CurrencyImageService,
+        private currencyValueWebSocket: CurrencyValueWsService,
+        private currencyFormatter: CurrencyFormatterService,
+        private numberTween: NumberTweenService,
+    ) {}
 
     webSocketSubscriptions: Record<string, Subscription> = {};
     initializeWebSockets(): void {
         this.currencyValueWebSocket.connect();
-        this.webSocketSubscriptions['currency-value'] = this.currencyValueWebSocket.getMessages().subscribe({
-            next: (message) => {
-                if (!message) {
-                    return;
-                }
-                const numeric: number = Number(message);
-                if (!isFinite(numeric)) {
-                    return;
-                }
-                this.setCurrencyNumericPrice(numeric);
-            }
-        });
+        this.webSocketSubscriptions['currency-value'] =
+            this.currencyValueWebSocket.getMessages().subscribe({
+                next: (message) => {
+                    if (!message) {
+                        return;
+                    }
+                    const numeric: number = Number(message);
+                    if (!isFinite(numeric)) {
+                        return;
+                    }
+                    this.setCurrencyNumericPrice(numeric);
+                },
+            });
     }
 
     continuouslyUpdatePrice(): void {
         this.updatePrice();
-        interval(5000).pipe(takeUntil(this.destroy$)).subscribe(() => this.updatePrice());
+        interval(5000)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => this.updatePrice());
     }
 
     updatePrice(): void {
-        this.currencyValueWebSocket.sendMessage(this.selectedCurrency.currencyCode);
+        this.currencyValueWebSocket.sendMessage(
+            this.selectedCurrency.currencyCode,
+        );
     }
 
     private parseNumeric(formatted: string): number {
         const cleanedValue: string = formatted.replace(/[^0-9.+-]/g, '');
         return Number(cleanedValue);
     }
-    
+
     private getCurrentDisplayedNumeric(): number {
         if (this.currencyPrice) {
             const parsed: number = this.parseNumeric(this.currencyPrice);
             if (isFinite(parsed)) return parsed;
         }
 
-        if (isFinite(this.currentNumericPrice) && this.currentNumericPrice !== 0) {
+        if (
+            isFinite(this.currentNumericPrice) &&
+            this.currentNumericPrice !== 0
+        ) {
             return this.currentNumericPrice;
         }
         return this.selectedCurrency ? Number(this.selectedCurrency.value) : 0;
@@ -109,11 +112,14 @@ class TradeCurrencyComponent implements OnInit, OnChanges, WebSocketCapable, OnD
         }
         this.previousNumericPrice = from;
         this.currentNumericPrice = to;
-        this.priceAnimationSub = this.numberTween.animate(from, to, durationMs).subscribe(value => {
-            this.currencyPrice = this.currencyFormatter.formatCurrency(value);
-        });
+        this.priceAnimationSub = this.numberTween
+            .animate(from, to, durationMs)
+            .subscribe((value) => {
+                this.currencyPrice =
+                    this.currencyFormatter.formatCurrency(value);
+            });
     }
-    
+
     ngOnChanges(changes: SimpleChanges) {
         const currentState: SimpleChange = changes['selectedCurrency'];
         if (!currentState || !currentState.currentValue) return;
@@ -126,7 +132,9 @@ class TradeCurrencyComponent implements OnInit, OnChanges, WebSocketCapable, OnD
     }
 
     ngOnInit() {
-        this.currencyPrice = this.currencyFormatter.formatCurrency(this.selectedCurrency.value);
+        this.currencyPrice = this.currencyFormatter.formatCurrency(
+            this.selectedCurrency.value,
+        );
         this.initializeWebSockets();
         this.continuouslyUpdatePrice();
         this.setImageAsset();
@@ -140,12 +148,13 @@ class TradeCurrencyComponent implements OnInit, OnChanges, WebSocketCapable, OnD
             currencyCode: this.selectedCurrency.currencyCode,
             currencyName: this.selectedCurrency.currencyName,
             value: this.currencyValue,
-            logoUrl: this.getImageUrl(this.selectedCurrency.currencyCode)
-        }
-        const imageAsset: ImageAsset = await this.currencyImageService.resolveImageAsset(displayCurrency);
+            logoUrl: this.getImageUrl(this.selectedCurrency.currencyCode),
+        };
+        const imageAsset: ImageAsset =
+            await this.currencyImageService.resolveImageAsset(displayCurrency);
         this.imageAsset = imageAsset;
     }
-    
+
     private getImageUrl(currencyCode: string): string {
         return `/assets/cryptofont/${currencyCode.toLowerCase()}.svg`;
     }
@@ -153,7 +162,9 @@ class TradeCurrencyComponent implements OnInit, OnChanges, WebSocketCapable, OnD
         this.destroy$.next();
         this.destroy$.complete();
 
-        Object.values(this.webSocketSubscriptions).forEach(sub => sub?.unsubscribe());
+        Object.values(this.webSocketSubscriptions).forEach((sub) =>
+            sub?.unsubscribe(),
+        );
         this.webSocketSubscriptions = {};
         if (this.priceAnimationSub) {
             this.priceAnimationSub.unsubscribe();
@@ -162,11 +173,11 @@ class TradeCurrencyComponent implements OnInit, OnChanges, WebSocketCapable, OnD
         try {
             this.currencyValueWebSocket.disconnect();
         } catch {
-            console.error("Failed to disconnect from WebSocket");
+            console.error('Failed to disconnect from WebSocket');
         }
     }
 
     protected readonly TagType = TagType;
 }
 
-export default TradeCurrencyComponent
+export default TradeCurrencyComponent;

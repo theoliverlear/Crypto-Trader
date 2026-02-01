@@ -1,3 +1,1 @@
-export const directives: any[] = [
-    
-]
+export const directives: any[] = [];

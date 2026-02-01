@@ -1,16 +1,12 @@
-import {Injectable} from "@angular/core";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable, map, tap} from "rxjs";
-import {environment} from "../../../../environments/environment";
-import {
-    AuthResponse,
-    LoginRequest,
-    SignupRequest
-} from "../../../../models/auth/types";
-import {SignupService} from "./access/signup.service";
-import {LoginService} from "./access/login.service";
-import {TokenRefreshService} from "./token/token-refresh.service";
-import {LogoutService} from "./access/logout.service";
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import { AuthResponse, LoginRequest, SignupRequest } from '@models/auth/types';
+
+import { LoginService } from './access/login.service';
+import { LogoutService } from './access/logout.service';
+import { SignupService } from './access/signup.service';
+import { TokenRefreshService } from './token/token-refresh.service';
 
 /**
  * Angular AuthService implementing DPoP-bound authentication.
@@ -20,15 +16,16 @@ import {LogoutService} from "./access/logout.service";
  * - refresh(): sends DPoP proof with withCredentials to rotate refresh cookie and obtain a new access token.
  * - logout(): clears in-memory token and key material, calls server to revoke refresh tokens.
  */
-@Injectable({ 
-    providedIn: 'root' 
+@Injectable({
+    providedIn: 'root',
 })
 export class AuthService {
-
-    constructor(private signupService: SignupService,
-                private loginService: LoginService,
-                private tokenRefreshService: TokenRefreshService,
-                private logoutService: LogoutService) {}
+    constructor(
+        private signupService: SignupService,
+        private loginService: LoginService,
+        private tokenRefreshService: TokenRefreshService,
+        private logoutService: LogoutService,
+    ) {}
 
     /**
      * Sign up using email/password.

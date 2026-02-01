@@ -2,6 +2,7 @@
 // Provides a programmatic bootstrap for the Crypto Trader Angular app
 
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+
 import { CryptoTraderModule } from './angular/modules/crypto-trader.module.js';
 
 /**
@@ -10,7 +11,7 @@ import { CryptoTraderModule } from './angular/modules/crypto-trader.module.js';
  * @returns {Promise<import('@angular/core').NgModuleRef<any>>}
  */
 export async function bootstrapCryptoTraderApp() {
-  return platformBrowserDynamic().bootstrapModule(CryptoTraderModule);
+    return platformBrowserDynamic().bootstrapModule(CryptoTraderModule);
 }
 
 // Also export the root Angular module for advanced integrations

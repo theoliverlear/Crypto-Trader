@@ -1,21 +1,26 @@
-import {Injectable} from "@angular/core";
-import {HttpClientService} from "@theoliverlear/angular-suite";
-import {PerformanceRating} from "../../../../models/currency/types";
-import {environment} from "../../../../environments/environment";
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import { HttpClientService } from '@theoliverlear/angular-suite';
+import { environment } from '@environments/environment';
+import { PerformanceRating } from '@models/currency/types';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
-export class CurrencyDayPerformanceService extends HttpClientService<any, PerformanceRating> {
+export class CurrencyDayPerformanceService extends HttpClientService<
+    never,
+    PerformanceRating
+> {
     private static readonly URL: string = `${environment.apiUrl}/currency/performance/`;
-    
+
     constructor() {
         super(CurrencyDayPerformanceService.URL);
     }
-    
-    public getCurrencyDayPerformance(currencyCode: string): Observable<PerformanceRating> {
+
+    public getCurrencyDayPerformance(
+        currencyCode: string,
+    ): Observable<PerformanceRating> {
         this.url = `${CurrencyDayPerformanceService.URL}${currencyCode}`;
         return this.get();
     }

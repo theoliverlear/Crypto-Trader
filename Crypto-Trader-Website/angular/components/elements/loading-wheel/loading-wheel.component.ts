@@ -1,11 +1,11 @@
-// loading-wheel.component.ts 
-import {Component, HostBinding, Input} from "@angular/core";
+// loading-wheel.component.ts
+import { Component, HostBinding, Input } from '@angular/core';
 
 @Component({
     selector: 'loading-wheel',
     templateUrl: './loading-wheel.component.html',
     styleUrls: ['./loading-wheel.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class LoadingWheelComponent {
     @Input() visible: boolean = true;
@@ -15,9 +15,7 @@ export class LoadingWheelComponent {
         return this.visible ? 'visible' : 'hidden';
     }
 
-    constructor() {
-        
-    }
+    constructor() {}
 
     setVisible(visible: boolean): void {
         this.visible = visible;

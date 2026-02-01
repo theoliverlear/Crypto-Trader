@@ -1,5 +1,5 @@
-import {Injectable} from "@angular/core";
-import {environment} from "../../../environments/environment";
+import { Injectable } from '@angular/core';
+import { environment } from '@environments/environment';
 
 /**
  * Stores and retrieves the DPoP CryptoKeyPair using IndexedDB when enabled.
@@ -10,7 +10,7 @@ import {environment} from "../../../environments/environment";
  * - Feature-flagged by environment.persistDpopKey (default false).
  */
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class DpopKeyStoreService {
     private readonly dbName = 'crypto-trader-auth';
@@ -18,8 +18,8 @@ export class DpopKeyStoreService {
     private readonly keyId = 'pair';
 
     // TODO: Clean up code.
-    get enabled(): boolean { 
-        return !!environment.persistDpopKey; 
+    get enabled(): boolean {
+        return !!environment.persistDpopKey;
     }
 
     async save(pair: CryptoKeyPair): Promise<void> {
@@ -63,23 +63,25 @@ export class DpopKeyStoreService {
     }
 
     private openDb(): Promise<IDBDatabase> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject): void => {
             const req = indexedDB.open(this.dbName, 1);
-            req.onupgradeneeded = () => {
+            req.onupgradeneeded = (): void => {
                 const db = req.result;
                 if (!db.objectStoreNames.contains(this.storeName)) {
                     db.createObjectStore(this.storeName);
                 }
             };
-            req.onsuccess = () => resolve(req.result);
-            req.onerror = () => reject(req.error);
+            req.onsuccess = (): void => resolve(req.result);
+            // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+            req.onerror = (): void => reject(req.error);
         });
     }
 }
 
 function requestToPromise<T = any>(request: IDBRequest): Promise<T> {
-    return new Promise((resolve, reject) => {
-        request.onsuccess = () => resolve(request.result as T);
-        request.onerror = () => reject(request.error);
+    return new Promise((resolve, reject): void => {
+        request.onsuccess = (): void => resolve(request.result as T);
+        // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+        request.onerror = (): void => reject(request.error);
     });
 }

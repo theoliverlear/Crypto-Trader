@@ -1,34 +1,43 @@
 // search-input.component.scss
-@use "../../../../styles/globals" as *;
+@use '../../../../styles/globals' as *;
 
 search-input {
-    background-color: #D0D2DC;
+    background-color: #d0d2dc;
     min-width: $twenty-percent;
     min-height: $four-percent;
+
     @extend %softer-border-radius;
-    //box-shadow: $charcoal 0 0 $quarter-percent;
+
+    // box-shadow: $charcoal 0 0 $quarter-percent;
     .search-input-field {
         @extend %softer-border-radius;
         border: $thinnest-border solid $charcoal;
         font-family: $jetbrains-mono-font;
+
         .input-with-icon {
             @include flex(flex-start, center, row);
+
             mat-icon {
                 margin-right: $half-percent;
             }
+
             input {
-                border-bottom: calc($very-thin-border * 1.5) solid $light-charcoal;
+                border-bottom: calc($very-thin-border * 1.5) solid
+                    $light-charcoal;
                 padding: $quarter-percent;
             }
         }
     }
+
     &.disabled {
         background-color: $charcoal;
         filter: brightness(0.7);
         opacity: 0.4;
+
         &:hover {
             cursor: not-allowed;
         }
+
         input {
             pointer-events: none;
         }
@@ -36,7 +45,7 @@ search-input {
 }
 
 .mat-mdc-form-field-subscript-wrapper.mat-mdc-form-field-bottom-align {
-    background-color: #D0D2DC;
+    background-color: #d0d2dc;
     min-width: $twenty-percent;
     min-height: $four-percent;
 }

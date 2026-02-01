@@ -1,14 +1,16 @@
 <!-- trade-checkout.component.html -->
 <ng-container>
     <div class="left-column">
-        <trade-currency [selectedCurrency]="displayCurrency"/>
+        <trade-currency [selectedCurrency]="displayCurrency" />
     </div>
     <div class="center-column">
-            <trade-checkout-details [displayCurrency]="displayCurrency"/>
+        <trade-checkout-details [displayCurrency]="displayCurrency" />
         @if (showCheckoutPanel) {
-            <trade-checkout-confirm-panel [numDollars]="numDollars"
-                                          [numShares]="numShares"
-                                          [displayCurrency]="displayCurrency"/>
+            <trade-checkout-confirm-panel
+                [numDollars]="numDollars"
+                [numShares]="numShares"
+                [displayCurrency]="displayCurrency"
+            />
         }
     </div>
 </ng-container>

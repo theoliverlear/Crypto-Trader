@@ -1,14 +1,12 @@
-// portfolio-input.component.ts 
-import { Component } from "@angular/core";
+// portfolio-input.component.ts
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'portfolio-input',
     standalone: false,
     templateUrl: './portfolio-input.component.html',
-    styleUrls: ['./portfolio-input.component.scss']
+    styleUrls: ['./portfolio-input.component.scss'],
 })
 export class PortfolioInputComponent {
-    constructor() {
-        
-    }
+    constructor() {}
 }

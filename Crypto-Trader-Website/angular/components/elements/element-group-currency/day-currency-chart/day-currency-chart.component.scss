@@ -1,9 +1,10 @@
 // day-currency-chart.component.scss
-@use "../../../../styles/globals" as *;
+@use '../../../../styles/globals' as *;
 
 day-currency-chart {
     @extend %soft-border-radius;
     border: $thinnest-border solid $pure-white;
     background-color: lightblue;
+
     @include flex(center, center, column);
 }

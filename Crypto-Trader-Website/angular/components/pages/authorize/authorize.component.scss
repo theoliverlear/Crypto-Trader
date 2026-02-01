@@ -1,5 +1,5 @@
 // authorize.component.scss
-@use "../../../styles/globals" as *;
+@use '../../../styles/globals' as *;
 
 authorize {
     @include flex(flex-start, center, column);

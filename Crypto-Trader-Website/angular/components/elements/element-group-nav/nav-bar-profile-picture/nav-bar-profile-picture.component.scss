@@ -1,43 +1,51 @@
 // nav-bar-profile-picture.component.scss
-@use "../../../../styles/globals" as *;
-@use "../../../../styles/gradients/global_gradient_placeholders" as *;
+@use '../../../../styles/globals' as *;
+@use '../../../../styles/gradients/global_gradient_placeholders' as *;
 
 nav-bar-profile-picture {
     @include flex(center, center, column);
     position: absolute;
-    //box-sizing: border-box;
-    //top: calc($quarter-percent * 1.15);
+
+    // box-sizing: border-box;
+    // top: calc($quarter-percent * 1.15);
     top: $one-percent;
     right: $one-percent;
-    //padding: $half-percent;
-    //background-color: $ocean-blue;
-    background-color: $light-charcoal;
-    //@extend %light-logo-gradient;
-    //padding: calc($half-percent * 1.2);
-    padding: $quarter-percent;
-    //padding: simple-calc(0.15, 0.05);
-    //border-radius: simple-calc(1, 1);
-    transition: box-shadow, transform, 0.3s;
-    border-radius: $quarter-percent;
-    @include square-size($two-half-percent);
-    box-shadow: add-alpha($light-charcoal, 0.5) 0 0 $quarter-percent simplest-calc(0.001);
-    profile-picture {
-        //@include square-size(80%);
-        //@include square-size(calc($three-half-percent * .95));
-    }
 
+    // padding: $half-percent;
+    // background-color: $ocean-blue;
+    background-color: $light-charcoal;
+
+    // @extend %light-logo-gradient;
+    // padding: calc($half-percent * 1.2);
+    padding: $quarter-percent;
+
+    // padding: simple-calc(0.15, 0.05);
+    // border-radius: simple-calc(1, 1);
+    border-radius: $quarter-percent;
+
+    @include square-size($two-half-percent);
+    box-shadow: add-alpha($light-charcoal, 0.5) 0 0 $quarter-percent
+        simplest-calc(0.001);
+
+    profile-picture {
+        // @include square-size(80%);
+        // @include square-size(calc($three-half-percent * .95));
+    }
     transition: background-color, box-shadow, scale, 0.15s;
+
     &:hover {
-        //background-color: $almost-white;
+        // background-color: $almost-white;
         $box-shadow-size: simplest-calc(0.25);
-        box-shadow: add-alpha($light-charcoal, 0.25) 0 0 $half-percent simplest-calc(0.005);
+        box-shadow: add-alpha($light-charcoal, 0.25) 0 0 $half-percent
+            simplest-calc(0.005);
         cursor: pointer;
     }
 
     &:active {
         box-shadow: none;
         scale: 0.9;
-        //$top-and-right: simplest-calc(0.25);
-        //transform: translate($top-and-right, $top-and-right);
+
+        // $top-and-right: simplest-calc(0.25);
+        // transform: translate($top-and-right, $top-and-right);
     }
 }

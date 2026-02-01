@@ -1,5 +1,5 @@
 // console.component.ts
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'console',
@@ -8,7 +8,5 @@ import { Component } from "@angular/core";
     standalone: false,
 })
 export class ConsoleComponent {
-    constructor() {
-        
-    }
+    constructor() {}
 }

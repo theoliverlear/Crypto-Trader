@@ -1,13 +1,11 @@
-import {Injectable} from "@angular/core";
+import { Injectable } from '@angular/core';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class CurrencyFormatterService {
-    constructor() {
+    constructor() {}
 
-    }
-    
     public formatCurrency(amount: number): string {
         if (amount == null || isNaN(amount as any)) {
             amount = 0;
@@ -15,7 +13,8 @@ export class CurrencyFormatterService {
         let numDigits: number = 2;
         if (amount > 0 && amount < 1) {
             const parts = amount.toString().split('.');
-            const decimalSplit: string | undefined = parts.length > 1 ? parts[1] : undefined;
+            const decimalSplit: string | undefined =
+                parts.length > 1 ? parts[1] : undefined;
             if (decimalSplit && decimalSplit.length > 0) {
                 numDigits = decimalSplit.length;
             }
@@ -23,7 +22,7 @@ export class CurrencyFormatterService {
         const formatter: Intl.NumberFormat = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD',
-            minimumFractionDigits: numDigits
+            minimumFractionDigits: numDigits,
         });
         return formatter.format(amount);
     }

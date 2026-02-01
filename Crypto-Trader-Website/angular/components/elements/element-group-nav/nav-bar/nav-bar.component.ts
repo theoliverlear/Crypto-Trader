@@ -1,29 +1,24 @@
-import {
-    Component, OnInit
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
 import {
     navBarCurrenciesTextLink,
     navBarHomeLink,
     navBarPortfolioTextLink,
-    navBarTraderTextLink
-} from "../../../../assets/elementLinkAssets";
-import {
-    LoggedInService
-} from "../../../../services/net/http/auth/status/logged-in.service";
-import {NavBarItemOption} from "../nav-bar-item/models/NavBarItemOption";
+    navBarTraderTextLink,
+} from '@assets/elementLinkAssets';
+import { LoggedInService } from '@http/auth/status/logged-in.service';
 
+import { NavBarItemOption } from '../nav-bar-item/models/NavBarItemOption';
 
 @Component({
     selector: 'nav-bar',
     standalone: false,
     templateUrl: './nav-bar.component.html',
-    styleUrls: ['./nav-bar.component.scss']
+    styleUrls: ['./nav-bar.component.scss'],
 })
 export class NavBarComponent implements OnInit {
     isLoggedIn: boolean = false;
-    constructor(private loggedInService: LoggedInService) {
-        
-    }
+    constructor(private loggedInService: LoggedInService) {}
 
     ngOnInit(): void {
         this.listenForAuthStatus();

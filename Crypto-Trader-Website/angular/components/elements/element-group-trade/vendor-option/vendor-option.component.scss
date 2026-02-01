@@ -1,39 +1,50 @@
 // vendor-option.component.scss
-@use "../../../../styles/globals" as *;
-@use "../../../../styles/global-fonts" as *;
+@use '../../../../styles/globals' as *;
+@use '../../../../styles/global-fonts' as *;
 
 vendor-option {
     @include flex(center, center, column);
+
     @extend %nav-button;
     position: relative;
-    //scale: 1.5;
+
+    // scale: 1.5;
     min-width: $six-percent;
     min-height: calc($six-percent * 1.08);
     padding: $half-percent;
-    //@include square-size($five-percent);
+
+    // @include square-size($five-percent);
     ss-img {
         padding: calc($quarter-percent);
     }
+
     ss-title {
         color: $pure-white;
         font-family: $fira-sans-font;
     }
+
     .recommended-icon {
         top: calc($one-percent * -1);
         right: calc($one-percent * -1);
+
         @include square-size(calc(($one-percent + $quarter-percent) * 1.5));
         position: absolute;
-        //filter: drop-shadow(0 0 $quarter-percent $turquoise-blue);
+
+        // filter: drop-shadow(0 0 $quarter-percent $turquoise-blue);
         // Softer and less visible image
-        //filter: drop-shadow(0 $quarter-percent $quarter-percent $sunbeam-yellow) brightness(0.9);
+        // filter: drop-shadow(0 $quarter-percent $quarter-percent $sunbeam-yellow) brightness(0.9);
     }
+
     &.selected {
         background-color: $sunbeam-yellow;
+
         ss-title {
             color: gray;
         }
+
         .recommended-icon {
-            filter: drop-shadow(0 $quarter-percent $quarter-percent black) brightness(1.1);
+            filter: drop-shadow(0 $quarter-percent $quarter-percent black)
+                brightness(1.1);
         }
     }
 }

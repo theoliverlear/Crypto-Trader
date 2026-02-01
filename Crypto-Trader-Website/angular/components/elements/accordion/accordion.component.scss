@@ -1,11 +1,10 @@
 // accordion.component.scss
-@use "../../../styles/globals" as *;
+@use '../../../styles/globals' as *;
 
 accordion {
     display: block;
     margin: $half-percent 0;
 }
-
 
 mat-expansion-panel-header {
     padding: 0 24px;

@@ -1,7 +1,7 @@
 import eslint from '@eslint/js';
 import angular from 'angular-eslint';
-import jsdoc from 'eslint-plugin-jsdoc';
 import prettierConfig from 'eslint-config-prettier';
+import jsdoc from 'eslint-plugin-jsdoc';
 import prettierPlugin from 'eslint-plugin-prettier';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
@@ -85,10 +85,13 @@ export default tseslint.config(
                 'warn',
                 {
                     accessibility: 'explicit',
-                    // defaults to private
                     overrides: {
-                        // constructors: 'no-public',
-                    }
+                        accessors: 'explicit',
+                        constructors: 'no-public',
+                        methods: 'explicit',
+                        properties: 'explicit',
+                        parameterProperties: 'explicit',
+                    },
                 },
             ],
             '@typescript-eslint/typedef': [
@@ -106,6 +109,10 @@ export default tseslint.config(
             ],
             '@typescript-eslint/no-inferrable-types': 'off',
             '@typescript-eslint/prefer-readonly': 'warn',
+            'no-multiple-empty-lines': [
+                'warn',
+                { max: 1, maxEOF: 0, maxBOF: 0 },
+            ],
             'max-len': [
                 'error',
                 {
@@ -123,6 +130,7 @@ export default tseslint.config(
                 'warn',
                 {
                     publicOnly: true,
+                    checkConstructors: false,
                     require: {
                         ArrowFunctionExpression: true,
                         ClassDeclaration: true,
@@ -141,6 +149,13 @@ export default tseslint.config(
             'jsdoc/require-description': 'warn',
             'jsdoc/require-param': 'warn',
             'jsdoc/require-returns': 'warn',
+            'id-length': [
+                'warn',
+                {
+                    min: 3,
+                    exceptions: ['i', 'j', 'x', 'y', 'z', '_', 'a', 'b', 'd3', 'id', 'db'],
+                },
+            ],
         },
     },
     {
