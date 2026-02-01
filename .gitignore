@@ -31,6 +31,7 @@ tink/
 **/*.js
 !eslint.config.js
 !prettier.config.js
+!stylelint.config.js
 
 **/__pycache__/
 /**/*.keras
