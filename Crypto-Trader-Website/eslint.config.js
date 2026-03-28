@@ -41,10 +41,9 @@ export default tseslint.config(
             },
         },
         rules: {
-            '@typescript-eslint/no-unused-vars': [
-                'warn',
-                { argsIgnorePattern: '^_' },
-            ],
+            '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+            '@typescript-eslint/no-namespace': 'off',
+            '@typescript-eslint/restrict-template-expressions': 'off',
             '@typescript-eslint/consistent-type-imports': [
                 'warn',
                 {
@@ -65,6 +64,7 @@ export default tseslint.config(
                 },
             ],
             'no-console': 'off',
+            'prefer-template': 'warn',
             'prefer-const': 'error',
             '@typescript-eslint/no-unsafe-assignment': 'warn',
             '@typescript-eslint/no-unsafe-call': 'warn',
@@ -109,10 +109,7 @@ export default tseslint.config(
             ],
             '@typescript-eslint/no-inferrable-types': 'off',
             '@typescript-eslint/prefer-readonly': 'warn',
-            'no-multiple-empty-lines': [
-                'warn',
-                { max: 1, maxEOF: 0, maxBOF: 0 },
-            ],
+            'no-multiple-empty-lines': ['warn', { max: 1, maxEOF: 0, maxBOF: 0 }],
             'max-len': [
                 'error',
                 {
@@ -166,10 +163,7 @@ export default tseslint.config(
     },
     {
         files: ['**/*.html'],
-        extends: [
-            ...angular.configs.templateRecommended,
-            ...angular.configs.templateAccessibility,
-        ],
+        extends: [...angular.configs.templateRecommended, ...angular.configs.templateAccessibility],
         rules: {},
     },
     {
