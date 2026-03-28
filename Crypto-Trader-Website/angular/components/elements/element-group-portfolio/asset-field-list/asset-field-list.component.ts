@@ -14,7 +14,7 @@ import { PortfolioAssetFieldType } from '../asset-field/models/PortfolioAssetFie
 })
 export class AssetFieldListComponent {
     // TODO: Put repeated default PortfolioAsset in assets file.
-    @Input() asset: PortfolioAsset = {
+    @Input() public asset: PortfolioAsset = {
         id: 0,
         currencyName: '',
         currencyCode: '',
@@ -26,15 +26,15 @@ export class AssetFieldListComponent {
         lastUpdated: '',
         vendorName: '',
     };
-    @Input() showFieldTitles: boolean = true;
-    @Input() currentSort: AssetFieldSortType;
-    @Output() onSortClick: EventEmitter<AssetFieldSortType> =
+    @Input() public showFieldTitles: boolean = true;
+    @Input() public currentSort: AssetFieldSortType;
+    @Output() public sortClicked: EventEmitter<AssetFieldSortType> =
         new EventEmitter<AssetFieldSortType>();
     constructor() {}
 
-    emitSortClick(sortType: AssetFieldSortType): void {
-        this.onSortClick.emit(sortType);
+    public emitSortClick(sortType: AssetFieldSortType): void {
+        this.sortClicked.emit(sortType);
     }
 
-    protected readonly PortfolioAssetFieldType = PortfolioAssetFieldType;
+    protected readonly PortfolioAssetFieldType: typeof PortfolioAssetFieldType = PortfolioAssetFieldType;
 }
