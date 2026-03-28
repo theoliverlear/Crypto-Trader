@@ -1,8 +1,11 @@
 // asset-kill-switch.component.ts
 import { Component, HostBinding, HostListener, Input } from '@angular/core';
 
-import { electricPlugIcon } from '@assets/imageAssets';
+import { electricPlugIcon, ImageAsset } from '@assets/imageAssets';
 
+/** A component that toggles the kill switch for an asset.
+ *
+ */
 @Component({
     selector: 'asset-kill-switch',
     templateUrl: './asset-kill-switch.component.html',
@@ -10,20 +13,23 @@ import { electricPlugIcon } from '@assets/imageAssets';
     standalone: false,
 })
 export class AssetKillSwitchComponent {
-    @Input() isKilled: boolean = false;
-    @HostBinding('class.is-killed') get isKilledClass(): boolean {
+    @Input() public isKilled: boolean = false;
+    @HostBinding('class.is-killed') protected get isKilledClass(): boolean {
         return this.isKilled;
     }
     constructor() {}
 
+    /** Toggles the kill switch for the asset when the component is clicked.
+     *
+     */
     @HostListener('click')
-    onClick(): void {
+    public onClick(): void {
         this.toggleKillSwitch();
     }
 
-    toggleKillSwitch(): void {
+    protected toggleKillSwitch(): void {
         this.isKilled = !this.isKilled;
     }
 
-    protected readonly electricPlugIcon = electricPlugIcon;
+    protected readonly electricPlugIcon: ImageAsset = electricPlugIcon;
 }
