@@ -24,25 +24,25 @@ import { PortfolioAssetFieldType } from './models/PortfolioAssetFieldType';
     standalone: false,
 })
 export class AssetFieldComponent {
-    @Input() fieldType: PortfolioAssetFieldType;
-    @Input() asset: PortfolioAsset;
-    @Input() showFieldTitle: boolean = true;
-    @Input() currentSort: AssetFieldSortType = [
+    @Input() public fieldType: PortfolioAssetFieldType;
+    @Input() public asset: PortfolioAsset;
+    @Input() public showFieldTitle: boolean = true;
+    @Input() public currentSort: AssetFieldSortType = [
         PortfolioAssetFieldType.CURRENCY_NAME,
         SimpleSortState.NONE,
     ];
-    @Output() onSortClick: EventEmitter<AssetFieldSortType> =
+    @Output() public sortClicked: EventEmitter<AssetFieldSortType> =
         new EventEmitter<AssetFieldSortType>();
-    @HostBinding('class.highlighted-field') get isHighlighted(): boolean {
+    @HostBinding('class.highlighted-field') protected get isHighlighted(): boolean {
         return (
             this.fieldType === PortfolioAssetFieldType.TOTAL_VALUE ||
             this.fieldType === PortfolioAssetFieldType.SHARES
         );
     }
     constructor(
-        private sharesFormatter: SharesFormatterService,
-        private currencyFormatter: CurrencyFormatterService,
-        private timeFormatter: TimeFormatterService,
+        private readonly sharesFormatter: SharesFormatterService,
+        private readonly currencyFormatter: CurrencyFormatterService,
+        private readonly timeFormatter: TimeFormatterService,
     ) {}
 
     getFieldText(): string {
@@ -68,13 +68,13 @@ export class AssetFieldComponent {
                 );
             default:
                 throw new Error(
-                    'Unknown PortfolioAssetFieldType: ' + this.fieldType,
+                    `Unknown PortfolioAssetFieldType: ${this.fieldType}`,
                 );
         }
     }
 
     emitSortClick(sortState: SimpleSortState): void {
-        this.onSortClick.emit([
+        this.sortClicked.emit([
             this.fieldType,
             sortState,
         ] as AssetFieldSortType);
@@ -92,14 +92,14 @@ export class AssetFieldComponent {
     }
 
     private getCurrencyName(): string {
-        return this.asset.currencyName + ' (' + this.asset.currencyCode + ')';
+        return `${this.asset.currencyName} (${this.asset.currencyCode  })`;
     }
 
-    private getFormattedLastUpdated() {
+    private getFormattedLastUpdated(): string {
         return this.timeFormatter
             .formatTime(this.asset.lastUpdated)
             .replace(',', '');
     }
 
-    protected readonly TagType = TagType;
+    protected readonly TagType: typeof TagType = TagType;
 }
