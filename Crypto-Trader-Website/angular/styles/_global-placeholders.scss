@@ -68,3 +68,7 @@
     box-shadow: add-alpha($light-charcoal, 0.5) 0 0 $quarter-percent
         simplest-calc(0.001);
 }
+
+%softer-text-shadow {
+    text-shadow: add-alpha($absolute-black, 0.2) 0 0 $half-percent;
+}
