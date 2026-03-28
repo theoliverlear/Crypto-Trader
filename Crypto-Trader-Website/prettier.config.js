@@ -1,5 +1,5 @@
 export default {
-    printWidth: 80,
+    printWidth: 100,
     singleQuote: true,
     semi: true,
     tabWidth: 4,
@@ -15,7 +15,7 @@ export default {
     requirePragma: false,
     plugins: [
         'prettier-plugin-organize-attributes',
-        '@ianvs/prettier-plugin-sort-imports',
+        // '@ianvs/prettier-plugin-sort-imports',
     ],
     attributeGroups: [
         '$ANGULAR_STRUCTURAL_DIRECTIVE',
@@ -27,6 +27,7 @@ export default {
         '$ANGULAR_ANIMATION_INPUT',
         '$DEFAULT',
     ],
+    /*
     importOrder: [
         '^@angular/(.*)$',
         '<THIRD_PARTY_MODULES>',
@@ -46,10 +47,11 @@ export default {
         '',
         '^[./]',
     ],
+    */
     // importOrderSeparation: true,
     // importOrderSortSpecifiers: true,
-    importOrderParserPlugins: ['typescript', 'decorators-legacy'],
-    importOrderTypeScriptVersion: '5.0.0',
+    // importOrderParserPlugins: ['typescript', 'decorators-legacy'],
+    // importOrderTypeScriptVersion: '5.0.0',
     overrides: [
         {
             files: ['*.html'],
