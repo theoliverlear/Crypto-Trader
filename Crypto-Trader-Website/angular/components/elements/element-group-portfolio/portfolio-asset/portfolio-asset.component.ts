@@ -11,7 +11,7 @@ import { AssetFieldSortType } from '@models/sort/types';
     standalone: false,
 })
 export class PortfolioAssetComponent {
-    @Input() asset: PortfolioAsset = {
+    @Input() public asset: PortfolioAsset = {
         id: 0,
         currencyName: '',
         currencyCode: '',
@@ -23,13 +23,13 @@ export class PortfolioAssetComponent {
         lastUpdated: '',
         vendorName: '',
     };
-    @Input() isFirst: boolean = false;
-    @Input() currentSort: AssetFieldSortType;
-    @Output() onSortClick: EventEmitter<AssetFieldSortType> =
+    @Input() public isFirst: boolean = false;
+    @Input() public currentSort: AssetFieldSortType;
+    @Output() public sortClicked: EventEmitter<AssetFieldSortType> =
         new EventEmitter<AssetFieldSortType>();
     constructor() {}
 
-    emitSortClick(sortType: AssetFieldSortType): void {
-        this.onSortClick.emit(sortType);
+    protected emitSortClick(sortType: AssetFieldSortType): void {
+        this.sortClicked.emit(sortType);
     }
 }
