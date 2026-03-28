@@ -18,7 +18,7 @@ import { SubscriptionTier } from './models/SubscriptionTier';
     styleUrls: ['./tier-promo.component.scss'],
 })
 export class TierPromoComponent {
-    @Input() tier: SubscriptionTier = SubscriptionTier.FREE;
+    @Input() public tier: SubscriptionTier = SubscriptionTier.FREE;
     constructor() {}
 
     protected getImageAsset(): ImageAsset {
@@ -30,11 +30,12 @@ export class TierPromoComponent {
             case SubscriptionTier.ELITE:
                 return aiStarIcon;
             default:
-                throw new Error('Invalid tier: ' + this.tier);
+                throw new Error(`Invalid tier: ${this.tier}`);
         }
     }
 
     protected getDescription(): string {
+        // TODO: Move text to assets file.
         switch (this.tier) {
             case SubscriptionTier.FREE:
                 return (
@@ -54,5 +55,5 @@ export class TierPromoComponent {
         }
     }
 
-    protected readonly TagType = TagType;
+    protected readonly TagType: typeof TagType = TagType;
 }
