@@ -1,11 +1,5 @@
 // search-input.component.ts
-import {
-    Component,
-    EventEmitter,
-    HostBinding,
-    Input,
-    Output,
-} from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
 
@@ -19,16 +13,13 @@ import { map, Observable, startWith } from 'rxjs';
     standalone: false,
 })
 export class SearchInputComponent {
-    protected searchControl: FormControl<string | null> = new FormControl<
-        string | null
-    >('');
-    @Input() protected options: string[] = [];
-    protected filteredOptions: Observable<string[]> =
-        this.searchControl.valueChanges.pipe(
-            startWith(''),
-            map((value: string | null): string[] => this._filter(value || '')),
-        );
-    @Input() protected isEnabled: boolean = true;
+    protected searchControl: FormControl<string | null> = new FormControl<string | null>('');
+    @Input() public options: string[] = [];
+    protected filteredOptions: Observable<string[]> = this.searchControl.valueChanges.pipe(
+        startWith(''),
+        map((value: string | null): string[] => this._filter(value || '')),
+    );
+    @Input() public isEnabled: boolean = true;
 
     /** Whether the input is disabled.
      * @returns If the input is disabled.
@@ -37,8 +28,7 @@ export class SearchInputComponent {
         return !this.isEnabled;
     }
 
-    @Output() protected selectionChange: EventEmitter<string> =
-        new EventEmitter<string>();
+    @Output() public selectionChange: EventEmitter<string> = new EventEmitter<string>();
     constructor() {}
 
     /** Emits the selection change event.

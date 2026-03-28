@@ -1,28 +1,23 @@
-import {
-    AfterViewInit,
-    ChangeDetectorRef,
-    Component,
-    Input,
-    OnInit,
-    ViewChild,
-} from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 
 import { SsImgComponent } from '@theoliverlear/angular-suite';
 import { defaultAvatar, ImageAsset, profileIcon } from '@assets/imageAssets';
 
+/** A component for displaying a profile picture.
+ *
+ */
 @Component({
     selector: 'profile-picture',
     standalone: false,
     templateUrl: './profile-picture.component.html',
     styleUrls: ['./profile-picture.component.scss'],
 })
-export class ProfilePictureComponent implements AfterViewInit {
-    @Input() userId: number = 0;
-    @Input() isHeadlineProfilePicture: boolean = false;
-    @Input() imageAsset: ImageAsset = profileIcon;
-    @ViewChild('profilePictureImage') profilePictureImage: SsImgComponent;
-    constructor(private changeDetection: ChangeDetectorRef) {}
-    ngAfterViewInit() {}
+export class ProfilePictureComponent {
+    @Input() public userId: number = 0;
+    @Input() public isHeadlineProfilePicture: boolean = false;
+    @Input() public imageAsset: ImageAsset = profileIcon;
+    @ViewChild('profilePictureImage') public profilePictureImage: SsImgComponent;
+    constructor() {}
 
-    protected readonly defaultAvatar = defaultAvatar;
+    protected readonly defaultAvatar: ImageAsset = defaultAvatar;
 }

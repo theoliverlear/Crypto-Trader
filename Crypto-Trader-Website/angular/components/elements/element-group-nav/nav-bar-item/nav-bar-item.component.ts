@@ -8,15 +8,14 @@ import {
     ViewChild,
 } from '@angular/core';
 
-import {
-    ElementLink,
-    SsAnchorComponent,
-    TextElementLink,
-} from '@theoliverlear/angular-suite';
+import { ElementLink, SsAnchorComponent } from '@theoliverlear/angular-suite';
 import { ImageAsset } from '@assets/imageAssets';
 
 import { NavBarItemOption } from './models/NavBarItemOption';
 
+/** A nav bar item that can be clicked to navigate to a different page.
+ *
+ */
 @Component({
     selector: 'nav-bar-item',
     standalone: false,
@@ -24,33 +23,37 @@ import { NavBarItemOption } from './models/NavBarItemOption';
     styleUrls: ['./nav-bar-item.component.scss'],
 })
 export class NavBarItemComponent implements OnInit, OnChanges {
-    elementLink: ElementLink;
-    imageAsset: ImageAsset;
-    @Input() navBarItemOption: NavBarItemOption;
-    @ViewChild(SsAnchorComponent) anchorComponent: SsAnchorComponent;
+    protected elementLink: ElementLink;
+    protected imageAsset: ImageAsset;
+    @Input() public navBarItemOption: NavBarItemOption;
+    @ViewChild(SsAnchorComponent) protected anchorComponent: SsAnchorComponent | undefined;
     constructor() {}
 
-    ngOnInit(): void {
+    /** WIP
+     *
+     */
+    public ngOnInit(): void {
         if (this.elementLink) {
             // this.convertTextToUpper();
         }
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if ('navBarItemOption' in changes && this.navBarItemOption) {
-            this.elementLink = NavBarItemOption.getElementLink(
-                this.navBarItemOption,
-            );
-            this.imageAsset = NavBarItemOption.getImageAsset(
-                this.navBarItemOption,
-            );
+    /** On nav bar item changes, load their links and images.
+     *
+     * @param changes
+     */
+    public ngOnChanges(changes: SimpleChanges): void {
+        if ('navBarItemOption' in changes) {
+            this.elementLink = NavBarItemOption.getElementLink(this.navBarItemOption);
+            this.imageAsset = NavBarItemOption.getImageAsset(this.navBarItemOption);
         }
     }
 
-    private convertTextToUpper() {}
-
+    /** On click, click the child anchor component.
+     *
+     */
     @HostListener('click')
-    onClick() {
+    public onClick(): void {
         this.anchorComponent?.onClick();
     }
 }

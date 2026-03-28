@@ -7,6 +7,9 @@ import { AssetFieldSortType } from '@models/sort/types';
 
 import { PortfolioAssetFieldType } from '../asset-field/models/PortfolioAssetFieldType';
 
+/** Component for displaying a list of assets in a portfolio.
+ *
+ */
 @Component({
     selector: 'portfolio-asset-list',
     templateUrl: './portfolio-asset-list.component.html',
@@ -14,29 +17,39 @@ import { PortfolioAssetFieldType } from '../asset-field/models/PortfolioAssetFie
     standalone: false,
 })
 export class PortfolioAssetListComponent implements OnInit {
-    @Input() assets: PortfolioAsset[] = [];
-    originalAssetsState: PortfolioAsset[] = [];
-    sortState: AssetFieldSortType = [
+    @Input() public assets: PortfolioAsset[] = [];
+    private originalAssetsState: PortfolioAsset[] = [];
+    public sortState: AssetFieldSortType = [
         PortfolioAssetFieldType.CURRENCY_NAME,
         SimpleSortState.NONE,
     ];
     constructor() {}
 
-    ngOnInit(): void {
+    /** On init, try to store original assets.
+     *
+     */
+    public ngOnInit(): void {
         this.attemptStoreOriginalAssets();
     }
 
-    private attemptStoreOriginalAssets() {
+    private attemptStoreOriginalAssets(): void {
         if (this.hasAssets()) {
             this.originalAssetsState = [...this.assets];
         }
     }
 
-    hasAssets(): boolean {
+    /** Checks if assets list has assets.
+     * @returns true if assets list has assets, false otherwise.
+     */
+    public hasAssets(): boolean {
         return this.assets.length > 0;
     }
 
-    sortAssets(assetSortType: AssetFieldSortType): void {
+    /** Sorts assets list by type.
+     *
+     * @param assetSortType
+     */
+    public sortAssets(assetSortType: AssetFieldSortType): void {
         if (!this.canSort()) {
             return;
         }
@@ -48,7 +61,7 @@ export class PortfolioAssetListComponent implements OnInit {
         this.sortByType(assetSortType);
     }
 
-    private sortByType(assetSortType: AssetFieldSortType) {
+    private sortByType(assetSortType: AssetFieldSortType): void {
         switch (assetSortType[0]) {
             case PortfolioAssetFieldType.TOTAL_VALUE:
                 this.sortByTotalValue();
@@ -69,85 +82,69 @@ export class PortfolioAssetListComponent implements OnInit {
                 this.sortByVendorName();
                 break;
             default:
-                throw new Error('Unknown AssetFieldSortType: ' + assetSortType);
+                throw new Error(`Unknown AssetFieldSortType: ${assetSortType.toString()}`);
         }
     }
 
-    canSort(): boolean {
+    protected canSort(): boolean {
         return this.assets.length > 1;
     }
 
-    sortByCurrencyName(): void {
+    protected sortByCurrencyName(): void {
         const sortType: SimpleSortState = this.sortState[1];
         if (sortType === SimpleSortState.ASCENDING) {
-            this.assets.sort((a, b) =>
-                a.currencyName.localeCompare(b.currencyName),
-            );
+            this.assets.sort((a, b): number => a.currencyName.localeCompare(b.currencyName));
         } else {
-            this.assets.sort((a, b) =>
-                b.currencyName.localeCompare(a.currencyName),
-            );
+            this.assets.sort((a, b): number => b.currencyName.localeCompare(a.currencyName));
         }
     }
 
-    sortByShares(): void {
+    protected sortByShares(): void {
         const sortType: SimpleSortState = this.sortState[1];
         if (sortType === SimpleSortState.ASCENDING) {
-            this.assets.sort((a, b) => a.shares - b.shares);
+            this.assets.sort((a, b): number => a.shares - b.shares);
         } else {
-            this.assets.sort((a, b) => b.shares - a.shares);
+            this.assets.sort((a, b): number => b.shares - a.shares);
         }
     }
 
-    sortByTotalValue(): void {
+    private sortByTotalValue(): void {
         const sortType: SimpleSortState = this.sortState[1];
         if (sortType === SimpleSortState.ASCENDING) {
-            this.assets.sort(
-                (a, b) => a.totalValueInDollars - b.totalValueInDollars,
-            );
+            this.assets.sort((a, b): number => a.totalValueInDollars - b.totalValueInDollars);
         } else {
-            this.assets.sort(
-                (a, b) => b.totalValueInDollars - a.totalValueInDollars,
-            );
+            this.assets.sort((a, b): number => b.totalValueInDollars - a.totalValueInDollars);
         }
     }
 
-    sortByTargetPrice(): void {
+    private sortByTargetPrice(): void {
         const sortType: SimpleSortState = this.sortState[1];
         if (sortType === SimpleSortState.ASCENDING) {
-            this.assets.sort((a, b) => a.targetPrice - b.targetPrice);
+            this.assets.sort((a, b): number => a.targetPrice - b.targetPrice);
         } else {
-            this.assets.sort((a, b) => b.targetPrice - a.targetPrice);
+            this.assets.sort((a, b): number => b.targetPrice - a.targetPrice);
         }
     }
 
-    sortByVendorName(): void {
+    private sortByVendorName(): void {
         const sortType: SimpleSortState = this.sortState[1];
         if (sortType === SimpleSortState.ASCENDING) {
-            this.assets.sort((a, b) =>
-                a.vendorName.localeCompare(b.vendorName),
-            );
+            this.assets.sort((a, b): number => a.vendorName.localeCompare(b.vendorName));
         } else {
-            this.assets.sort((a, b) =>
-                b.vendorName.localeCompare(a.vendorName),
-            );
+            this.assets.sort((a, b): number => b.vendorName.localeCompare(a.vendorName));
         }
     }
 
-    sortByLastUpdated(): void {
+    private sortByLastUpdated(): void {
         const sortType: SimpleSortState = this.sortState[1];
         if (sortType === SimpleSortState.ASCENDING) {
-            this.assets.sort((a, b) =>
-                a.lastUpdated.localeCompare(b.lastUpdated),
-            );
+            this.assets.sort((a, b): number => a.lastUpdated.localeCompare(b.lastUpdated));
         } else {
-            this.assets.sort((a, b) =>
-                b.lastUpdated.localeCompare(a.lastUpdated),
-            );
+            this.assets.sort((a, b): number => b.lastUpdated.localeCompare(a.lastUpdated));
         }
     }
 
-    resetSort(): void {
+    private resetSort(): void {
         this.assets = [...this.originalAssetsState];
     }
 }

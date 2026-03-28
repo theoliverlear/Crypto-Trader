@@ -2,12 +2,12 @@
 import { Component, HostBinding, Input } from '@angular/core';
 
 import { TagType } from '@theoliverlear/angular-suite';
-import { upArrowIcon } from '@assets/imageAssets';
-import {
-    CurrencyPerformanceRating,
-    PerformanceRating,
-} from '@models/currency/types';
+import { ImageAsset, upArrowIcon } from '@assets/imageAssets';
+import { PerformanceRating } from '@models/currency/types';
 
+/** A component that displays an up/down arrow indicating the performance of
+ *  a currency.
+ */
 @Component({
     selector: 'performance-arrow',
     templateUrl: './performance-arrow.component.html',
@@ -15,19 +15,25 @@ import {
     standalone: false,
 })
 export class PerformanceArrowComponent {
-    @Input() performance: PerformanceRating = {
+    @Input() protected performance: PerformanceRating = {
         rating: 'neutral',
         changePercent: '0%',
     };
-    @Input() includePercent: boolean = false;
-    @HostBinding('class.up') get isUp() {
+    @Input() protected includePercent: boolean = false;
+    /** On positive performance, point upward.
+     * @returns {boolean} true if currency is a positive performance, false otherwise.
+     */
+    @HostBinding('class.up') get isUp(): boolean {
         return this.performance && this.performance.rating === 'up';
     }
-    @HostBinding('class.down') get isDown() {
+    /** On negative performance, point downward.
+     * @returns {boolean} true if currency is a negative performance, false otherwise.
+     */
+    @HostBinding('class.down') get isDown(): boolean {
         return this.performance && this.performance.rating === 'down';
     }
     constructor() {}
 
-    protected readonly upArrowIcon = upArrowIcon;
-    protected readonly TagType = TagType;
+    protected readonly upArrowIcon: ImageAsset = upArrowIcon;
+    protected readonly TagType: typeof TagType = TagType;
 }

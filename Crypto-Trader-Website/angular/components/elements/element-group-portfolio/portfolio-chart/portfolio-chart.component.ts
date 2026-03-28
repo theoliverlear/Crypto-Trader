@@ -13,6 +13,9 @@ import * as d3 from 'd3';
 import { CurrencyFormatterService } from '@ui/currency-formatter.service';
 import { Margin, SparkPoint } from '@models/chart/types';
 
+/** A chart showcasing portfolio data.
+ *
+ */
 @Component({
     selector: 'portfolio-chart',
     templateUrl: './portfolio-chart.component.html',
@@ -20,29 +23,38 @@ import { Margin, SparkPoint } from '@models/chart/types';
     standalone: false,
 })
 export class PortfolioChartComponent implements OnChanges, AfterViewInit {
-    @Input() data: SparkPoint[] = [];
-    @Input() width: number = 120;
-    @Input() height: number = 40;
-    @Input() stroke: string = '#4caf50';
-    @Input() strokeWidth: number = 2.0;
-    @Input() margin: Margin = { top: 20, right: 20, bottom: 20, left: 20 };
+    @Input() public data: SparkPoint[] = [];
+    @Input() public width: number = 120;
+    @Input() public height: number = 40;
+    @Input() public stroke: string = '#4caf50';
+    @Input() public strokeWidth: number = 2.0;
+    @Input() public margin: Margin = { top: 20, right: 20, bottom: 20, left: 20 };
 
     @ViewChild('svgElement', { static: true })
-    chartReference!: ElementRef<SVGSVGElement>;
-    constructor(private currencyFormatter: CurrencyFormatterService) {}
+    protected readonly chartReference!: ElementRef<SVGSVGElement>;
+    constructor(private readonly currencyFormatter: CurrencyFormatterService) {}
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes['data']) {
+    /** On changes, render the chart with new data.
+     *
+     * @param changes
+     */
+    public ngOnChanges(changes: SimpleChanges): void {
+        if ('data' in changes) {
             this.render();
         }
     }
 
-    ngAfterViewInit(): void {
+    /** After the view is created, load the data.
+     *
+     */
+    public ngAfterViewInit(): void {
         this.render();
     }
 
     private render(): void {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         const svgElement: SVGSVGElement = this.chartReference?.nativeElement;
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!svgElement) {
             return;
         }
@@ -55,10 +67,7 @@ export class PortfolioChartComponent implements OnChanges, AfterViewInit {
         const graphic: any = d3
             .select(svgElement)
             .append('g')
-            .attr(
-                'transform',
-                `translate(${this.margin.left},${this.margin.top})`,
-            );
+            .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
 
         if (!this.data || this.data.length === 0) {
             return;
@@ -66,10 +75,7 @@ export class PortfolioChartComponent implements OnChanges, AfterViewInit {
 
         const parsed: { date: Date; value: number }[] = this.data
             .map((point) => ({
-                date:
-                    point.date instanceof Date
-                        ? point.date
-                        : new Date(point.date),
+                date: point.date instanceof Date ? point.date : new Date(point.date),
                 value: point.value,
             }))
             .filter((date) => !isNaN(date.date.getTime()));
@@ -79,20 +85,15 @@ export class PortfolioChartComponent implements OnChanges, AfterViewInit {
 
         const xAxis: any = d3
             .scaleTime()
-            .domain(
-                d3.extent(
-                    parsed,
-                    (d: { date: Date; value: number }) => d.date,
-                ) as [Date, Date],
-            )
+            .domain(d3.extent(parsed, (d: { date: Date; value: number }) => d.date) as [Date, Date])
             .range([0, width]);
         const yAxis: any = d3
             .scaleLinear()
             .domain(
-                d3.extent(
-                    parsed,
-                    (d: { date: Date; value: number }) => d.value,
-                ) as [number, number],
+                d3.extent(parsed, (d: { date: Date; value: number }) => d.value) as [
+                    number,
+                    number,
+                ],
             )
             .nice()
             .range([height, 0]);
@@ -138,22 +139,22 @@ export class PortfolioChartComponent implements OnChanges, AfterViewInit {
             .text(this.currencyFormatter.formatCurrency(yMin));
     }
 
-    private setDimensions(svgElement: SVGSVGElement) {
+    private setDimensions(svgElement: SVGSVGElement): void {
         svgElement.setAttribute('width', String(this.width));
         svgElement.setAttribute('height', String(this.height));
     }
 
-    private resetSVG(svgElement: SVGSVGElement) {
+    private resetSVG(svgElement: SVGSVGElement): void {
         while (svgElement.firstChild) {
             svgElement.removeChild(svgElement.firstChild);
         }
     }
 
-    private getAdjustedHeight() {
+    private getAdjustedHeight(): number {
         return this.height - this.margin.top - this.margin.bottom;
     }
 
-    private getAdjustedWidth() {
+    private getAdjustedWidth(): number {
         return this.width - this.margin.left - this.margin.right;
     }
 }

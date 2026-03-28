@@ -8,11 +8,7 @@ describe('SignupCredentials', () => {
     });
     describe('isValidEmail', () => {
         it('should detect email validity', () => {
-            const invalidEmails: string[] = [
-                'invalid-email',
-                'ollie@',
-                'ollie.com',
-            ];
+            const invalidEmails: string[] = ['invalid-email', 'ollie@', 'ollie.com'];
             for (const invalidEmail of invalidEmails) {
                 signupCredentials.email = invalidEmail;
                 expect(signupCredentials.isValidEmail()).toBeFalsy();
@@ -33,12 +29,7 @@ describe('SignupCredentials', () => {
         const confirmPassword: string = 'password';
         const email: string = 'invalid-email';
         const agreedTerms: boolean = true;
-        signupCredentials = new SignupCredentials(
-            email,
-            password,
-            confirmPassword,
-            agreedTerms,
-        );
+        signupCredentials = new SignupCredentials(email, password, confirmPassword, agreedTerms);
         it('should not allow invalid request generation', () => {
             expect(() => signupCredentials.getSignupRequest()).toThrowError(
                 'Cannot get signup request due to input issues.',
@@ -57,9 +48,7 @@ describe('SignupCredentials', () => {
                 confirmPassword,
                 agreedTerms,
             );
-            expect(signupCredentials.getAnyIssue()).toBe(
-                AuthPopup.INVALID_EMAIL,
-            );
+            expect(signupCredentials.getAnyIssue()).toBe(AuthPopup.INVALID_EMAIL);
             const validEmail: string = 'valid@email.com';
             signupCredentials.email = validEmail;
             expect(signupCredentials.getAnyIssue()).toBe(AuthPopup.NONE);

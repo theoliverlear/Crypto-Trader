@@ -43,8 +43,7 @@ export class AppComponent implements OnInit {
             .pipe(
                 filter(
                     // eslint-disable-next-line @typescript-eslint/typedef
-                    (event): event is NavigationEnd =>
-                        event instanceof NavigationEnd,
+                    (event): event is NavigationEnd => event instanceof NavigationEnd,
                 ),
                 map((): ActivatedRoute => this.activatedRoot),
                 map((route: ActivatedRoute): ActivatedRoute => {
@@ -53,9 +52,7 @@ export class AppComponent implements OnInit {
                     }
                     return route;
                 }),
-                mergeMap(
-                    (route: ActivatedRoute): Observable<Data> => route.data,
-                ),
+                mergeMap((route: ActivatedRoute): Observable<Data> => route.data),
             )
             .subscribe((data: Data): void => {
                 type Meta = {

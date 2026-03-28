@@ -1,11 +1,5 @@
 // auth-console-tab.component.ts
-import {
-    Component,
-    EventEmitter,
-    HostListener,
-    Input,
-    Output,
-} from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 
 import { AuthType, TagType } from '@theoliverlear/angular-suite';
 
@@ -20,8 +14,7 @@ import { AuthType, TagType } from '@theoliverlear/angular-suite';
 })
 export class AuthConsoleTabComponent {
     @Input() public authType: AuthType;
-    @Output() protected authTabClicked: EventEmitter<AuthType> =
-        new EventEmitter<AuthType>();
+    @Output() public authTabClicked: EventEmitter<AuthType> = new EventEmitter<AuthType>();
     constructor() {}
     /** Emits the auth type when clicked.
      *

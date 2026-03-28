@@ -17,8 +17,7 @@ import { AuthInputType } from './models/AuthInputType';
 export class AuthInputComponent implements OnInit {
     @Input() public authInputType: AuthInputType;
     @Input() public authTypeString: string = '';
-    @Output() protected inputChange: EventEmitter<string> =
-        new EventEmitter<string>();
+    @Output() public inputChange: EventEmitter<string> = new EventEmitter<string>();
     protected inputText: string = '';
     constructor() {}
     /** Emits the input text to the parent component.
@@ -36,7 +35,7 @@ export class AuthInputComponent implements OnInit {
         this.emitInputText();
     }
     /**
-     * Angular lifecycle hook for initialization.
+     * On init, initialize the auth text string.
      */
     public ngOnInit(): void {
         this.initAuthText();
@@ -44,7 +43,7 @@ export class AuthInputComponent implements OnInit {
 
     private initAuthText(): void {
         if (this.authInputType !== AuthInputType.AGREED_TERMS) {
-            this.authTypeString = this.authInputType + ':';
+            this.authTypeString = `${this.authInputType}:`;
         } else {
             this.authTypeString = this.authInputType;
         }

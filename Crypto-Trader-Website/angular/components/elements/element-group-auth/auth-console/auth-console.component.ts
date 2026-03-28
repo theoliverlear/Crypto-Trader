@@ -1,18 +1,8 @@
-import {
-    Component,
-    EventEmitter,
-    Input,
-    OnDestroy,
-    Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import {
-    AuthPopup,
-    AuthType,
-    WebSocketCapable,
-} from '@theoliverlear/angular-suite';
+import { AuthPopup, AuthType, WebSocketCapable } from '@theoliverlear/angular-suite';
 import { SignupWsService } from '@ws/signup-ws.service';
 import { LoginService } from '@http/auth/access/login.service';
 import { SignupService } from '@http/auth/access/signup.service';
@@ -37,9 +27,8 @@ import { AuthResponse, LoginRequest, SignupRequest } from '@models/auth/types';
     styleUrls: ['./auth-console.component.scss'],
 })
 export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
-    @Input() protected currentAuthType: AuthType = AuthType.SIGN_UP;
-    @Output() protected authPopupEvent: EventEmitter<AuthPopup> =
-        new EventEmitter<AuthPopup>();
+    @Input() public currentAuthType: AuthType = AuthType.SIGN_UP;
+    @Output() public authPopupEvent: EventEmitter<AuthPopup> = new EventEmitter<AuthPopup>();
     protected attempts: number = 0;
     public webSocketSubscriptions: Record<string, Subscription> = {};
     constructor(
@@ -163,49 +152,43 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
     public initializeWebSockets(): void {
         console.log('[WS] Connecting signup socket…');
         this.signupWebSocket.connect();
-        this.webSocketSubscriptions['signup'] = this.signupWebSocket
-            .getMessages()
-            .subscribe({
-                next: (authResponse: AuthResponse): void => {
-                    console.log('[WS][signup] message:', authResponse);
-                    if (!authResponse) {
-                        return;
+        this.webSocketSubscriptions['signup'] = this.signupWebSocket.getMessages().subscribe({
+            next: (authResponse: AuthResponse): void => {
+                console.log('[WS][signup] message:', authResponse);
+                if (!authResponse) {
+                    return;
+                }
+                if (authResponse.authorized) {
+                    console.log('[WS][signup] Authorized');
+                    this.saveToken(authResponse);
+                    void this.router.navigate(['/portfolio']);
+                } else {
+                    console.log('[WS][signup] Not authorized');
+                    if (this.attempts !== 0) {
+                        this.emitAuthPopup(AuthPopup.USERNAME_OR_EMAIL_EXISTS);
                     }
-                    if (authResponse.authorized) {
-                        console.log('[WS][signup] Authorized');
-                        this.saveToken(authResponse);
-                        void this.router.navigate(['/portfolio']);
-                    } else {
-                        console.log('[WS][signup] Not authorized');
-                        if (this.attempts !== 0) {
-                            this.emitAuthPopup(
-                                AuthPopup.USERNAME_OR_EMAIL_EXISTS,
-                            );
-                        }
-                    }
-                },
-                error: (error): void => {
-                    console.log('[WS][signup] error:', error);
-                },
-                complete: (): void => {
-                    console.log('[WS][signup] complete');
-                },
-            });
+                }
+            },
+            error: (error): void => {
+                console.log('[WS][signup] error:', error);
+            },
+            complete: (): void => {
+                console.log('[WS][signup] complete');
+            },
+        });
     }
 
-    /**
+    /** Disconnects WebSocket subscriptions on component destruction.
      *
      */
     public ngOnDestroy(): void {
-        Object.values(this.webSocketSubscriptions).forEach(
-            (sub: Subscription): void => {
-                try {
-                    sub.unsubscribe();
-                } catch {
-                    /* empty */
-                }
-            },
-        );
+        Object.values(this.webSocketSubscriptions).forEach((sub: Subscription): void => {
+            try {
+                sub.unsubscribe();
+            } catch {
+                /* empty */
+            }
+        });
         this.webSocketSubscriptions = {};
         try {
             this.signupWebSocket.disconnect();

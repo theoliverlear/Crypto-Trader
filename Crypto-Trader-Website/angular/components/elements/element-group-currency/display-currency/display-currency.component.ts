@@ -11,11 +11,7 @@ import {
 } from '@angular/core';
 import { interval, Subject, Subscription, takeUntil } from 'rxjs';
 
-import {
-    ElementSize,
-    TagType,
-    WebSocketCapable,
-} from '@theoliverlear/angular-suite';
+import { ElementSize, TagType, WebSocketCapable } from '@theoliverlear/angular-suite';
 import { defaultChartProperties } from '@assets/chartAssets';
 import { defaultCurrencyIcon, ImageAsset } from '@assets/imageAssets';
 import { CurrencyValueWsService } from '@ws/currency-value-ws.service';
@@ -24,11 +20,7 @@ import { CurrencyHistoryService } from '@http/currency/currency-history.service'
 import { CurrencyFormatterService } from '@ui/currency-formatter.service';
 import { NumberTweenService } from '@ui/number-tween.service';
 import { ChartDisplayProperties, SparkPoint } from '@models/chart/types';
-import {
-    DisplayCurrency,
-    HistoryPoint,
-    PerformanceRating,
-} from '@models/currency/types';
+import { DisplayCurrency, HistoryPoint, PerformanceRating } from '@models/currency/types';
 
 /** Displays a currency's price and performance.
  *
@@ -43,7 +35,7 @@ import {
 export class DisplayCurrencyComponent
     implements OnChanges, OnInit, AfterViewInit, OnDestroy, WebSocketCapable
 {
-    @Input() protected currency: DisplayCurrency;
+    @Input() public currency: DisplayCurrency;
     protected imageAsset: ImageAsset = defaultCurrencyIcon;
     protected history: HistoryPoint[] = [];
     protected performance: PerformanceRating = {
@@ -56,16 +48,16 @@ export class DisplayCurrencyComponent
     private currentNumericPrice: number = 0;
     private priceAnimationSub: Subscription | null = null;
 
-    /**
-     *
+    /** On upward ratings, point arrow upwards.
+     * @returns {boolean} true if upward performance, false otherwise.
      */
     @HostBinding('class.up-performance')
     public get isUpPerformance(): boolean {
         return this.performance.rating === 'up';
     }
 
-    /**
-     *
+    /** On downward ratings, point arrow downwards.
+     * @returns {boolean} true if downward performance, false otherwise.
      */
     @HostBinding('class.down-performance')
     public get isDownPerformance(): boolean {
@@ -81,13 +73,14 @@ export class DisplayCurrencyComponent
     ) {}
 
     public webSocketSubscriptions: Record<string, Subscription> = {};
-    /**
+    /** Initialize web sockets for currency value updates.
      *
      */
     public initializeWebSockets(): void {
         this.currencyValueWebSocket.connect();
-        this.webSocketSubscriptions['currency-value'] =
-            this.currencyValueWebSocket.getMessages().subscribe({
+        this.webSocketSubscriptions['currency-value'] = this.currencyValueWebSocket
+            .getMessages()
+            .subscribe({
                 next: (message: string): void => {
                     const numeric: number = Number(message);
                     if (!isFinite(numeric)) {
@@ -98,7 +91,7 @@ export class DisplayCurrencyComponent
             });
     }
 
-    /**
+    /** Sets the chart properties based on historical data.
      *
      */
     private setChartProperties(): void {
@@ -124,7 +117,7 @@ export class DisplayCurrencyComponent
 
     private readonly destroy$: Subject<void> = new Subject<void>();
 
-    /**
+    /** Continuously update the currency price every 5 seconds via WebSocket.
      *
      */
     private continuouslyUpdatePrice(): void {
@@ -134,14 +127,14 @@ export class DisplayCurrencyComponent
             .subscribe((): void => this.updatePrice());
     }
 
-    /**
+    /** Update price via WebSocket.
      *
      */
     private updatePrice(): void {
         this.currencyValueWebSocket.sendMessage(this.currency.currencyCode);
     }
 
-    /**
+    /** Update the currency price and numeric value.
      *
      * @param price
      */
@@ -157,23 +150,20 @@ export class DisplayCurrencyComponent
         }
     }
 
-    /**
+    /** Animate the currency price to a new value.
      *
-     * @param to
+     * @param nextPrice
      * @param durationMs
      */
-    private setCurrencyNumericPrice(
-        to: number,
-        durationMs: number = 500,
-    ): void {
+    private setCurrencyNumericPrice(nextPrice: number, durationMs: number = 500): void {
         const from: number = this.getCurrentDisplayedNumeric();
         if (!isFinite(from) || from === 0) {
-            this.currencyPrice = this.currencyFormatter.formatCurrency(to);
-            this.previousNumericPrice = to;
-            this.currentNumericPrice = to;
+            this.currencyPrice = this.currencyFormatter.formatCurrency(nextPrice);
+            this.previousNumericPrice = nextPrice;
+            this.currentNumericPrice = nextPrice;
             return;
         }
-        if (to === from) {
+        if (nextPrice === from) {
             return;
         }
 
@@ -182,12 +172,11 @@ export class DisplayCurrencyComponent
             this.priceAnimationSub = null;
         }
         this.previousNumericPrice = from;
-        this.currentNumericPrice = to;
+        this.currentNumericPrice = nextPrice;
         this.priceAnimationSub = this.numberTween
-            .animate(from, to, durationMs)
+            .animate(from, nextPrice, durationMs)
             .subscribe((value: number): void => {
-                this.currencyPrice =
-                    this.currencyFormatter.formatCurrency(value);
+                this.currencyPrice = this.currencyFormatter.formatCurrency(value);
             });
     }
 
@@ -197,10 +186,7 @@ export class DisplayCurrencyComponent
             if (isFinite(parsed)) return parsed;
         }
 
-        if (
-            isFinite(this.currentNumericPrice) &&
-            this.currentNumericPrice !== 0
-        ) {
+        if (isFinite(this.currentNumericPrice) && this.currentNumericPrice !== 0) {
             return this.currentNumericPrice;
         }
         return this.currency ? Number(this.currency.value) : 0;
@@ -211,10 +197,10 @@ export class DisplayCurrencyComponent
         return Number(cleanedValue);
     }
 
-    /**
-     *
+    /** Get the currency price as a formatted string.
+     * @returns The formatted currency price.
      */
-    getCurrencyPrice(): string {
+    protected getCurrencyPrice(): string {
         if (this.currency) {
             return this.currencyFormatter.formatCurrency(this.currency.value);
         } else {
@@ -222,13 +208,13 @@ export class DisplayCurrencyComponent
         }
     }
 
-    /**
+    /** Updates image and price when currency changes.
      *
      * @param changes
      */
-    ngOnChanges(changes: SimpleChanges) {
-        if (changes['currency']) {
-            this.resolveImageAsset();
+    public ngOnChanges(changes: SimpleChanges): void {
+        if ('currency' in changes) {
+            void this.resolveImageAsset();
             this.fetchHistory();
             const initValue: string = this.getCurrencyPrice();
             this.currencyPrice = initValue;
@@ -238,32 +224,32 @@ export class DisplayCurrencyComponent
                 this.currentNumericPrice = initNumericValue;
             }
         }
-        if (changes['history']) {
+        if ('history' in changes) {
             this.setChartProperties();
         }
-        if (changes['performance']) {
+        if ('performance' in changes) {
             this.updatePerformance();
         }
     }
 
-    /**
+    /** Initialize visual components after view initialization.
      *
      */
-    ngAfterViewInit() {
-        this.resolveImageAsset();
+    public ngAfterViewInit(): void {
+        void this.resolveImageAsset();
         this.updatePerformance();
         this.continuouslyUpdatePrice();
         // this.setChartProperties();
     }
 
-    /**
+    /** Clean up subscriptions and WebSocket connections on component destruction.
      *
      */
-    ngOnDestroy(): void {
+    public ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
 
-        Object.values(this.webSocketSubscriptions).forEach((sub) =>
+        Object.values(this.webSocketSubscriptions).forEach((sub: Subscription): void =>
             sub?.unsubscribe(),
         );
         this.webSocketSubscriptions = {};
@@ -273,48 +259,49 @@ export class DisplayCurrencyComponent
         }
         try {
             this.currencyValueWebSocket.disconnect();
-        } catch {
-            console.error('Failed to disconnect from WebSocket');
+        } catch (error) {
+            console.error('Failed to disconnect from WebSocket', error);
         }
     }
 
-    /**
+    /** Update the currency's performance rating.
      *
      */
-    updatePerformance(): void {
+    protected updatePerformance(): void {
         this.dayPerformance
             .getCurrencyDayPerformance(this.currency.currencyCode)
-            .subscribe((performance: any) => {
+            .subscribe((performance: PerformanceRating): void => {
                 this.performance = performance;
             });
     }
 
-    /**
+    /** Fetch the currency's historical price data if the currency is valid.
      *
      */
-    fetchHistory(): void {
+    protected fetchHistory(): void {
         if (!this.isCurrencyInvalid()) {
-            this.listenForCurrencyHistory();
+            void this.listenForCurrencyHistory();
         }
     }
 
-    private listenForCurrencyHistory() {
+    private listenForCurrencyHistory(): void {
         this.historyService
             .getHistory(this.currency.currencyCode, 24, 60)
-            .subscribe((points) => {
+            .subscribe((points: HistoryPoint[]): void => {
                 this.history = points;
                 this.setChartProperties();
             });
     }
 
-    private isCurrencyInvalid() {
+    private isCurrencyInvalid(): boolean {
         return !this.currency || !this.currency.currencyCode;
     }
 
-    /**
+    // TODO: Use service method to get image.
+    /** Get the currency's image asset.
      *
      */
-    async resolveImageAsset(): Promise<void> {
+    protected async resolveImageAsset(): Promise<void> {
         if (!this.currency) {
             return;
         }
@@ -334,19 +321,19 @@ export class DisplayCurrencyComponent
      *
      * @param src
      */
-    async imageLoads(src: string): Promise<boolean> {
-        return new Promise<boolean>((resolve) => {
+    protected async imageLoads(src: string): Promise<boolean> {
+        return new Promise<boolean>((resolve): void => {
             const image = new Image();
-            image.onload = () => {
+            image.onload = (): void => {
                 resolve(true);
             };
-            image.onerror = () => {
+            image.onerror = (): void => {
                 resolve(false);
             };
             image.src = src;
         });
     }
 
-    protected readonly TagType = TagType;
-    protected readonly ElementSize = ElementSize;
+    protected readonly TagType: typeof TagType = TagType;
+    protected readonly ElementSize: typeof ElementSize = ElementSize;
 }

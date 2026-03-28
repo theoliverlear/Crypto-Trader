@@ -1,11 +1,7 @@
 // auth-console-signup-section.component.ts
 import { Component, EventEmitter, Output } from '@angular/core';
 
-import {
-    AuthPopup,
-    ButtonText,
-    ElementSize,
-} from '@theoliverlear/angular-suite';
+import { AuthPopup, ButtonText, ElementSize } from '@theoliverlear/angular-suite';
 import { SignupCredentials } from '@models/auth/SignupCredentials';
 
 import { AuthInputType } from '../auth-input/models/AuthInputType';
@@ -21,10 +17,9 @@ import { AuthInputType } from '../auth-input/models/AuthInputType';
 })
 export class AuthConsoleSignupSectionComponent {
     protected signupCredentials: SignupCredentials = new SignupCredentials();
-    @Output() protected signupButtonClicked: EventEmitter<SignupCredentials> =
+    @Output() public signupButtonClicked: EventEmitter<SignupCredentials> =
         new EventEmitter<SignupCredentials>();
-    @Output() protected authPopupEvent: EventEmitter<AuthPopup> =
-        new EventEmitter<AuthPopup>();
+    @Output() public authPopupEvent: EventEmitter<AuthPopup> = new EventEmitter<AuthPopup>();
     constructor() {}
 
     /** Emits an authorization popup event to the parent component.

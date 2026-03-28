@@ -12,12 +12,7 @@ import {
 } from '@angular/core';
 import { interval, Subject, Subscription, takeUntil } from 'rxjs';
 
-import {
-    ElementSize,
-    InputType,
-    TagType,
-    WebSocketCapable,
-} from '@theoliverlear/angular-suite';
+import { ElementSize, InputType, TagType, WebSocketCapable } from '@theoliverlear/angular-suite';
 import { CurrencyValueWsService } from '@ws/currency-value-ws.service';
 import { TradeCheckoutService } from '@http/trade/trade-checkout.service';
 import { CurrencyFormatterService } from '@ui/currency-formatter.service';
@@ -30,6 +25,9 @@ import { OperationSuccessResponse } from '@models/types';
 
 import { BuyType } from '../buy-type/models/BuyType';
 
+/** A component for displaying trade checkout details.
+ *
+ */
 @Component({
     selector: 'trade-checkout-details',
     templateUrl: './trade-checkout-details.component.html',
@@ -39,34 +37,35 @@ import { BuyType } from '../buy-type/models/BuyType';
 export class TradeCheckoutDetailsComponent
     implements WebSocketCapable, OnInit, OnDestroy, OnChanges
 {
-    @Input() displayCurrency: DisplayCurrency;
-    numDollars: number = 0;
-    numShares: number = 0;
-    numFeeDollars: number = 0;
+    @Input() public displayCurrency: DisplayCurrency;
+    protected numDollars: number = 0;
+    protected numShares: number = 0;
+    protected numFeeDollars: number = 0;
 
-    youPayText: string = '';
-    youGetText: string = '';
+    protected youPayText: string = '';
+    protected youGetText: string = '';
 
-    private tradeCheckout: TradeCheckout = new TradeCheckout();
-    @Output()
-    tradeCheckoutChange: EventEmitter<TradeCheckout> =
+    private readonly tradeCheckout: TradeCheckout = new TradeCheckout();
+    @Output() public readonly tradeCheckoutChange: EventEmitter<TradeCheckout> =
         new EventEmitter<TradeCheckout>();
     protected buyType: BuyType = BuyType.DOLLARS;
     private priceAnimationSub: Subscription | null = null;
-    private destroy$: Subject<void> = new Subject<void>();
+    private readonly destroy$: Subject<void> = new Subject<void>();
 
     constructor(
-        private currencyFormatter: CurrencyFormatterService,
-        private sharesFormatter: SharesFormatterService,
-        private currencyValueWebSocket: CurrencyValueWsService,
-        private numberTween: NumberTweenService,
-        private tradeCheckoutService: TradeCheckoutService,
+        private readonly currencyFormatter: CurrencyFormatterService,
+        private readonly sharesFormatter: SharesFormatterService,
+        private readonly currencyValueWebSocket: CurrencyValueWsService,
+        private readonly numberTween: NumberTweenService,
+        private readonly tradeCheckoutService: TradeCheckoutService,
     ) {}
 
-    attemptCheckout(): void {
+    /** Attempts to checkout the trade.
+     *
+     */
+    protected attemptCheckout(): void {
         try {
-            const tradeRequest: TradeCheckoutRequest =
-                this.tradeCheckout.getRequest();
+            const tradeRequest: TradeCheckoutRequest = this.tradeCheckout.getRequest();
             this.tradeCheckoutService.checkout(tradeRequest).subscribe({
                 next: (response: OperationSuccessResponse): void => {
                     console.log('Trade checkout successful:', response);
@@ -78,21 +77,26 @@ export class TradeCheckoutDetailsComponent
         }
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
+    /** On changes, updates display currency.
+     *
+     * @param changes
+     */
+    public ngOnChanges(changes: SimpleChanges): void {
         const displayCurrencyChange: SimpleChange = changes['displayCurrency'];
-        if (!displayCurrencyChange || !displayCurrencyChange.currentValue)
-            return;
-        this.displayCurrency =
-            displayCurrencyChange.currentValue as DisplayCurrency;
+        if (!displayCurrencyChange || !displayCurrencyChange.currentValue) return;
+        this.displayCurrency = displayCurrencyChange.currentValue as DisplayCurrency;
         this.tradeCheckout.currencyCode = this.displayCurrency.currencyCode;
     }
 
-    ngOnDestroy(): void {
+    /** On destruction, clean up subscriptions and WebSocket connections.
+     *
+     */
+    public ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
 
-        Object.values(this.webSocketSubscriptions).forEach(
-            (sub: Subscription): void => sub?.unsubscribe(),
+        Object.values(this.webSocketSubscriptions).forEach((sub: Subscription): void =>
+            sub?.unsubscribe(),
         );
         this.webSocketSubscriptions = {};
         if (this.priceAnimationSub) {
@@ -106,7 +110,10 @@ export class TradeCheckoutDetailsComponent
         }
     }
 
-    ngOnInit(): void {
+    /** On init, initialize WebSockets and update trade texts.
+     *
+     */
+    public ngOnInit(): void {
         // this.youPayText = this.getYouPayText();
         // this.youGetText = this.getYouGetText();
         this.updateTradeTexts();
@@ -114,11 +121,15 @@ export class TradeCheckoutDetailsComponent
         this.continuouslyUpdatePrice();
     }
 
-    webSocketSubscriptions: Record<string, Subscription> = {};
-    initializeWebSockets(): void {
+    public webSocketSubscriptions: Record<string, Subscription> = {};
+    /** Initializes the WebSockets for real-time currency price updates.
+     *
+     */
+    public initializeWebSockets(): void {
         this.currencyValueWebSocket.connect();
-        this.webSocketSubscriptions['currency-value'] =
-            this.currencyValueWebSocket.getMessages().subscribe({
+        this.webSocketSubscriptions['currency-value'] = this.currencyValueWebSocket
+            .getMessages()
+            .subscribe({
                 next: (message: string): void => {
                     // if (!message) {
                     //     return;
@@ -132,14 +143,19 @@ export class TradeCheckoutDetailsComponent
             });
     }
 
-    updatePriceDisplay(to: number, durationMs: number = 500): void {
+    /** Tweens the display currency value to the target price.
+     *
+     * @param nextPrice
+     * @param durationMs
+     */
+    protected updatePriceDisplay(nextPrice: number, durationMs: number = 500): void {
         const previousPrice: number = this.displayCurrency.value;
         if (!isFinite(previousPrice) || previousPrice === 0) {
-            this.displayCurrency.value = to;
+            this.displayCurrency.value = nextPrice;
             this.updateTradeTexts();
             return;
         }
-        if (to === previousPrice) {
+        if (nextPrice === previousPrice) {
             this.updateTradeTexts();
             return;
         }
@@ -149,35 +165,50 @@ export class TradeCheckoutDetailsComponent
             this.priceAnimationSub = null;
         }
         this.priceAnimationSub = this.numberTween
-            .animate(previousPrice, to, durationMs)
+            .animate(previousPrice, nextPrice, durationMs)
             .subscribe((value: number): void => {
                 this.displayCurrency.value = value;
                 this.updateTradeTexts();
             });
     }
 
-    setCurrencyPrice(currencyPrice: number): void {
+    /** Updates the display currency's price.
+     *
+     * @param currencyPrice
+     */
+    protected setCurrencyPrice(currencyPrice: number): void {
         this.displayCurrency.value = currencyPrice;
     }
 
-    continuouslyUpdatePrice(): void {
+    /**
+     * Continuously updates the display currency's price.
+     */
+    private continuouslyUpdatePrice(): void {
         this.updatePrice();
         interval(5000)
             .pipe(takeUntil(this.destroy$))
             .subscribe((): void => this.updatePrice());
     }
 
-    updatePrice(): void {
-        this.currencyValueWebSocket.sendMessage(
-            this.displayCurrency.currencyCode,
-        );
+    /**
+     * Calls WebSocket to update the display currency's price.
+     */
+    private updatePrice(): void {
+        this.currencyValueWebSocket.sendMessage(this.displayCurrency.currencyCode);
     }
 
-    hasVendorFee(): boolean {
+    /** Checks if the trade has a vendor fee.
+     * @returns true if the trade has a vendor fee, false otherwise.
+     */
+    protected hasVendorFee(): boolean {
         return this.numFeeDollars > 0;
     }
 
-    setFromInput(input: string): void {
+    /** Sets trade input with sanitization and validation.
+     *
+     * @param input
+     */
+    protected setFromInput(input: string): void {
         const inputAsNumber: number = Number(input);
         if (isNaN(inputAsNumber)) {
             return;
@@ -192,7 +223,11 @@ export class TradeCheckoutDetailsComponent
         this.updateTradeTexts();
     }
 
-    setBuyType(buyType: BuyType): void {
+    /** Changes buying and selling state of trade checkout.
+     *
+     * @param buyType
+     */
+    protected setBuyType(buyType: BuyType): void {
         if (this.buyType === BuyType.DOLLARS) {
             this.numShares = this.numDollars;
             this.tradeCheckout.numShares = this.numDollars;
@@ -213,12 +248,18 @@ export class TradeCheckoutDetailsComponent
         this.youGetText = this.getYouGetText();
     }
 
-    getVendorFee(): string {
+    /** Gets vendor fee for trade checkout.
+     * @returns vendor fee as string.
+     */
+    protected getVendorFee(): string {
         // TODO: Implement vendor fee fetching from API.
         return '';
     }
 
-    getYouPayText(): string {
+    /** Gets the "You Pay" text based on the current buy type and input values.
+     * @returns "You Pay" text as string.
+     */
+    protected getYouPayText(): string {
         if (this.buyType === BuyType.SHARES) {
             const numDollars: number = this.getSharesValue();
             return this.currencyFormatter.formatCurrency(numDollars);
@@ -231,27 +272,34 @@ export class TradeCheckoutDetailsComponent
         return this.displayCurrency.value * this.numShares;
     }
 
-    getYouGetText(): string {
+    /** Gets the "You Get" text based on the current buy type and input values.
+     * @returns "You Get" text as string.
+     */
+    protected getYouGetText(): string {
         if (this.buyType === BuyType.SHARES) {
             return this.sharesFormatter.formatShares(
                 this.numShares,
                 this.displayCurrency.currencyCode,
             );
         } else {
-            const numShares: number =
-                this.numDollars / this.displayCurrency.value;
-            return this.sharesFormatter.formatShares(
-                numShares,
-                this.displayCurrency.currencyCode,
-            );
+            const numShares: number = this.numDollars / this.displayCurrency.value;
+            return this.sharesFormatter.formatShares(numShares, this.displayCurrency.currencyCode);
         }
     }
 
-    getNumDecimals(numShares: number): number {
+    /** Determines precision for number of shares based on value.
+     *
+     * @param numShares
+     * @returns number of decimal places to display.
+     */
+    protected getNumDecimals(numShares: number): number {
         return numShares < 1 ? 10 : 2;
     }
 
-    getPlaceholderText(): string {
+    /** Gets placeholder text based on buy type.
+     * @returns placeholder text as string.
+     */
+    protected getPlaceholderText(): string {
         if (this.buyType === BuyType.DOLLARS) {
             return '# of Dollars';
         } else {
@@ -259,7 +307,7 @@ export class TradeCheckoutDetailsComponent
         }
     }
 
-    protected readonly TagType = TagType;
-    protected readonly InputType = InputType;
-    protected readonly ElementSize = ElementSize;
+    protected readonly TagType: typeof TagType = TagType;
+    protected readonly InputType: typeof InputType = InputType;
+    protected readonly ElementSize: typeof ElementSize = ElementSize;
 }
