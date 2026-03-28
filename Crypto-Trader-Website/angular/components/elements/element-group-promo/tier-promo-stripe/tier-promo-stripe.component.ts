@@ -16,16 +16,16 @@ import { SubscriptionTier } from '../tier-promo/models/SubscriptionTier';
     styleUrls: ['./tier-promo-stripe.component.scss'],
 })
 export class TierPromoStripeComponent implements AfterViewInit, OnDestroy {
-    @HostBinding('class.in-view') inView = false;
+    @HostBinding('class.in-view') private inView: boolean = false;
 
     private observer?: IntersectionObserver;
 
     constructor(private readonly elRef: ElementRef<HTMLElement>) {}
 
-    ngAfterViewInit(): void {
+    public ngAfterViewInit(): void {
         if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
             this.observer = new IntersectionObserver(
-                (entries) => {
+                (entries: IntersectionObserverEntry[]): void => {
                     for (const entry of entries) {
                         if (entry.isIntersecting) {
                             this.inView = true;
@@ -43,11 +43,11 @@ export class TierPromoStripeComponent implements AfterViewInit, OnDestroy {
         }
     }
 
-    ngOnDestroy(): void {
+    public ngOnDestroy(): void {
         if (this.observer) {
             this.observer.disconnect();
         }
     }
 
-    protected readonly SubscriptionTier = SubscriptionTier;
+    protected readonly SubscriptionTier: typeof SubscriptionTier = SubscriptionTier;
 }
