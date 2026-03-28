@@ -13,34 +13,32 @@ import { type LoggedInService } from '@http/auth/status/logged-in.service';
 import { type ConsoleCommandService } from '@http/console/console-command.service';
 import { type TokenStorageService } from '@auth/token-storage.service';
 
-
-
 import { type AuthResponse, type LoginRequest, type SignupRequest } from '../auth/types';
 import { ConsoleMode } from './ConsoleMode';
 import { LocalConsoleCommand } from './LocalConsoleCommand';
 
 
 export class CryptoTraderConsole {
-    private _terminal: Terminal;
-    private _fit: FitAddon;
-    private _links: WebLinksAddon;
+    private readonly _terminal: Terminal;
+    private readonly _fit: FitAddon;
+    private readonly _links: WebLinksAddon;
     private _buffer: string = '';
-    private _elementRef: ElementRef<HTMLDivElement>;
+    private readonly _elementRef: ElementRef<HTMLDivElement>;
     private readonly _consoleCommandService: ConsoleCommandService;
     private readonly _authService: AuthService;
     private readonly _tokenStorageService: TokenStorageService;
-    private _command$: Subject<string>;
+    private readonly _command$: Subject<string>;
     private static readonly PROMPT_CHAR: string = '$ ';
-    private _history: string[];
+    private readonly _history: string[];
     private _historyIndex: number;
     private _authType: AuthType | null;
 
-    private static readonly RED = '\x1b[31m';
-    private static readonly GREEN = '\x1b[32m';
-    private static readonly YELLOW = '\x1b[33m';
-    private static readonly CYAN = '\x1b[36m';
-    private static readonly RESET = '\x1b[0m';
-    private static readonly BOLD = '\x1b[1m';
+    private static readonly RED = '\x1b[31m' as const;
+    private static readonly GREEN = '\x1b[32m' as const;
+    private static readonly YELLOW = '\x1b[33m' as const;
+    private static readonly CYAN = '\x1b[36m' as const;
+    private static readonly RESET = '\x1b[0m' as const;
+    private static readonly BOLD = '\x1b[1m' as const;
 
     private _authEmail: string;
     private _authPassword: string | null;
@@ -95,7 +93,7 @@ export class CryptoTraderConsole {
             CryptoTraderConsole.CYAN,
         );
         this._terminal.writeln(welcomeText);
-        const helpText = 'Type "help" to see commands.';
+        const helpText: string = 'Type "help" to see commands.';
         this._terminal.writeln(helpText);
         this._terminal.writeln('');
     }
@@ -103,7 +101,7 @@ export class CryptoTraderConsole {
     private initReactivePipeline(): void {
         this._command$
             .pipe(
-                concatMap((line): Observable<{ consoleOutput: string }> => {
+                concatMap((line: string): Observable<{ consoleOutput: string }> => {
                     if (!line) {
                         if (this.isLocalCommand(line)) {
                             this.execute(line);
