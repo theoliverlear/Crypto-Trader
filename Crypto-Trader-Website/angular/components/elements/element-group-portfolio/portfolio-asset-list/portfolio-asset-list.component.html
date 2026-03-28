@@ -6,7 +6,7 @@
                 [asset]="asset"
                 [isFirst]="asset.id === assets[0].id"
                 [currentSort]="sortState"
-                (onSortClick)="sortAssets($event)"
+                (sortClicked)="sortAssets($event)"
             />
         }
     }
