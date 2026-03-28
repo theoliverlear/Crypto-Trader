@@ -52,15 +52,15 @@ import { AppRouting } from './routing/app-routing.module';
  * using the HttpOnly refresh cookie automatically on app start.
  */
 export function appInit(): () => Promise<void> {
-    return async () => {
-        const keys = inject(DpopKeyService);
-        const auth = inject(AuthService);
+    return async (): Promise<void> => {
+        const keys: DpopKeyService = inject(DpopKeyService);
+        const auth: AuthService = inject(AuthService);
         try {
             await keys.ensureKeys();
-            await new Promise<void>((resolve) => {
+            await new Promise<void>((resolve): void => {
                 auth.refresh().subscribe({
-                    next: () => resolve(),
-                    error: () => resolve(),
+                    next: (): void => resolve(),
+                    error: (): void => resolve(),
                 });
             });
         } catch {
