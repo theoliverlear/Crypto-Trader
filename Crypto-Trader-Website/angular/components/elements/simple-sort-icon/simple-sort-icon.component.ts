@@ -19,35 +19,33 @@ import { SimpleSortState } from '@models/sort/SimpleSortState';
     standalone: false,
 })
 export class SimpleSortIconComponent implements OnChanges {
-    @Input() currentSortState: SimpleSortState = SimpleSortState.NONE;
-    @Output() sortStateChanged: EventEmitter<SimpleSortState> =
+    @Input() public currentSortState: SimpleSortState = SimpleSortState.NONE;
+    @Output() public sortStateChanged: EventEmitter<SimpleSortState> =
         new EventEmitter<SimpleSortState>();
-    constructor(private changeDetector: ChangeDetectorRef) {}
+    constructor(private readonly changeDetector: ChangeDetectorRef) {}
 
-    ngOnChanges(simpleChanges: SimpleChanges): void {
-        if (simpleChanges.currentSortState) {
+    public ngOnChanges(simpleChanges: SimpleChanges): void {
+        if ('currentSortState' in simpleChanges) {
             this.currentSortState = simpleChanges.currentSortState.currentValue;
         }
     }
 
-    getStateText(): string {
+    protected getStateText(): string {
         return this.currentSortState;
     }
 
     @HostListener('click')
-    onClick(): void {
+    public onClick(): void {
         this.nextSortState();
         this.changeDetector.detectChanges();
         this.emitSortState();
     }
 
     public nextSortState(): void {
-        this.currentSortState = SimpleSortState.getNextState(
-            this.currentSortState,
-        );
+        this.currentSortState = SimpleSortState.getNextState(this.currentSortState);
     }
 
-    emitSortState(): void {
+    protected emitSortState(): void {
         this.sortStateChanged.emit(this.currentSortState);
     }
 }

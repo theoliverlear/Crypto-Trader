@@ -13,8 +13,7 @@ import { AuthPopup, AuthType } from '@theoliverlear/angular-suite';
     styleUrls: ['./auth-console-tab-section.component.scss'],
 })
 export class AuthConsoleTabSectionComponent {
-    @Output() protected authTypeClicked: EventEmitter<AuthType> =
-        new EventEmitter<AuthType>();
+    @Output() public authTypeClicked: EventEmitter<AuthType> = new EventEmitter<AuthType>();
     constructor() {}
     /** Emits the auth type when clicked.
      *

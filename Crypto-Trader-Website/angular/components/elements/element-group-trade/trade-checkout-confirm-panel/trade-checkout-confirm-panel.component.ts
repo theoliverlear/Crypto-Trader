@@ -10,8 +10,8 @@ import { DisplayCurrency } from '@models/currency/types';
     standalone: false,
 })
 export class TradeCheckoutConfirmPanelComponent {
-    @Input() numDollars: number;
-    @Input() numShares: number;
-    @Input() displayCurrency: DisplayCurrency;
+    @Input() public numDollars: number;
+    @Input() public numShares: number;
+    @Input() public displayCurrency: DisplayCurrency;
     constructor() {}
 }

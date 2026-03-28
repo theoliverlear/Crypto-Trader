@@ -11,10 +11,10 @@ import { PortfolioSectionArrowType } from './models/PortfolioSectionArrowType';
     standalone: false,
 })
 export class PortfolioSectionArrowComponent {
-    @Input() sectionType: PortfolioSectionArrowType;
+    @Input() public sectionType: PortfolioSectionArrowType;
     constructor() {}
 
-    getArrowDirection(): ArrowDirection {
+    protected getArrowDirection(): ArrowDirection {
         switch (this.sectionType) {
             case PortfolioSectionArrowType.REPORT:
                 return ArrowDirection.LEFT;

@@ -13,15 +13,15 @@ import { ChartType } from './models/ChartType';
 })
 export class LiveChartComponent<ChartSchema> implements OnInit {
     protected chart: ChartSchema | null = null;
-    @Input() protected chartType: ChartType;
+    @Input() public chartType: ChartType;
     constructor(private readonly element: ElementRef) {}
     /** Loads the chart.
      *
      */
     public ngOnInit(): void {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const canvas: CanvasRenderingContext2D | null = (
-            this.element.nativeElement as HTMLElement
-        ).querySelector('canvas')?.getContext('2d') as CanvasRenderingContext2D;
+        const canvas: CanvasRenderingContext2D | null = (this.element.nativeElement as HTMLElement)
+            .querySelector('canvas')
+            ?.getContext('2d') as CanvasRenderingContext2D;
     }
 }

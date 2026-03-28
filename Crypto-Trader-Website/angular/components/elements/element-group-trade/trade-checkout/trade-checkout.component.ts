@@ -14,15 +14,15 @@ import { BuyType } from '../buy-type/models/BuyType';
     standalone: false,
 })
 export class TradeCheckoutComponent {
-    @Input() displayCurrency: DisplayCurrency;
-    numDollars: number = 0;
-    numShares: number = 0;
-    numFeeDollars: number = 0;
+    @Input() public displayCurrency: DisplayCurrency;
+    protected numDollars: number = 0;
+    protected numShares: number = 0;
+    protected numFeeDollars: number = 0;
     protected buyType: BuyType = BuyType.DOLLARS;
     protected showCheckoutPanel: boolean = false;
-    constructor(private currencyFormatter: CurrencyFormatterService) {}
+    constructor(private readonly currencyFormatter: CurrencyFormatterService) {}
 
-    protected readonly ElementSize = ElementSize;
-    protected readonly InputType = InputType;
-    protected readonly TagType = TagType;
+    protected readonly ElementSize: typeof ElementSize = ElementSize;
+    protected readonly InputType: typeof InputType = InputType;
+    protected readonly TagType: typeof TagType = TagType;
 }

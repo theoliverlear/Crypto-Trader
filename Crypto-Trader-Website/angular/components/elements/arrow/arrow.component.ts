@@ -16,8 +16,8 @@ import { ArrowDirection } from './models/ArrowDirection';
     standalone: false,
 })
 export class ArrowComponent {
-    @Input() protected direction: ArrowDirection = ArrowDirection.RIGHT;
-    @Input() protected text: PossibleString;
+    @Input() public direction: ArrowDirection = ArrowDirection.RIGHT;
+    @Input() public text: PossibleString;
     /** Binds the direction to the host element's class.
      *  @returns The direction class as a string.
      */

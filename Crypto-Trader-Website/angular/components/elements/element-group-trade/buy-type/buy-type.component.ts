@@ -19,17 +19,16 @@ import { BuyType } from './models/BuyType';
     standalone: false,
 })
 export class BuyTypeComponent {
-    @Input() buyType: BuyType;
-    @Output() buyTypeSelectedEvent: EventEmitter<BuyType> =
-        new EventEmitter<BuyType>();
+    @Input() public buyType: BuyType;
+    @Output() public buyTypeSelectedEvent: EventEmitter<BuyType> = new EventEmitter<BuyType>();
     constructor() {}
 
     @HostListener('click')
-    onClick(): void {
+    public onClick(): void {
         this.buyTypeSelectedEvent.emit(this.buyType);
     }
 
-    getImageAsset(): ImageAsset {
+    public getImageAsset(): ImageAsset {
         if (this.buyType === BuyType.DOLLARS) {
             return dollarIcon;
         } else {
@@ -37,5 +36,5 @@ export class BuyTypeComponent {
         }
     }
 
-    protected readonly ElementSize = ElementSize;
+    protected readonly ElementSize: typeof ElementSize = ElementSize;
 }

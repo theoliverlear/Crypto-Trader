@@ -10,11 +10,10 @@ import { BuyType } from '../buy-type/models/BuyType';
     standalone: false,
 })
 export class BuyTypeSelectorComponent {
-    @Output() buyTypeSelectedEvent: EventEmitter<BuyType> =
-        new EventEmitter<BuyType>();
+    @Output() public buyTypeSelectedEvent: EventEmitter<BuyType> = new EventEmitter<BuyType>();
     constructor() {}
 
-    emitBuyType(buyType: BuyType) {
+    public emitBuyType(buyType: BuyType): void {
         this.buyTypeSelectedEvent.emit(buyType);
     }
 
