@@ -7,7 +7,7 @@ import {
     OnDestroy,
 } from '@angular/core';
 
-import { TagType } from '@theoliverlear/angular-suite';
+import { TagType, TextElementLink } from '@theoliverlear/angular-suite';
 import {
     docsElementLink,
     repositoryElementLink,
@@ -21,16 +21,16 @@ import { transparencyParagraph } from '@assets/textAssets';
     styleUrls: ['./transparency-promo.component.scss'],
 })
 export class TransparencyPromoComponent implements AfterViewInit, OnDestroy {
-    @HostBinding('class.in-view') inView = false;
+    @HostBinding('class.in-view') private inView: boolean = false;
 
     private observer?: IntersectionObserver;
 
     constructor(private readonly elRef: ElementRef<HTMLElement>) {}
 
-    ngAfterViewInit(): void {
+    public ngAfterViewInit(): void {
         if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
             this.observer = new IntersectionObserver(
-                (entries) => {
+                (entries: IntersectionObserverEntry[]): void => {
                     for (const entry of entries) {
                         if (entry.isIntersecting) {
                             this.inView = true;
@@ -48,14 +48,14 @@ export class TransparencyPromoComponent implements AfterViewInit, OnDestroy {
         }
     }
 
-    ngOnDestroy(): void {
+    public ngOnDestroy(): void {
         if (this.observer) {
             this.observer.disconnect();
         }
     }
 
-    protected readonly TagType = TagType;
-    protected readonly transparencyParagraph = transparencyParagraph;
-    protected readonly repositoryElementLink = repositoryElementLink;
-    protected readonly docsElementLink = docsElementLink;
+    protected readonly TagType: typeof TagType = TagType;
+    protected readonly transparencyParagraph: string = transparencyParagraph;
+    protected readonly repositoryElementLink: TextElementLink = repositoryElementLink;
+    protected readonly docsElementLink: TextElementLink = docsElementLink;
 }
