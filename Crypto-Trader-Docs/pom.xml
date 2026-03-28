@@ -697,6 +697,18 @@ This module aggregates documentation for child library modules. Select a sub-mod
                                     <fileset dir="${repo.root}/Crypto-Trader-Version/target/dokka-html" erroronmissingdir="false"/>
                                 </copy>
 
+                                <!-- Website module -->
+                                <mkdir dir="${staging.dir}/Website"/>
+                                <echo file="${staging.dir}/Website/README.md"># Website&#10;&#10;This module does not have a README.md yet.</echo>
+                                <mkdir dir="${staging.dir}/Website/api"/>
+                                <echo file="${staging.dir}/Website/api/index.md"><![CDATA[# API Reference
+
+<div class="api-embed"><iframe src="index.html" title="Compodoc API" style="width:100%;height:calc(100vh - var(--md-header-height, 3.2rem));border:0;"></iframe></div>]]></echo>
+                                <copy file="${repo.root}/Crypto-Trader-Website/README.md" tofile="${staging.dir}/Website/README.md" overwrite="true" failonerror="false"/>
+                                <copy todir="${staging.dir}/Website/api" overwrite="true" failonerror="false">
+                                    <fileset dir="${repo.root}/Crypto-Trader-Website/docs/code-ref" erroronmissingdir="false"/>
+                                </copy>
+
                             </target>
                         </configuration>
                     </execution>
@@ -719,7 +731,7 @@ This module aggregates documentation for child library modules. Select a sub-mod
                         </configuration>
                     </execution>
 
-                    <!-- Remove placeholder index.md so MkDocs serves Dokka index.html directly -->
+                    <!-- Remove placeholder index.md so MkDocs serves Dokka index.html directly. Buggy, might get removed. -->
                     <execution>
                         <id>remove-iframe-index-md</id>
                         <phase>verify</phase>
