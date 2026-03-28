@@ -17,8 +17,7 @@ export default {
             },
         ],
         'declaration-empty-line-before': 'never',
-        'selector-type-no-unknown': [
-            false
-        ],
+        'selector-type-no-unknown': [false],
+        'scss/at-extend-no-missing-placeholder': null,
     },
 };
