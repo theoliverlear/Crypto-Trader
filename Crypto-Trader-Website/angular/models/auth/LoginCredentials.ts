@@ -6,16 +6,31 @@ import {
 import { type LoginRequest } from './types';
 
 export class LoginCredentials {
-    email: string;
-    password: string;
+    private _email: string;
+    private _password: string;
     constructor(email: string = '', password: string = '') {
-        this.email = email;
-        this.password = password;
+        this._email = email;
+        this._password = password;
+    }
+
+    public get email(): string {
+        return this._email;
+    }
+
+    public set email(email: string) {
+        this._email = email;
+    }
+
+    public get password(): string {
+        return this._password;
+    }
+
+    public set password(password: string) {
+        this._password = password;
     }
 
     public isFilledFields(): boolean {
-        const filledFieldsService: FilledFieldsService =
-            new FilledFieldsService();
+        const filledFieldsService: FilledFieldsService = new FilledFieldsService();
         return filledFieldsService.isFilledFields([this.email, this.password]);
     }
 

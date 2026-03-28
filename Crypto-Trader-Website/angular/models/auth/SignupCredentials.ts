@@ -9,8 +9,8 @@ import { LoginCredentials } from './LoginCredentials';
 import { type SignupRequest } from './types';
 
 export class SignupCredentials extends LoginCredentials {
-    confirmPassword: string;
-    agreedTerms: boolean;
+    private _confirmPassword: string;
+    private _agreedTerms: boolean;
     constructor(
         email: string = '',
         password: string = '',
@@ -19,34 +19,48 @@ export class SignupCredentials extends LoginCredentials {
     ) {
         super(email, password);
         this.email = email;
-        this.confirmPassword = confirmPassword;
-        this.agreedTerms = agreedTerms;
+        this._confirmPassword = confirmPassword;
+        this._agreedTerms = agreedTerms;
+    }
+
+    public get confirmPassword(): string {
+        return this._confirmPassword;
+    }
+
+    public set confirmPassword(confirmPassword: string) {
+        this._confirmPassword = confirmPassword;
+    }
+
+    public get agreedTerms(): boolean {
+        return this._agreedTerms;
+    }
+
+    public set agreedTerms(agreedTerms: boolean) {
+        this._agreedTerms = agreedTerms;
     }
 
     public isValidEmail(): boolean {
-        const emailValidator: EmailValidatorService =
-            new EmailValidatorService();
+        const emailValidator: EmailValidatorService = new EmailValidatorService();
         return emailValidator.isValidEmail(this.email);
     }
 
     public isPasswordMatch(): boolean {
-        if (this.password === '' || this.confirmPassword === '') {
+        if (this.password === '' || this._confirmPassword === '') {
             return true;
         }
         return this.password === this.confirmPassword;
     }
 
     public isAgreedTerms(): boolean {
-        return this.agreedTerms;
+        return this._agreedTerms;
     }
 
     public isFilledFields(): boolean {
-        const filledFieldsService: FilledFieldsService =
-            new FilledFieldsService();
+        const filledFieldsService: FilledFieldsService = new FilledFieldsService();
         return filledFieldsService.isFilledFields([
             this.email,
             this.password,
-            this.confirmPassword,
+            this._confirmPassword,
         ]);
     }
 
@@ -87,8 +101,7 @@ export class SignupCredentials extends LoginCredentials {
         if (this.getAnyIssue() !== AuthPopup.NONE) {
             throw new Error('Cannot get signup request due to input issues.');
         }
-        const hashPasswordService: HashPasswordService =
-            new HashPasswordService();
+        const hashPasswordService: HashPasswordService = new HashPasswordService();
         return {
             email: this.email,
             password: hashPasswordService.hashPassword(this.password),
