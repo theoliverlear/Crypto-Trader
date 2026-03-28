@@ -35,6 +35,9 @@ nav:
   - Data API: data/index.md
   - Engine API: engine/index.md
   - Contact API: contact/index.md
+  - Website:
+      - README: reference/Website/README.md
+      - Complete Docs: reference/Website/api/index.html
   - References:
     - Admin:
       - README: reference/Admin/README.md
