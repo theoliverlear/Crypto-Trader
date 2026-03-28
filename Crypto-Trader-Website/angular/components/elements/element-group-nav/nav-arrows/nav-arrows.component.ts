@@ -1,6 +1,9 @@
 // nav-arrows.component.ts
 import { Component } from '@angular/core';
 
+/** Arrows for navigating between elements.
+ *
+ */
 @Component({
     selector: 'nav-arrows',
     templateUrl: './nav-arrows.component.html',

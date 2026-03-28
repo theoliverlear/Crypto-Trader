@@ -15,6 +15,9 @@ import {
     type ImageAsset,
 } from '@assets/imageAssets';
 
+/** The options for a navigation bar item.
+ *
+ */
 export enum NavBarItemOption {
     CURRENCIES = 'Currencies',
     PORTFOLIO = 'Portfolio',
@@ -23,6 +26,11 @@ export enum NavBarItemOption {
     STATISTICS = 'Statistics',
 }
 export namespace NavBarItemOption {
+    /** Returns the image asset for the given option.
+     *
+     * @param option
+     * @returns The image asset for the given option.
+     */
     export function getImageAsset(option: NavBarItemOption): ImageAsset {
         switch (option) {
             case NavBarItemOption.CURRENCIES:
@@ -36,10 +44,15 @@ export namespace NavBarItemOption {
             case NavBarItemOption.STATISTICS:
                 return stockScaleIcon;
             default:
-                throw new Error('Invalid option: ' + option);
+                throw new Error(`Invalid option: ${option}`);
         }
     }
 
+    /** Returns the element link for the given option.
+     *
+     * @param option
+     * @returns The element link for the given option.
+     */
     export function getElementLink(option: NavBarItemOption): ElementLink {
         switch (option) {
             case NavBarItemOption.CURRENCIES:
@@ -53,10 +66,14 @@ export namespace NavBarItemOption {
             case NavBarItemOption.STATISTICS:
                 return statisticsElementLink;
             default:
-                throw new Error('Invalid option: ' + option);
+                throw new Error(`Invalid option: ${option}`);
         }
     }
 
+    /** Returns the values of the enum.
+     *
+     * @returns The values of the enum.
+     */
     export function values(): NavBarItemOption[] {
         return [
             NavBarItemOption.CURRENCIES,
