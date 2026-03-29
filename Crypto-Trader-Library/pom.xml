@@ -58,12 +58,16 @@
         <module>Console-Library/Console-Services</module>
         <module>Console-Library/Console-Components</module>
         <module>Console-Library/Console-Events</module>
+        <module>Agent-Library</module>
+        <module>Chat-Library</module>
+        <module>Agent-Library/Agent-Configuration</module>
+        <module>Chat-Library/Chat-Configuration</module>
     </modules>
 
     <artifactId>crypto-trader-library</artifactId>
     <name>Crypto-Trader-Library</name>
     <description>
-        Shared Java libraries for Crypto Trader, including API models, components, communication, and repositories.
+        Shared libraries for Crypto Trader, including models, components, communication, and repositories.
     </description>
     <version>0.1.0</version>
 
