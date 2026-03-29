@@ -63,6 +63,9 @@
         <module>Crypto-Trader-Console</module>
         <module>Crypto-Trader-Security</module>
         <module>Crypto-Trader-Simulator</module>
+        <module>Crypto-Trader-Transactions</module>
+        <module>Crypto-Trader-Agent</module>
+        <module>Crypto-Trader-Chat</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
