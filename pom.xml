@@ -98,10 +98,24 @@
         <!-- Centralized JavaFX version for all desktop modules -->
         <javafx.version>21.0.6</javafx.version>
         <kotlin.version>2.2.0</kotlin.version>
+        <spring-ai.version>1.1.4</spring-ai.version>
+        <swagger-annotations.version>2.2.38</swagger-annotations.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations-jakarta</artifactId>
+                <version>${swagger-annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-bom</artifactId>
+                <version>${spring-ai.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <!-- ===== Platform BOMs (imported) ===== -->
             <dependency>
                 <groupId>org.testcontainers</groupId>
@@ -773,7 +787,16 @@
         </dependencies>
     </dependencyManagement>
 
+
     <pluginRepositories>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
         <pluginRepository>
             <id>central</id>
             <name>Maven Central</name>
@@ -965,13 +988,27 @@
     </distributionManagement>
 
     <repositories>
+        <!-- Spring Milestones and Snapshots for early access artifacts -->
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+        <!-- Standard public repositories -->
         <repository>
             <id>central</id>
             <url>https://repo.maven.apache.org/maven2/</url>
-        </repository>
-        <repository>
-            <id>central-1</id>
-            <url>https://repo1.maven.org/maven2/</url>
         </repository>
         <repository>
             <id>jetbrains-dokka</id>
@@ -984,20 +1021,7 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-        <!-- Prefer Sigwarth Suite first so com.sigwarthsoftware artifacts resolve from the correct repository -->
-        <repository>
-            <id>github</id>
-            <name>GitHub Packages - Sigwarth-Software-Suite</name>
-            <url>https://maven.pkg.github.com/theoliverlear/Sigwarth-Software-Suite</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
     </repositories>
-
     <profiles>
         <profile>
             <id>coverage</id>
