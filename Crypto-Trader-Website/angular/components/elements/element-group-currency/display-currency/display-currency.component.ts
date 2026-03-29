@@ -44,7 +44,6 @@ export class DisplayCurrencyComponent
     };
     protected currencyPrice: string = '';
     protected chartProperties: ChartDisplayProperties = defaultChartProperties;
-    private previousNumericPrice: number = 0;
     private currentNumericPrice: number = 0;
     private priceAnimationSub: Subscription | null = null;
 
@@ -145,7 +144,6 @@ export class DisplayCurrencyComponent
         this.currencyPrice = price;
         const numeric: number = this.parseNumeric(price);
         if (isFinite(numeric)) {
-            this.previousNumericPrice = this.currentNumericPrice || numeric;
             this.currentNumericPrice = numeric;
         }
     }
@@ -159,7 +157,6 @@ export class DisplayCurrencyComponent
         const from: number = this.getCurrentDisplayedNumeric();
         if (!isFinite(from) || from === 0) {
             this.currencyPrice = this.currencyFormatter.formatCurrency(nextPrice);
-            this.previousNumericPrice = nextPrice;
             this.currentNumericPrice = nextPrice;
             return;
         }
@@ -171,7 +168,6 @@ export class DisplayCurrencyComponent
             this.priceAnimationSub.unsubscribe();
             this.priceAnimationSub = null;
         }
-        this.previousNumericPrice = from;
         this.currentNumericPrice = nextPrice;
         this.priceAnimationSub = this.numberTween
             .animate(from, nextPrice, durationMs)
@@ -220,7 +216,6 @@ export class DisplayCurrencyComponent
             this.currencyPrice = initValue;
             const initNumericValue: number = this.parseNumeric(initValue);
             if (isFinite(initNumericValue)) {
-                this.previousNumericPrice = initNumericValue;
                 this.currentNumericPrice = initNumericValue;
             }
         }
