@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: crypto-trader-chat
+  ai:
+    openai:
+      api-key: ${OPENAI_KEY}
+    mcp:
+      client:
+        webflux:
+          enabled: true
+          base-url: http://localhost:8089/mcp/webmvc
+
+server:
+  port: 8090
+
+logging:
+  level:
+    org.springframework.ai: DEBUG
