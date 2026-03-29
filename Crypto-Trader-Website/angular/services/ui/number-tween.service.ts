@@ -9,23 +9,22 @@ export type EasingFn = (tick: number) => number;
     providedIn: 'root',
 })
 export class NumberTweenService {
-    private static defaultEase: EasingFn = (tick: number): number =>
-        1 - Math.pow(1 - tick, 3);
+    private static readonly defaultEase: EasingFn = (tick: number): number => 1 - Math.pow(1 - tick, 3);
 
     animate(
-        from: number,
-        to: number,
+        fromNum: number,
+        toNum: number,
         durationMs: number = 500,
         easing: EasingFn = NumberTweenService.defaultEase,
     ): Observable<number> {
         const start: number = performance.now();
         return animationFrames().pipe(
-            map(() => (performance.now() - start) / durationMs),
-            takeWhile((t) => t < 1, true),
-            map((ticked) => {
+            map((): number => (performance.now() - start) / durationMs),
+            takeWhile((progress: number): boolean => progress < 1, true),
+            map((ticked: number): number => {
                 const clamped: number = Math.min(1, Math.max(0, ticked));
                 const ease: number = easing(clamped);
-                return from + (to - from) * ease;
+                return fromNum + (toNum - fromNum) * ease;
             }),
         );
     }
