@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -62,6 +63,9 @@ public class CurrencyService {
 
 
     public DisplayCurrencyResponse toCurrencyValueResponse(Currency currency) {
+        if (currency == null) {
+            return null;
+        }
         return new DisplayCurrencyResponse(currency.getName(),
                 currency.getCurrencyCode(),
                 currency.getValue());
@@ -75,7 +79,9 @@ public class CurrencyService {
             return Double.compare(currencyTwo.getValue(), currencyOne.getValue());
         });
         return new DisplayCurrencyListResponse(currencies.stream()
+                .filter(Objects::nonNull)
                 .map(this::toCurrencyValueResponse)
+                .filter(Objects::nonNull)
                 .toList());
     }
 
@@ -83,7 +89,9 @@ public class CurrencyService {
         List<Currency> currencies = this.getTopNonEncapsulatedCurrencies(offset);
         currencies.sort((currencyOne, currencyTwo) -> Double.compare(currencyTwo.getValue(), currencyOne.getValue()));
         return new DisplayCurrencyListResponse(currencies.stream()
+                .filter(Objects::nonNull)
                 .map(this::toCurrencyValueResponse)
+                .filter(Objects::nonNull)
                 .toList());
     }
 
@@ -94,15 +102,15 @@ public class CurrencyService {
         Pageable pageable = PageRequest.of(page, pageSize);
         return this.currencyRepository.findNonEncapsulated(pageable);
     }
-    
+
     public List<Currency> getTopTenNonEncapsulatedCurrencies() {
         return this.currencyRepository.findTopTenNonEncapsulated();
     }
-    
+
     public List<Currency> getTopTenCurrencies() {
         return this.currencyRepository.findTop10ByOrderByValueDesc();
     }
-    
+
     public List<String> getCurrencyNames(boolean withCode) {
         return this.getAllCurrencies().stream().map(currency -> {
             return this.getCurrencyName(withCode, currency);
@@ -124,7 +132,7 @@ public class CurrencyService {
     public List<String> getAllCurrencyCodes() {
         return this.currencyRepository.findAllCurrencyCodes();
     }
-    
+
     public void saveCurrencyIfNew(Currency currency, Currency previousCurrency, Currency updatedCurrency) {
         if (this.hasCurrencyChanged(previousCurrency, updatedCurrency)) {
             this.saveCurrency(currency);
@@ -132,6 +140,9 @@ public class CurrencyService {
     }
 
     private boolean hasCurrencyChanged(Currency previousCurrency, Currency updatedCurrency) {
+        if (previousCurrency == null || updatedCurrency == null) {
+            return true;
+        }
         return previousCurrency.getValue() != updatedCurrency.getValue();
     }
 
@@ -182,23 +193,39 @@ public class CurrencyService {
     public List<TimeValueResponse> getCurrencyHistory(String currencyCode, int hours) {
         return this.getCurrencyHistory(currencyCode, hours, 60);
     }
-    
+
     public PerformanceRating getDayPerformance(String currencyCode) {
-        double currentPrice = this.getCurrencyByCurrencyCode(currencyCode).getValue();
-        double lastDayPrice = this.currencyHistoryRepository.getPreviousDayCurrency(currencyCode).getValue();
+        Currency currency = this.getCurrencyByCurrencyCode(currencyCode);
+        if (currency == null) {
+            return PerformanceRating.NEUTRAL;
+        }
+        double currentPrice = currency.getValue();
+        CurrencyHistory previousDay = this.currencyHistoryRepository.getPreviousDayCurrency(currencyCode);
+        if (previousDay == null) {
+            return PerformanceRating.NEUTRAL;
+        }
+        double lastDayPrice = previousDay.getValue();
         return PerformanceRating.fromValues(lastDayPrice, currentPrice);
     }
 
     public String getPercentageDayPerformance(String currencyCode) {
-        double currentPrice = this.getCurrencyByCurrencyCode(currencyCode).getValue();
-        double lastDayPrice = this.currencyHistoryRepository.getPreviousDayCurrency(currencyCode).getValue();
+        Currency currency = this.getCurrencyByCurrencyCode(currencyCode);
+        if (currency == null) {
+            return "0.00%";
+        }
+        double currentPrice = currency.getValue();
+        CurrencyHistory previousDay = this.currencyHistoryRepository.getPreviousDayCurrency(currencyCode);
+        if (previousDay == null) {
+            return "0.00%";
+        }
+        double lastDayPrice = previousDay.getValue();
         if (lastDayPrice == 0.0 || Double.isNaN(lastDayPrice) || Double.isNaN(currentPrice)) {
             return "0.00%";
         }
         double percentDelta = (currentPrice - lastDayPrice) / lastDayPrice * 100.0;
         return String.format("%+.2f%%", percentDelta);
     }
-    
+
     public List<TimeValueResponse> getCurrencyHistory(String currencyCode, int hours, int intervalSeconds) {
         if (intervalSeconds <= 0) {
             intervalSeconds = 60;
