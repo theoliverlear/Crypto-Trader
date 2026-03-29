@@ -68,7 +68,7 @@ export class CurrenciesComponent implements OnInit {
         this.getAllCurrenciesService
             .getAllCurrenciesWithOffset(offset)
             .subscribe({
-                next: (data: DisplayCurrencyList) => {
+                next: (data: DisplayCurrencyList): void => {
                     // append results
                     this.currencies.currencies = [
                         ...(this.currencies.currencies || []),
@@ -84,7 +84,7 @@ export class CurrenciesComponent implements OnInit {
                     this.isLoaded = true;
                     this.isFetching = false;
                 },
-                error: () => {
+                error: (): void => {
                     this.isFetching = false;
                 },
             });
