@@ -88,7 +88,7 @@ export class PortfolioOverviewComponent implements OnInit, OnChanges {
      * @returns A formatted string representing the share balance.
      */
     protected getSharesBalance(): string {
-        return this.sharesFormatter.formatShares(this.portfolio.shareBalance, 'SHARES');
+        return this.currencyFormatter.formatCurrency(this.portfolio.shareBalance);
     }
 
     /**
