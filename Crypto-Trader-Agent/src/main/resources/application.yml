@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: crypto-trader-agent
+  ai:
+    mcp:
+      server:
+        webmvc:
+          enabled: true
+          path: /mcp/webmvc
+        stdio: false
+
+server:
+  port: 8089
+
+logging:
+  level:
+    org.springframework.ai: DEBUG
