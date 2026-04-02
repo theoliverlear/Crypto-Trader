@@ -61,6 +61,7 @@
         <module>Agent-Library</module>
         <module>Chat-Library</module>
         <module>Agent-Library/Agent-Configuration</module>
+        <module>Agent-Library/Agent-Components</module>
         <module>Chat-Library/Chat-Configuration</module>
     </modules>
 
