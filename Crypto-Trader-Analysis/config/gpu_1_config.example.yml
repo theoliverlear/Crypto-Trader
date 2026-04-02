@@ -1,0 +1,10 @@
+dataset_size: DatasetSize
+epochs: EpochFocus
+batch_size: BatchSizeEvaluation
+sequence_length: int
+query_type: QueryType
+model_type: ModelType
+target_currency: str
+use_currency_generator: bool
+generator_use_cache: bool
+split_currencies_by_gpu: bool
