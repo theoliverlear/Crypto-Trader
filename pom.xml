@@ -179,6 +179,41 @@
                 <version>0.0.4</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>crypto-trader-agent</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>agent-library</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>agent-components</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>agent-configuration</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>crypto-trader-chat</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>chat-library</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>chat-configuration</artifactId>
+                <version>0.0.1</version>
+            </dependency>
             <!-- ===== Kotlin/JetBrains alignment ===== -->
             <!-- Align JetBrains annotations across all modules to satisfy enforcer dependency convergence -->
             <dependency>
@@ -786,6 +821,16 @@
                 <artifactId>junit-platform-suite</artifactId>
                 <version>1.10.2</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.github.java-diff-utils</groupId>
+                <artifactId>java-diff-utils</artifactId>
+                <version>4.15</version>
+            </dependency>
+            <dependency>
+                <groupId>info.debatty</groupId>
+                <artifactId>java-string-similarity</artifactId>
+                <version>2.0.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
