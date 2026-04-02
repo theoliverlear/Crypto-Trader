@@ -1,17 +1,36 @@
+server:
+  port: 8089
+  address: 127.0.0.1
 spring:
+  profiles:
+    include: constraints
   application:
     name: crypto-trader-agent
+  main:
+    allow-bean-definition-overriding: false
+
   ai:
     mcp:
       server:
-        webmvc:
-          enabled: true
-          path: /mcp/webmvc
-        stdio: false
+        enabled: true
+        protocol: STATELESS
+        type: SYNC
+        name: crypto-trader-agent
+        version: 0.0.1
+        tool-callback-converter: true
+        annotation-scanner:
+          enabled: false
+        streamable-http:
+          mcp-endpoint: /mcp
+          keep-alive-interval: 30s
 
-server:
-  port: 8089
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
 
 logging:
   level:
-    org.springframework.ai: DEBUG
+    org.springframework.ai.mcp: DEBUG
+    org.springframework.ai.mcp.server: DEBUG
