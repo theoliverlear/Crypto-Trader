@@ -1,0 +1,7 @@
+agent:
+    constraints:
+        allowed-hosts:
+            - www.example.com
+        allowed-tables:
+            - public.example_table
+        allowed-root: "/example/path"
