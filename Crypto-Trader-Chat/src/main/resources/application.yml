@@ -6,10 +6,30 @@ spring:
       api-key: ${OPENAI_KEY}
     mcp:
       client:
-        webflux:
+        enabled: true
+        type: SYNC
+        initialized: true
+        toolcallback:
           enabled: true
-          base-url: http://localhost:8089/mcp/webmvc
-
+        streamable-http:
+          connections:
+            crypto-trader-agent:
+              url: http://127.0.0.1:8089
+              endpoint: /mcp
+  datasource:
+      url: ${PSQL_DB_URL}
+      username: ${PSQL_USER}
+      password: ${PSQL_PW}
+      generate-unique-name: false
+      driver-class-name: org.postgresql.Driver
+  jpa:
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+      show-sql: false
+      hibernate:
+          ddl-auto: update
+          naming:
+              implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+              physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 server:
   port: 8090
 
