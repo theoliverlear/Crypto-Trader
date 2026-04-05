@@ -10,8 +10,8 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <name>Chat-Configuration</name>
-    <artifactId>chat-configuration</artifactId>
+    <name>Chat-Config</name>
+    <artifactId>chat-config</artifactId>
     <version>0.0.1</version>
 
     <properties>
