@@ -10,15 +10,13 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>agent-configuration</artifactId>
-    <name>Agent-Configuration</name>
+    <artifactId>agent-config</artifactId>
+    <name>Agent-Config</name>
     <version>0.0.1</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.code.style>official</kotlin.code.style>
-        <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
-        <kotlin.version>2.3.10</kotlin.version>
     </properties>
 
     <repositories>
@@ -203,6 +201,10 @@
         <dependency>
             <groupId>info.debatty</groupId>
             <artifactId>java-string-similarity</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-config</artifactId>
         </dependency>
     </dependencies>
 
