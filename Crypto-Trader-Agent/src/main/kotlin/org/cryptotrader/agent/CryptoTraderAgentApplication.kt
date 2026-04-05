@@ -4,7 +4,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication(
-    scanBasePackages = ["org.cryptotrader.agent.library.component", "org.cryptotrader.agent.library.config"]
+    scanBasePackages = [
+        "org.cryptotrader.agent.library.component",
+        "org.cryptotrader.agent.library.config",
+        "org.cryptotrader.universal.library.config"
+    ]
 )
 open class CryptoTraderAgentApplication
 
