@@ -16,6 +16,8 @@ import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.context.ConfigurableApplicationContext
 import java.io.IOException
 
+//TODO: Add a page called "Reflection" which takes into account what each
+//      module reflects to.
 class VersionApplication : Application() {
     private lateinit var applicationContext: ConfigurableApplicationContext
 
