@@ -8,7 +8,20 @@ spring:
     name: crypto-trader-agent
   main:
     allow-bean-definition-overriding: false
-
+  datasource:
+      url: ${PSQL_DB_URL}
+      username: ${PSQL_USER}
+      password: ${PSQL_PW}
+      generate-unique-name: false
+      driver-class-name: org.postgresql.Driver
+  jpa:
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+      show-sql: false
+      hibernate:
+          ddl-auto: update
+          naming:
+              implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+              physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
   ai:
     mcp:
       server:
@@ -18,8 +31,6 @@ spring:
         name: crypto-trader-agent
         version: 0.0.1
         tool-callback-converter: true
-        annotation-scanner:
-          enabled: false
         streamable-http:
           mcp-endpoint: /mcp
           keep-alive-interval: 30s
