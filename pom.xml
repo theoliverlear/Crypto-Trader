@@ -103,10 +103,16 @@
         <kotlin.version>2.2.0</kotlin.version>
         <spring-ai.version>1.1.4</spring-ai.version>
         <swagger-annotations.version>2.2.38</swagger-annotations.version>
+        <jsoup.version>1.18.3</jsoup.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.jsoup</groupId>
+                <artifactId>jsoup</artifactId>
+                <version>${jsoup.version}</version>
+            </dependency>
             <dependency>
                 <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-annotations-jakarta</artifactId>
@@ -186,6 +192,11 @@
             </dependency>
             <dependency>
                 <groupId>org.cryptotrader</groupId>
+                <artifactId>agent-communication</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
                 <artifactId>agent-library</artifactId>
                 <version>0.0.1</version>
             </dependency>
@@ -196,7 +207,17 @@
             </dependency>
             <dependency>
                 <groupId>org.cryptotrader</groupId>
-                <artifactId>agent-configuration</artifactId>
+                <artifactId>universal-config</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>agent-config</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>agent-models</artifactId>
                 <version>0.0.1</version>
             </dependency>
             <dependency>
@@ -211,7 +232,7 @@
             </dependency>
             <dependency>
                 <groupId>org.cryptotrader</groupId>
-                <artifactId>chat-configuration</artifactId>
+                <artifactId>chat-config</artifactId>
                 <version>0.0.1</version>
             </dependency>
             <!-- ===== Kotlin/JetBrains alignment ===== -->
