@@ -77,7 +77,11 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>agent-configuration</artifactId>
+            <artifactId>agent-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>api-models</artifactId>
         </dependency>
     </dependencies>
 
