@@ -41,6 +41,7 @@
         <docs.openapi.engine.file>openapi-engine</docs.openapi.engine.file>
         <docs.openapi.contact.file>openapi-contact</docs.openapi.contact.file>
 
+        <argLine/>
     </properties>
 
     <pluginRepositories>
@@ -86,51 +87,6 @@
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-maven-plugin</artifactId>
                 <version>1.5</version>
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>generate-openapi-api</id>-->
-<!--                        <phase>verify</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>generate</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <apiDocsUrl>${docs.openapi.api.url}</apiDocsUrl>-->
-<!--                            <outputFileName>${docs.openapi.api.file}.${docs.openapi.format}</outputFileName>-->
-<!--                            <outputDir>${docs.openapi.outputDir}</outputDir>-->
-<!--                            <skip>${docs.skipOpenapi}</skip>-->
-<!--                            <failOnError>false</failOnError>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                    &lt;!&ndash; ... existing code ... &ndash;&gt;-->
-<!--                    <execution>-->
-<!--                        <id>generate-openapi-data</id>-->
-<!--                        <phase>verify</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>generate</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <apiDocsUrl>${docs.openapi.data.url}</apiDocsUrl>-->
-<!--                            <outputFileName>${docs.openapi.data.file}.${docs.openapi.format}</outputFileName>-->
-<!--                            <outputDir>${docs.openapi.outputDir}</outputDir>-->
-<!--                            <skip>${docs.skipOpenapi}</skip>-->
-<!--                            <failOnError>false</failOnError>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                    <execution>-->
-<!--                        <id>generate-openapi-engine</id>-->
-<!--                        <phase>verify</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>generate</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <apiDocsUrl>${docs.openapi.engine.url}</apiDocsUrl>-->
-<!--                            <outputFileName>${docs.openapi.engine.file}.${docs.openapi.format}</outputFileName>-->
-<!--                            <outputDir>${docs.openapi.outputDir}</outputDir>-->
-<!--                            <skip>${docs.skipOpenapi}</skip>-->
-<!--                            <failOnError>false</failOnError>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
                 <executions>
                     <execution>
                         <id>generate-openapi-api</id>
@@ -804,12 +760,12 @@ This module aggregates documentation for child library modules. Select a sub-mod
                             <directory>${project.build.directory}/staging</directory>
                             <followSymlinks>false</followSymlinks>
                         </fileset>
-<!--                        <fileset>-->
-<!--                            <directory>${project.basedir}/docs</directory>-->
-<!--                            <includes>-->
-<!--                                <include>api/openapi-*.yaml</include>-->
-<!--                            </includes>-->
-<!--                        </fileset>-->
+                        <!--                        <fileset>-->
+                        <!--                            <directory>${project.basedir}/docs</directory>-->
+                        <!--                            <includes>-->
+                        <!--                                <include>api/openapi-*.yaml</include>-->
+                        <!--                            </includes>-->
+                        <!--                        </fileset>-->
                     </filesets>
                 </configuration>
             </plugin>
