@@ -1,5 +1,6 @@
 open module org.cryptotrader.api.library.config {
     requires org.apache.httpcomponents.httpclient;
+    requires org.cryptotrader.universal.library.config;
     requires spring.beans;
     requires spring.boot.autoconfigure;
     requires spring.cloud.stream;
