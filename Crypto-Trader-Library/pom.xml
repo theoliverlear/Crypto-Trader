@@ -66,6 +66,7 @@
         <module>Agent-Library/Agent-Communication</module>
         <module>Agent-Library/Agent-Components</module>
         <module>Agent-Library/Agent-Models</module>
+        <module>Agent-Library/Agent-Infrastructure</module>
     </modules>
 
     <artifactId>crypto-trader-library</artifactId>
@@ -77,6 +78,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <argLine/>
     </properties>
 
     <build>
