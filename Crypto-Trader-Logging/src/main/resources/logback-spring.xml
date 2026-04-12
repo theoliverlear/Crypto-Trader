@@ -2,7 +2,10 @@
 <configuration debug="false">
     <conversionRule conversionWord="clr" class="org.springframework.boot.logging.logback.ColorConverter"/>
     <conversionRule conversionWord="wEx" class="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="strip" class="org.cryptotrader.logging.logback.AnsiStripperConverter"/>
 
+    <springProperty scope="context" name="ct_console_level" source="crypto-trader-logging.level.console" defaultValue="INFO"/>
+    <springProperty scope="context" name="ct_file_level" source="crypto-trader-logging.level.file" defaultValue="TRACE"/>
     <springProperty scope="context" name="ct_console_pattern" source="cryptotrader.logging.console-pattern"/>
     <springProperty scope="context" name="ct_file_pattern" source="cryptotrader.logging.file-pattern"/>
     <springProperty scope="context" name="ct_error_file_pattern" source="cryptotrader.logging.error-file-pattern"/>
@@ -14,29 +17,34 @@
                 ${ct_console_pattern:-%clr(%d{HH:mm:ss}){faint} %clr(%5p) %clr(%logger{36}){cyan} %clr(-){faint} %m%n${ct_exception_word:-${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}}
             </pattern>
         </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${ct_console_level}</level>
+        </filter>
     </appender>
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+    <appender name="ALL_LOGS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./logs/all.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>./logs/all-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>50MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${ct_file_pattern:-%date %-5level %logger{36} - %strip(%msg)%n}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${ct_file_level}</level>
+        </filter>
+    </appender>
+
+    <appender name="BUGS_LOGS" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>./logs/bugs.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>./logs/bugs-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>50MB</maxFileSize>
         </rollingPolicy>
         <encoder>
-            <pattern>${ct_file_pattern:-%date %-5level %logger{36} - %msg%n}</pattern>
-        </encoder>
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>TRACE</level>
-        </filter>
-    </appender>
-    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>./logs/errors.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>./logs/errors-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <maxFileSize>50MB</maxFileSize>
-        </rollingPolicy>
-        <encoder>
             <pattern>
-                ${ct_error_file_pattern:-%date %-5level %logger{36} - %msg%n${ct_exception_word:-${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}}
+                ${ct_error_file_pattern:-%date %-5level %logger{36} - %strip(%msg)%n${ct_exception_word:-${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}}
             </pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -51,13 +59,13 @@
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="FILE"/>
-        <appender-ref ref="ERROR_FILE"/>
+        <appender-ref ref="ALL_LOGS"/>
+        <appender-ref ref="BUGS_LOGS"/>
     </root>
 
     <logger name="org.cryptotrader" level="DEBUG" additivity="false">
         <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="FILE"/>
-        <appender-ref ref="ERROR_FILE"/>
+        <appender-ref ref="ALL_LOGS"/>
+        <appender-ref ref="BUGS_LOGS"/>
     </logger>
 </configuration>
