@@ -4,6 +4,7 @@ import org.cryptotrader.api.library.entity.portfolio.Portfolio;
 import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.api.library.entity.user.ProfilePicture;
 import org.cryptotrader.api.library.entity.user.SafePassword;
+import org.cryptotrader.api.library.entity.user.SubscriptionTier;
 import org.cryptotrader.api.library.entity.user.builder.models.AbstractProductUser;
 
 import java.time.LocalDateTime;
@@ -15,12 +16,14 @@ public class ProductUserBuilder extends AbstractProductUser {
     private Portfolio portfolio;
     private ProfilePicture profilePicture;
     private LocalDateTime lastLogin;
+    private SubscriptionTier subscriptionTier;
     public ProductUserBuilder() {
         this.username = null;
         this.email = null;
         this.safePassword = null;
         this.portfolio = null;
         this.lastLogin = null;
+        this.subscriptionTier = SubscriptionTier.FREE;
     }
 
     @Override
@@ -66,12 +69,19 @@ public class ProductUserBuilder extends AbstractProductUser {
     }
 
     @Override
+    public AbstractProductUser subscriptionTier(SubscriptionTier subscriptionTier) {
+        this.subscriptionTier = subscriptionTier;
+        return this;
+    }
+
+    @Override
     public ProductUser build() {
         return new ProductUser(this.username,
                         this.email,
                         this.safePassword,
                         this.portfolio,
                         this.profilePicture,
-                        this.lastLogin);
+                        this.lastLogin,
+                        this.subscriptionTier);
     }
 }
