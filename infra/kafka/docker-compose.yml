@@ -1,7 +1,7 @@
 services:
   kafka:
     image: apache/kafka:3.8.0
-    container_name: kafka
+    container_name: cryptotrader-kafka
     ports:
       - "9092:9092"
     environment:
