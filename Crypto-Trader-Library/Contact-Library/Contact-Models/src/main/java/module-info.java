@@ -11,4 +11,6 @@ module org.cryptotrader.contact.library.models {
     requires org.cryptotrader.universal.library.models;
 
     exports org.cryptotrader.contact.library.entity;
+    exports org.cryptotrader.contact.library.entity.builder;
+    exports org.cryptotrader.contact.library.entity.builder.models;
 }
