@@ -1,5 +1,6 @@
 package org.cryptotrader.api;
 
+import org.cryptotrader.universal.library.component.SystemScripts;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -32,17 +33,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 })
 public class CryptoTraderApiApplication {
     public static void main(String[] args) {
-        blockCurrencyLoading();
-        blockCurrencyHarvesting();
+        SystemScripts.blockCurrencyLoading();
+        SystemScripts.blockCurrencyHarvesting();
         SpringApplication.run(CryptoTraderApiApplication.class, args);
-    }
-
-    // TODO: Migrate to a universal module. (Universal-Scripts)
-    private static void blockCurrencyLoading() {
-        System.setProperty("cryptotrader.load.currency", "false");
-    }
-
-    private static void blockCurrencyHarvesting() {
-        System.setProperty("cryptotrader.harvest.currency", "false");
     }
 }
