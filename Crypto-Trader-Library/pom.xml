@@ -18,6 +18,7 @@
         <module>Api-Library/Api-Communication</module>
         <module>Api-Library/Api-Config</module>
         <module>Api-Library/Api-Events</module>
+        <module>Api-Library/Api-Extensions</module>
         <module>Api-Library/Api-Models</module>
         <module>Api-Library/Api-Infrastructure</module>
         <module>Api-Library/Api-Repositories</module>
