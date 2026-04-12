@@ -18,29 +18,12 @@ import org.cryptotrader.api.library.infrastructure.extension.isBearer
 import org.cryptotrader.api.library.infrastructure.extension.isDpop
 import org.cryptotrader.api.library.services.jwt.JwtTokenService
 import org.cryptotrader.api.library.model.jwt.JwtClaims
-import org.cryptotrader.api.library.scripts.http.HttpErrorScript
-import org.cryptotrader.api.library.scripts.http.HttpScript
+import org.cryptotrader.api.library.extensions.sendUnauthorized
+import org.cryptotrader.api.library.extensions.fullUrl
 import org.cryptotrader.api.library.services.dpop.DpopVerifierService
 
 /**
- * DPoPValidationFilter (runs before JWT authentication).
- *
- * Purpose in simple terms:
- * - When a request says “I’m using a DPoP token”, this filter checks the extra proof that the browser sends.
- * - That proof is like a signed receipt that includes the HTTP method, URL, and a fresh random id so it can’t be replayed.
- *
- * What this filter checks:
- * - There is a DPoP header if Authorization uses the "DPoP <token>" scheme.
- * - The proof’s digital signature is valid (we rebuild a public key from the header and verify the signature).
- * - htm matches the HTTP method; htu matches the full request URL (scheme://host[:port]/path?query).
- * - iat (issued-at) is recent (within a small clock window), and jti (a one-time random id) has not been seen before.
- * - If an access token is present, ath (access token hash) must match, proving the proof was made for that token.
- * - We compute a short fingerprint of the public key (jkt) and store it on the request for the next filter.
- * - If someone tries to send a DPoP-bound token with Authorization: Bearer (no proof), we reject it.
- *
- * Notes:
- * - This filter does not decide if the access token itself is valid or expired; the JWT filter does that.
- * - jti means “JWT ID” here: a unique nonce we keep briefly to prevent replay.
+ * Filter for DPoP proof validation before JWT authentication.
  */
 @ConditionalOnProperty(name = ["security.auth.dpop.enabled"], havingValue = "true", matchIfMissing = true)
 @Component
@@ -76,7 +59,7 @@ class DpopValidationFilter(
                     val claims: JwtClaims = this.jwtTokenService.validateAndParse(accessToken)
                     if (!claims.confirmJkt.isNullOrBlank()) {
                         log.debug("Bearer token with cnf.jkt used without DPoP proof; rejecting")
-                        HttpErrorScript.unauthorized(response, "dpop_required", "DPoP proof required for bound token", "DPoP")
+                        response.sendUnauthorized("dpop_required", "DPoP proof required for bound token", "DPoP")
                         return
                     }
                 } catch (_: Exception) {
@@ -91,23 +74,23 @@ class DpopValidationFilter(
         val dpopHeader: String? = request.getDpopHeader()
         if (dpopHeader.isNullOrBlank()) {
             log.debug("DPoP header missing while using DPoP authorization scheme")
-            HttpErrorScript.unauthorized(response, "invalid_dpop", "Missing DPoP proof", "DPoP")
+            response.sendUnauthorized("invalid_dpop", "Missing DPoP proof", "DPoP")
             return
         }
 
         try {
             // Verify DPoP proof cryptographically and validate claims (require 'ath' when token provided)
-            val verification: DpopVerifierService.VerificationResult? = 
-                this.dpopVerifier.verify(dpopHeader, request.method, HttpScript.fullUrl(request), accessToken)
+            val verification: DpopVerifierService.VerificationResult? =
+                this.dpopVerifier.verify(dpopHeader, request.method, request.fullUrl(), accessToken)
             if (verification == null) {
                 log.debug("DPoP proof verification failed")
-                HttpErrorScript.unauthorized(response, "invalid_dpop", "Verification failed", "DPoP")
+                response.sendUnauthorized("invalid_dpop", "Verification failed", "DPoP")
                 return
             }
             // Replay detection by jti
             if (this.replayCache.isReplay(verification.jwtId)) {
                 log.debug("DPoP proof replay detected for jti={}", verification.jwtId)
-                HttpErrorScript.unauthorized(response, "replay", "DPoP proof replay detected", "DPoP")
+                response.sendUnauthorized("replay", "DPoP proof replay detected", "DPoP")
                 return
             }
 
@@ -120,14 +103,14 @@ class DpopValidationFilter(
                 keyThumbprint = verification.jwkThumbprint,
                 proofNonce = verification.jwtId,
                 httpMethod = request.method,
-                httpUrl = HttpScript.fullUrl(request),
+                httpUrl = request.fullUrl(),
                 issuedAtEpochSeconds = issuedAt
             )
             request.setAttribute(REQ_ATTR_PROOF, dpopProofContext)
             request.setAttribute(REQ_ATTR_PROOF_JKT, verification.jwkThumbprint)
         } catch (ex: Exception) {
             log.debug("DPoP validation failed", ex)
-            HttpErrorScript.unauthorized(response, "invalid_dpop", "Validation exception", "DPoP")
+            response.sendUnauthorized("invalid_dpop", "Validation exception", "DPoP")
             return
         }
         filterChain.doFilter(request, response)
