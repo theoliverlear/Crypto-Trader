@@ -1,0 +1,135 @@
+services:
+  # --- Java Modules ---
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - MODULE_NAME=Crypto-Trader-Api
+    container_name: ct-api
+    ports:
+      - "8080:8080"
+    env_file: .env
+    depends_on:
+      - data
+      - security
+
+  security:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - MODULE_NAME=Crypto-Trader-Security
+    container_name: ct-security
+    ports:
+      - "8081:8081"
+    env_file: .env
+
+  data:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - MODULE_NAME=Crypto-Trader-Data
+    container_name: ct-data
+    ports:
+      - "8082:8082"
+    env_file: .env
+
+  engine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - MODULE_NAME=Crypto-Trader-Engine
+    container_name: ct-engine
+    env_file: .env
+    depends_on:
+      - data
+      - api
+    environment:
+      - CRYPTO_TRADER_ENGINE_TRADING_ENABLED=true
+
+  health:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - MODULE_NAME=Crypto-Trader-Health
+    container_name: ct-health
+    ports:
+      - "8083:8083"
+    env_file: .env
+
+  agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - MODULE_NAME=Crypto-Trader-Agent
+    container_name: ct-agent
+    env_file: .env
+    depends_on:
+      - api
+
+  chat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - MODULE_NAME=Crypto-Trader-Chat
+    container_name: ct-chat
+    ports:
+      - "8084:8084"
+    env_file: .env
+
+  contact:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - MODULE_NAME=Crypto-Trader-Contact
+    container_name: ct-contact
+    env_file: .env
+
+  simulator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - MODULE_NAME=Crypto-Trader-Simulator
+    container_name: ct-simulator
+    env_file: .env
+
+  console:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - MODULE_NAME=Crypto-Trader-Console
+    container_name: ct-console
+    env_file: .env
+    stdin_open: true
+    tty: true
+
+  # --- Non-Java Modules ---
+  analysis:
+    build:
+      context: .
+      dockerfile: Crypto-Trader-Analysis/Dockerfile
+    container_name: ct-analysis
+    ports:
+      - "8000:8000"
+    env_file: .env
+
+  website:
+    build:
+      context: .
+      dockerfile: Crypto-Trader-Website/Dockerfile
+      target: production
+    container_name: ct-website
+    ports:
+      - "80:80"
+    env_file: .env
+    depends_on:
+      - api
