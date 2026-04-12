@@ -10,4 +10,5 @@ open module org.cryptotrader.security.library.infrastructure {
 
     exports org.cryptotrader.security.library.infrastructure;
     exports org.cryptotrader.security.library.infrastructure.config;
+    exports org.cryptotrader.security.library.infrastructure.annotation;
 }
