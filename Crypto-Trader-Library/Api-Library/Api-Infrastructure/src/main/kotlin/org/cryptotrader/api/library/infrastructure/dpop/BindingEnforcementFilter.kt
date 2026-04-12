@@ -11,7 +11,7 @@ import org.cryptotrader.api.library.infrastructure.extension.isDpop
 import org.cryptotrader.api.library.services.jwt.JwtTokenService
 import org.cryptotrader.api.library.model.dpop.DpopProofContext
 import org.cryptotrader.api.library.model.jwt.JwtClaims
-import org.cryptotrader.api.library.scripts.http.sendUnauthorized
+import org.cryptotrader.api.library.extensions.sendUnauthorized
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
