@@ -1,5 +1,6 @@
 package org.cryptotrader.api.library.config;
 
+import org.cryptotrader.universal.library.config.HttpClientConfig;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Import;
 
