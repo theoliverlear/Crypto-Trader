@@ -26,6 +26,7 @@
         <jdom2.version>2.0.6.1</jdom2.version>
         <toml4j.version>0.7.2</toml4j.version>
         <snakeyaml.version>2.2</snakeyaml.version>
+        <argLine/>
     </properties>
 
     <dependencies>

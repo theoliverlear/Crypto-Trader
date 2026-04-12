@@ -26,6 +26,7 @@
         <mockito.version>5.11.0</mockito.version>
         <testcontainers.version>1.20.1</testcontainers.version>
         <spring-boot.version>3.3.2</spring-boot.version>
+        <argLine/>
     </properties>
 
     <dependencies>
