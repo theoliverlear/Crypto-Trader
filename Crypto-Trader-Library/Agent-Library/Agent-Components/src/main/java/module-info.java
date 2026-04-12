@@ -9,6 +9,8 @@ module org.cryptotrader.agent.library.components {
     requires org.cryptotrader.agent.library.config;
     requires org.cryptotrader.agent.library.models;
     requires org.cryptotrader.agent.library.communication;
+    requires org.cryptotrader.security.library.infrastructure;
+    requires org.cryptotrader.api.library.models;
     requires spring.security.core;
     requires spring.ai.mcp;
     requires spring.ai.model;
