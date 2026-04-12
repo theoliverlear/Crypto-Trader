@@ -10,7 +10,8 @@
 **/target/
 tink/
 **/logs/
-/Crypto-Trader-Docs/docs/
+/Crypto-Trader-Docs/docs/**
+/Crypto-Trader-Docs/site/**
 /Crypto-Trader-Api/src/main/resources/ssl/keystore.p12
 /Crypto-Trader.iml
 /crpto-trader.iml
