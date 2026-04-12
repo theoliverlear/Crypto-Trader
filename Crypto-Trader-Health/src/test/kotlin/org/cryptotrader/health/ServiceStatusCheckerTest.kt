@@ -9,6 +9,7 @@ import org.cryptotrader.test.CryptoTraderTest
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import java.net.InetSocketAddress
@@ -42,19 +43,23 @@ class ServiceStatusCheckerTest : CryptoTraderTest() {
     }
 
 
-    @Test
-    @DisplayName("Should report status health")
-    fun isServiceAlive_shouldReportStatusHealth() {
-        val service = CryptoTraderService.ANALYSIS
-        var expectedAliveStatus = true
-        var actualAliveStatus: Boolean = isServiceAlive(service)
-        assertEquals(expectedAliveStatus, actualAliveStatus)
+    @Nested
+    @DisplayName("Is Service Alive")
+    inner class IsServiceAlive {
+        @Test
+        @DisplayName("Should report status health")
+        fun isServiceAlive_shouldReportStatusHealth() {
+            val service = CryptoTraderService.ANALYSIS
+            var expectedAliveStatus = true
+            var actualAliveStatus: Boolean = isServiceAlive(service)
+            assertEquals(expectedAliveStatus, actualAliveStatus)
 
-        this.statusHandler.updateStatus(503)
+            statusHandler.updateStatus(503)
 
-        expectedAliveStatus = false
-        actualAliveStatus = isServiceAlive(CryptoTraderService.API)
-        assertEquals(expectedAliveStatus, actualAliveStatus)
+            expectedAliveStatus = false
+            actualAliveStatus = isServiceAlive(CryptoTraderService.API)
+            assertEquals(expectedAliveStatus, actualAliveStatus)
+        }
     }
 
     private class MutableStatusHandler(initialStatusCode: Int) : HttpHandler {

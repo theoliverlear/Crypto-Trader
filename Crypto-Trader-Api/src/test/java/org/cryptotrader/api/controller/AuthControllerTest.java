@@ -14,6 +14,7 @@ import org.cryptotrader.test.CryptoTraderTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -28,7 +29,7 @@ import static org.mockito.Mockito.when;
 public class AuthControllerTest extends CryptoTraderTest {
     @InjectMocks
     private AuthController authController;
-    
+
     @Mock
     private AuthService authService;
 
@@ -40,119 +41,134 @@ public class AuthControllerTest extends CryptoTraderTest {
 
     @Mock
     private AuthContextService authContextService;
-    
+
     private SignupRequest signupRequest;
     private LoginRequest loginRequest;
-    
+
     @BeforeEach
     void setup() {
         this.signupRequest = new SignupRequest("ollie@ollie.com", "password");
         this.loginRequest = new LoginRequest("ollie@ollie.com", "password");
     }
-    
-    @Test
-    @DisplayName("Should not sign up users in session")
-    public void signup_NotSignUp_UsersInSession() {
-        when(this.authContextService.isAuthenticated()).thenReturn(true);
-        ResponseEntity<AuthResponse> signupResponse = this.authController.signup(this.signupRequest);
-        verify(this.authContextService).isAuthenticated();
-        HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
-        AuthResponse expectedResponse = new AuthResponse(false);
-        assertEquals(expectedStatus, signupResponse.getStatusCode());
-        assertEquals(expectedResponse, signupResponse.getBody());
+
+    @Nested
+    @DisplayName("Signup")
+    class Signup {
+        @Test
+        @DisplayName("Should not sign up users in session")
+        public void signup_NotSignUp_UsersInSession() {
+            when(authContextService.isAuthenticated()).thenReturn(true);
+            ResponseEntity<AuthResponse> signupResponse = authController.signup(signupRequest);
+            verify(authContextService).isAuthenticated();
+            HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
+            AuthResponse expectedResponse = new AuthResponse(false);
+            assertEquals(expectedStatus, signupResponse.getStatusCode());
+            assertEquals(expectedResponse, signupResponse.getBody());
+        }
+
+        @Test
+        @DisplayName("Should sign up users not in session")
+        @Disabled
+        public void signup_SignUp_UsersNotInSession() {
+            when(authContextService.isAuthenticated()).thenReturn(false);
+            when(authService.signup(signupRequest)).thenReturn(new PayloadStatusResponse<>(new AuthResponse(true), HttpStatus.OK));
+            when(productUserService.getUserByEmail("ollie@ollie.com")).thenReturn(new ProductUser("Ollie", new SafePassword("password")));
+            ResponseEntity<AuthResponse> signupResponse = authController.signup(signupRequest);
+            verify(authContextService).isAuthenticated();
+            verify(authService).signup(signupRequest);
+            HttpStatus expectedStatus = HttpStatus.OK;
+            AuthResponse expectedResponse = new AuthResponse(true);
+            assertEquals(expectedStatus, signupResponse.getStatusCode());
+            assertEquals(expectedResponse, signupResponse.getBody());
+        }
     }
-    
-    @Test
-    @DisplayName("Should sign up users not in session")
-    @Disabled
-    public void signup_SignUp_UsersNotInSession() {
-        when(this.authContextService.isAuthenticated()).thenReturn(false);
-        when(this.authService.signup(this.signupRequest)).thenReturn(new PayloadStatusResponse<>(new AuthResponse(true), HttpStatus.OK));
-        when(this.productUserService.getUserByEmail("ollie@ollie.com")).thenReturn(new ProductUser("Ollie", new SafePassword("password")));
-        ResponseEntity<AuthResponse> signupResponse = this.authController.signup(this.signupRequest);
-        verify(this.authContextService).isAuthenticated();
-        verify(this.authService).signup(this.signupRequest);
-        HttpStatus expectedStatus = HttpStatus.OK;
-        AuthResponse expectedResponse = new AuthResponse(true);
-        assertEquals(expectedStatus, signupResponse.getStatusCode());
-        assertEquals(expectedResponse, signupResponse.getBody());
+
+    @Nested
+    @DisplayName("Login")
+    class Login {
+        @Test
+        @DisplayName("Should not login users in session")
+        public void login_NotLogin_UsersInSession() {
+            when(authContextService.isAuthenticated()).thenReturn(true);
+            ResponseEntity<AuthResponse> loginResponse = authController.login(loginRequest);
+            verify(authContextService).isAuthenticated();
+            HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
+            AuthResponse expectedResponse = new AuthResponse(false);
+            assertEquals(expectedStatus, loginResponse.getStatusCode());
+            assertEquals(expectedResponse, loginResponse.getBody());
+        }
+
+        @Test
+        @DisplayName("Should login users not in session")
+        @Disabled
+        public void login_Login_UsersNotInSession() {
+            when(authContextService.isAuthenticated()).thenReturn(false);
+            when(authService.login(loginRequest)).thenReturn(new PayloadStatusResponse<>(new AuthResponse(true), HttpStatus.OK));
+            ResponseEntity<AuthResponse> loginResponse = authController.login(loginRequest);
+            verify(authContextService).isAuthenticated();
+            verify(authService).login(loginRequest);
+            HttpStatus expectedStatus = HttpStatus.OK;
+            AuthResponse expectedResponse = new AuthResponse(true);
+            assertEquals(expectedStatus, loginResponse.getStatusCode());
+            assertEquals(expectedResponse, loginResponse.getBody());
+        }
     }
-    
-    @Test
-    @DisplayName("Should not login users in session")
-    public void login_NotLogin_UsersInSession() {
-        when(this.authContextService.isAuthenticated()).thenReturn(true);
-        ResponseEntity<AuthResponse> loginResponse = this.authController.login(this.loginRequest);
-        verify(this.authContextService).isAuthenticated();
-        HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
-        AuthResponse expectedResponse = new AuthResponse(false);
-        assertEquals(expectedStatus, loginResponse.getStatusCode());
-        assertEquals(expectedResponse, loginResponse.getBody());
+
+    @Nested
+    @DisplayName("Logout")
+    class Logout {
+        @Test
+        @DisplayName("Should logout users in session")
+        @Disabled
+        public void logout_Logout_UsersInSession() {
+            when(authContextService.isAuthenticated()).thenReturn(true);
+            ResponseEntity<AuthResponse> logoutResponse = authController.logout();
+            verify(authContextService).isAuthenticated();
+            HttpStatus expectedStatus = HttpStatus.OK;
+            AuthResponse expectedResponse = new AuthResponse(false);
+            assertEquals(expectedStatus, logoutResponse.getStatusCode());
+            assertEquals(expectedResponse, logoutResponse.getBody());
+        }
+
+        @Test
+        @DisplayName("Should not logout users not in session")
+        @Disabled
+        public void logout_NotLogout_UsersNotInSession() {
+            when(authContextService.isAuthenticated()).thenReturn(false);
+            ResponseEntity<AuthResponse> logoutResponse = authController.logout();
+            verify(authContextService).isAuthenticated();
+            HttpStatus expectedStatus = HttpStatus.OK;
+            AuthResponse expectedResponse = new AuthResponse(false);
+            assertEquals(expectedStatus, logoutResponse.getStatusCode());
+            assertEquals(expectedResponse, logoutResponse.getBody());
+        }
     }
-    
-    @Test
-    @DisplayName("Should login users not in session")
-    @Disabled
-    public void login_Login_UsersNotInSession() {
-        when(this.authContextService.isAuthenticated()).thenReturn(false);
-        when(this.authService.login(this.loginRequest)).thenReturn(new PayloadStatusResponse<>(new AuthResponse(true), HttpStatus.OK));
-        ResponseEntity<AuthResponse> loginResponse = this.authController.login(this.loginRequest);
-        verify(this.authContextService).isAuthenticated();
-        verify(this.authService).login(this.loginRequest);
-        HttpStatus expectedStatus = HttpStatus.OK;
-        AuthResponse expectedResponse = new AuthResponse(true);
-        assertEquals(expectedStatus, loginResponse.getStatusCode());
-        assertEquals(expectedResponse, loginResponse.getBody());
-    }
-    
-    @Test
-    @DisplayName("Should logout users in session")
-    @Disabled
-    public void logout_Logout_UsersInSession() {
-        when(this.authContextService.isAuthenticated()).thenReturn(true);
-        ResponseEntity<AuthResponse> logoutResponse = this.authController.logout();
-        verify(this.authContextService).isAuthenticated();
-        HttpStatus expectedStatus = HttpStatus.OK;
-        AuthResponse expectedResponse = new AuthResponse(false);
-        assertEquals(expectedStatus, logoutResponse.getStatusCode());
-        assertEquals(expectedResponse, logoutResponse.getBody());
-    }
-    
-    @Test
-    @DisplayName("Should not logout users not in session")
-    @Disabled
-    public void logout_NotLogout_UsersNotInSession() {
-        when(this.authContextService.isAuthenticated()).thenReturn(false);
-        ResponseEntity<AuthResponse> logoutResponse = this.authController.logout();
-        verify(this.authContextService).isAuthenticated();
-        HttpStatus expectedStatus = HttpStatus.OK;
-        AuthResponse expectedResponse = new AuthResponse(false);
-        assertEquals(expectedStatus, logoutResponse.getStatusCode());
-        assertEquals(expectedResponse, logoutResponse.getBody());
-    }
-    
-    
-    @Test
-    @DisplayName("Should count session users as logged in")
-    public void isLoggedIn_LoggedIn_UsersInSession() {
-        when(this.authContextService.isAuthenticated()).thenReturn(true);
-        ResponseEntity<AuthResponse> isLoggedInResponse = this.authController.isLoggedIn();
-        verify(this.authContextService).isAuthenticated();
-        HttpStatus expectedStatus = HttpStatus.OK;
-        AuthResponse expectedResponse = new AuthResponse(true);
-        assertEquals(expectedStatus, isLoggedInResponse.getStatusCode());
-        assertEquals(expectedResponse, isLoggedInResponse.getBody());
-    }
-    
-    @Test
-    @DisplayName("Should not count unauthorized session users as logged in")
-    public void isLoggedIn_NotLoggedIn_UsersInSession() {
-        when(this.authContextService.isAuthenticated()).thenReturn(false);
-        ResponseEntity<AuthResponse> isLoggedInResponse = this.authController.isLoggedIn();
-        verify(this.authContextService).isAuthenticated();
-        HttpStatus expectedStatus = HttpStatus.OK;
-        AuthResponse expectedResponse = new AuthResponse(false);
-        assertEquals(expectedStatus, isLoggedInResponse.getStatusCode());
-        assertEquals(expectedResponse, isLoggedInResponse.getBody());
+
+    @Nested
+    @DisplayName("Is Logged In")
+    class IsLoggedIn {
+        @Test
+        @DisplayName("Should count session users as logged in")
+        public void isLoggedIn_LoggedIn_UsersInSession() {
+            when(authContextService.isAuthenticated()).thenReturn(true);
+            ResponseEntity<AuthResponse> isLoggedInResponse = authController.isLoggedIn();
+            verify(authContextService).isAuthenticated();
+            HttpStatus expectedStatus = HttpStatus.OK;
+            AuthResponse expectedResponse = new AuthResponse(true);
+            assertEquals(expectedStatus, isLoggedInResponse.getStatusCode());
+            assertEquals(expectedResponse, isLoggedInResponse.getBody());
+        }
+
+        @Test
+        @DisplayName("Should not count unauthorized session users as logged in")
+        public void isLoggedIn_NotLoggedIn_UsersInSession() {
+            when(authContextService.isAuthenticated()).thenReturn(false);
+            ResponseEntity<AuthResponse> isLoggedInResponse = authController.isLoggedIn();
+            verify(authContextService).isAuthenticated();
+            HttpStatus expectedStatus = HttpStatus.OK;
+            AuthResponse expectedResponse = new AuthResponse(false);
+            assertEquals(expectedStatus, isLoggedInResponse.getStatusCode());
+            assertEquals(expectedResponse, isLoggedInResponse.getBody());
+        }
     }
 }

@@ -4,6 +4,7 @@ import org.cryptotrader.api.service.HoneypotService
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assumptions.assumeFalse
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.*
@@ -33,29 +34,33 @@ class HoneypotControllerTest {
 
     @Autowired
     private lateinit var mockMvc: MockMvc
-    
+
     @MockitoSpyBean
     private lateinit var honeypotService: HoneypotService
 
-    @Test
-    @DisplayName("All configured honeypot paths are non-empty and are handled by the controller")
-    fun allConfiguredPathsAreHandledByController() {
-        val raw = env.getProperty("security.honeypot.paths") ?: ""
-        val paths = raw.split(',')
-            .map { it.trim() }
-            .filter { it.isNotEmpty() }
-            .filter { !it.contains("*") }
-            .distinct()
+    @Nested
+    @DisplayName("Handle Configured Paths")
+    inner class HandleConfiguredPaths {
+        @Test
+        @DisplayName("All configured honeypot paths are non-empty and are handled by the controller")
+        fun allConfiguredPathsAreHandledByController() {
+            val raw = env.getProperty("security.honeypot.paths") ?: ""
+            val paths = raw.split(',')
+                .map { it.trim() }
+                .filter { it.isNotEmpty() }
+                .filter { !it.contains("*") }
+                .distinct()
 
-        assumeFalse(paths.isEmpty(), "No honeypot paths configured, skipping test.")
-//        assertFalse(paths.isEmpty()) { "Expected at least one honeypot path from configuration, but none were found." }
+            assumeFalse(paths.isEmpty(), "No honeypot paths configured, skipping test.")
+    //        assertFalse(paths.isEmpty()) { "Expected at least one honeypot path from configuration, but none were found." }
 
-        for (path in paths) {
-            clearInvocations(honeypotService)
-            mockMvc.perform(get(path))
-                .andExpect(status().isNotFound)
-            verify(honeypotService, atLeastOnce()).captureHoneypot(
-                ArgumentMatchers.any())
+            for (path in paths) {
+                clearInvocations(honeypotService)
+                mockMvc.perform(get(path))
+                    .andExpect(status().isNotFound)
+                verify(honeypotService, atLeastOnce()).captureHoneypot(
+                    ArgumentMatchers.any())
+            }
         }
     }
 }

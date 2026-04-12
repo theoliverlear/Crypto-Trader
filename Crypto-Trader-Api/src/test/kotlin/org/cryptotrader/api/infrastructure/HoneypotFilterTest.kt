@@ -3,6 +3,8 @@ package org.cryptotrader.api.infrastructure
 import org.cryptotrader.api.service.HoneypotService
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assumptions.assumeFalse
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.*
@@ -59,27 +61,32 @@ class HoneypotFilterTest {
     @MockitoBean
     lateinit var honeypotService: HoneypotService
 
-    @Test
-    fun `all configured honeypot paths are intercepted and service invoked`() {
-        `when`(honeypotService.captureHoneypot(any()))
-                                          .thenReturn(ResponseEntity.notFound().build())
+    @Nested
+    @DisplayName("Filter Interception")
+    inner class FilterInterception {
+        @Test
+        @DisplayName("all configured honeypot paths are intercepted and service invoked")
+        fun allConfiguredPathsAreIntercepted() {
+            `when`(honeypotService.captureHoneypot(any()))
+                                              .thenReturn(ResponseEntity.notFound().build())
 
-        val raw = env.getProperty("security.honeypot.paths") ?: ""
-        val paths = raw.split(',')
-            .map { it.trim() }
-            .filter { it.isNotEmpty() }
-//            .filter { !it.contains("*") } // skip wildcard entries like /**/.env
-            .distinct()
+            val raw = env.getProperty("security.honeypot.paths") ?: ""
+            val paths = raw.split(',')
+                .map { it.trim() }
+                .filter { it.isNotEmpty() }
+    //            .filter { !it.contains("*") } // skip wildcard entries like /**/.env
+                .distinct()
 
-        assumeFalse(paths.isEmpty(), "No honeypot paths configured, skipping test.")
-//        assertFalse(paths.isEmpty()) { 
-//            "Expected at least one honeypot path from configuration, but none were found." 
-//        }
+            assumeFalse(paths.isEmpty(), "No honeypot paths configured, skipping test.")
+    //        assertFalse(paths.isEmpty()) {
+    //            "Expected at least one honeypot path from configuration, but none were found."
+    //        }
 
-        paths.forEach { path ->
-            clearInvocations(honeypotService)
-            mvc.perform(get(path)).andExpect(status().isNotFound)
-            verify(this.honeypotService, atLeastOnce()).captureHoneypot(any())
+            paths.forEach { path ->
+                clearInvocations(honeypotService)
+                mvc.perform(get(path)).andExpect(status().isNotFound)
+                verify(honeypotService, atLeastOnce()).captureHoneypot(any())
+            }
         }
     }
 }

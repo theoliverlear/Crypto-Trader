@@ -8,9 +8,7 @@ import org.cryptotrader.contact.natives.normalized
 import org.cryptotrader.contact.service.email.template.Template
 import org.cryptotrader.contact.service.email.template.getExpectedWelcomeHtml
 import org.cryptotrader.test.CryptoTraderTest
-import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.DynamicPropertyRegistry
@@ -52,24 +50,29 @@ class EmailServiceTest @Autowired constructor(
         }
     }
 
-    @Test
-    fun `Should send email with valid request`() {
-        val request = EmailRequest(
-            "test@local",
-            "Testing Crypto Trader",
-            "Hello from Spring Boot in Kotlin",
-            Template.WELCOME
-        )
-        this.emailService.send(request)
-        val messages = greenMail.receivedMessages
-        assertThat(messages).hasSize(1)
-        assertThat(messages[0].subject).isEqualTo("Testing Crypto Trader")
-        assertThat(messages[0].allRecipients[0].toString()).isEqualTo("test@local")
-        assertThat(messages[0].content.toString().normalized()).isEqualTo(
-            getExpectedWelcomeHtml(
+    @Nested
+    @DisplayName("Send Email")
+    inner class SendEmail {
+        @Test
+        @DisplayName("Should send email with valid request")
+        fun sendEmail_ValidRequest() {
+            val request = EmailRequest(
+                "test@local",
                 "Testing Crypto Trader",
-                "Hello from Spring Boot in Kotlin".normalized()
-            ).normalized()
-        )
+                "Hello from Spring Boot in Kotlin",
+                Template.WELCOME
+            )
+            emailService.send(request)
+            val messages = greenMail.receivedMessages
+            assertThat(messages).hasSize(1)
+            assertThat(messages[0].subject).isEqualTo("Testing Crypto Trader")
+            assertThat(messages[0].allRecipients[0].toString()).isEqualTo("test@local")
+            assertThat(messages[0].content.toString().normalized()).isEqualTo(
+                getExpectedWelcomeHtml(
+                    "Testing Crypto Trader",
+                    "Hello from Spring Boot in Kotlin".normalized()
+                ).normalized()
+            )
+        }
     }
 }

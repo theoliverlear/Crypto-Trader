@@ -2,6 +2,8 @@ package org.cryptotrader.data;
 
 import org.cryptotrader.data.library.component.CurrencyDataRetriever;
 import org.cryptotrader.test.CryptoTraderTest;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,9 +28,14 @@ class ConfigLoadTest extends CryptoTraderTest {
     @Autowired
     private Environment environment;
 
-    @Test
-    void loadsApplicationYaml_propertiesPresent() {
-        assertThat(environment.getProperty("spring.application.name")).isEqualTo("crypto-trader-data");
-        assertThat(environment.getProperty("server.port")).isEqualTo("8085");
+    @Nested
+    @DisplayName("Application Yaml")
+    class ApplicationYaml {
+        @Test
+        @DisplayName("loadsApplicationYaml_propertiesPresent")
+        void loadsApplicationYaml_propertiesPresent() {
+            assertThat(environment.getProperty("spring.application.name")).isEqualTo("crypto-trader-data");
+            assertThat(environment.getProperty("server.port")).isEqualTo("8085");
+        }
     }
 }

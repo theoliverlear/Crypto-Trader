@@ -7,10 +7,7 @@ import org.cryptotrader.api.library.services.ProductUserService
 import org.cryptotrader.api.library.services.jwt.TokenBlacklistService
 import org.cryptotrader.api.library.services.rsa.RsaKeyService
 import org.cryptotrader.test.CryptoTraderTest
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Tag
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.*
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.springframework.http.HttpHeaders
@@ -28,7 +25,7 @@ class JwtHandshakeInterceptorTest : CryptoTraderTest() {
     private lateinit var jwtService: JwtTokenService
     private lateinit var productUserService: ProductUserService
     private lateinit var interceptor: JwtHandshakeInterceptor
-    
+
     val testSecret: String = "secret"
     val testIssuer: String = "issuer"
     val testExpiration: Long = 3600
@@ -46,115 +43,119 @@ class JwtHandshakeInterceptorTest : CryptoTraderTest() {
         this.interceptor = JwtHandshakeInterceptor(jwtService, productUserService, tokenBlacklistService)
     }
 
-    @Test
-    @DisplayName("Should attach user when Authorization bearer token is valid")
-    fun beforeHandshake_AttachesUser_ValidToken() {
-        val userId = 10L
-        val email = "user@example.com"
-        val token = jwtService.generateToken(userId.toString(), email)
+    @Nested
+    @DisplayName("Before Handshake")
+    inner class BeforeHandshake {
+        @Test
+        @DisplayName("Should attach user when Authorization bearer token is valid")
+        fun beforeHandshake_AttachesUser_ValidToken() {
+            val userId = 10L
+            val email = "user@example.com"
+            val token = jwtService.generateToken(userId.toString(), email)
 
-        val headers = HttpHeaders()
-        headers.add("Authorization", "Bearer $token")
-        val request = Mockito.mock(ServerHttpRequest::class.java)
-        `when`(request.headers).thenReturn(headers)
+            val headers = HttpHeaders()
+            headers.add("Authorization", "Bearer $token")
+            val request = Mockito.mock(ServerHttpRequest::class.java)
+            `when`(request.headers).thenReturn(headers)
 
-        val response = Mockito.mock(ServerHttpResponse::class.java)
-        val handler = Mockito.mock(WebSocketHandler::class.java)
-        val attributes = mutableMapOf<String, Any>()
+            val response = Mockito.mock(ServerHttpResponse::class.java)
+            val handler = Mockito.mock(WebSocketHandler::class.java)
+            val attributes = mutableMapOf<String, Any>()
 
-        val user = ProductUser.builder().email(email).build()
-        user.id = userId
-        `when`(productUserService.getUserById(userId)).thenReturn(user)
+            val user = ProductUser.builder().email(email).build()
+            user.id = userId
+            `when`(productUserService.getUserById(userId)).thenReturn(user)
 
-        val proceed = interceptor.beforeHandshake(request, response, handler, attributes)
+            val proceed = interceptor.beforeHandshake(request, response, handler, attributes)
 
-        assertThat(proceed).isTrue()
-        assertThat(attributes["product-user"]).isEqualTo(user)
-    }
+            assertThat(proceed).isTrue()
+            assertThat(attributes["product-user"]).isEqualTo(user)
+        }
 
-    @Test
-    @DisplayName("Should attach user when query parameter token is valid")
-    fun beforeHandshake_AttachesUser_ValidQueryParameter() {
-        val userId = 20L
-        val email = "query@example.com"
-        val token = jwtService.generateToken(userId.toString(), email)
+        @Test
+        @DisplayName("Should attach user when query parameter token is valid")
+        fun beforeHandshake_AttachesUser_ValidQueryParameter() {
+            val userId = 20L
+            val email = "query@example.com"
+            val token = jwtService.generateToken(userId.toString(), email)
 
-        val servletRequest = MockHttpServletRequest()
-        servletRequest.setParameter("token", token)
-        val request: ServerHttpRequest = ServletServerHttpRequest(servletRequest)
+            val servletRequest = MockHttpServletRequest()
+            servletRequest.setParameter("token", token)
+            val request: ServerHttpRequest = ServletServerHttpRequest(servletRequest)
 
-        val response = Mockito.mock(ServerHttpResponse::class.java)
-        val handler = Mockito.mock(WebSocketHandler::class.java)
-        val attributes = mutableMapOf<String, Any>()
+            val response = Mockito.mock(ServerHttpResponse::class.java)
+            val handler = Mockito.mock(WebSocketHandler::class.java)
+            val attributes = mutableMapOf<String, Any>()
 
-        val user = ProductUser.builder().email(email).build()
-        user.id = userId
-        `when`(productUserService.getUserById(userId)).thenReturn(user)
+            val user = ProductUser.builder().email(email).build()
+            user.id = userId
+            `when`(productUserService.getUserById(userId)).thenReturn(user)
 
-        val proceed = interceptor.beforeHandshake(request, response, handler, attributes)
+            val proceed = interceptor.beforeHandshake(request, response, handler, attributes)
 
-        assertThat(proceed).isTrue()
-        assertThat(attributes["product-user"]).isEqualTo(user)
-    }
+            assertThat(proceed).isTrue()
+            assertThat(attributes["product-user"]).isEqualTo(user)
+        }
 
-    @Test
-    @DisplayName("Should ignore invalid token")
-    fun beforeHandshake_Ignores_InvalidToken() {
-        val headers = HttpHeaders()
-        headers.add("Authorization", "Bearer not-a-valid-token")
-        val request = Mockito.mock(ServerHttpRequest::class.java)
-        `when`(request.headers).thenReturn(headers)
+        @Test
+        @DisplayName("Should ignore invalid token")
+        fun beforeHandshake_Ignores_InvalidToken() {
+            val headers = HttpHeaders()
+            headers.add("Authorization", "Bearer not-a-valid-token")
+            val request = Mockito.mock(ServerHttpRequest::class.java)
+            `when`(request.headers).thenReturn(headers)
 
-        val response = Mockito.mock(ServerHttpResponse::class.java)
-        val handler = Mockito.mock(WebSocketHandler::class.java)
-        val attributes = mutableMapOf<String, Any>()
+            val response = Mockito.mock(ServerHttpResponse::class.java)
+            val handler = Mockito.mock(WebSocketHandler::class.java)
+            val attributes = mutableMapOf<String, Any>()
 
-        val proceed = interceptor.beforeHandshake(request, response, handler, attributes)
+            val proceed = interceptor.beforeHandshake(request, response, handler, attributes)
 
-        assertThat(proceed).isTrue()
-        assertThat(attributes).doesNotContainKey("product-user")
-    }
+            assertThat(proceed).isTrue()
+            assertThat(attributes).doesNotContainKey("product-user")
+        }
 
-    @Test
-    @DisplayName("Should not attach user when email does not match")
-    fun beforeHandshake_DoesNotAttachUser_EmailMismatch() {
-        val userId = 30L
-        val tokenEmail = "token@example.com"
-        val actualEmail = "different@example.com"
-        val token = jwtService.generateToken(userId.toString(), tokenEmail)
+        @Test
+        @DisplayName("Should not attach user when email does not match")
+        fun beforeHandshake_DoesNotAttachUser_EmailMismatch() {
+            val userId = 30L
+            val tokenEmail = "token@example.com"
+            val actualEmail = "different@example.com"
+            val token = jwtService.generateToken(userId.toString(), tokenEmail)
 
-        val headers = HttpHeaders()
-        headers.add("Authorization", "Bearer $token")
-        val request = Mockito.mock(ServerHttpRequest::class.java)
-        `when`(request.headers).thenReturn(headers)
+            val headers = HttpHeaders()
+            headers.add("Authorization", "Bearer $token")
+            val request = Mockito.mock(ServerHttpRequest::class.java)
+            `when`(request.headers).thenReturn(headers)
 
-        val response = Mockito.mock(ServerHttpResponse::class.java)
-        val handler = Mockito.mock(WebSocketHandler::class.java)
-        val attributes = mutableMapOf<String, Any>()
+            val response = Mockito.mock(ServerHttpResponse::class.java)
+            val handler = Mockito.mock(WebSocketHandler::class.java)
+            val attributes = mutableMapOf<String, Any>()
 
-        val user = ProductUser.builder().email(actualEmail).build()
-        user.id = userId
-        `when`(productUserService.getUserById(userId)).thenReturn(user)
+            val user = ProductUser.builder().email(actualEmail).build()
+            user.id = userId
+            `when`(productUserService.getUserById(userId)).thenReturn(user)
 
-        val proceed = interceptor.beforeHandshake(request, response, handler, attributes)
+            val proceed = interceptor.beforeHandshake(request, response, handler, attributes)
 
-        assertThat(proceed).isTrue()
-        assertThat(attributes).doesNotContainKey("product-user")
-    }
+            assertThat(proceed).isTrue()
+            assertThat(attributes).doesNotContainKey("product-user")
+        }
 
-    @Test
-    @DisplayName("Should proceed without attaching user when no token")
-    fun beforeHandshake_Proceeds_NoToken() {
-        val request = Mockito.mock(ServerHttpRequest::class.java)
-        `when`(request.headers).thenReturn(HttpHeaders())
+        @Test
+        @DisplayName("Should proceed without attaching user when no token")
+        fun beforeHandshake_Proceeds_NoToken() {
+            val request = Mockito.mock(ServerHttpRequest::class.java)
+            `when`(request.headers).thenReturn(HttpHeaders())
 
-        val response = Mockito.mock(ServerHttpResponse::class.java)
-        val handler = Mockito.mock(WebSocketHandler::class.java)
-        val attributes = mutableMapOf<String, Any>()
+            val response = Mockito.mock(ServerHttpResponse::class.java)
+            val handler = Mockito.mock(WebSocketHandler::class.java)
+            val attributes = mutableMapOf<String, Any>()
 
-        val proceed = interceptor.beforeHandshake(request, response, handler, attributes)
+            val proceed = interceptor.beforeHandshake(request, response, handler, attributes)
 
-        assertThat(proceed).isTrue()
-        assertThat(attributes).doesNotContainKey("product-user")
+            assertThat(proceed).isTrue()
+            assertThat(attributes).doesNotContainKey("product-user")
+        }
     }
 }
