@@ -17,5 +17,4 @@ module org.cryptotrader.universal.library.components {
     requires spring.messaging;
 
     exports org.cryptotrader.universal.library.component;
-    exports org.cryptotrader.universal.library.component.config;
 }
