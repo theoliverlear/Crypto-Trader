@@ -5,3 +5,7 @@ agent:
         allowed-tables:
             - public.example_table
         allowed-root: "/example/path"
+        ignored-directories:
+            - example_directory
+        sensitive-file-patterns:
+            - "**/file-pattern-*.txt"
