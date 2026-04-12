@@ -8,18 +8,19 @@ import org.cryptotrader.api.library.communication.response.AuthResponse;
 import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.api.library.events.UserRegisteredEvent;
 import org.cryptotrader.api.library.events.publisher.UserEventsPublisher;
+import org.cryptotrader.api.library.extensions.HttpRequestExtensionsKt;
 import org.cryptotrader.api.library.model.dpop.DpopProofContext;
 import org.cryptotrader.universal.library.model.http.AuthStatus;
 import org.cryptotrader.universal.library.model.http.PayloadStatusResponse;
-import org.cryptotrader.api.library.scripts.http.CookieScript;
-import org.cryptotrader.api.library.scripts.http.HttpScript;
+import org.cryptotrader.api.config.SecurityProperties;
+import static org.cryptotrader.api.library.scripts.http.CookieScriptKt.buildRefreshCookie;
+import static org.cryptotrader.api.library.scripts.http.CookieScriptKt.deleteCookie;
 import org.cryptotrader.api.library.services.*;
 import org.cryptotrader.api.library.component.dpop.DpopReplayCache;
 import org.cryptotrader.api.library.services.dpop.DpopVerifierService;
 import org.cryptotrader.api.library.services.jwt.JwtTokenService;
 import org.cryptotrader.api.library.services.jwt.RefreshTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -31,19 +32,6 @@ import java.time.LocalDateTime;
 /**
  * Authentication API endpoints implementing DPoP-bound access tokens and rotating refresh tokens.
  *
- * Endpoints:
- * - POST /api/auth/signup — Optional DPoP proof; when present, the issued access token is bound via cnf.jkt.
- * - POST /api/auth/login  — Optional DPoP proof; when present, the issued access token is bound via cnf.jkt.
- * - POST /api/auth/refresh — Requires valid DPoP proof and HttpOnly refresh cookie; rotates cookie and returns new access token.
- * - GET  /api/auth/logout  — Revokes refresh token family, clears cookie, blacklists current access token.
- *
- * Headers:
- * - Authorization: DPoP <access-token> (for protected resources; not used on login/signup)
- * - DPoP: <dpop-proof> (required on refresh; optional on login/signup to bind initial token)
- * - DPoP-JKT: <jwk-thumbprint> (optional on login/signup if DPoP proof is not sent)
- *
- * Cookie:
- * - __Host-rt — HttpOnly; Secure; SameSite (Strict/None); Path=/; rotated on each refresh.
  */
 @RestController
 @RequestMapping("/api/auth")
@@ -57,12 +45,7 @@ public class AuthController {
     private final RefreshTokenService refreshTokenService;
     private final DpopReplayCache replayCache;
     private final DpopVerifierService dpopVerifier;
-
-    @Value("${security.refresh.cookie-samesite:Strict}")
-    private String refreshCookieSameSite;
-
-    @Value("${security.refresh.cookie-secure:true}")
-    private boolean refreshCookieSecure;
+    private final SecurityProperties securityProperties;
 
     @Autowired
     public AuthController(AuthService authService,
@@ -72,7 +55,8 @@ public class AuthController {
                           JwtTokenService jwtTokenService,
                           RefreshTokenService refreshTokenService,
                           DpopReplayCache replayCache,
-                          DpopVerifierService dpopVerifier) {
+                          DpopVerifierService dpopVerifier,
+                          SecurityProperties securityProperties) {
         this.authService = authService;
         this.userEventsPublisher = userEventsPublisher;
         this.productUserService = productUserService;
@@ -81,19 +65,11 @@ public class AuthController {
         this.refreshTokenService = refreshTokenService;
         this.replayCache = replayCache;
         this.dpopVerifier = dpopVerifier;
+        this.securityProperties = securityProperties;
     }
 
-/**
-     * Sign up a new user and start a session.
-     *
-     * What this does in plain words:
-     * - Creates a user account if the email is not already used.
-     * - If you include a DPoP header, the access token we return will be “tied” to your browser key,
-     *   so it can’t be replayed on another device.
-     * - Also issues a long-lived refresh cookie so you don’t have to log in again soon.
-     *
-     * Headers:
-     * - DPoP (optional): a one-time proof for this HTTP request. If present, we bind tokens to your key.
+    /**
+     * Registers a new user and initializes an authenticated session.
      */
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> signup(@RequestBody SignupRequest signupRequest,
@@ -116,11 +92,11 @@ public class AuthController {
             ProductUser possibleUser = this.productUserService.getUserByEmail(signupRequest.getEmail());
             // Issue refresh token cookie bound to jkt
             RefreshTokenService.RefreshTokenIssue issue = this.refreshTokenService.issue(possibleUser.getId(), jwkThumbprint);
-            ResponseCookie cookie = CookieScript.INSTANCE.buildRefreshCookie(this.refreshTokenService.cookieName(),
+            ResponseCookie cookie = buildRefreshCookie(this.refreshTokenService.cookieName(),
                                                                              issue.getId(),
                                                                              issue.getExpiresAt(),
-                                                                             this.refreshCookieSecure,
-                                                                             this.refreshCookieSameSite);
+                                                                             this.securityProperties.cookieSecure(),
+                                                                             this.securityProperties.cookieSamesite());
             // Publish event
             UserRegisteredEvent registerEvent = new UserRegisteredEvent(possibleUser, LocalDateTime.now());
             this.userEventsPublisher.publishUserRegisteredEvent(registerEvent);
@@ -131,16 +107,8 @@ public class AuthController {
         return ResponseEntity.status(signupResponse.getStatus()).body(signupResponse.getPayload());
     }
 
-/**
-     * Log in and start a session.
-     *
-     * In simple terms:
-     * - We check your email and password.
-     * - You must include a DPoP header so we can bind your tokens to your browser key.
-     * - On success, we return a short-lived access token and set a refresh cookie.
-     *
-     * Headers:
-     * - DPoP (required): proof for this POST /auth/login call.
+    /**
+     * Authenticates user credentials and starts a session.
      */
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest,
@@ -163,11 +131,11 @@ public class AuthController {
         if (loginResponse.getPayload().isAuthorized()) {
             ProductUser user = this.productUserService.getUserByEmail(loginRequest.getEmail());
             RefreshTokenService.RefreshTokenIssue issue = this.refreshTokenService.issue(user.getId(), jwkThumbprint);
-            ResponseCookie cookie = CookieScript.INSTANCE.buildRefreshCookie(this.refreshTokenService.cookieName(),
+            ResponseCookie cookie = buildRefreshCookie(this.refreshTokenService.cookieName(),
                                                                              issue.getId(),
                                                                              issue.getExpiresAt(),
-                                                                             this.refreshCookieSecure,
-                                                                             this.refreshCookieSameSite);
+                                                                             this.securityProperties.cookieSecure(),
+                                                                             this.securityProperties.cookieSamesite());
             return ResponseEntity.status(loginResponse.getStatus())
                     .header(HttpHeaders.SET_COOKIE, cookie.toString())
                     .body(loginResponse.getPayload());
@@ -175,32 +143,33 @@ public class AuthController {
         return ResponseEntity.status(loginResponse.getStatus()).body(loginResponse.getPayload());
     }
 
-/**
-     * Refresh the access token.
+    /**
+     * Rotates access and refresh tokens.
      *
-     * In plain words:
-     * - The browser sends a DPoP proof and the refresh cookie (sent automatically with credentials).
-     * - We verify both, rotate the refresh cookie (so an old one can’t be reused), and return a new access token.
-     * - If anything is suspicious (missing/used cookie, mismatched key), we revoke the session.
+     * Implementation Details:
+     * - Validates the DPoP proof and the provided refresh cookie.
+     * - Performs refresh token rotation (RTR) to prevent reuse of old tokens.
+     * - Issues new tokens bound to the same public key thumbprint.
+     * - Revokes the refresh token family on detection of suspicious activity.
      *
      * Headers:
-     * - DPoP (required)
-     * Cookie (sent automatically):
-     * - __Host-rt
+     * - DPoP (required): A signed proof for this request.
+     * Cookie:
+     * - __Host-rt: Secure HttpOnly refresh token.
      */
     @PostMapping("/refresh")
     public ResponseEntity<AuthResponse> refresh(@RequestHeader(value = "DPoP", required = false) String dpopProof,
                                                 HttpServletRequest request) {
         // Must have refresh cookie
-        String cookieValue = HttpScript.readCookie(request, this.refreshTokenService.cookieName());
+        String cookieValue = org.cryptotrader.api.library.extensions.HttpRequestExtensionsKt.readCookie(request, this.refreshTokenService.cookieName());
         if (cookieValue == null || cookieValue.isBlank()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse(false));
         }
         boolean hasProof = this.dpopVerifier.isValidProof(dpopProof);
         if (!hasProof) {
-            ResponseCookie del = CookieScript.INSTANCE.deleteCookie(this.refreshTokenService.cookieName(),
-                                                                    this.refreshCookieSecure,
-                                                                    this.refreshCookieSameSite);
+            ResponseCookie del = deleteCookie(this.refreshTokenService.cookieName(),
+                                                                    this.securityProperties.cookieSecure(),
+                                                                    this.securityProperties.cookieSamesite());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .header(HttpHeaders.SET_COOKIE, del.toString())
                     .body(new AuthResponse(false));
@@ -208,9 +177,9 @@ public class AuthController {
         String jwkThumbprint = this.deriveJwkThumbprintFromProof(dpopProof, request, "POST");
         if (jwkThumbprint == null) {
             // DPoP mandatory on refresh
-            ResponseCookie cookieToDelete = CookieScript.INSTANCE.deleteCookie(this.refreshTokenService.cookieName(),
-                                                                               this.refreshCookieSecure,
-                                                                               this.refreshCookieSameSite);
+            ResponseCookie cookieToDelete = deleteCookie(this.refreshTokenService.cookieName(),
+                                                                               this.securityProperties.cookieSecure(),
+                                                                               this.securityProperties.cookieSamesite());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .header(HttpHeaders.SET_COOKIE, cookieToDelete.toString())
                     .body(new AuthResponse(false));
@@ -218,9 +187,9 @@ public class AuthController {
         RefreshTokenService.RotationResult rotationResult = this.refreshTokenService.validateAndRotate(cookieValue, jwkThumbprint);
         if (rotationResult.getNewRecord() == null) {
             // reuse or invalid
-            ResponseCookie cookieToDelete = CookieScript.INSTANCE.deleteCookie(this.refreshTokenService.cookieName(),
-                                                                               this.refreshCookieSecure,
-                                                                               this.refreshCookieSameSite);
+            ResponseCookie cookieToDelete = deleteCookie(this.refreshTokenService.cookieName(),
+                                                                               this.securityProperties.cookieSecure(),
+                                                                               this.securityProperties.cookieSamesite());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .header(HttpHeaders.SET_COOKIE, cookieToDelete.toString())
                     .body(new AuthResponse(false));
@@ -235,11 +204,11 @@ public class AuthController {
         }
         String token = this.jwtTokenService.generateToken(String.valueOf(user.getId()), email, jwkThumbprint);
         AuthResponse payload = new AuthResponse(true, token);
-        ResponseCookie cookie = CookieScript.INSTANCE.buildRefreshCookie(this.refreshTokenService.cookieName(),
+        ResponseCookie cookie = buildRefreshCookie(this.refreshTokenService.cookieName(),
                                                                          rotationResult.getNewRecord().getId(),
                                                                          rotationResult.getNewRecord().getExpiresAt(),
-                                                                         this.refreshCookieSecure,
-                                                                         this.refreshCookieSameSite);
+                                                                         this.securityProperties.cookieSecure(),
+                                                                         this.securityProperties.cookieSamesite());
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(payload);
     }
 
@@ -255,13 +224,10 @@ public class AuthController {
         return ResponseEntity.ok(authResponse);
     }
 
-/**
-     * Log out and end the session.
+    /**
+     * Terminates the current session and revokes tokens.
      *
-     * What happens:
-     * - Requires a DPoP proof (so only the real browser can end the session).
-     * - Revokes the refresh token family and clears the HttpOnly cookie.
-     * - Blacklists the current access token until it expires.
+     * @param dpopProof Optional DPoP proof to validate the request origin.
      */
     @PostMapping("/logout")
     public ResponseEntity<AuthResponse> logout(@RequestHeader(value = "DPoP", required = false) String dpopProof,
@@ -277,10 +243,10 @@ public class AuthController {
             }
         }
         // Clear refresh cookie and revoke its family
-        String cookieValue = HttpScript.readCookie(request, this.refreshTokenService.cookieName());
-        ResponseCookie cookieToDelete = CookieScript.INSTANCE.deleteCookie(this.refreshTokenService.cookieName(),
-                                                                           this.refreshCookieSecure,
-                                                                           this.refreshCookieSameSite);
+        String cookieValue = org.cryptotrader.api.library.extensions.HttpRequestExtensionsKt.readCookie(request, this.refreshTokenService.cookieName());
+        ResponseCookie cookieToDelete = deleteCookie(this.refreshTokenService.cookieName(),
+                                                                           this.securityProperties.cookieSecure(),
+                                                                           this.securityProperties.cookieSamesite());
         if (cookieValue != null && !cookieValue.isBlank()) {
             this.refreshTokenService.revokeByTokenId(cookieValue);
         }
@@ -298,16 +264,16 @@ public class AuthController {
 
 
 
-/**
-     * Derive the key thumbprint (jkt) from a DPoP proof.
+    /**
+     * Derives the JWK thumbprint (jkt) from a DPoP proof according to RFC 9449.
      *
-     * Think of this as: “read the public key that signed the proof and compute a short fingerprint”.
-     * We use this fingerprint to bind access/refresh tokens to the same browser key.
+     * This method validates the signature and claims of the DPoP proof and returns
+     * the cryptographic thumbprint of the public key.
      *
-     * @param dpopProof      The DPoP header value (a signed JWT created by the browser).
-     * @param request        Used to confirm the proof matches this URL and method.
-     * @param expectedMethod The HTTP method we expect (e.g., POST).
-     * @return The jkt string if valid; otherwise null.
+     * @param dpopProof      The signed DPoP proof JWT.
+     * @param request        The current HttpServletRequest for context validation.
+     * @param expectedMethod The expected HTTP method of the request.
+     * @return The jkt (thumbprint) if verification succeeds; otherwise null.
      */
     private String deriveJwkThumbprintFromProof(String dpopProof, HttpServletRequest request, String expectedMethod) {
         try {
@@ -319,7 +285,7 @@ public class AuthController {
             // Otherwise, verify here (including replay check)
             DpopVerifierService.VerificationResult verification = this.dpopVerifier.verify(dpopProof,
                                                                                            expectedMethod,
-                                                                                           HttpScript.fullUrl(request),
+                                                                                           HttpRequestExtensionsKt.fullUrl(request),
                                                                                            null,
                                                                                            20L);
             if (verification == null) {
@@ -334,7 +300,7 @@ public class AuthController {
         }
         return null;
     }
- 
+
     // Convenience overloads for unit tests and backward compatibility (not HTTP endpoints)
     /**
      * Overload without DPoP or request argument for tests.
