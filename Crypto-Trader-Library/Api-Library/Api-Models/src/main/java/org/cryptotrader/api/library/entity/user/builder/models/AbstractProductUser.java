@@ -4,6 +4,7 @@ import org.cryptotrader.api.library.entity.portfolio.Portfolio;
 import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.api.library.entity.user.ProfilePicture;
 import org.cryptotrader.api.library.entity.user.SafePassword;
+import org.cryptotrader.api.library.model.SubscriptionTier;
 import org.cryptotrader.universal.library.model.BuilderFactory;
 
 import java.time.LocalDateTime;
@@ -16,4 +17,5 @@ public abstract class AbstractProductUser implements BuilderFactory<ProductUser>
     public abstract AbstractProductUser portfolio(Portfolio portfolio);
     public abstract AbstractProductUser profilePicture(ProfilePicture profilePicture);
     public abstract AbstractProductUser lastLogin(LocalDateTime lastLogin);
+    public abstract AbstractProductUser subscriptionTier(SubscriptionTier subscriptionTier);
 }
