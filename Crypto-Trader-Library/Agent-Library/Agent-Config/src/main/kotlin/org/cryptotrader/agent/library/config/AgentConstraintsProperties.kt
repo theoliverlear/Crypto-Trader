@@ -8,5 +8,7 @@ import org.springframework.context.annotation.Configuration
 open class AgentConstraintsProperties {
     var allowedHosts: Set<String> = emptySet()
     var allowedTables: Set<String> = emptySet()
-    var allowedRoot: String = "."
+    var allowedRoot: String = ".."
+    var ignoredDirectories: Set<String> = emptySet()
+    var sensitiveFilePatterns: Set<String> = emptySet()
 }
