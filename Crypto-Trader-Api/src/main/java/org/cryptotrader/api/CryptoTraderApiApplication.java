@@ -4,12 +4,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableAsync
 @EnableScheduling
+@ConfigurationPropertiesScan
 @EntityScan(basePackages = {
         "org.cryptotrader.api.library.entity",
         "org.cryptotrader.data.library.entity",
@@ -39,7 +41,7 @@ public class CryptoTraderApiApplication {
     private static void blockCurrencyLoading() {
         System.setProperty("cryptotrader.load.currency", "false");
     }
-    
+
     private static void blockCurrencyHarvesting() {
         System.setProperty("cryptotrader.harvest.currency", "false");
     }
