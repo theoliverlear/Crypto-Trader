@@ -18,8 +18,8 @@ import org.cryptotrader.api.library.infrastructure.extension.isBearer
 import org.cryptotrader.api.library.infrastructure.extension.isDpop
 import org.cryptotrader.api.library.services.jwt.JwtTokenService
 import org.cryptotrader.api.library.model.jwt.JwtClaims
-import org.cryptotrader.api.library.extensions.sendUnauthorized
-import org.cryptotrader.api.library.extensions.fullUrl
+import org.cryptotrader.api.library.extension.sendUnauthorized
+import org.cryptotrader.api.library.extension.fullUrl
 import org.cryptotrader.api.library.services.dpop.DpopVerifierService
 
 /**
