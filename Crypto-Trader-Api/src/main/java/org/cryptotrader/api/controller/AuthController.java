@@ -8,7 +8,7 @@ import org.cryptotrader.api.library.communication.response.AuthResponse;
 import org.cryptotrader.api.library.entity.user.ProductUser;
 import org.cryptotrader.api.library.events.UserRegisteredEvent;
 import org.cryptotrader.api.library.events.publisher.UserEventsPublisher;
-import org.cryptotrader.api.library.extensions.HttpRequestExtensionsKt;
+import org.cryptotrader.api.library.extension.HttpRequestExtensionsKt;
 import org.cryptotrader.api.library.model.dpop.DpopProofContext;
 import org.cryptotrader.universal.library.model.http.AuthStatus;
 import org.cryptotrader.universal.library.model.http.PayloadStatusResponse;
@@ -161,7 +161,7 @@ public class AuthController {
     public ResponseEntity<AuthResponse> refresh(@RequestHeader(value = "DPoP", required = false) String dpopProof,
                                                 HttpServletRequest request) {
         // Must have refresh cookie
-        String cookieValue = org.cryptotrader.api.library.extensions.HttpRequestExtensionsKt.readCookie(request, this.refreshTokenService.cookieName());
+        String cookieValue = HttpRequestExtensionsKt.readCookie(request, this.refreshTokenService.cookieName());
         if (cookieValue == null || cookieValue.isBlank()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse(false));
         }
@@ -243,7 +243,7 @@ public class AuthController {
             }
         }
         // Clear refresh cookie and revoke its family
-        String cookieValue = org.cryptotrader.api.library.extensions.HttpRequestExtensionsKt.readCookie(request, this.refreshTokenService.cookieName());
+        String cookieValue = HttpRequestExtensionsKt.readCookie(request, this.refreshTokenService.cookieName());
         ResponseCookie cookieToDelete = deleteCookie(this.refreshTokenService.cookieName(),
                                                                            this.securityProperties.cookieSecure(),
                                                                            this.securityProperties.cookieSamesite());
