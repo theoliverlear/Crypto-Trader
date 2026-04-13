@@ -65,11 +65,12 @@ open module org.cryptotrader.api {
     requires org.cryptotrader.universal.library.components;
     requires io.swagger.v3.oas.annotations;
     requires org.cryptotrader.docs;
-    
+
     requires org.cryptotrader.security.library.services;
     requires spring.security.core;
     requires com.auth0.jwt;
     requires org.cryptotrader.api.library.scripts;
+    requires org.cryptotrader.api.library.extensions;
     requires org.cryptotrader.data.library.services;
     requires org.cryptotrader.data.library.models;
     requires org.cryptotrader.data.library.components;
@@ -78,7 +79,7 @@ open module org.cryptotrader.api {
 
     requires org.cryptotrader.console.library.communication;
     requires org.cryptotrader.console.library.components;
-    
+
     exports org.cryptotrader.api;
     exports org.cryptotrader.api.config;
     exports org.cryptotrader.api.controller;
