@@ -32,7 +32,7 @@ public class ProductUser extends User implements UserDetails {
     @JoinColumn(name = "profile_picture_id")
     private ProfilePicture profilePicture;
     @Enumerated(EnumType.STRING)
-    @Column(name = "subscription_tier", nullable = false)
+    @Column(name = "subscription_tier", nullable = false, columnDefinition = "varchar(255) default 'FREE'")
     private SubscriptionTier subscriptionTier = SubscriptionTier.FREE;
     //===========================-Constructors-===============================
     public ProductUser() {
