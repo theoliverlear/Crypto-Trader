@@ -26,7 +26,8 @@ module org.cryptotrader.api.library.scripts {
     requires com.auth0.jwt;
     requires java.sql;
     requires static lombok;
-    
+    requires org.cryptotrader.api.library.extensions;
+
     exports org.cryptotrader.api.library.scripts.http;
     exports org.cryptotrader.api.library.scripts.dpop;
 }
