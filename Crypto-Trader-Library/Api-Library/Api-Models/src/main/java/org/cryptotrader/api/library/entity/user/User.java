@@ -1,20 +1,22 @@
 package org.cryptotrader.api.library.entity.user;
 //=================================-Imports-==================================
 
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.cryptotrader.universal.library.entity.Identifiable;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
 
 @Getter
 @Setter
 @MappedSuperclass
-public class User extends Identifiable {
+public class User extends Identifiable implements UserDetails {
     @Column(name = "username")
     protected String username;
 
@@ -24,6 +26,10 @@ public class User extends Identifiable {
 
     @Column(name = "last_login")
     protected LocalDateTime lastLogin;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false, columnDefinition = "varchar(255) default 'USER'")
+    private UserRoleTier role = UserRoleTier.USER;
 
     public User() {
         super();
@@ -47,6 +53,40 @@ public class User extends Identifiable {
     }
 
     //=============================-Methods-==================================
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority(role.getAuthority()));
+    }
+
+    @Override
+    public String getPassword() {
+        return this.safePassword != null ? this.safePassword.getEncodedPassword() : null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        // TODO: Implement account expiration logic.
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        // TODO: Implement account locking logic.
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        // TODO: Implement credential expiration logic.
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        // TODO: Implement account enabling/disabling logic.
+        return true;
+    }
 
     //-------------------------Update-Login-Time------------------------------
     public void updateLoginTime() {
