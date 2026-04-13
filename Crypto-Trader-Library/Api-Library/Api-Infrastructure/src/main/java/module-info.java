@@ -7,7 +7,8 @@ open module org.cryptotrader.api.library.infrastructure {
     requires spring.boot.autoconfigure;
     requires org.slf4j;
     requires org.apache.tomcat.embed.core;
-    
+
+    requires org.cryptotrader.api.library.extensions;
     requires org.cryptotrader.api.library.services;
     requires org.cryptotrader.api.library.models;
     requires org.cryptotrader.api.library.scripts;
