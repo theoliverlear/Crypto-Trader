@@ -5,6 +5,7 @@ import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.boot.ansi.AnsiStyle;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -57,6 +58,11 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
         ContentCachingRequestWrapper req = new ContentCachingRequestWrapper(request);
+
+        if (this.isStreamingRequest(request)) {
+            this.interceptStreamingLog(response, filterChain, req);
+            return;
+        }
         ContentCachingResponseWrapper res = new ContentCachingResponseWrapper(response);
         long start = System.currentTimeMillis();
         Exception ex = null;
@@ -81,14 +87,37 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         }
     }
 
-    private void logExchange(ContentCachingRequestWrapper req, ContentCachingResponseWrapper res, long tookMs, @Nullable Exception ex) {
+    private void interceptStreamingLog(HttpServletResponse response, FilterChain filterChain, ContentCachingRequestWrapper req) throws IOException, ServletException {
+        long start = System.currentTimeMillis();
+        Exception exception = null;
+        try {
+            filterChain.doFilter(req, response);
+        } catch (Exception caughtException) {
+            exception = caughtException;
+            throw caughtException;
+        } finally {
+            long tookMs = System.currentTimeMillis() - start;
+            try {
+                this.logExchange(req, response, tookMs, exception);
+            } catch (Exception loggingEx) {
+                log.warn("Failed to log HTTP exchange", loggingEx);
+            }
+        }
+    }
+
+    private boolean isStreamingRequest(HttpServletRequest request) {
+        String accept = request.getHeader(HttpHeaders.ACCEPT);
+        return accept != null && accept.contains(MediaType.TEXT_EVENT_STREAM_VALUE);
+    }
+
+    private void logExchange(ContentCachingRequestWrapper req, HttpServletResponse response, long tookMs, @Nullable Exception ex) {
         String scheme = req.getScheme();
         String protocol = req.getProtocol(); // e.g., HTTP/1.1
         String method = req.getMethod();
         String uri = req.getRequestURI();
         String query = req.getQueryString();
         String remote = req.getRemoteAddr();
-        int status = res.getStatus();
+        int status = response.getStatus();
         boolean isWebSocket = isWebSocketUpgrade(req);
 
         StringBuilder sb = new StringBuilder(256);
@@ -110,7 +139,11 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         sb.append(' ').append(color(tookMs + "ms", durationColor(tookMs)));
         // Sizes
         int reqLen = req.getContentLength();
-        int resLen = res.getContentSize();
+        int resLen = -1;
+        if (response instanceof ContentCachingResponseWrapper) {
+            resLen = ((ContentCachingResponseWrapper) response).getContentSize();
+        }
+
         if (reqLen >= 0) {
             sb.append(' ').append(color(humanSize(reqLen) + "->", AnsiColor.MAGENTA));
         }
@@ -125,7 +158,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         if (includeHeaders) {
             sb.append('\n');
             appendHeaders(sb, "Request-Headers", req);
-            appendHeaders(sb, "Response-Headers", res);
+            appendHeaders(sb, "Response-Headers", response);
         }
 
         if (includeRequestPayload) {
@@ -135,7 +168,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
                   .append(color(payload, AnsiColor.WHITE));
             }
         }
-        if (includeResponsePayload) {
+        if (includeResponsePayload && response instanceof ContentCachingResponseWrapper res) {
             String payload = getBody(res.getContentAsByteArray(), res.getCharacterEncoding(), maxResponsePayloadLength);
             if (StringUtils.hasText(payload)) {
                 sb.append('\n').append(color("Response-Payload:", AnsiColor.BRIGHT_BLACK)).append(' ')
