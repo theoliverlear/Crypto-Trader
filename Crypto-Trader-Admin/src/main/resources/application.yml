@@ -3,6 +3,11 @@ server:
 spring:
   application:
     name: crypto-trader-admin
+  output:
+    ansi:
+      enabled: ALWAYS
+  main:
+    banner-mode: console
   datasource:
     url: ${PSQL_DB_URL}
     username: ${PSQL_USER}
