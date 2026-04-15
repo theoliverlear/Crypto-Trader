@@ -30,9 +30,9 @@ class RsaKeyService(
     @param:Value("\${security.jwt.rsa.private-key-pem:}") private val privatePem: String?,
     @param:Value("\${security.jwt.kid:}") private val configuredKid: String?
 ) {
-    val publicKey: RSAPublicKey
-    val privateKey: RSAPrivateKey
-    val kid: String
+    final val publicKey: RSAPublicKey
+    final val privateKey: RSAPrivateKey
+    final val kid: String
 
     init {
         if (this.isValidKeys(this.publicPem, this.privatePem)) {
@@ -53,13 +53,13 @@ class RsaKeyService(
     }
 
     @OptIn(ExperimentalContracts::class)
-    private fun isValidKeys(publicPem: String?, privatePem: String?): Boolean {
-        contract { 
+    final private fun isValidKeys(publicPem: String?, privatePem: String?): Boolean {
+        contract {
             returns(true) implies (publicPem != null && privatePem != null)
         }
         return !publicPem.isNullOrBlank() && !privatePem.isNullOrBlank()
     }
-    
+
     private fun stripPemHeaders(pem: String): String = pem
         .replace("-----BEGIN PUBLIC KEY-----", "")
         .replace("-----END PUBLIC KEY-----", "")
@@ -72,7 +72,7 @@ class RsaKeyService(
     private fun getRsaKeyFactory(): KeyFactory = KeyFactory.getInstance("RSA")
 
     private fun generateEphemeralKeyPair(): KeyPair {
-        return KeyPairGenerator.getInstance("RSA").apply { 
+        return KeyPairGenerator.getInstance("RSA").apply {
             initialize(2048)
         }.genKeyPair()
     }
