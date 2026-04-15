@@ -13,7 +13,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 @Order(0)
 public class DataSecurityConfig {
 
-    @Value("${PSQL_HOST")
+    @Value("${TRUSTED_HOST_IP}")
     private String trustedIp;
 
     @Bean
