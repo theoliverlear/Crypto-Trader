@@ -11,11 +11,13 @@ open module org.cryptotrader.engine {
     requires org.slf4j;
     requires org.cryptotrader.api.library.services;
     requires org.cryptotrader.api.library.models;
+    requires org.cryptotrader.engine.library.services;
     requires spring.security.config;
     requires spring.security.crypto;
     requires spring.security.web;
     requires kotlin.stdlib;
     requires org.cryptotrader.health;
+    requires java.net.http;
 
     requires jakarta.xml.bind;
     requires jakarta.activation;
@@ -24,5 +26,4 @@ open module org.cryptotrader.engine {
     requires spring.tx;
 
     exports org.cryptotrader.engine;
-    exports org.cryptotrader.engine.services;
 }
