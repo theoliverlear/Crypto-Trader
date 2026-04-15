@@ -60,7 +60,7 @@ public class PortfolioService {
             portfolioAssetHistory.setValueChange(0);
         }
     }
-    
+
     public void setPortfolioSharesChange(PortfolioAssetHistory previousAssetWithShares,
                                          PortfolioAssetHistory portfolioAssetHistory) {
         if (previousAssetWithShares != null) {
@@ -85,31 +85,24 @@ public class PortfolioService {
                 portfolioAssetHistory.getLastUpdated().toString()
         );
     }
-    
+
     public PortfolioHistoryResponse toPortfolioHistoryResponse(PortfolioHistory portfolioHistory) {
-        return new PortfolioHistoryResponse(
-                portfolioHistory.getDollarBalance(),
-                portfolioHistory.getShareBalance(),
-                portfolioHistory.getTotalWorth(),
-                portfolioHistory.getValueChange(),
-                portfolioHistory.isTradeOccurred(),
-                portfolioHistory.getLastUpdated()
-        );
+        return new PortfolioHistoryResponse(portfolioHistory);
     }
-    
+
     public List<PortfolioAssetHistoryResponse> toHistoryResponses(List<PortfolioAssetHistory> assetHistories) {
         return assetHistories.stream()
                 .map(this::toPortfolioAssetHistoryResponse)
                 .toList();
     }
-    
+
     public List<PortfolioAssetHistory> getPortfolioAssetHistory(Portfolio portfolio) {
         return this.portfolioAssetHistoryRepository.findAllByPortfolioId(portfolio.getId());
     }
     public PortfolioAssetHistory getLatestPortfolioAssetHistory(PortfolioAsset portfolioAsset) {
         return this.portfolioAssetHistoryRepository.findFirstByPortfolioAssetIdOrderByLastUpdatedDesc(portfolioAsset.getId());
     }
-    
+
     /**
      * Find the most recent preceding history entry for the same asset where shares != 0.
      * Returns null when input is incomplete or no such entry exists.
@@ -172,7 +165,7 @@ public class PortfolioService {
     public List<PortfolioHistory> getPortfolioHistory(Long portfolioId) {
         return this.portfolioHistoryRepository.findAllByPortfolioId(portfolioId);
     }
-    
+
     public List<PortfolioAsset> getAssetsByPortfolio(Long portfolioId) {
         return this.portfolioAssetRepository.findAllByPortfolioId(portfolioId);
     }
@@ -198,12 +191,12 @@ public class PortfolioService {
     public PortfolioAsset getPortfolioAssetByCurrencyName(Portfolio portfolio, String currencyName) {
         return this.portfolioAssetRepository.getPortfolioAssetByPortfolioIdAndCurrencyName(portfolio.getId(), currencyName);
     }
-    
+
     public Optional<PortfolioAsset> getPortfolioAssetByHistory(PortfolioAssetHistory portfolioAssetHistory) {
         Long portfolioAssetId = portfolioAssetHistory.getPortfolioAsset().getId();
         return this.portfolioAssetRepository.findById(portfolioAssetId);
     }
-    
+
     public ProductUser getProductUserByAsset(PortfolioAsset portfolioAsset) {
         return portfolioAsset.getPortfolio().getUser();
     }
