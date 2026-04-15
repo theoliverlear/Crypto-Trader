@@ -165,6 +165,10 @@
             <groupId>jakarta.activation</groupId>
             <artifactId>jakarta.activation-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>engine-services</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
