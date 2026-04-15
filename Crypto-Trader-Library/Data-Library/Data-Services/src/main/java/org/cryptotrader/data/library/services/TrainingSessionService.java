@@ -7,25 +7,27 @@ import org.cryptotrader.data.library.entity.training.builder.TrainingSessionBuil
 import org.cryptotrader.data.library.repository.TrainingSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
 public class TrainingSessionService {
     private final TrainingSessionRepository trainingSessionRepository;
     private TrainingSessionBuilder trainingSessionBuilder;
-    
+
     @Autowired
     public TrainingSessionService(TrainingSessionRepository trainingSessionRepository,
                                   TrainingSessionBuilder trainingSessionBuilder) {
         this.trainingSessionRepository = trainingSessionRepository;
         this.trainingSessionBuilder = trainingSessionBuilder;
     }
-    
+
+    @Transactional
     public void saveTrainingSession(TrainingSessionRequest request) {
         TrainingSession trainingSession = this.fromRequest(request);
         this.trainingSessionRepository.save(trainingSession);
     }
-    
+
     public TrainingSession fromRequest(TrainingSessionRequest request) {
         return this.trainingSessionBuilder
                 .currency(request.getCurrency())
