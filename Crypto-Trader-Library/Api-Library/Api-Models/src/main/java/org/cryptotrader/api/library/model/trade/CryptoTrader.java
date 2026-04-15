@@ -3,6 +3,7 @@ package org.cryptotrader.api.library.model.trade;
 import lombok.Getter;
 import lombok.Setter;
 import org.cryptotrader.api.library.entity.portfolio.Portfolio;
+import org.cryptotrader.api.library.entity.user.SubscriptionTier;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -50,5 +51,11 @@ public class CryptoTrader {
     //------------------------------Is-Empty----------------------------------
     public boolean isEmpty() {
         return this.traders.isEmpty();
+    }
+
+    public List<Trader> getTradersBySubscriptionTier(SubscriptionTier subscriptionTier) {
+        return this.traders.stream()
+                .filter(trader -> trader.getPortfolio().getUser().getSubscriptionTier() == subscriptionTier)
+                .toList();
     }
 }
