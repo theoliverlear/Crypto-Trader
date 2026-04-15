@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.cryptotrader.universal.library.entity.Identifiable;
 import org.cryptotrader.api.library.entity.portfolio.Portfolio;
+import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioAssetHistory;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,9 @@ public class TradeEvent extends Identifiable {
     @JoinColumn(name = "portfolio_id", nullable = false)
     @ManyToOne
     private Portfolio portfolio;
+    @JoinColumn(name = "portfolio_asset_id", nullable = false)
+    @ManyToOne
+    private PortfolioAsset portfolioAsset;
     @JoinColumn(name = "portfolio_asset_history_id", nullable = false)
     @OneToOne
     private PortfolioAssetHistory assetHistory;
@@ -29,11 +33,11 @@ public class TradeEvent extends Identifiable {
     private double sharesChange;
     @Column(name = "trade_time", nullable = false)
     private LocalDateTime tradeTime;
-    
+
     public TradeEvent() {
         super();
     }
-    
+
     public TradeEvent(PortfolioAssetHistory assetHistory,
                            TradeType tradeType,
                            double valueChange,
@@ -47,13 +51,14 @@ public class TradeEvent extends Identifiable {
                       LocalDateTime tradeTime) {
         super();
         this.portfolio = assetHistory.getPortfolio();
+        this.portfolioAsset = assetHistory.getPortfolioAsset();
         this.assetHistory = assetHistory;
         this.tradeType = tradeType;
         this.valueChange = valueChange;
         this.sharesChange = sharesChange;
         this.tradeTime = tradeTime;
     }
-    
+
     public static TradeType getTradeType(PortfolioAssetHistory portfolioAssetHistory) {
         return portfolioAssetHistory.getShares() > 0 ? TradeType.BUY : TradeType.SELL;
     }
