@@ -1,0 +1,29 @@
+open module org.cryptotrader.engine.library.services {
+    requires jakarta.annotation;
+    requires static lombok;
+    requires org.cryptotrader.api.library.models;
+    requires org.cryptotrader.api.library.services;
+    requires spring.beans;
+    requires spring.boot.autoconfigure;
+    requires spring.context;
+    requires spring.tx;
+
+    requires spring.core;
+    requires spring.aop;
+
+    requires spring.data.jpa;
+    requires spring.boot;
+    requires org.slf4j;
+    requires spring.security.config;
+    requires spring.security.crypto;
+    requires spring.security.web;
+    requires kotlin.stdlib;
+    requires org.cryptotrader.health;
+
+    requires jakarta.xml.bind;
+    requires jakarta.activation;
+    requires org.apache.tomcat.embed.core;
+    requires org.apache.tomcat.embed.websocket;
+
+    exports org.cryptotrader.engine.library.services;
+}
