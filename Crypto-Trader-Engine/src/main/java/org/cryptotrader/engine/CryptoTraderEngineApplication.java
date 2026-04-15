@@ -31,18 +31,19 @@ import static org.cryptotrader.health.ServiceStatusChecker.isServiceAlive;
 @EnableAsync
 @EnableScheduling
 @EntityScan(basePackages = {
-        "org.cryptotrader.api.library.entity",
-        "org.cryptotrader.data.library.entity"
+    "org.cryptotrader.api.library.entity",
+    "org.cryptotrader.data.library.entity"
 })
 @ComponentScan(basePackages = {
-        "org.cryptotrader.api.library.component",
-        "org.cryptotrader.engine",
-        "org.cryptotrader.api.library",
-        "org.cryptotrader.data.library"
+    "org.cryptotrader.api.library.component",
+    "org.cryptotrader.engine",
+    "org.cryptotrader.api.library",
+    "org.cryptotrader.data.library",
+    "org.cryptotrader.engine.library.services",
 })
 @EnableJpaRepositories(basePackages = {
-        "org.cryptotrader.api.library.repository",
-        "org.cryptotrader.data.library.repository"
+    "org.cryptotrader.api.library.repository",
+    "org.cryptotrader.data.library.repository"
 })
 public class CryptoTraderEngineApplication {
     public static void main(String[] args) {
@@ -57,7 +58,7 @@ public class CryptoTraderEngineApplication {
     private static void disableTrading() {
         System.setProperty("spring.task.scheduling.enabled", "false");
     }
-    
+
     private static void disableCurrencyHarvesting() {
         System.setProperty("cryptotrader.harvest.currency", "false");
     }
@@ -77,8 +78,8 @@ public class CryptoTraderEngineApplication {
             boolean dataServiceAvailable = isServiceAlive(CryptoTraderService.DATA);
             if (!dataServiceAvailable) {
                 throw new IllegalStateException(
-                                "Crypto-Trader-Data service is not available. " +
-                                "Please start it before launching Crypto-Trader-Engine.");
+                    "Crypto-Trader-Data service is not available. " +
+                        "Please start it before launching Crypto-Trader-Engine.");
             }
         }
     }
