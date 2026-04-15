@@ -1,4 +1,4 @@
-package org.cryptotrader.engine.services;
+package org.cryptotrader.engine.library.services;
 
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +7,7 @@ import org.cryptotrader.api.library.entity.portfolio.PortfolioAssetHistory;
 import org.cryptotrader.api.library.entity.portfolio.PortfolioHistory;
 import org.cryptotrader.api.library.entity.trade.TradeEvent;
 import org.cryptotrader.api.library.entity.trade.TradeType;
+import org.cryptotrader.api.library.entity.user.SubscriptionTier;
 import org.cryptotrader.api.library.model.trade.TradingEngine;
 import org.cryptotrader.api.library.services.PortfolioService;
 import org.cryptotrader.api.library.entity.portfolio.Portfolio;
@@ -53,7 +54,7 @@ public class PortfolioTraderService {
             return null;
         });
     }
-    
+
     private void initCryptoTrader() {
         for (Portfolio portfolio : this.allUsersPortfolios) {
             this.cryptoTrader.addTrader(new Trader(portfolio));
@@ -68,23 +69,70 @@ public class PortfolioTraderService {
     }
 
     //--------------------------Trade-Portfolios------------------------------
-    // TODO: Different tiers get different intervals.
-    @Scheduled(fixedRate = 5000)
+    public void tradePortfolios(List<Portfolio> portfolios, SubscriptionTier subscriptionTier) {
+        // TODO: Modularize logging formatting for tiers.
+        final String resetAnsi = "\u001B[0m";
+        final String purpleAnsi = "\u001B[35m";
+        final String greenAnsi = "\u001B[32m";
+        final String blueAnsi = "\u001B[34m";
+        final String chosenAnsi = switch (subscriptionTier) {
+            case FREE -> greenAnsi;
+            case PRO -> blueAnsi;
+            case ELITE -> purpleAnsi;
+        };
+        final String logPrefix = "%s[%s]%s".formatted(chosenAnsi, subscriptionTier.getLabel().toUpperCase(), resetAnsi);
+        if (portfolios == null || portfolios.isEmpty()) {
+            log.info("{} No traders found. No trades will be made.", logPrefix);
+            this.fillPortfolioList();
+            return;
+        }
+        log.info("{} Traders found. Trades are being be made.", logPrefix);
+        this.triggerAllTraders(this.cryptoTrader.getTradersBySubscriptionTier(subscriptionTier));
+    }
+
     @Transactional
-    public synchronized void tradePortfolios() {
+    @Scheduled(fixedRate = 10_000)
+    public void tradeFreePortfolios() {
+        this.fillPortfolioList();
+        List<Portfolio> portfolios = this.filterBySubscriptionTier(this.allUsersPortfolios, SubscriptionTier.FREE);
+        this.tradePortfolios(portfolios, SubscriptionTier.FREE);
+    }
+
+    @Transactional
+    @Scheduled(fixedRate = 5000)
+    public void tradeProPortfolios() {
+        this.fillPortfolioList();
+        List<Portfolio> portfolios = this.filterBySubscriptionTier(this.allUsersPortfolios, SubscriptionTier.PRO);
+        this.tradePortfolios(portfolios, SubscriptionTier.PRO);
+    }
+
+    @Transactional
+    @Scheduled(fixedRate = 1000)
+    public void tradeElitePortfolios() {
+        this.fillPortfolioList();
+        List<Portfolio> portfolios = this.filterBySubscriptionTier(this.allUsersPortfolios, SubscriptionTier.ELITE);
+        this.tradePortfolios(portfolios, SubscriptionTier.ELITE);
+    }
+
+    public List<Portfolio> filterBySubscriptionTier(List<Portfolio> portfolios, SubscriptionTier tier) {
+        List<Portfolio> portfoliosByTier = portfolios.stream()
+                .filter(portfolio -> portfolio.getUser().getSubscriptionTier() == tier)
+                .toList();
+        return portfoliosByTier;
+    }
+
+    private void fillPortfolioList() {
         this.cryptoTrader.getTraders().clear();
         this.allUsersPortfolios = this.portfolioService.getAllPortfolios();
         this.cryptoTrader.addAllPortfolios(this.allUsersPortfolios);
-        if (!this.cryptoTrader.isEmpty()) {
-            this.triggerAllTraders();
-            log.info("Traders found. Trades are being be made.");
-        } else {
-            log.info("No traders found. No trades will be made.");
-        }
     }
+
     public void triggerAllTraders() {
-        for (Trader trader : this.cryptoTrader.getTraders()) {
-            Portfolio previousPortfolio = Portfolio.from(trader.getPortfolio());
+        this.triggerAllTraders(this.cryptoTrader.getTraders());
+    }
+
+    public void triggerAllTraders(List<Trader> traders) {
+        for (Trader trader : traders) {
             for (TradingEngine assetTrader : trader.getAssetTraders()) {
                 this.triggerTrader(trader, assetTrader);
             }
@@ -145,7 +193,7 @@ public class PortfolioTraderService {
             portfolioHistory.setValueChange(0);
         }
     }
-    
+
     private void setSharesChange(PortfolioAssetHistory portfolioHistory) {
         PortfolioAssetHistory historyWithShares = getLastPortfolioAssetWithSharesSinceTime(portfolioHistory);
         if (historyWithShares != null) {
@@ -154,7 +202,7 @@ public class PortfolioTraderService {
             portfolioHistory.setSharesChange(0);
         }
     }
-    
+
     /**
      * Returns the most recent preceding history entry for the same asset where shares != 0.
      * Used as the baseline for calculating deltas on a new history entry.
