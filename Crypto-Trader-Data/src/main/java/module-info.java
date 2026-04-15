@@ -11,6 +11,7 @@ open module org.cryptotrader.data {
     requires org.cryptotrader.data.library.communication;
     requires org.cryptotrader.api.library.communication;
     requires java.sql;
+    requires java.net.http;
     requires spring.web;
     requires org.slf4j;
     requires spring.core;
