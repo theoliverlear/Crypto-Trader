@@ -24,6 +24,7 @@ open module org.cryptotrader.data {
     requires jakarta.xml.bind;
     requires jakarta.activation;
     requires jakarta.persistence;
+    requires org.apache.tomcat.embed.core;
     requires org.cryptotrader.data.library.repositories;
     requires org.cryptotrader.data.library.components;
 
