@@ -253,7 +253,6 @@
                         <configuration>
                             <jvmTarget>23</jvmTarget>
                             <args>
-                                <!-- Bind to JDK 23 APIs while producing stable bytecode -->
                                 <arg>-Xjdk-release=23</arg>
                             </args>
                         </configuration>
@@ -270,6 +269,18 @@
                         </configuration>
                     </execution>
                 </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jetbrains.kotlin</groupId>
+                        <artifactId>kotlin-maven-allopen</artifactId>
+                        <version>${kotlin.version}</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <compilerPlugins>
+                        <plugin>spring</plugin>
+                    </compilerPlugins>
+                </configuration>
             </plugin>
 
 
