@@ -9,6 +9,7 @@ import org.cryptotrader.api.library.model.trade.Trader
 import org.cryptotrader.api.library.services.PortfolioService
 import org.cryptotrader.api.library.services.TradeEventService
 import org.cryptotrader.data.library.entity.currency.Currency
+import org.cryptotrader.engine.library.services.PortfolioTraderService
 import org.cryptotrader.test.CryptoTraderTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -18,7 +19,6 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentCaptor
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.springframework.transaction.PlatformTransactionManager
 import java.lang.reflect.Method
@@ -42,7 +42,12 @@ class PortfolioTraderServiceTest : CryptoTraderTest() {
         this.tradeEventService = mock(TradeEventService::class.java)
         this.cryptoTrader = mock(CryptoTrader::class.java)
         this.transactionManager = mock(PlatformTransactionManager::class.java)
-        this.service = PortfolioTraderService(portfolioService, tradeEventService, cryptoTrader, transactionManager)
+        this.service = PortfolioTraderService(
+            portfolioService,
+            tradeEventService,
+            cryptoTrader,
+            transactionManager
+        )
     }
 
     @Nested
@@ -107,7 +112,7 @@ class PortfolioTraderServiceTest : CryptoTraderTest() {
 
             // Act
             invokeSaveAssetChanges(trader, asset, true)
-            
+
             val prevSharesCaptor = ArgumentCaptor.forClass(PortfolioAssetHistory::class.java)
             val currSharesCaptor = ArgumentCaptor.forClass(PortfolioAssetHistory::class.java)
             verify(portfolioService).setPortfolioSharesChange(prevSharesCaptor.capture(), currSharesCaptor.capture())
