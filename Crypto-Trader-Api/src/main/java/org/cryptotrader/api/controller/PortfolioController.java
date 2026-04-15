@@ -32,7 +32,7 @@ public class PortfolioController {
         this.portfolioService = portfolioService;
     }
     //=============================-Methods-==================================
-    
+
     //---------------------------Get-Portfolio--------------------------------
     @GetMapping("/get")
     @PreAuthorize("isAuthenticated()")
@@ -67,24 +67,26 @@ public class PortfolioController {
     //------------------------Get-Portfolio-History---------------------------
     @GetMapping("/history/get")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<PortfolioHistory>> getPortfolioHistory(@AuthenticationPrincipal ProductUser user) {
+    public ResponseEntity<List<PortfolioHistoryResponse>> getPortfolioHistory(@AuthenticationPrincipal ProductUser user) {
         Portfolio portfolio = this.portfolioService.getPortfolioByUserId(user.getId());
-        // TODO: Replace with a DTO.
         List<PortfolioHistory> portfolioHistory = this.portfolioService.getPortfolioHistory(portfolio);
         if (portfolioHistory.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return ResponseEntity.ok(portfolioHistory);
+        List<PortfolioHistoryResponse> historyResponses = portfolioHistory.stream()
+                .map(PortfolioHistoryResponse::new)
+                .toList();
+        return ResponseEntity.ok(historyResponses);
     }
     @GetMapping("/history/get/asset")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<PortfolioAssetHistory>> getPortfolioAssetHistory(@AuthenticationPrincipal ProductUser user) {
+    public ResponseEntity<List<PortfolioAssetHistoryResponse>> getPortfolioAssetHistory(@AuthenticationPrincipal ProductUser user) {
         Portfolio portfolio = this.portfolioService.getPortfolioByUserId(user.getId());
         List<PortfolioAssetHistory> portfolioAssetHistory = this.portfolioService.getPortfolioAssetHistory(portfolio);
         List<PortfolioAssetHistoryResponse> assetHistoryResponses = portfolioAssetHistory.stream()
                                                                                          .map(PortfolioAssetHistoryResponse::new)
                                                                                          .toList();
-        return ResponseEntity.ok(portfolioAssetHistory);
+        return ResponseEntity.ok(assetHistoryResponses);
     }
     @GetMapping("/history/get/asset/{currencyName}")
     @PreAuthorize("isAuthenticated()")
