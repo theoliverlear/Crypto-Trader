@@ -17,6 +17,7 @@ open module org.cryptotrader.admin {
     requires spring.core;
     requires spring.beans;
     requires spring.web;
+    requires java.net.http;
     requires spring.jdbc;
     requires com.fasterxml.jackson.databind;
     requires org.slf4j;
@@ -32,7 +33,7 @@ open module org.cryptotrader.admin {
     requires javafxsvg;
     requires org.scenicview.scenicview;
     requires org.cryptotrader.desktop.library.components;
-    
+
     requires org.cryptotrader.api.library.services;
     requires org.cryptotrader.api.library.repositories;
     requires org.cryptotrader.api.library.models;
