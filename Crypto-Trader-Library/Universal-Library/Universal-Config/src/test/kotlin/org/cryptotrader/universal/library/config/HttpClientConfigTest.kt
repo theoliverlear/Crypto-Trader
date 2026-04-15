@@ -1,4 +1,4 @@
-package org.cryptotrader.api.library.config
+package org.cryptotrader.universal.library.config
 
 import org.cryptotrader.test.CryptoTraderTest
 import org.junit.jupiter.api.BeforeEach
@@ -80,5 +80,14 @@ class HttpClientConfigTest : CryptoTraderTest() {
         @Test
         @DisplayName("Should provide HttpOptions bean when missing")
         fun optionsHttpClient_ProvidesBean() { }
+    }
+
+    @Nested
+    @Tag("javaHttpClient")
+    @DisplayName("JDK HttpClient Bean")
+    inner class JavaHttpClientBean {
+        @Test
+        @DisplayName("Should provide JDK HttpClient bean when missing")
+        fun javaHttpClient_ProvidesBean() { }
     }
 }
