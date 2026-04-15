@@ -26,7 +26,7 @@ public class TrainingSession extends Identifiable {
     @JoinColumn(name = "currency_code", nullable = false)
     private Currency currency;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "prediction_id", nullable = false)
     private PricePrediction prediction;
 
