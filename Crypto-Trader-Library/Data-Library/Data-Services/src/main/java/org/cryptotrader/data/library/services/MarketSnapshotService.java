@@ -9,11 +9,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -24,6 +27,17 @@ public class MarketSnapshotService implements MarketSnapshotOperations {
     private static final String[] DEFAULT_COLUMNS = { "last_updated" };
     //============================-Variables-=================================
     private final JdbcTemplate jdbcTemplate;
+
+    private final Set<String> knownColumns = new ConcurrentSkipListSet<>();
+
+    @PostConstruct
+    public void initKnownColumns() {
+        final String sql = "SELECT column_name FROM information_schema.columns WHERE table_name = 'market_snapshots'";
+        final List<String> existing = jdbcTemplate.queryForList(sql, String.class);
+        if (existing != null) {
+            this.knownColumns.addAll(existing);
+        }
+    }
 
     //=============================-Methods-==================================
 
@@ -69,7 +83,12 @@ public class MarketSnapshotService implements MarketSnapshotOperations {
                                       List<Object> params) {
         currencies.forEach((code, currency) -> {
             String priceColumn = toPriceColumn(code);
-            createCurrencyColumn(priceColumn);
+
+            if (!this.knownColumns.contains(priceColumn)) {
+                createCurrencyColumn(priceColumn);
+                this.knownColumns.add(priceColumn);
+            }
+
             columns.add(priceColumn);
             params.add(currency.getValue());
         });
