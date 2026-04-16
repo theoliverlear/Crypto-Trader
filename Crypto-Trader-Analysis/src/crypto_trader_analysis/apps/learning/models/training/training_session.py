@@ -1,5 +1,6 @@
 import logging
 from datetime import datetime
+from os import getenv
 from typing import Any
 
 import numpy as np
@@ -126,7 +127,8 @@ class TrainingSession:
             logging.info(f"Training on GPU...")
             history = self._model.train(dataset,
                                         self.training_model.epochs,
-                                        self.training_model.batch_size)
+                                        self.training_model.batch_size,
+                                        self.training_model.patience)
         self._training_end_time = datetime.now()
         logging.info(f"Training completed for {self.target_currency}.")
         self._save_model()
@@ -166,7 +168,8 @@ class TrainingSession:
             logging.info(f"Training on GPU...")
             history = self._model.train(dataset,
                                         self.training_model.epochs,
-                                        self.training_model.batch_size)
+                                        self.training_model.batch_size,
+                                        self.training_model.patience)
         self._training_end_time = datetime.now()
         logging.info(f"Training completed for {self.target_currency}.")
         self._save_model()
@@ -199,8 +202,8 @@ class TrainingSession:
         self._model = self._get_model(historical_prices, True)
         predicted_price: float = self._model.predict(dataset, target_scaler)
         return predicted_price
-    
-    
+
+
     def predict_multilayer_without_dataframe(self) -> float:
         dataframe: pd.DataFrame = self._get_dataframe()
         dataset, target_scaler, short_data, med_data, long_data = self._transform_multi_layer_to_dataset(dataframe)
@@ -353,7 +356,8 @@ class TrainingSession:
         logging.info("Sending training session to server...")
         try:
             import requests
-            response = requests.post("http://localhost:8085/data/training-session/add", json=payload, verify=False)
+            host: str = getenv("CT_DATA_HOST") or "localhost"
+            response = requests.post(f"http://{host}:8085/data/training-session/add", json=payload, verify=False)
             if response.status_code != 200:
                 logging.error(f"Failed to send training session to server. Status code: {response.status_code}")
                 return
