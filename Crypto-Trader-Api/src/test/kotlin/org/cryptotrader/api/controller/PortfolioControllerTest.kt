@@ -45,18 +45,14 @@ class PortfolioControllerTest : CryptoTraderTest() {
     @Nested
     @Tag("getPortfolio")
     @DisplayName("Get Portfolio")
-    @Disabled
     inner class GetPortfolio {
         @Test
         @DisplayName("Should return portfolio for authenticated user")
         fun getPortfolio_Returns_WhenAuthenticated() {
-            TODO("Refactored, needs new testing.")
-        }
-
-        @Test
-        @DisplayName("Should return unauthorized when not authenticated")
-        fun getPortfolio_ReturnsUnauthorized_WhenNotAuthenticated() {
-            TODO("Refactored, needs new testing.")
+            `when`(portfolioService.getPortfolioByUserId(testUser.id)).thenReturn(testPortfolio)
+            val response = controller.getPortfolio(testUser)
+            assertEquals(HttpStatus.OK, response.statusCode)
+            assertEquals(testPortfolio.id, response.body?.id)
         }
     }
 
