@@ -7,6 +7,7 @@ from src.crypto_trader_analysis.apps.learning.models.database.query_type import 
 from src.crypto_trader_analysis.apps.learning.models.training.specs.batch_size_evaluations import BatchSizeEvaluations
 from src.crypto_trader_analysis.apps.learning.models.training.specs.dataset_size import DatasetSize
 from src.crypto_trader_analysis.apps.learning.models.training.specs.epoch_focus import EpochFocus
+from src.crypto_trader_analysis.apps.learning.models.training.specs.patience_level import PatienceLevel
 from src.crypto_trader_analysis.apps.learning.models.training.specs.sequence_length_sentiment import \
     SequenceLengthSentiment
 if TYPE_CHECKING:
@@ -17,6 +18,7 @@ class TrainingModelBuilder:
     _max_rows: int = attr(default=2000)
     _epochs: int = attr(default=35)
     _batch_size: int = attr(default=32)
+    _patience: int = attr(default=5)
     _skip_small_samples: bool = attr(default=True)
     _sequence_length: int = attr(default=10)
     _query_type: QueryType = attr(default=QueryType.HISTORICAL_PRICE)
@@ -31,6 +33,10 @@ class TrainingModelBuilder:
 
     def batch_size(self, batch_size: BatchSizeEvaluations) -> 'TrainingModelBuilder':
         self._batch_size = batch_size.value
+        return self
+
+    def patience(self, patience: PatienceLevel) -> 'TrainingModelBuilder':
+        self._patience = patience.value
         return self
 
     def skip_small_samples(self, skip_small_samples: bool) -> 'TrainingModelBuilder':
@@ -55,6 +61,7 @@ class TrainingModelBuilder:
             max_rows=self._max_rows,
             epochs=self._epochs,
             batch_size=self._batch_size,
+            patience=self._patience,
             skip_small_samples=self._skip_small_samples,
             sequence_length=self._sequence_length,
             query_type=self._query_type
