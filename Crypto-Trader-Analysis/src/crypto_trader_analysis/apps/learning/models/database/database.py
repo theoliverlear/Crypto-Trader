@@ -22,7 +22,7 @@ class Database:
     password: str = attr(default=getenv("PSQL_PW"))
     name: str = attr(default="crypto_trader")
     port: str = attr(default="5432")
-    host: str = attr(default="localhost")
+    host: str = attr(default=getenv("PSQL_HOST"))
     connection = attr(default=None)
     engine: Engine = attr(default=None)
 
@@ -165,6 +165,8 @@ class Database:
         raw_connection: PoolProxiedConnection = self.engine.raw_connection()
         try:
             with raw_connection.cursor() as cursor:
+                # Set transaction to read-only for the session
+                cursor.execute("SET TRANSACTION ISOLATION LEVEL READ COMMITTED READ ONLY")
                 formatted_query: str = compiled_sql.replace(';', '')
                 copy_command: str = f"COPY ({formatted_query}) TO STDOUT WITH (FORMAT CSV, HEADER)"
                 cursor.copy_expert(copy_command, buffer)
@@ -191,6 +193,7 @@ class Database:
         all_frames: list[pd.DataFrame] = []
         streamed_rows: int = 0
         with self.engine.connect().execution_options(stream_results=True) as connection:
+            connection.execute(text("SET TRANSACTION ISOLATION LEVEL READ COMMITTED READ ONLY"))
             for chunk in pd.read_sql_query(
                     text(query),
                     connection,
@@ -251,7 +254,7 @@ class Database:
                 SELECT
                     generate_series(max_id, min_id, -step) AS id
                 FROM params
-                LIMIT :limit   
+                LIMIT :limit
             )
             SELECT {select_list}
             FROM   market_snapshots ms
