@@ -11,3 +11,4 @@ class DatasetSize(Enum):
     EXTRA_LARGE = 600_000
     HUGE = 750_000
     MASSIVE = 1_500_000
+    COMPLETE = 2_900_000
