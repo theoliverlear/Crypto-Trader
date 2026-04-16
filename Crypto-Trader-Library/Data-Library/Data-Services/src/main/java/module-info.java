@@ -27,6 +27,7 @@ open module org.cryptotrader.data.library.services {
     requires org.cryptotrader.data.library.components;
     requires org.cryptotrader.api.library.communication;
     requires spring.jdbc;
+    requires jakarta.annotation;
 
     exports org.cryptotrader.data.library.services;
     exports org.cryptotrader.data.library.services.harvest;
