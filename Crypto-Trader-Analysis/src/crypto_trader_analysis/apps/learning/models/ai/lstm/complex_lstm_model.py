@@ -64,14 +64,15 @@ class ComplexLstmModel(BaseModel):
     def train(self,
               dataset: tf.data.Dataset,
               epochs: int = 20,
-              batch_size: int = 32):
+              batch_size: int = 32,
+              patience: int = 5):
         from src.crypto_trader_analysis.apps.learning.models.ai.model_retriever import COMPLEX_MODEL_DIRECTORY
         checkpoint_dir = os.path.join(COMPLEX_MODEL_DIRECTORY, "checkpoints")
         os.makedirs(checkpoint_dir, exist_ok=True)
         checkpoint_path = os.path.join(checkpoint_dir,
                                        f"{self.target_currency}_checkpoint.keras")
         callbacks = [
-            EarlyStopping(monitor="loss", patience=5,
+            EarlyStopping(monitor="loss", patience=patience,
                           restore_best_weights=True),
             ModelCheckpoint(filepath=checkpoint_path, monitor="loss",
                             save_best_only=True),

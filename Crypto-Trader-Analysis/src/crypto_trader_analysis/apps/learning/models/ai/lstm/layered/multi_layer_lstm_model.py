@@ -75,7 +75,7 @@ class MultiLayerLstmModel(MultiLayerBaseModel):
         )
 
     def train(self, dataset,
-              epochs=20, batch_size=32):
+              epochs=20, batch_size=32, patience=5):
         from src.crypto_trader_analysis.apps.learning.models.ai.model_retriever import MULTI_LAYER_MODEL_DIRECTORY
         checkpoint_dir = os.path.join(MULTI_LAYER_MODEL_DIRECTORY,
                                       "checkpoints")
@@ -84,7 +84,7 @@ class MultiLayerLstmModel(MultiLayerBaseModel):
                                        f"{self.target_currency}_checkpoint.keras")
 
         callbacks = [
-            EarlyStopping(monitor="loss", patience=5,
+            EarlyStopping(monitor="loss", patience=patience,
                           restore_best_weights=True),
             ModelCheckpoint(filepath=checkpoint_path, monitor="loss",
                             save_best_only=True),

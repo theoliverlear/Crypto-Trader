@@ -19,7 +19,8 @@ class BaseModel(ABC):
     def train(self,
               dataset: tf.data.Dataset,
               epochs: int = 20,
-              batch_size: int = 32):
+              batch_size: int = 32,
+              patience: int = 5):
         pass
 
     @abstractmethod
