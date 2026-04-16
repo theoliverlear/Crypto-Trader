@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+import logging
 import os
 from typing import Any, Dict, List
 
 try:
-    import yaml  
-except Exception as e:  
+    import yaml
+except Exception as e:
     yaml = None
 
 from src.crypto_trader_analysis.apps.learning.models.ai.model_type import ModelType
@@ -14,6 +15,7 @@ from src.crypto_trader_analysis.apps.learning.models.training.specs.batch_size_e
     BatchSizeEvaluations
 from src.crypto_trader_analysis.apps.learning.models.training.specs.dataset_size import DatasetSize
 from src.crypto_trader_analysis.apps.learning.models.training.specs.epoch_focus import EpochFocus
+from src.crypto_trader_analysis.apps.learning.models.training.specs.patience_level import PatienceLevel
 from src.crypto_trader_analysis.apps.learning.models.training.training_model import TrainingModel
 from src.crypto_trader_analysis.apps.learning.models.training.training_session import TrainingSession
 from src.crypto_trader_analysis.apps.learning.models.training.train_model import setup_logging, setup_tensorflow_env, \
@@ -22,8 +24,8 @@ from src.crypto_trader_analysis.apps.learning.models.currency_json_generator imp
 
 
 
-_ANALYSIS_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))  
-_ANALYSIS_DIR = os.path.dirname(_ANALYSIS_DIR)  
+_ANALYSIS_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+_ANALYSIS_DIR = os.path.dirname(_ANALYSIS_DIR)
 CONFIG_DIR = os.path.abspath(os.path.join(_ANALYSIS_DIR, 'config'))
 
 
@@ -46,17 +48,17 @@ def _get_enum_value(enum_cls, name: str, *, default=None):
         return name
     if not isinstance(name, str):
         raise ValueError(f"Expected string for {enum_cls.__name__}, got {type(name).__name__}")
-    
+
     key = name.strip()
     if hasattr(enum_cls, key):
         return getattr(enum_cls, key)
-    
+
     for attr in dir(enum_cls):
         if attr.upper() == key.upper() and not attr.startswith('_'):
             return getattr(enum_cls, attr)
-    
+
     try:
-        return enum_cls[key]  
+        return enum_cls[key]
     except Exception:
         pass
     raise ValueError(f"Unknown {enum_cls.__name__} value: {name}")
@@ -65,27 +67,30 @@ def _get_enum_value(enum_cls, name: str, *, default=None):
 def _build_training_model(cfg: Dict[str, Any]) -> TrainingModel:
     builder = TrainingModel().builder()
 
-    
+
     dataset_size = cfg.get('dataset_size', 'MICRO')
     builder = builder.max_rows(_get_enum_value(DatasetSize, dataset_size))
 
-    
+
     epoch_focus = cfg.get('epochs', 'SMALL_ANALYSIS')
     builder = builder.epochs(_get_enum_value(EpochFocus, epoch_focus))
 
-    
+
     batch_size = cfg.get('batch_size', 'BALANCED')
     builder = builder.batch_size(_get_enum_value(BatchSizeEvaluations, batch_size))
 
-    
+
     seq_len = cfg.get('sequence_length', 10)
     if not isinstance(seq_len, int):
         raise ValueError(f"sequence_length must be an integer, got {type(seq_len).__name__}")
     builder = builder.sequence_length(seq_len)
 
-    
+
     query_type = cfg.get('query_type', 'HISTORICAL_PRICE')
     builder = builder.query_type(_get_enum_value(QueryType, query_type))
+
+    patience_level = cfg.get('patience_level', 'REASONABLE')
+    builder = builder.patience(_get_enum_value(PatienceLevel, patience_level))
 
     return builder.build()
 
@@ -104,7 +109,7 @@ def _select_currencies(cfg: Dict[str, Any], gpu_id: int) -> List[str] | None:
     if split_by_gpu:
         gpu_zero, gpu_one = get_split_currency_list()
         return gpu_zero if gpu_id == 0 else gpu_one
-    
+
     return get_all_currency_codes(use_cache)
 
 
@@ -137,10 +142,10 @@ def train_from_config(gpu_id: int) -> None:
 
     model_type = _get_enum_value(ModelType, cfg.get('model_type', 'LSTM'))
 
-    
+
     currencies = _select_currencies(cfg, gpu_id)
     if currencies is None:
-        
+
         target_currency = cfg.get('target_currency', 'BTC')
         if not isinstance(target_currency, str):
             raise ValueError("target_currency must be a string symbol like 'BTC'")
@@ -160,4 +165,8 @@ def train_from_config(gpu_id: int) -> None:
             target_currency=str(code),
             model_type=model_type,
         )
-        session.train()
+        try:
+            session.train()
+        except Exception as exception:
+            logging.error(f"Error training {code} on GPU {gpu_id}: {exception}")
+            continue
