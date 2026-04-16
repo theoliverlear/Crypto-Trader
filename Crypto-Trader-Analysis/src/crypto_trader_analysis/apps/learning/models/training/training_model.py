@@ -13,6 +13,7 @@ class TrainingModel:
     max_rows: int = attr(default=2000)
     epochs: int = attr(default=35)
     batch_size: int = attr(default=32)
+    patience: int = attr(default=5)
     skip_small_samples: bool = attr(default=True)
     sequence_length: int = attr(default=10)
     query_type: QueryType = attr(default=QueryType.HISTORICAL_PRICE)
