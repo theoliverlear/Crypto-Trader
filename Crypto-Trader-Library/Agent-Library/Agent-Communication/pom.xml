@@ -13,6 +13,9 @@
     <artifactId>agent-communication</artifactId>
     <name>Agent-Communication</name>
     <version>0.0.1</version>
+    <description>
+        Agent communication protocols — defines message formats and interaction patterns for developer agents.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

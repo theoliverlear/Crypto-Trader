@@ -12,6 +12,9 @@
     <artifactId>crypto-trader-agent</artifactId>
     <name>Crypto-Trader-Agent</name>
     <version>0.0.1</version>
+    <description>
+        AI-driven developer agent for Crypto Trader — provides automated code analysis, MCP-based tools, and project assistance.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

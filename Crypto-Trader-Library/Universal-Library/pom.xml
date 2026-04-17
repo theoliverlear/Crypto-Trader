@@ -13,6 +13,9 @@
     <artifactId>universal-library</artifactId>
     <name>Universal-Library</name>
     <version>0.0.1</version>
+    <description>
+        Parent library for universal modules — provides shared components and configurations for module environments.
+    </description>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>

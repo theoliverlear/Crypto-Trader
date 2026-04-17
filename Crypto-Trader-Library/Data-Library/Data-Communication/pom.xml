@@ -13,6 +13,9 @@
     <artifactId>data-communication</artifactId>
     <name>Data-Communication</name>
     <version>0.0.1</version>
+    <description>
+        Data communication layer — DTO data exchange models.
+    </description>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>

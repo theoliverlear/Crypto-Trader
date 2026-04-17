@@ -12,6 +12,9 @@
     <name>Crypto-Trader-Transactions</name>
     <artifactId>crypto-trader-transactions</artifactId>
     <version>0.0.1</version>
+    <description>
+        Transaction management service for Crypto Trader — handles order execution, historical records, and financial auditing.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

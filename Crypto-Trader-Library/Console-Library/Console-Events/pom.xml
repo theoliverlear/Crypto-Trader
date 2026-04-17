@@ -13,6 +13,9 @@
     <artifactId>console-events</artifactId>
     <name>Console-Events</name>
     <version>0.0.1</version>
+    <description>
+        Console event handling — manages user input events and terminal interaction triggers.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

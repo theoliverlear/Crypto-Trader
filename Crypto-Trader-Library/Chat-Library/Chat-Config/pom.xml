@@ -13,6 +13,9 @@
     <name>Chat-Config</name>
     <artifactId>chat-config</artifactId>
     <version>0.0.1</version>
+    <description>
+        Chat configuration module — manages settings for AI chat models, usage, and prompt templates.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

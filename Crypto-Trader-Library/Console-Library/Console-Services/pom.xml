@@ -13,6 +13,9 @@
     <artifactId>console-services</artifactId>
     <name>Console-Services</name>
     <version>0.0.1</version>
+    <description>
+        Console backend services — provides command execution logic and terminal management services.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

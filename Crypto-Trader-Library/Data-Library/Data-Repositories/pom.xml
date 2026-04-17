@@ -13,6 +13,9 @@
     <artifactId>data-repositories</artifactId>
     <name>Data-Repositories</name>
     <version>0.0.1</version>
+    <description>
+        Data access repositories — provides Spring Data repositories and custom data access logic.
+    </description>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>

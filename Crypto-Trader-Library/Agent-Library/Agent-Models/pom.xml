@@ -13,6 +13,9 @@
     <artifactId>agent-models</artifactId>
     <name>Agent-Models</name>
     <version>0.0.1</version>
+    <description>
+        Agent domain models — data structures for representing agent state, tasks, and interaction history.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

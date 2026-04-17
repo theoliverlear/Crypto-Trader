@@ -13,6 +13,9 @@
     <artifactId>agent-config</artifactId>
     <name>Agent-Config</name>
     <version>0.0.1</version>
+    <description>
+        Agent configuration module — handles agent-specific settings, thresholds, and operational parameters.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

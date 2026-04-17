@@ -12,6 +12,9 @@
     <artifactId>agent-library</artifactId>
     <name>Agent-Library</name>
     <version>0.0.1</version>
+    <description>
+        Parent library for agent-related modules — contains communication, components, and models for autonomous agents.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

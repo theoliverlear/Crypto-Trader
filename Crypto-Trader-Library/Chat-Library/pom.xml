@@ -12,6 +12,9 @@
     <artifactId>chat-library</artifactId>
     <name>Chat-Library</name>
     <version>0.0.1</version>
+    <description>
+        Parent library for chat functionality — core models and components for AI-driven chat interfaces.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

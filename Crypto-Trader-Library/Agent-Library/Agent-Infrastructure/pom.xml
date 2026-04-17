@@ -13,6 +13,9 @@
     <artifactId>agent-infrastructure</artifactId>
     <name>Agent-Infrastructure</name>
     <version>0.0.1</version>
+    <description>
+        Agent infrastructure support — provides core runtime services and utility classes for the agent ecosystem.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

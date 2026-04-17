@@ -12,6 +12,9 @@
 
     <artifactId>data-library</artifactId>
     <name>Data-Library</name>
+    <description>
+        Parent library for data-related modules — core data access, persistence, and storage components.
+    </description>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>

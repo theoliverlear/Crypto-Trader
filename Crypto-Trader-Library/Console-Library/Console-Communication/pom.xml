@@ -13,6 +13,9 @@
     <artifactId>console-communication</artifactId>
     <name>Console-Communication</name>
     <version>0.0.1</version>
+    <description>
+        Console communication protocols — defines message handling and interaction patterns for CLI components.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

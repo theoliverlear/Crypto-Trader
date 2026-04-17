@@ -13,6 +13,9 @@
     <artifactId>api-extensions</artifactId>
     <name>Api-Extensions</name>
     <version>0.0.1</version>
+    <description>
+        API extension modules — provides additional functionality and integrations for the core Crypto Trader API.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

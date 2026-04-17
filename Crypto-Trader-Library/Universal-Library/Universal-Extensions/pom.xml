@@ -13,6 +13,9 @@
     <artifactId>universal-extensions</artifactId>
     <name>Universal-Extensions</name>
     <version>0.0.1</version>
+    <description>
+        Universal API extensions — provides platform-agnostic tools and common integration points.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

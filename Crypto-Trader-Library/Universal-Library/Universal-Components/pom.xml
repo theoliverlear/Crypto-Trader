@@ -13,6 +13,9 @@
     <artifactId>universal-components</artifactId>
     <name>Universal-Components</name>
     <version>0.0.1</version>
+    <description>
+        Universal components — provides independent and module-agnostic components.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

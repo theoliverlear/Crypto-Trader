@@ -13,6 +13,9 @@
     <artifactId>data-models</artifactId>
     <name>Data-Models</name>
     <version>0.0.1</version>
+    <description>
+        Data entity models — defines database entities and data structures for market data.
+    </description>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>

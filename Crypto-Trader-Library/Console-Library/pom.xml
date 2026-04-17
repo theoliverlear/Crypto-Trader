@@ -13,6 +13,9 @@
     <artifactId>console-library</artifactId>
     <name>Console-Library</name>
     <version>0.0.1</version>
+    <description>
+        Parent library for console-related modules — provides CLI interfaces, command processing, and terminal interactions.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -13,6 +13,9 @@
     <artifactId>data-components</artifactId>
     <name>Data-Components</name>
     <version>0.0.1</version>
+    <description>
+        Data infrastructure components — reusable data handling utilities and storage adapters.
+    </description>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>

@@ -13,6 +13,9 @@
     <artifactId>agent-components</artifactId>
     <name>Agent-Components</name>
     <version>0.0.1</version>
+    <description>
+        Agent functional components — reusable building blocks for automated analysis and project management tasks.
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

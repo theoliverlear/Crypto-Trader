@@ -13,6 +13,9 @@
     <artifactId>console-models</artifactId>
     <name>Console-Models</name>
     <version>0.0.1</version>
+    <description>
+        Console domain models — data structures for terminal states, commands, and CLI structure.
+    </description>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>
