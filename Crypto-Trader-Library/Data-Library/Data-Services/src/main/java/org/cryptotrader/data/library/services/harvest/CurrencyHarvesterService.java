@@ -60,9 +60,11 @@ public class CurrencyHarvesterService {
     //--------------------------Save-Currencies-------------------------------
     @Scheduled(fixedRate = 5000)
     public void saveCurrencies() {
+        log.info("Updating currencies...");
         try {
-            log.info("Updating currencies...");
             Map<String, Currency> currencies = this.currencyDataRetriever.getUpdatedCurrencies();
+            log.info("Retrieved {} currencies from data source.", currencies.size());
+            int numSuccessfullyUpdated = 0;
             for (Currency currency : SupportedCurrencies.SUPPORTED_CURRENCIES) {
                 try {
                     Currency previousCurrency = Currency.from(currency);
@@ -71,12 +73,13 @@ public class CurrencyHarvesterService {
                     currency.setValue(updatedCurrency.getValue());
                     this.currencyService.saveCurrency(currency);
                     this.currencyService.saveUniqueCurrencyIfNew(currency, previousCurrency, updatedCurrency);
+                    numSuccessfullyUpdated++;
                 } catch (NullPointerException exception) {
                     log.error("Problematic currency: {}", currency.getCurrencyCode());
-//                    SupportedCurrencies.popCurrency(currency.getCurrencyCode());
+                    log.debug("Currency failure details: {}", exception.toString());
                 }
-                
             }
+            log.info("Successfully updated {} out of {} supported currencies.", numSuccessfullyUpdated, SupportedCurrencies.SUPPORTED_CURRENCIES.size());
             this.snapshotService.saveSnapshot(currencies);
         } catch (NullPointerException exception) {
             log.error("Failed to update currencies. Regenerating JSON. Error: ", exception);
