@@ -1,9 +1,14 @@
 server:
   port: 8086
 spring:
+  config:
+    import: aws-secretsmanager:/cryptotrader/dev
   application:
     name: crypto-trader-engine
   cloud:
+    aws:
+      region:
+        static: us-east-1
     stream:
       defaultBinder: kafka
       bindings:

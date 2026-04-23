@@ -1,6 +1,8 @@
 server:
   port: 9001
 spring:
+  config:
+    import: aws-secretsmanager:/cryptotrader/dev
   application:
     name: crypto-trader-version
   datasource:
@@ -11,6 +13,9 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   cloud:
+    aws:
+      region:
+        static: us-east-1
     stream:
       defaultBinder: kafka
       bindings:

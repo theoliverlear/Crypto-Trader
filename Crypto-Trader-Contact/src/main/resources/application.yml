@@ -7,6 +7,8 @@ logging:
     org.eclipse.angus.mail: DEBUG
 
 spring:
+  config:
+    import: aws-secretsmanager:/cryptotrader/dev
   application:
     name: crypto-trader-contact
   mail:
@@ -23,6 +25,9 @@ spring:
             enable: true
     default-encoding: UTF-8
   cloud:
+    aws:
+      region:
+        static: us-east-1
     function:
       definition: userRegistered
       sanitization:

@@ -2,6 +2,8 @@ server:
   port: 8080
 
 spring:
+  config:
+    import: aws-secretsmanager:/cryptotrader/dev
   application:
     name: crypto-trader-api
   web:
@@ -28,6 +30,9 @@ spring:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
   cloud:
+    aws:
+      region:
+        static: us-east-1
     function:
       sanitization:
         enabled: false
@@ -56,6 +61,10 @@ spring:
           contentType: application/json
         orderFilled-in-0:
           destination: ct.order.filled.v1
+          contentType: application/json
+
+        frontendLogs-out-0:
+          destination: ct.logging.frontend.v1
           contentType: application/json
 
       kafka:

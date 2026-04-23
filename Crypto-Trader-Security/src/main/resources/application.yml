@@ -3,3 +3,9 @@ server:
 spring:
   application:
     name: crypto-trader-security
+  config:
+    import: aws-secretsmanager:/cryptotrader/dev
+  cloud:
+    aws:
+      region:
+        static: us-east-1

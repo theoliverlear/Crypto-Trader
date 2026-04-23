@@ -1,6 +1,12 @@
 spring:
   application:
     name: crypto-trader-chat
+  config:
+    import: aws-secretsmanager:/cryptotrader/dev
+  cloud:
+    aws:
+      region:
+        static: us-east-1
   ai:
     openai:
       api-key: ${OPENAI_KEY}

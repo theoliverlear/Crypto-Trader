@@ -4,11 +4,15 @@ server:
 spring:
   application:
     name: crypto-trader-console
-
+  config:
+      import: aws-secretsmanager:/cryptotrader/dev
   aop:
     proxy-target-class: true
 
   cloud:
+    aws:
+      region:
+        static: us-east-1
     function:
       definition: consoleRequestsConsumer
     stream:
