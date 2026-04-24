@@ -1,9 +1,15 @@
-module org.cryptotrader.health {
+open module org.cryptotrader.health {
     requires kotlin.stdlib;
-    requires org.apache.httpcomponents.httpclient;
-    requires org.apache.httpcomponents.httpcore;
+    requires org.cryptotrader.health.library.models;
+    requires org.cryptotrader.health.library.repositories;
+    requires org.cryptotrader.health.library.services;
+    requires org.cryptotrader.health.library.components;
+    requires spring.boot;
+    requires spring.boot.autoconfigure;
+    requires spring.context;
+    requires spring.data.jpa;
+    requires java.net.http;
     requires org.slf4j;
-    
+
     exports org.cryptotrader.health;
-    exports org.cryptotrader.health.models;
 }
