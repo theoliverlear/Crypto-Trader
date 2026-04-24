@@ -56,6 +56,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.awspring.cloud</groupId>
+            <artifactId>spring-cloud-aws-starter-secrets-manager</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>console-components</artifactId>
         </dependency>
@@ -229,8 +233,15 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-logging</artifactId>
-            <scope>runtime</scope>
+            <artifactId>logging-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>logging-communication</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>logging-events</artifactId>
         </dependency>
 
         <dependency>

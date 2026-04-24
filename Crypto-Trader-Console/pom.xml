@@ -180,6 +180,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.awspring.cloud</groupId>
+            <artifactId>spring-cloud-aws-starter-secrets-manager</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>data-services</artifactId>
         </dependency>
@@ -344,7 +348,7 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-logging</artifactId>
+            <artifactId>logging-config</artifactId>
             <scope>runtime</scope>
         </dependency>
 
