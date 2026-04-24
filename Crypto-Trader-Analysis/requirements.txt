@@ -28,4 +28,6 @@ tomli==2.0.1
 torchaudio==2.8.0
 torchvision==0.23.0
 transformers==4.55.0
+django==5.1.7
+boto3==1.37.9
 worldnewsapi==2.2.0
