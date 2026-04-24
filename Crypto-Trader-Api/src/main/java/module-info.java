@@ -80,6 +80,10 @@ open module org.cryptotrader.api {
     requires org.cryptotrader.console.library.communication;
     requires org.cryptotrader.console.library.components;
 
+    requires org.cryptotrader.logging.library.communication;
+    requires org.cryptotrader.logging.library.events;
+    requires org.cryptotrader.logging.library.config;
+
     exports org.cryptotrader.api;
     exports org.cryptotrader.api.config;
     exports org.cryptotrader.api.controller;
