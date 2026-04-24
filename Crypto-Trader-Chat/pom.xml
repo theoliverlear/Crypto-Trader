@@ -23,6 +23,10 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>io.awspring.cloud</groupId>
+            <artifactId>spring-cloud-aws-starter-secrets-manager</artifactId>
+        </dependency>
         <!-- Spring Boot Starters -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -32,7 +36,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-config</artifactId>
+        </dependency>
         <!-- Spring AI Starters -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
@@ -64,7 +75,7 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-logging</artifactId>
+            <artifactId>logging-config</artifactId>
         </dependency>
     </dependencies>
 
