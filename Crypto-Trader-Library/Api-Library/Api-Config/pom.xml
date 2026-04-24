@@ -147,7 +147,7 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-logging</artifactId>
+            <artifactId>logging-config</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>org.jetbrains.kotlin</groupId>

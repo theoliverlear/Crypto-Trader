@@ -135,7 +135,7 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-logging</artifactId>
+            <artifactId>logging-config</artifactId>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
