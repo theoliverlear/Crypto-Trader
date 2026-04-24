@@ -16,7 +16,7 @@ open module org.cryptotrader.engine {
     requires spring.security.crypto;
     requires spring.security.web;
     requires kotlin.stdlib;
-    requires org.cryptotrader.health;
+    requires org.cryptotrader.health.library.models;
     requires java.net.http;
 
     requires jakarta.xml.bind;
