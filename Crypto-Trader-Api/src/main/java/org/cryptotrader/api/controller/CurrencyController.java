@@ -2,6 +2,7 @@ package org.cryptotrader.api.controller;
 
 import jakarta.annotation.security.PermitAll;
 import lombok.extern.slf4j.Slf4j;
+import org.cryptotrader.api.library.communication.request.FuzzyTimeValueRequest;
 import org.cryptotrader.api.library.communication.response.*;
 import org.cryptotrader.data.library.model.currency.PerformanceRating;
 import org.cryptotrader.data.library.services.CurrencyService;
@@ -54,15 +55,15 @@ public class CurrencyController {
                                         HttpStatus.OK);
         }
     }
-
+ 
     @PermitAll
     @GetMapping("/list")
     public ResponseEntity<CurrencyNamesResponse> getList(@RequestParam(value = "withCode", defaultValue = "false") boolean withCode) {
         CurrencyNamesResponse response = new CurrencyNamesResponse(this.currencyService.getCurrencyNames(withCode));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-    
-    
+
+
     @PermitAll
     @GetMapping("/all")
     public ResponseEntity<DisplayCurrencyListResponse> getAll() {
@@ -77,10 +78,10 @@ public class CurrencyController {
         }
         return new ResponseEntity<>(this.currencyService.getCurrencyValuesResponse(offset), HttpStatus.OK);
     }
-    
+
     @PermitAll
     @GetMapping("/display/{code}")
-    public ResponseEntity<DisplayCurrencyResponse> getDisplayCurrency(@PathVariable("code") String code) {
+    public ResponseEntity<DisplayCurrencyResponse> getDisplayCurrency(@PathVariable String code) {
         if (code == null || code.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -97,7 +98,7 @@ public class CurrencyController {
 
     @PermitAll
     @GetMapping("/history/{code}")
-    public ResponseEntity<List<TimeValueResponse>> getHistory(@PathVariable("code") String code,
+    public ResponseEntity<List<TimeValueResponse>> getHistory(@PathVariable String code,
                                                               @RequestParam(value = "hours", defaultValue = "24") int hours,
                                                               @RequestParam(value = "intervalSeconds", defaultValue = "60") int intervalSeconds) {
         List<TimeValueResponse> history = this.currencyService.getCurrencyHistory(code, hours, intervalSeconds);
@@ -106,4 +107,15 @@ public class CurrencyController {
         }
         return new ResponseEntity<>(history, HttpStatus.OK);
     }
+    @PermitAll
+    @PostMapping("/history/fuzzy/{code}")
+    public ResponseEntity<TimeValueResponse> getFuzzyHistory(@PathVariable String code,
+                                                             @RequestBody FuzzyTimeValueRequest request) {
+        TimeValueResponse response = this.currencyService.getFuzzyCurrencyHistory(code, request);
+        if (response == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 }
