@@ -101,6 +101,12 @@ export const docsElementLink: TextElementLink = new TextElementLink(
     TagType.H4,
 );
 
+export const upgradeElementLink: ElementLink = new ElementLink(
+    '/upgrade',
+    TargetType.SELF,
+    false,
+);
+
 export const consoleElementLink: ElementLink = new ElementLink(
     '/console',
     TargetType.SELF,
