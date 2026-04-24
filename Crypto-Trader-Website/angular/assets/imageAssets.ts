@@ -22,6 +22,11 @@ export function getImagePath(fileName: string): string {
 export function getIconImagePath(fileName: string): string {
     return iconImageAssetPath + fileName;
 }
+
+export function getModuleIconImagePath(fileName: string): string {
+    return moduleIconImageAssetPath + fileName;
+}
+
 /** Returns the full path to a Crypto Trader logo image asset.
  *
  * @param fileName
@@ -49,11 +54,12 @@ export function getCurrencyLogoPath(fileName: string): string {
 
 const imageAssetPath: string = 'assets/images/';
 const logoImageAssetPath: string = imageAssetPath + 'logos/';
+const iconImageAssetPath: string = imageAssetPath + 'icons/';
+const moduleIconImageAssetPath: string = iconImageAssetPath + 'modules/';
 const cryptoTraderLogoImageAssetPath: string =
     logoImageAssetPath + 'crypto_trader/';
 const brandLogoImageAssetPath: string = logoImageAssetPath + 'brand/';
 const currencyLogoImageAssetPath: string = logoImageAssetPath + 'currency/';
-const iconImageAssetPath: string = imageAssetPath + 'icons/';
 
 export const defaultAvatar: ImageAsset = {
     src: getIconImagePath('default_avatar.png'),
@@ -163,4 +169,134 @@ export const bookIcon: ImageAsset = {
 export const electricPlugIcon: ImageAsset = {
     src: getIconImagePath('electric_plug_icon.svg'),
     alt: 'Electric Plug Icon',
+};
+
+export const adminModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('admin.svg'),
+    alt: 'Admin Module Icon',
+};
+
+export const analysisModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('analysis.svg'),
+    alt: 'Analysis Module Icon',
+};
+
+export const assetsModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('assets.svg'),
+    alt: 'Assets Module Icon',
+};
+
+export const chatModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('chat.svg'),
+    alt: 'Chat Module Icon',
+};
+
+export const consoleModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('console.svg'),
+    alt: 'Console Module Icon',
+};
+
+export const contactModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('contact.svg'),
+    alt: 'Contact Module Icon',
+};
+
+export const coverageModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('coverage.svg'),
+    alt: 'Coverage Module Icon',
+};
+
+export const dataModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('data.svg'),
+    alt: 'Data Module Icon',
+};
+
+export const docsModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('docs.svg'),
+    alt: 'Docs Module Icon',
+};
+
+export const healthModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('health.svg'),
+    alt: 'Health Module Icon',
+};
+
+export const engineModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('engine.svg'),
+    alt: 'Engine Module Icon',
+};
+
+export const libraryModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('library.svg'),
+    alt: 'Library Module Icon',
+};
+
+export const loggingModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('logging.svg'),
+    alt: 'Logging Module Icon',
+};
+
+export const mobileModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('mobile.svg'),
+    alt: 'Mobile Module Icon',
+};
+
+export const securityModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('security.svg'),
+    alt: 'Security Module Icon',
+};
+
+export const simulatorModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('simulator.svg'),
+    alt: 'Simulator Module Icon',
+};
+
+export const testingModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('testing.svg'),
+    alt: 'Testing Module Icon',
+};
+
+export const transactionsModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('transactions.svg'),
+    alt: 'Transactions Module Icon',
+};
+
+export const versionModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('version.svg'),
+    alt: 'Version Module Icon',
+};
+
+export const websiteModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('website.svg'),
+    alt: 'Website Module Icon',
+};
+
+export const apiModuleIcon: ImageAsset = {
+    src: getModuleIconImagePath('api.svg'),
+    alt: 'Api Module Icon',
+};
+
+export const personaBelieverIcon: ImageAsset = {
+    src: getIconImagePath('hand-holding-heart.svg'),
+    alt: 'Believer Persona Icon',
+};
+
+export const personaStrategistIcon: ImageAsset = {
+    src: getIconImagePath('chess-knight.svg'),
+    alt: 'Strategist Persona Icon',
+};
+
+export const personaEqualizerIcon: ImageAsset = {
+    src: getIconImagePath('scale-balanced.svg'),
+    alt: 'Equalizer Persona Icon',
+};
+
+export const personaBuilderIcon: ImageAsset = {
+    src: getIconImagePath('hammer.svg'),
+    alt: 'Builder Persona Icon',
+};
+
+export const personaTycoonIcon: ImageAsset = {
+    src: getIconImagePath('crown.svg'),
+    alt: 'Tycoon Persona Icon',
 };
