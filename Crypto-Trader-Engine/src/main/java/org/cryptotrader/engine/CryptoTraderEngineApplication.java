@@ -1,6 +1,6 @@
 package org.cryptotrader.engine;
 
-import org.cryptotrader.health.models.CryptoTraderService;
+import org.cryptotrader.health.library.model.CryptoTraderService;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Component;
 
-import static org.cryptotrader.health.ServiceStatusChecker.isServiceAlive;
+import static org.cryptotrader.health.library.model.ServiceStatusChecker.isServiceAlive;
 
 
 /**
@@ -73,14 +73,29 @@ public class CryptoTraderEngineApplication {
     @Component
     @Profile("!docs")
     static class EngineStartupVerifier implements ApplicationRunner {
+        private static final int MAX_RETRIES = 10;
+        private static final long RETRY_DELAY_MS = 10_000;
+
         @Override
         public void run(ApplicationArguments args) {
-            boolean dataServiceAvailable = isServiceAlive(CryptoTraderService.DATA);
-            if (!dataServiceAvailable) {
-                throw new IllegalStateException(
-                    "Crypto-Trader-Data service is not available. " +
-                        "Please start it before launching Crypto-Trader-Engine.");
+            for (int attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+                if (isServiceAlive(CryptoTraderService.DATA)) {
+                    return;
+                }
+                System.out.printf("Crypto-Trader-Data service is not available. Attempt %d of %d. Retrying in %d seconds...%n", attempt, MAX_RETRIES, RETRY_DELAY_MS / 1000);
+                if (attempt < MAX_RETRIES) {
+                    try {
+                        Thread.sleep(RETRY_DELAY_MS);
+                    } catch (InterruptedException exception) {
+                        Thread.currentThread().interrupt();
+                        throw new IllegalStateException(
+                            "Interrupted while waiting for Crypto-Trader-Data service.", exception);
+                    }
+                }
             }
+            throw new IllegalStateException(
+                "Crypto-Trader-Data service is not available after " + MAX_RETRIES +
+                    " attempts. Please start it before launching Crypto-Trader-Engine.");
         }
     }
 }
