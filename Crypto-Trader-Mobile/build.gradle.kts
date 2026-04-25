@@ -1,10 +1,9 @@
 plugins {
     id("com.android.application") version "8.6.1"
-    kotlin("android") version "2.0.20"
-    id("org.jetbrains.kotlin.plugin.compose") version "2.0.20"
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.20"
+    kotlin("android") version "2.1.0"
+    id("org.jetbrains.kotlin.plugin.compose") version "2.1.0"
     id("com.google.dagger.hilt.android") version "2.52"
-    id("com.google.devtools.ksp") version "2.0.20-1.0.24"
+    id("com.google.devtools.ksp") version "2.1.0-1.0.29"
 }
 
 kotlin { jvmToolchain(21) }
@@ -35,9 +34,17 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
+        isCoreLibraryDesugaringEnabled = true
     }
-    kotlinOptions { jvmTarget = "21" }
+    kotlinOptions {
+        jvmTarget = "21"
+        freeCompilerArgs += "-Xskip-metadata-version-check"
+    }
     buildToolsVersion = "36.0.0"
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 val ktorVersion = "2.3.12"
@@ -47,6 +54,10 @@ val vicoVersion = "2.0.0"
 
 //noinspection GradleDependency
 dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.3")
+    // Shared library modules (mobile-classified JARs compiled to Java 21)
+    implementation("org.cryptotrader:api-communication:0.0.5:mobile") { isTransitive = false }
+    testImplementation("org.cryptotrader:crypto-trader-testing:0.0.4:mobile") { isTransitive = false }
     // Compose BOM and core UI
     implementation(platform("androidx.compose:compose-bom:2024.09.01"))
     implementation("androidx.activity:activity-compose:1.9.2")
@@ -75,7 +86,7 @@ dependencies {
     // Ktor Client
     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-gson:$ktorVersion")
     implementation("io.ktor:ktor-client-logging:$ktorVersion")
     implementation("io.ktor:ktor-client-websockets:$ktorVersion")
 
@@ -94,11 +105,19 @@ dependencies {
     // Baseline Profile Installer
     implementation("androidx.profileinstaller:profileinstaller:1.4.1")
 
-    // Testing
-    testImplementation("junit:junit:4.13.2")
+    // Testing – JUnit 5 + Crypto-Trader-Testing (imported via mobile-classified JAR above)
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.0")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.11.0")
+    testImplementation("org.mockito:mockito-core:5.12.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.12.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
     testImplementation("app.cash.turbine:turbine:1.1.0")
     testImplementation("io.mockk:mockk:1.13.12")
+    testImplementation("org.slf4j:slf4j-api:2.0.13")
+    testImplementation("org.slf4j:slf4j-simple:2.0.13")
+    testImplementation("org.jetbrains:annotations:24.1.0")
 
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
