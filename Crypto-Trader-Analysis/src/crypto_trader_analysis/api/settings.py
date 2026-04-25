@@ -12,19 +12,28 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from os import getenv
 from pathlib import Path
+from crypto_trader_analysis.core.aws_secrets import SecretsManagerService
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+secrets_service = SecretsManagerService(region_name="us-east-1")
+
+try:
+    crypto_trader_secrets = secrets_service.get_secret("/cryptotrader/dev")
+except Exception as exception:
+    crypto_trader_secrets = {}
+    if not os.getenv("DEBUG", "True") == "True":
+        raise exception
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+SECRET_KEY = crypto_trader_secrets.get("DJANGO_SECRET_KEY", os.getenv("DJANGO_SECRET_KEY", "fallback-if-dev"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = []
 
@@ -77,13 +86,20 @@ WSGI_APPLICATION = 'crypto_trader_analysis.api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'crypto_trader',
-        'USER': getenv('PSQL_USER'),
-        'PASSWORD': getenv('PSQL_PW'),
-        'HOST': getenv('PSQL_HOST'),
-        'PORT': 5432
+        'NAME': crypto_trader_secrets.get('PSQL_DB_NAME', 'crypto_trader'),
+        'USER': crypto_trader_secrets.get('PSQL_USER', getenv('PSQL_USER')),
+        'PASSWORD': crypto_trader_secrets.get('PSQL_PW', getenv('PSQL_PW')),
+        'HOST': crypto_trader_secrets.get('PSQL_HOST', getenv('PSQL_HOST')),
+        'PORT': crypto_trader_secrets.get('PSQL_PORT', '5432')
     }
 }
+
+OPENAI_KEY = crypto_trader_secrets.get("OPENAI_KEY")
+GITHUB_TOKEN = crypto_trader_secrets.get("GITHUB_TOKEN")
+JWT_SECRET = crypto_trader_secrets.get("JWT_SECRET")
+WORLDNEWS_API_KEY = crypto_trader_secrets.get("WORLDNEWS_API_KEY", getenv("WORLDNEWS_API_KEY"))
+CT_API_HOST = crypto_trader_secrets.get("CT_API_HOST", getenv("CT_API_HOST", "localhost"))
+CT_DATA_HOST = crypto_trader_secrets.get("CT_DATA_HOST", getenv("CT_DATA_HOST", "localhost"))
 
 
 # Password validation
