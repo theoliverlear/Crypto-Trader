@@ -62,7 +62,7 @@ jobs:
 
       # Build and install all modules with Dokka, so subsequent runs can resolve internal artifacts
       - name: Build (install) with Dokka for all modules
-        run: mvn -B -s .github/maven-settings.xml -DskipTests -am -U install org.jetbrains.dokka:dokka-maven-plugin:1.9.20:dokka
+        run: mvn -B -s .github/maven-settings.xml -DskipTests -am -U -P release install org.jetbrains.dokka:dokka-maven-plugin:1.9.20:dokka
 
       - name: Start Kafka (docker-compose)
         run: |
