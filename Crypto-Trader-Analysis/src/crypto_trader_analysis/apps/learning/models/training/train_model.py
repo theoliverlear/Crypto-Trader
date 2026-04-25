@@ -20,15 +20,10 @@ from src.crypto_trader_analysis.apps.learning.models.ai.lstm.lstm_model import L
 from src.crypto_trader_analysis.apps.learning.models.ai.model_type import ModelType
 from src.crypto_trader_analysis.apps.learning.models.data.preprocessor import Preprocessor
 from src.crypto_trader_analysis.apps.learning.models.database.query_type import QueryType
-from src.crypto_trader_analysis.apps.learning.models.ai.model_retriever import get_model, get_lstm_model, \
-    get_complex_lstm_model
+from src.crypto_trader_analysis.apps.learning.models.ai.model_retriever import get_model, model_exists
 from src.crypto_trader_analysis.apps.learning.models.training.training_type import TrainingType
 from src.crypto_trader_analysis.apps.learning.models.currency_json_generator import get_all_currency_codes
 
-
-import tensorflow as tf
-tf.config.optimizer.set_jit(True)
-tf.function(jit_compile=True)
 
 SMALL_DATASET_SIZE = 1
 # SMALL_DATASET_SIZE = 999
@@ -70,7 +65,6 @@ def setup_tensorflow_env():
 
 #----------------------------Get-Untrained-Models-----------------------------
 def get_untrained_models() -> list[str]:
-    from src.crypto_trader_analysis.apps.learning.models.prediction.predictions import model_exists
     currencies: list[str] = get_all_currency_codes(False)
     untrained_models: list[str] = []
     for currency in currencies:
@@ -151,6 +145,40 @@ def get_last_historical_price(historical_prices):
 def get_last_currency_price(dataframe: DataFrame, target_currency: str):
     return dataframe[f"{target_currency}_price"].iloc[-1]
 
+#--------------------------Create-Train-Val-Split-----------------------------
+def create_train_val_split(historical_prices, future_prices_scaled, batch_size):
+    total = len(future_prices_scaled)
+    val_size = max(1, int(total * 0.1))
+    train_size = total - val_size
+
+    train_ds = tf.data.Dataset.from_tensor_slices(
+        (historical_prices[:train_size], future_prices_scaled[:train_size]))
+    train_ds = train_ds.cache().shuffle(train_size).batch(batch_size).prefetch(tf.data.AUTOTUNE)
+
+    val_ds = tf.data.Dataset.from_tensor_slices(
+        (historical_prices[train_size:], future_prices_scaled[train_size:]))
+    val_ds = val_ds.batch(batch_size).prefetch(tf.data.AUTOTUNE)
+    return train_ds, val_ds
+
+#---------------------Create-Multi-Layer-Train-Val-Split----------------------
+def create_multi_layer_train_val_split(short_data, med_data, long_data, future_prices_scaled, batch_size):
+    total = len(future_prices_scaled)
+    val_size = max(1, int(total * 0.1))
+    train_size = total - val_size
+
+    train_ds = tf.data.Dataset.from_tensor_slices((
+        (short_data[:train_size], med_data[:train_size], long_data[:train_size]),
+        future_prices_scaled[:train_size]
+    ))
+    train_ds = train_ds.cache().shuffle(train_size).batch(batch_size).prefetch(tf.data.AUTOTUNE)
+
+    val_ds = tf.data.Dataset.from_tensor_slices((
+        (short_data[train_size:], med_data[train_size:], long_data[train_size:]),
+        future_prices_scaled[train_size:]
+    ))
+    val_ds = val_ds.batch(batch_size).prefetch(tf.data.AUTOTUNE)
+    return train_ds, val_ds
+
 #---------------------------Train-Model-In-Batches----------------------------
 def train_model_in_batches(target_currency: str = 'BTC',
                            training_type: TrainingType=TrainingType.BALANCED_MEDIUM_TRAINING,
@@ -176,32 +204,25 @@ def train_model(target_currency: str = 'BTC',
                 gpu_id: int = 0,
                 use_previous_model: bool = True,
                 dataframe: DataFrame = None):
-    from src.crypto_trader_analysis.apps.learning.models.prediction.predictions import log_actual_vs_printed
     logging.info("Getting data frame...")
     if dataframe is None:
-        dataframe = get_dataframe(target_currency, limit=training_type.value.max_rows, query_type=QueryType.HISTORICAL_PRICE)
+        dataframe = get_dataframe(target_currency, limit=training_type.value.max_rows, query_type=training_type.value.query_type or QueryType.HISTORICAL_PRICE)
     logging.debug(f"Retrieved {len(dataframe)} rows for {target_currency}")
     if len(dataframe) < SMALL_DATASET_SIZE and training_type.value.skip_small_samples:
         logging.warning(f"Not enough data to train model for {target_currency}. Skipping...")
         return
     logging.info("Configuring preprocessor...")
-    preprocessor = Preprocessor()
+    preprocessor = Preprocessor(sequence_length=training_type.value.sequence_length)
     logging.info("Transforming data...")
     historical_prices, future_prices_unscaled, input_scaler = preprocessor.transform(dataframe, target_currency)
-    logging.info("Dropping NaN values...")
-    dataframe.dropna(subset=[f"{target_currency.lower()}_price"], inplace=True)
     logging.info("Scaling target values...")
     target_scaler = MinMaxScaler(feature_range=(0,1))
-    logging.info("Getting raw target values...")
-    raw_target_vals = get_currency_prices(dataframe, target_currency)
-    logging.info("Fitting target scaler...")
-    target_scaler.fit(raw_target_vals)
+    logging.info("Fitting target scaler on actual y labels...")
+    target_scaler.fit(rescale_future_prices(future_prices_unscaled))
     logging.info("Scaling future prices...")
     future_prices_scaled = target_scaler.transform(rescale_future_prices(future_prices_unscaled)).ravel()
-    dataset = tf.data.Dataset.from_tensor_slices(
-        (historical_prices, future_prices_scaled))
-    dataset = dataset.cache().shuffle(1024).batch(
-        training_type.value.batch_size).prefetch(tf.data.AUTOTUNE)
+    train_ds, val_ds = create_train_val_split(historical_prices, future_prices_scaled,
+                                               training_type.value.batch_size)
 
     logging.info(
         f"Preprocessing Completed! historical_prices shape: {historical_prices.shape}, "
@@ -213,16 +234,13 @@ def train_model(target_currency: str = 'BTC',
     else:
         raise ValueError(f"Incompatible model type: {model_type}")
     logging.info(f"Getting model for {target_currency} at {model_path}...")
-    if model_type == ModelType.LSTM:
-        model: LstmModel = get_lstm_model(target_currency, model_path, historical_prices, training_type.value, use_previous_model)
-    elif model_type == ModelType.COMPLEX_LSTM:
-        model: ComplexLstmModel = get_complex_lstm_model(target_currency, model_path, historical_prices, training_type.value, use_previous_model)
-    else:
-        raise ValueError(f"Incompatible model type: {model_type}")
+    model = get_model(model_type.value, target_currency, model_path, historical_prices, training_type.value, use_previous_model)
     logging.info(f"Training model for {target_currency}...")
     with tf.device(f'/GPU:{gpu_id}'):
         logging.info(f"Training on GPU...")
-        model.train(dataset, epochs=training_type.value.epochs, batch_size=training_type.value.batch_size)
+        model.train(train_ds, val_dataset=val_ds,
+                     epochs=training_type.value.epochs,
+                     patience=training_type.value.patience)
     logging.info(f"Training completed for {target_currency}.")
     logging.info(f"Saving model for {target_currency}...")
     model.save_model(model_path)
@@ -231,7 +249,7 @@ def train_model(target_currency: str = 'BTC',
     logging.info(f"Predicting currency price.")
     predicted_price = model.predict(last_sequence, target_scaler)
     logging.debug(f"Predicted Next {target_currency} Price: {predicted_price}")
-    log_actual_vs_printed(target_currency, predicted_price, model_type)
+    logging.info(f"Actual vs Predicted for {target_currency}: predicted={predicted_price}, model_type={model_type}")
 
 #-----------------------------Get-Currency-Prices-----------------------------
 def get_currency_prices(dataframe, target_currency):
@@ -286,7 +304,6 @@ def full_train_model(target_currency: str = 'BTC', gpu_id: int = 0, model_type: 
         logging.debug(f"Training model for {target_currency} with training type {training_type}...")
         train_model(target_currency, training_type, gpu_id=gpu_id, model_type=model_type)
         logging.debug(f"Model for {target_currency} trained successfully with training type {training_type}.")
-    train_model(target_currency, TrainingType.LARGE_DATA_DETAILED_TRAINING)
 
 #--------------------------Full-Train-Layered-Model---------------------------
 def full_train_layered_model(target_currency: str = 'BTC',
@@ -299,13 +316,6 @@ def full_train_layered_model(target_currency: str = 'BTC',
         logging.debug(f"Training model for {target_currency} with training type {training_type}...")
         train_multi_layer_model(target_currency, short_seq, medium_seq, long_seq, training_type, model_type, gpu_id)
         logging.debug(f"Model for {target_currency} trained successfully with training type {training_type}.")
-    train_multi_layer_model(target_currency,
-                            short_seq,
-                            medium_seq,
-                            long_seq,
-                            TrainingType.LARGE_DATA_DETAILED_TRAINING,
-                            model_type,
-                            gpu_id)
 
 #----------------------------Full-Train-All-Models----------------------------
 def full_train_all_models(currency_codes: list[str] = None,
@@ -353,7 +363,6 @@ def train_multi_layer_model(target_currency: str = 'BTC',
                             model_type: ModelType = ModelType.MULTI_LAYER,
                             gpu_id: int = 0,
                             dataframe: DataFrame = None):
-    from src.crypto_trader_analysis.apps.learning.models.prediction.predictions import log_actual_vs_printed
     from src.crypto_trader_analysis.apps.learning.models.ai.lstm.layered.multi_layer_lstm_model import MultiLayerLstmModel
     from src.crypto_trader_analysis.apps.learning.models.ai.lstm.layered.complex_multi_layer_lstm_model import ComplexMultiLayerLstmModel
 
@@ -366,7 +375,7 @@ def train_multi_layer_model(target_currency: str = 'BTC',
         logging.warning(f"No data for {target_currency}. Cannot train multi-layer model.")
         return
     logging.debug(f"Dataframe has {len(dataframe)} rows for {target_currency}.")
-    preprocessor = Preprocessor()
+    preprocessor = Preprocessor(sequence_length=training_type.value.sequence_length)
     short_data, med_data, long_data, future_prices, input_scaler = \
         preprocessor.transform_multi_scale_with_weights(
             dataframe,
@@ -390,13 +399,9 @@ def train_multi_layer_model(target_currency: str = 'BTC',
     else:
         raise ValueError(f"Incompatible model type: {model_type}")
 
-    dataset = tf.data.Dataset.from_tensor_slices((
-        (short_data, med_data, long_data),
-        future_prices_scaled
-    ))
-    dataset = dataset.cache().shuffle(1024) \
-        .batch(training_type.value.batch_size) \
-        .prefetch(tf.data.AUTOTUNE)
+    train_ds, val_ds = create_multi_layer_train_val_split(
+        short_data, med_data, long_data, future_prices_scaled,
+        training_type.value.batch_size)
 
     model = get_model(model_class,
                       target_currency,
@@ -408,16 +413,17 @@ def train_multi_layer_model(target_currency: str = 'BTC',
     with tf.device(f'/GPU:{gpu_id}'):
         logging.info(f"Training on GPU...")
         model.train(
-            dataset,
+            train_ds,
+            val_dataset=val_ds,
             epochs=training_type.value.epochs,
-            batch_size=training_type.value.batch_size)
+            patience=training_type.value.patience)
 
     logging.info(f"Saving Multi-Layer Model to {model_path}")
     model.save_model(model_path)
-    last_long, last_medium, last_short = get_last_multi_layer_elements(long_data, med_data, short_data)
+    last_short, last_medium, last_long = get_last_multi_layer_elements(long_data, med_data, short_data)
     predicted_price = model.predict([last_short, last_medium, last_long],
                                     target_scaler=target_scaler)
-    log_actual_vs_printed(target_currency, predicted_price)
+    logging.info(f"Actual vs Predicted for {target_currency}: predicted={predicted_price}")
 
 # TODO: Create a training log API to display when a model was trained and any
 #       details about the training.
@@ -427,7 +433,7 @@ def get_last_multi_layer_elements(long_data, med_data, short_data):
     last_short = np.array([short_data[-1]])
     last_medium = np.array([med_data[-1]])
     last_long = np.array([long_data[-1]])
-    return last_long, last_medium, last_short
+    return last_short, last_medium, last_long
 
 #---------------------------Get-Split-Currency-List---------------------------
 def get_split_currency_list():
