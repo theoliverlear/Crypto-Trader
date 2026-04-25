@@ -1,5 +1,5 @@
 // auth-console-tab.component.ts
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
 
 import { AuthType, TagType } from '@theoliverlear/angular-suite';
 
@@ -14,8 +14,15 @@ import { AuthType, TagType } from '@theoliverlear/angular-suite';
 })
 export class AuthConsoleTabComponent {
     @Input() public authType: AuthType;
+    @Input() public isActive: boolean = false;
     @Output() public authTabClicked: EventEmitter<AuthType> = new EventEmitter<AuthType>();
     constructor() {}
+
+    @HostBinding('class.active')
+    get activeClass(): boolean {
+        return this.isActive;
+    }
+
     /** Emits the auth type when clicked.
      *
      */
