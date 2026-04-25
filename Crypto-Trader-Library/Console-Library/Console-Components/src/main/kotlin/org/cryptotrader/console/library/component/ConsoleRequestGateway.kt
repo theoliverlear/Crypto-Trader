@@ -54,7 +54,7 @@ class ConsoleRequestGateway @Autowired constructor(
             consoleTextCommand
         )
 
-        this.eventPublisher.publish("consoleRequests-out-0", consoleTextCommand, headers)
+        this.eventPublisher.publish(ConsoleEventBinding.CONSOLE_REQUESTS.bindingName, consoleTextCommand, headers)
 
         return try {
             future.get(timeout.toMillis(), TimeUnit.MILLISECONDS)
