@@ -4,12 +4,7 @@
 
 nav-bar-profile-picture {
     @include flex(center, center, column);
-    position: absolute;
-
-    // box-sizing: border-box;
-    // top: calc($quarter-percent * 1.15);
-    top: $one-percent;
-    right: $one-percent;
+    position: relative;
 
     // padding: $half-percent;
     // background-color: $ocean-blue;
