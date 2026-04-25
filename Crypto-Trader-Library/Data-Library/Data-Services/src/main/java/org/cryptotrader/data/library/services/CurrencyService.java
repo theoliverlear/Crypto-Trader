@@ -2,6 +2,7 @@ package org.cryptotrader.data.library.services;
 //=================================-Imports-==================================
 
 import lombok.extern.slf4j.Slf4j;
+import org.cryptotrader.api.library.communication.request.FuzzyTimeValueRequest;
 import org.cryptotrader.api.library.communication.response.DisplayCurrencyListResponse;
 import org.cryptotrader.api.library.communication.response.DisplayCurrencyResponse;
 import org.cryptotrader.api.library.communication.response.TimeValueResponse;
@@ -61,6 +62,15 @@ public class CurrencyService {
         this.currencyJsonGenerator = currencyJsonGenerator;
     }
 
+
+    public TimeValueResponse getFuzzyCurrencyHistory(String currencyCode, FuzzyTimeValueRequest request) {
+        LocalDateTime requestedTime = LocalDateTime.parse(request.getDateTime());
+        CurrencyHistory closestRecord = this.currencyHistoryRepository.findClosestCurrencyHistoryByCurrencyCode(currencyCode, requestedTime);
+        if (closestRecord == null) {
+            return null;
+        }
+        return new TimeValueResponse(closestRecord.getLastUpdated().toString(), closestRecord.getValue());
+    }
 
     public DisplayCurrencyResponse toCurrencyValueResponse(Currency currency) {
         if (currency == null) {
