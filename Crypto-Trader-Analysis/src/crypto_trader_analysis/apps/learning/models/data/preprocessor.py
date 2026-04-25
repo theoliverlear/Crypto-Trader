@@ -1,176 +1,386 @@
 # preprocessor.py
 
 import numpy as np
-from attr import attr
+import pandas as pd
+import joblib
+from attr import attr, Factory
 from attrs import define
+from dataclasses import dataclass
 from numpy.lib.stride_tricks import sliding_window_view
 from sklearn.preprocessing import MinMaxScaler
 from datetime import datetime
+
+
+# ---------------------------------------------------------------------------
+# Data container returned by the shared preparation step
+# ---------------------------------------------------------------------------
+
+# TODO: Move to its own file.
+
+@dataclass
+class PreparedData:
+    target_price: np.ndarray    # (T,) raw prices, float32
+    raw_returns: np.ndarray     # (T, F) pct-change features, float32
+    scaled_returns: np.ndarray  # (T, F) MinMax-scaled features
+    target_returns: np.ndarray  # (T,) pct-change of target, float32
+    total_rows: int             # T
+    num_features: int           # F
+
+
+# ---------------------------------------------------------------------------
+# Module-level utility functions
+# ---------------------------------------------------------------------------
+
+def _zscore_normalize(channel: np.ndarray) -> np.ndarray:
+    """Z-score normalize a (N, seq) array per-sample to avoid data leakage.
+
+    Each sample window is independently normalized to zero mean and unit
+    variance, ensuring no information from future samples leaks into past.
+    """
+    # Per-sample normalization: (N, 1)
+    mean = channel.mean(axis=1, keepdims=True)
+    std = channel.std(axis=1, keepdims=True)
+    std = np.where(std == 0, 1.0, std)
+    return ((channel - mean) / std).astype(np.float32)
+
+
+def build_sliding_windows_2d(
+    data: np.ndarray,
+    seq_len: int,
+    prefix_len: int,
+    offset: int,
+    num_samples: int,
+) -> np.ndarray:
+    """Build (N, seq_len, F) windows from a (T, F) array, aligned by offset."""
+    window_view = sliding_window_view(data[:prefix_len], window_shape=seq_len, axis=0)
+    window_view = window_view.transpose(0, 2, 1)  # (prefix_len - seq_len + 1, seq_len, F)
+    return window_view[offset: offset + num_samples]
+
+
+def build_sliding_windows_1d(
+    data: np.ndarray,
+    seq_len: int,
+    prefix_len: int,
+    offset: int,
+    num_samples: int,
+) -> np.ndarray:
+    """Build (N, seq_len) windows from a (T,) array, aligned by offset."""
+    window_view = sliding_window_view(data[:prefix_len], window_shape=seq_len, axis=0)
+    return window_view[offset: offset + num_samples].astype(np.float64)
+
+
+def build_downsampled_history_windows(
+    price_series: np.ndarray,
+    seq_len: int,
+    prefix_len: int,
+    offset: int,
+    num_samples: int,
+    stride: int = 5,
+) -> np.ndarray:
+    """
+    Build (N, seq_len) windows of downsampled price history.
+
+    Takes a 2×seq_len price window, strides by `stride`, and pads/trims
+    to exactly seq_len.  Left-padding uses each sample's own earliest
+    available price rather than the global first price.
+    """
+    # Build 2*seq_len windows first, then downsample per-sample
+    padded_len = 2 * seq_len
+    total_needed = prefix_len + padded_len  # max index we might need
+
+    # Build sliding windows of length 2*seq_len over available data
+    # For early samples, we pad on the left with the sample's own first price
+    results = np.empty((num_samples, seq_len), dtype=np.float64)
+
+    for i in range(num_samples):
+        # The endpoint for this sample
+        end_idx = offset + i + seq_len  # end of the seq_len window in price_series
+        # We want 2*seq_len of history ending at end_idx
+        start_idx = end_idx - padded_len
+
+        if start_idx >= 0 and end_idx <= prefix_len:
+            window = price_series[start_idx:end_idx]
+        else:
+            # Need left-padding
+            actual_start = max(0, start_idx)
+            actual_end = min(end_idx, prefix_len)
+            actual_data = price_series[actual_start:actual_end]
+            pad_needed = padded_len - len(actual_data)
+            if pad_needed > 0:
+                # Pad with the sample's own earliest available price
+                pad_val = actual_data[0] if len(actual_data) > 0 else 0.0
+                window = np.concatenate([np.full(pad_needed, pad_val), actual_data])
+            else:
+                window = actual_data[-padded_len:]
+
+        # Downsample by stride
+        downsampled = window[::stride]
+
+        # Pad or trim to seq_len
+        if len(downsampled) < seq_len:
+            pad = np.full(seq_len - len(downsampled), downsampled[-1] if len(downsampled) > 0 else 0.0)
+            downsampled = np.concatenate([downsampled, pad])
+        elif len(downsampled) > seq_len:
+            downsampled = downsampled[-seq_len:]
+
+        results[i] = downsampled
+
+    return results
+
+
+def compute_windowed_pearson_correlation(
+    feature_windows: np.ndarray,
+    target_windows: np.ndarray,
+    rolling_size: int = 5,
+) -> np.ndarray:
+    """
+    Rolling Pearson correlation between features and target within each
+    sample window.
+
+    Instead of computing a single scalar per sample (which collapses to a
+    constant across time steps), this computes a rolling correlation using
+    a sub-window of `rolling_size` steps, giving the LSTM a time-varying
+    correlation signal.
+
+    Parameters
+    ----------
+    feature_windows : (N, seq, F) raw return windows
+    target_windows  : (N, seq) target return windows
+    rolling_size    : size of the rolling sub-window for correlation
+
+    Returns
+    -------
+    correlation_channel : (N, seq) time-varying mean correlation
+    """
+    N, seq, F = feature_windows.shape
+    result = np.zeros((N, seq), dtype=np.float32)
+
+    # Clamp rolling_size to be at most seq
+    rs = min(rolling_size, seq)
+
+    for t in range(seq):
+        # Sub-window: [max(0, t-rs+1) : t+1]
+        start = max(0, t - rs + 1)
+        end = t + 1
+        window_len = end - start
+
+        if window_len < 2:
+            # Not enough points for correlation, use 0
+            result[:, t] = 0.0
+            continue
+
+        A = feature_windows[:, start:end, :]    # (N, window_len, F)
+        B = target_windows[:, start:end]         # (N, window_len)
+
+        A_mean = A.mean(axis=1, keepdims=True)   # (N, 1, F)
+        B_mean = B.mean(axis=1, keepdims=True)   # (N, 1)
+        A_c = A - A_mean                         # (N, window_len, F)
+        B_c = (B - B_mean)[..., None]            # (N, window_len, 1)
+
+        num = (A_c * B_c).sum(axis=1)            # (N, F)
+        den = (
+            np.sqrt((A_c ** 2).sum(axis=1) * (B_c ** 2).sum(axis=1))
+            + 1e-12
+        )
+        corr = np.clip(num / den, -1.0, 1.0)    # (N, F)
+        result[:, t] = corr.mean(axis=1).astype(np.float32)  # (N,)
+
+    return result
+
+
+def build_engineered_channels(
+    target_price_windows: np.ndarray,
+    downsampled_history: np.ndarray,
+    correlation_channel: np.ndarray,
+) -> np.ndarray:
+    """
+    Z-score-normalize price-based channels and stack into a (N, seq, 3) tensor.
+
+    No pre-multiplication by weights — the model learns the relative
+    importance of each channel through its own parameters.
+
+    Channel 0: recent price trend (z-scored per sample)
+    Channel 1: downsampled longer history (z-scored per sample)
+    Channel 2: cross-asset rolling correlation (already bounded [-1,1])
+    """
+    past_norm = _zscore_normalize(target_price_windows)
+    key_norm = _zscore_normalize(downsampled_history)
+    corr_norm = correlation_channel.astype(np.float32)
+
+    N, seq = target_price_windows.shape
+    if not (past_norm.shape == key_norm.shape == corr_norm.shape == (N, seq)):
+        raise ValueError(
+            f"Engineered channel shape mismatch: past{past_norm.shape} "
+            f"key{key_norm.shape} corr{corr_norm.shape} expected {(N, seq)}")
+
+    return np.stack([past_norm, key_norm, corr_norm], axis=-1)
+
+
+# ---------------------------------------------------------------------------
+# Main Preprocessor class
+# ---------------------------------------------------------------------------
 
 @define
 class Preprocessor:
     sequence_length: int = attr(default=10)
     future_steps: int = attr(default=1)
-    input_scaler: MinMaxScaler = attr(default=MinMaxScaler(feature_range=(0, 1)))
+    input_scaler: MinMaxScaler = attr(default=Factory(lambda: MinMaxScaler(feature_range=(0, 1))))
 
-    def transform(self, dataframe, target_currency):
-        import numpy as np
-        import pandas as pd
-        from numpy.lib.stride_tricks import sliding_window_view
+    # ------------------------------------------------------------------
+    # Shared preparation: validate, sort, pct_change, scale
+    # ------------------------------------------------------------------
 
+    def _prepare_dataframe(self, dataframe, target_currency: str) -> PreparedData:
+        """
+        Validate, sort chronologically, compute pct-change returns for
+        input features, and fit/apply the MinMaxScaler. Returns a
+        PreparedData container with all arrays needed downstream.
+        """
         if dataframe.empty:
             raise ValueError(
                 "Error: The dataframe is empty. No data retrieved from database.")
 
         target_column = f"{target_currency.lower()}_price"
 
-        # ---------- robust sort by datetime ----------
+        # --- robust sort by datetime ---
         df = dataframe.copy()
         if "last_updated" not in df.columns:
             raise ValueError("Missing 'last_updated' column.")
         if not np.issubdtype(df["last_updated"].dtype, np.datetime64):
-            df["last_updated"] = pd.to_datetime(df["last_updated"],
-                                                errors="coerce")
+            df["last_updated"] = pd.to_datetime(df["last_updated"], errors="coerce")
         df = df.sort_values("last_updated").reset_index(drop=True)
 
-        # ---------- select numeric columns ----------
+        # --- select numeric columns ---
         numeric_cols = df.select_dtypes(include=["number"]).columns
         if target_column not in numeric_cols:
             raise ValueError(
                 f"Missing target column '{target_column}' in numeric columns.")
         raw_input_cols = [c for c in numeric_cols if c != target_column]
 
-        # ---------- raw features as returns; keep target as price ----------
+        # --- raw features as returns; keep target as price ---
         df[raw_input_cols] = df[raw_input_cols].pct_change(fill_method=None)
         df = df.dropna(subset=raw_input_cols).reset_index(drop=True)
 
-        target_price = df[target_column].to_numpy(
-            dtype=np.float32)  # prices for engineered channels + label
-        raw_data = df[raw_input_cols].to_numpy(
-            dtype=np.float32)  # returns features
+        target_price = df[target_column].to_numpy(dtype=np.float32)
+        raw_returns = df[raw_input_cols].to_numpy(dtype=np.float32)
 
-        # Target returns for correlation channel (align with already-trimmed df)
-        tgt_ret = df[target_column].pct_change(fill_method=None).to_numpy(
-            dtype=np.float32)
-        if np.isnan(tgt_ret[
-                        0]):  # first diff is NaN; set to 0 (or drop a row earlier)
-            tgt_ret[0] = 0.0
+        # Target returns for correlation channel
+        target_returns = df[target_column].pct_change(fill_method=None).to_numpy(dtype=np.float32)
+        # Drop the first NaN and align all arrays
+        target_returns = target_returns[1:]
+        target_price = target_price[1:]
+        raw_returns = raw_returns[1:]
 
-        T = len(df)
+        T = len(target_price)
+        F = raw_returns.shape[1]
+
+        # --- scale ONLY the raw returns ---
+        if hasattr(self.input_scaler, "scale_"):
+            scaled_returns = self.input_scaler.transform(raw_returns)
+        else:
+            scaled_returns = self.input_scaler.fit_transform(raw_returns)
+
+        return PreparedData(
+            target_price=target_price,
+            raw_returns=raw_returns,
+            scaled_returns=scaled_returns,
+            target_returns=target_returns,
+            total_rows=T,
+            num_features=F,
+        )
+
+    # ------------------------------------------------------------------
+    # Build features for a single temporal scale
+    # ------------------------------------------------------------------
+
+    def _build_single_scale(
+        self,
+        data: PreparedData,
+        seq_len: int,
+        prefix_len: int,
+        offset: int,
+        num_samples: int,
+    ) -> np.ndarray:
+        """
+        Build the (N, seq_len, 3+F) feature tensor for one temporal scale.
+
+        Parameters
+        ----------
+        data        : PreparedData from _prepare_dataframe
+        seq_len     : lookback window size for this scale
+        prefix_len  : T - future_steps (windows must end before the label)
+        offset      : alignment offset (L - seq_len for multi-scale, 0 for single)
+        num_samples : N, number of output samples
+        """
+        # Raw return windows (unscaled) for Pearson correlation
+        unscaled_return_windows = build_sliding_windows_2d(
+            data.raw_returns, seq_len, prefix_len, offset, num_samples
+        ).astype(np.float64)  # (N, seq_len, F)
+
+        # Scaled return windows for final X
+        scaled_return_windows = build_sliding_windows_2d(
+            data.scaled_returns, seq_len, prefix_len, offset, num_samples
+        ).astype(np.float32)  # (N, seq_len, F)
+
+        # Target price windows for "past trends" channel
+        target_price_windows = build_sliding_windows_1d(
+            data.target_price, seq_len, prefix_len, offset, num_samples
+        )  # (N, seq_len)
+
+        # Target return windows for correlation
+        target_return_windows = build_sliding_windows_1d(
+            data.target_returns, seq_len, prefix_len, offset, num_samples
+        )  # (N, seq_len)
+
+        # Rolling Pearson correlation channel (time-varying)
+        correlation_channel = compute_windowed_pearson_correlation(
+            unscaled_return_windows, target_return_windows
+        )  # (N, seq_len)
+
+        # Downsampled history channel
+        downsampled_history = build_downsampled_history_windows(
+            data.target_price, seq_len, prefix_len, offset, num_samples
+        )  # (N, seq_len)
+
+        # Combine into 3 engineered channels (no pre-weighting)
+        engineered_channels = build_engineered_channels(
+            target_price_windows, downsampled_history, correlation_channel
+        )  # (N, seq_len, 3)
+
+        # Concatenate engineered channels with scaled raw returns
+        return np.concatenate(
+            [engineered_channels, scaled_return_windows], axis=-1
+        )  # (N, seq_len, 3+F)
+
+    # ------------------------------------------------------------------
+    # Public API: single-scale transform
+    # ------------------------------------------------------------------
+
+    def transform(self, dataframe, target_currency):
+        data = self._prepare_dataframe(dataframe, target_currency)
+
         seq = self.sequence_length
         fwd = self.future_steps
-        N = T - seq - fwd
+        N = data.total_rows - seq - fwd
         if N <= 0:
             raise ValueError("Not enough data to form a single sample.")
 
-        F = raw_data.shape[1]
+        prefix_len = data.total_rows - fwd
 
-        # ---------- scale ONLY the raw returns (preserve engineered weights) ----------
-        if hasattr(self.input_scaler, "scale_"):
-            raw_scaled_all = self.input_scaler.transform(raw_data)  # (T, F)
-        else:
-            raw_scaled_all = self.input_scaler.fit_transform(raw_data)
+        X = self._build_single_scale(data, seq, prefix_len, offset=0, num_samples=N)
+        y = data.target_price[seq + fwd: seq + fwd + N].astype(np.float32)
 
-        # ---------- build windows on the time axis (axis=0) ----------
-        prefix_len = T - fwd  # windows must end before the future label point
-
-        # Windows for raw returns (2D -> (N+1, F, seq) -> (N, seq, F))
-        raw_win_all = sliding_window_view(raw_data[:prefix_len],
-                                          window_shape=seq, axis=0)
-        raw_win = raw_win_all[:N].transpose(0, 2, 1).astype(
-            np.float64)  # (N, seq, F)
-
-        # Scaled raw windows for final X
-        raw_scaled_win_all = sliding_window_view(raw_scaled_all[:prefix_len],
-                                                 window_shape=seq, axis=0)
-        raw_scaled_win = raw_scaled_win_all[:N].transpose(0, 2, 1).astype(
-            np.float32)  # (N, seq, F)
-
-        # Target price windows for 'past' engineered channel (1D -> (N+1, seq) -> (N, seq))
-        tgt_price_win_all = sliding_window_view(target_price[:prefix_len],
-                                                window_shape=seq, axis=0)
-        tgt_price_win = tgt_price_win_all[:N].astype(np.float64)  # (N, seq)
-
-        # Target return windows for correlation (1D -> (N+1, seq) -> (N, seq))
-        tgt_ret_win_all = sliding_window_view(tgt_ret[:prefix_len],
-                                              window_shape=seq, axis=0)
-        tgt_ret_win = tgt_ret_win_all[:N].astype(np.float64)  # (N, seq)
-
-        # ---------- vectorized Pearson corr(raw_feature, target_return) per window ----------
-        A = raw_win  # (N, seq, F)
-        B = tgt_ret_win  # (N, seq)
-        A_mean = A.mean(axis=1, keepdims=True)  # (N, 1, F)
-        B_mean = B.mean(axis=1, keepdims=True)  # (N, 1)
-        A_c = A - A_mean  # (N, seq, F)
-        B_c = (B - B_mean)[..., None]  # (N, seq, 1)
-        if A_c.shape[:2] != B_c.shape[:2]:
-            raise ValueError(
-                f"Window shape mismatch: raw {A_c.shape} vs tgt {B_c.shape}")
-        num = (A_c * B_c).sum(axis=1)  # (N, F)
-        den = np.sqrt((A_c ** 2).sum(axis=1) * (B_c ** 2).sum(axis=1)) + 1e-12
-        corr = np.clip(num / den, -1.0, 1.0)  # (N, F)
-        corr_mean = corr.mean(axis=1).astype(np.float32)  # (N,)
-        corr_seq = np.repeat(corr_mean[:, None], seq, axis=1)  # (N, seq)
-
-        # ---------- engineered channels from PRICES (standardize, then weight) ----------
-        # 1) past_trends: direct from (N, seq)
-        past_all = tgt_price_win  # (N, seq)
-
-        # 2) key_timestamps: take last 2*seq prices with left padding to ensure availability
-        #    Build padded series so every sample has a 2*seq history aligned to the same endpoints.
-        pad_left = np.repeat(target_price[:1], seq)  # (seq,)
-        padded = np.concatenate(
-            [pad_left, target_price[:prefix_len]])  # (seq + prefix_len,)
-        two_seq_all = sliding_window_view(padded, window_shape=2 * seq,
-                                          axis=0)  # (prefix_len - seq + 1, 2*seq) == (N+1, 2*seq)
-        two_seq_all = two_seq_all[:N]  # (N, 2*seq), aligned with past windows
-
-        # stride by 5, then pad/trim to seq using edge replication
-        keys = two_seq_all[:, ::5]  # (N, ceil(2*seq/5))
-        if keys.shape[1] < seq:
-            pad = np.repeat(keys[:, -1:], seq - keys.shape[1], axis=1)
-            keys = np.concatenate([keys, pad], axis=1)
-        elif keys.shape[1] > seq:
-            keys = keys[:, -seq:]
-        key_all = keys.astype(np.float64)  # (N, seq)
-
-        # z-score per engineered channel across samples×time
-        def zscore_channel(C: np.ndarray) -> np.ndarray:
-            m = C.mean()
-            s = C.std()
-            if not np.isfinite(s) or s == 0.0:
-                s = 1.0
-            return ((C - m) / s).astype(np.float32)
-
-        past_z = zscore_channel(past_all)  # (N, seq)
-        key_z = zscore_channel(key_all)  # (N, seq)
-        corr_z = corr_seq.astype(np.float32)  # already bounded [-1,1]
-
-        # Apply your weights AFTER standardization; do not rescale later
-        past_w = 0.60 * past_z
-        key_w = 0.20 * key_z
-        corr_w = 0.20 * corr_z
-
-        # final shape check to avoid the stack error you saw
-        if not (past_w.shape == key_w.shape == corr_w.shape == (N, seq)):
-            raise ValueError(
-                f"Engineered channel shape mismatch: past{past_w.shape} key{key_w.shape} corr{corr_w.shape} expected {(N, seq)}")
-
-        triple = np.stack([past_w, key_w, corr_w], axis=-1)  # (N, seq, 3)
-
-        # ---------- assemble X and y ----------
-        X = np.concatenate([triple, raw_scaled_win], axis=-1)  # (N, seq, 3+F)
-        y = target_price[seq + fwd: seq + fwd + N].astype(
-            np.float32)  # future price label
-
-        # ---------- sanity ----------
+        # --- sanity ---
         if X.ndim != 3:
             raise ValueError(f"Shape mismatch in X => {X.shape}")
         if y.ndim != 1 or y.shape[0] != N:
-            raise ValueError(
-                f"Shape mismatch in y => {y.shape}, expected ({N},)")
+            raise ValueError(f"Shape mismatch in y => {y.shape}, expected ({N},)")
 
         return X, y, self.input_scaler
+
+    # ------------------------------------------------------------------
+    # Public API: multi-scale transform
+    # ------------------------------------------------------------------
 
     def transform_multi_scale_with_weights(
             self,
@@ -180,171 +390,50 @@ class Preprocessor:
             medium_seq: int = 50,
             long_seq: int = 150,
     ):
-        import numpy as np
-        import pandas as pd
-        from numpy.lib.stride_tricks import sliding_window_view
+        data = self._prepare_dataframe(dataframe, target_currency)
 
-        if dataframe.empty:
-            raise ValueError("Dataframe is empty. No data to process.")
-
-        target_col = f"{target_currency.lower()}_price"
-
-        # --- robust sort by datetime ---
-        df = dataframe.copy()
-        if "last_updated" not in df.columns:
-            raise ValueError("Missing 'last_updated' column.")
-        if not np.issubdtype(df["last_updated"].dtype, np.datetime64):
-            df["last_updated"] = pd.to_datetime(df["last_updated"],
-                                                errors="coerce")
-        df = df.sort_values("last_updated").reset_index(drop=True)
-
-        # --- numeric columns & returns for raw inputs ---
-        numeric_cols = df.select_dtypes(include=["number"]).columns
-        if target_col not in numeric_cols:
-            raise ValueError(f"Missing target column '{target_col}'.")
-        raw_input_cols = [c for c in numeric_cols if c != target_col]
-
-        # raw inputs as pct-change returns (your original choice)
-        df[raw_input_cols] = df[raw_input_cols].pct_change(fill_method=None)
-        df = df.dropna(subset=raw_input_cols).reset_index(drop=True)
-
-        target_price = df[target_col].to_numpy(
-            dtype=np.float32)  # prices for engineered channels + label
-        raw_data = df[raw_input_cols].to_numpy(
-            dtype=np.float32)  # returns features (T, F)
-
-        # target returns (for correlation)
-        tgt_ret = df[target_col].pct_change(fill_method=None).to_numpy(
-            dtype=np.float32)
-        if np.isnan(tgt_ret[0]):
-            tgt_ret[0] = 0.0
-
-        T = len(df)
         fwd = self.future_steps
         L = max(short_seq, medium_seq, long_seq)  # longest window
-        prefix_len = T - fwd
+        prefix_len = data.total_rows - fwd
         if prefix_len < L:
             raise ValueError(
                 "Not enough data to form short, medium, and long windows.")
 
         # Common N across all scales (align endpoints to the longest window)
-        # Endpoints i run from (L-1) .. (prefix_len-1) inclusive
         N = prefix_len - L + 1
-        F = raw_data.shape[1]
 
-        # --- scale ONLY raw returns once; reuse across scales ---
-        if hasattr(self.input_scaler, "scale_"):
-            raw_scaled_all = self.input_scaler.transform(raw_data)  # (T, F)
-        else:
-            raw_scaled_all = self.input_scaler.fit_transform(raw_data)
+        X_short = self._build_single_scale(data, short_seq, prefix_len, offset=L - short_seq, num_samples=N)
+        X_medium = self._build_single_scale(data, medium_seq, prefix_len, offset=L - medium_seq, num_samples=N)
+        X_long = self._build_single_scale(data, long_seq, prefix_len, offset=L - long_seq, num_samples=N)
 
-        # ---- helpers ----
-        def make_windows_2d(X, s):
-            """X:(T,F) -> (N, s, F) aligned to endpoints of longest window."""
-            w_all = sliding_window_view(X[:prefix_len], window_shape=s,
-                                        axis=0)  # (prefix_len - s + 1, F, s)
-            w_all = w_all.transpose(0, 2, 1)  # (.., s, F)
-            start = L - s
-            end = start + N
-            return w_all[start:end]  # (N, s, F)
+        # Labels aligned to endpoints
+        y = data.target_price[(L - 1) + fwd: (L - 1) + fwd + N].astype(np.float32)
 
-        def make_windows_1d(x, s):
-            """x:(T,) -> (N, s) aligned to endpoints of longest window."""
-            w_all = sliding_window_view(x[:prefix_len], window_shape=s,
-                                        axis=0)  # (prefix_len - s + 1, s)
-            start = L - s
-            end = start + N
-            return w_all[start:end].astype(np.float64)  # (N, s)
-
-        def make_key_windows(price_series, s, stride=5):
-            """
-            Build (N, 2*s) price windows with left padding so early samples have history,
-            then stride by 'stride' and pad/trim to length s.
-            """
-            pad_left = np.repeat(price_series[:1], s)  # (s,)
-            padded = np.concatenate(
-                [pad_left, price_series[:prefix_len]])  # (s + prefix_len,)
-            two_all = sliding_window_view(padded, window_shape=2 * s,
-                                          axis=0)  # (prefix_len - s + 1, 2*s)
-            start = L - s
-            end = start + N
-            two = two_all[start:end]  # (N, 2*s)
-            keys = two[:, ::stride]  # (N, ceil(2*s/stride))
-            if keys.shape[1] < s:
-                pad = np.repeat(keys[:, -1:], s - keys.shape[1], axis=1)
-                keys = np.concatenate([keys, pad], axis=1)
-            elif keys.shape[1] > s:
-                keys = keys[:, -s:]
-            return keys.astype(np.float64)  # (N, s)
-
-        def zscore_channel(C):
-            """C: (N, s) -> z-scored over samples×time (use TRAIN stats in your pipeline)."""
-            m = C.mean()
-            s = C.std()
-            if not np.isfinite(s) or s == 0.0:
-                s = 1.0
-            return ((C - m) / s).astype(np.float32)
-
-        def build_scale(s):
-            """Return X_s (N, s, 3+F) and re-use y later."""
-            # raw windows (unscaled for correlation), scaled windows for final X
-            raw_win = make_windows_2d(raw_data, s).astype(
-                np.float64)  # (N, s, F)
-            raw_scaled_win = make_windows_2d(raw_scaled_all, s).astype(
-                np.float32)  # (N, s, F)
-
-            # target windows
-            tgt_price_win = make_windows_1d(target_price, s)  # (N, s)
-            tgt_ret_win = make_windows_1d(tgt_ret, s)  # (N, s)
-
-            # vectorized Pearson corr(raw_feature, target_return) per window
-            A = raw_win  # (N, s, F)
-            B = tgt_ret_win  # (N, s)
-            A_mean = A.mean(axis=1, keepdims=True)  # (N,1,F)
-            B_mean = B.mean(axis=1, keepdims=True)  # (N,1)
-            A_c = A - A_mean  # (N,s,F)
-            B_c = (B - B_mean)[..., None]  # (N,s,1)
-            num = (A_c * B_c).sum(axis=1)  # (N,F)
-            den = np.sqrt(
-                (A_c ** 2).sum(axis=1) * (B_c ** 2).sum(axis=1)) + 1e-12
-            corr = np.clip(num / den, -1.0, 1.0)  # (N,F)
-            corr_mean = corr.mean(axis=1).astype(np.float32)  # (N,)
-            corr_seq = np.repeat(corr_mean[:, None], s, axis=1)  # (N, s)
-
-            # engineered channels from PRICES
-            past_all = tgt_price_win  # (N, s)
-            key_all = make_key_windows(target_price, s)  # (N, s)
-
-            # z-score engineered channels per scale, then apply weights
-            past_w = 0.60 * zscore_channel(past_all)
-            key_w = 0.20 * zscore_channel(key_all)
-            corr_w = 0.20 * corr_seq.astype(
-                np.float32)  # already bounded [-1,1]
-
-            # stack engineered channels and concat with scaled raw returns
-            triple = np.stack([past_w, key_w, corr_w], axis=-1)  # (N, s, 3)
-            X_s = np.concatenate([triple, raw_scaled_win],
-                                 axis=-1)  # (N, s, 3+F)
-            return X_s
-
-        # Build each scale
-        X_short = build_scale(short_seq)
-        X_medium = build_scale(medium_seq)
-        X_long = build_scale(long_seq)
-
-        # labels aligned to endpoints i in [L-1, prefix_len-1]
-        y = target_price[(L - 1) + fwd: (L - 1) + fwd + N].astype(
-            np.float32)  # (N,)
-
-        # sanity
+        # --- sanity ---
         if y.ndim != 1 or y.shape[0] != X_long.shape[0]:
             raise ValueError(
                 f"Label shape mismatch: y{y.shape} vs N{X_long.shape[0]}")
-        if not (X_short.shape[0] == X_medium.shape[0] == X_long.shape[
-            0] == N):
+        if not (X_short.shape[0] == X_medium.shape[0] == X_long.shape[0] == N):
             raise ValueError("N mismatch among scales.")
 
         return X_short, X_medium, X_long, y, self.input_scaler
+
+    # ------------------------------------------------------------------
+    # Scaler persistence (Issue #8 fix)
+    # ------------------------------------------------------------------
+
+    def save_scalers(self, path_prefix: str) -> None:
+        """Save the input_scaler to disk for later inference use."""
+        joblib.dump(self.input_scaler, f"{path_prefix}_input_scaler.pkl")
+
+    @classmethod
+    def load_scalers(cls, path_prefix: str) -> MinMaxScaler:
+        """Load a previously saved input_scaler from disk."""
+        return joblib.load(f"{path_prefix}_input_scaler.pkl")
+
+    # ------------------------------------------------------------------
+    # Utility
+    # ------------------------------------------------------------------
 
     @staticmethod
     def get_steps_from_now(future_time: datetime) -> int:
