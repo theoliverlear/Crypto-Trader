@@ -19,6 +19,7 @@ import { CurrencyDayPerformanceService } from '@http/currency/currency-day-perfo
 import { CurrencyHistoryService } from '@http/currency/currency-history.service';
 import { CurrencyFormatterService } from '@ui/currency-formatter.service';
 import { NumberTweenService } from '@ui/number-tween.service';
+import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
 import { ChartDisplayProperties, SparkPoint } from '@models/chart/types';
 import { DisplayCurrency, HistoryPoint, PerformanceRating } from '@models/currency/types';
 
@@ -69,6 +70,7 @@ export class DisplayCurrencyComponent
         private readonly dayPerformance: CurrencyDayPerformanceService,
         private readonly currencyValueWebSocket: CurrencyValueWsService,
         private readonly numberTween: NumberTweenService,
+        private readonly logger: CryptoTraderLoggerService,
     ) {}
 
     public webSocketSubscriptions: Record<string, Subscription> = {};
@@ -76,6 +78,7 @@ export class DisplayCurrencyComponent
      *
      */
     public initializeWebSockets(): void {
+        this.logger.debug(`Initializing WebSockets for ${this.currency?.currencyCode}`, 'DisplayCurrency');
         this.currencyValueWebSocket.connect();
         this.webSocketSubscriptions['currency-value'] = this.currencyValueWebSocket
             .getMessages()
@@ -83,9 +86,13 @@ export class DisplayCurrencyComponent
                 next: (message: string): void => {
                     const numeric: number = Number(message);
                     if (!isFinite(numeric)) {
+                        this.logger.warn(`Received non-numeric price update: ${message}`, 'DisplayCurrency');
                         return;
                     }
                     this.setCurrencyNumericPrice(numeric);
+                },
+                error: (error: unknown): void => {
+                    this.logger.error(`WebSocket error for ${this.currency?.currencyCode}: ${error}`, undefined, 'DisplayCurrency');
                 },
             });
     }
@@ -111,6 +118,7 @@ export class DisplayCurrencyComponent
      *
      */
     public ngOnInit(): void {
+        this.logger.info(`DisplayCurrencyComponent initialized for ${this.currency?.currencyCode}`, 'DisplayCurrency');
         this.initializeWebSockets();
     }
 
@@ -241,6 +249,7 @@ export class DisplayCurrencyComponent
      *
      */
     public ngOnDestroy(): void {
+        this.logger.debug(`Destroying DisplayCurrencyComponent for ${this.currency?.currencyCode}`, 'DisplayCurrency');
         this.destroy$.next();
         this.destroy$.complete();
 
@@ -266,6 +275,7 @@ export class DisplayCurrencyComponent
         this.dayPerformance
             .getCurrencyDayPerformance(this.currency.currencyCode)
             .subscribe((performance: PerformanceRating): void => {
+                this.logger.debug(`Performance updated for ${this.currency.currencyCode}: ${performance.changePercent}`, 'DisplayCurrency');
                 this.performance = performance;
             });
     }
@@ -280,9 +290,11 @@ export class DisplayCurrencyComponent
     }
 
     private listenForCurrencyHistory(): void {
+        this.logger.debug(`Fetching history for ${this.currency.currencyCode}`, 'DisplayCurrency');
         this.historyService
             .getHistory(this.currency.currencyCode, 24, 60)
             .subscribe((points: HistoryPoint[]): void => {
+                this.logger.debug(`History received for ${this.currency.currencyCode}: ${points.length} points`, 'DisplayCurrency');
                 this.history = points;
                 this.setChartProperties();
             });
