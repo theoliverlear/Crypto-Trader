@@ -37,17 +37,15 @@ describe('TokenStorageService', () => {
         });
         it('should emit null to observers on clear', (done) => {
             const seen: (string | null)[] = [];
-            const subscription: Subscription = tokenStorageService
-                .observe()
-                .subscribe((value) => {
-                    seen.push(value);
-                    if (seen.length === 2) {
-                        expect(seen[0]).toBeNull();
-                        expect(seen[1]).toBeNull();
-                        subscription.unsubscribe();
-                        done();
-                    }
-                });
+            const subscription: Subscription = tokenStorageService.observe().subscribe((value) => {
+                seen.push(value);
+                if (seen.length === 2) {
+                    expect(seen[0]).toBeNull();
+                    expect(seen[1]).toBeNull();
+                    subscription.unsubscribe();
+                    done();
+                }
+            });
             tokenStorageService.clear();
         });
     });
