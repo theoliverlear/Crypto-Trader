@@ -11,7 +11,7 @@ import { Component, Input } from '@angular/core';
     standalone: false,
 })
 export class AccordionComponent {
-    @Input() protected title: string = '';
-    @Input() protected description: string = '';
+    @Input() public title: string = '';
+    @Input() public description: string = '';
     constructor() {}
 }
