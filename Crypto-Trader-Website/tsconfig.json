@@ -19,7 +19,8 @@
             "@ui/*": ["angular/services/ui/*"],
             "@auth/*": ["angular/services/auth/*"],
             "@guards/*": ["angular/services/guard/*"],
-            "@models/*": ["angular/models/*"]
+            "@models/*": ["angular/models/*"],
+            "@modules/*": ["angular/modules/*"]
         },
         "module": "esnext",
         "target": "es6",
