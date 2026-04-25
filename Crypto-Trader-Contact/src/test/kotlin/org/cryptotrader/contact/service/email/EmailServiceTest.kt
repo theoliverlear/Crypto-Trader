@@ -70,7 +70,10 @@ class EmailServiceTest @Autowired constructor(
             assertThat(messages[0].content.toString().normalized()).isEqualTo(
                 getExpectedWelcomeHtml(
                     "Testing Crypto Trader",
-                    "Hello from Spring Boot in Kotlin".normalized()
+                    "Hello from Spring Boot in Kotlin".normalized(),
+                    "Test User",
+                    "Open app",
+                    "2026"
                 ).normalized()
             )
         }
