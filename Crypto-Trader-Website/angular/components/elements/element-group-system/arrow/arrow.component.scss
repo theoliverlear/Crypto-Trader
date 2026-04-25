@@ -1,5 +1,5 @@
 // arrow.component.scss
-@use '../../../styles/globals' as *;
+@use 'angular/styles/globals' as *;
 
 arrow {
     @include flex(center, center, column);
