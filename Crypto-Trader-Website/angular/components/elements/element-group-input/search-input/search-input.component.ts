@@ -1,7 +1,9 @@
 // search-input.component.ts
-import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
+
+import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
 
 /** A search input that filters options.
  *
@@ -12,7 +14,7 @@ import { map, Observable, startWith } from 'rxjs';
     styleUrls: ['./search-input.component.scss'],
     standalone: false,
 })
-export class SearchInputComponent {
+export class SearchInputComponent implements OnInit {
     protected searchControl: FormControl<string | null> = new FormControl<string | null>('');
     @Input() public options: string[] = [];
     protected filteredOptions: Observable<string[]> = this.searchControl.valueChanges.pipe(
@@ -29,7 +31,11 @@ export class SearchInputComponent {
     }
 
     @Output() public selectionChange: EventEmitter<string> = new EventEmitter<string>();
-    constructor() {}
+    constructor(private readonly logger: CryptoTraderLoggerService) {}
+
+    public ngOnInit(): void {
+        this.logger.debug('SearchInputComponent initialized', 'SearchInput');
+    }
 
     /** Emits the selection change event.
      *
@@ -38,6 +44,7 @@ export class SearchInputComponent {
         if (!this.searchControl.value) {
             return;
         }
+        this.logger.info(`Search selection made: ${this.searchControl.value}`, 'SearchInput');
         this.selectionChange.emit(this.searchControl.value);
     }
 
@@ -45,6 +52,7 @@ export class SearchInputComponent {
      *
      */
     protected clear(): void {
+        this.logger.debug('Clearing search input', 'SearchInput');
         this.searchControl.setValue('');
     }
 
