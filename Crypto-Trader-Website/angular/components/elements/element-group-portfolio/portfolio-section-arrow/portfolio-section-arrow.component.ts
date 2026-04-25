@@ -1,7 +1,7 @@
 // portfolio-section-arrow.component.ts
 import { Component, Input } from '@angular/core';
 
-import { ArrowDirection } from '../../arrow/models/ArrowDirection';
+import { ArrowDirection } from '@components/elements/element-group-system/arrow/models/ArrowDirection';
 import { PortfolioSectionArrowType } from './models/PortfolioSectionArrowType';
 
 @Component({
