@@ -2,8 +2,11 @@
     <auth-guard-popup />
 }
 <ss-head [title]="title" />
-<nav-bar />
+@if (showNavBar) {
+    <nav-bar />
+}
 <div class="scroll-container">
     <router-outlet></router-outlet>
     <ss-footer />
 </div>
+<chat-overlay />
