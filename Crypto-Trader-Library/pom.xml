@@ -70,6 +70,27 @@
         <module>Agent-Library/Agent-Infrastructure</module>
         <module>Engine-Library</module>
         <module>Engine-Library/Engine-Services</module>
+        <module>Logging-Library</module>
+        <module>Logging-Library/Logging-Config</module>
+        <module>Logging-Library/Logging-Infrastructure</module>
+        <module>Logging-Library/Logging-Events</module>
+        <module>Logging-Library/Logging-Models</module>
+        <module>Logging-Library/Logging-Communication</module>
+        <module>Logging-Library/Logging-Repositories</module>
+        <module>Logging-Library/Logging-Services</module>
+        <module>Health-Library</module>
+        <module>Health-Library/Health-Models</module>
+        <module>Health-Library/Health-Services</module>
+        <module>Health-Library/Health-Repositories</module>
+        <module>Health-Library/Health-Config</module>
+        <module>Health-Library/Health-Components</module>
+        <module>Health-Library/Health-Communication</module>
+        <module>Chat-Library/Chat-Communication</module>
+        <module>Chat-Library/Chat-Events</module>
+        <module>Chat-Library/Chat-Services</module>
+        <module>Chat-Library/Chat-Components</module>
+        <module>Chat-Library/Chat-Models</module>
+        <module>Chat-Library/Chat-Repositories</module>
     </modules>
 
     <artifactId>crypto-trader-library</artifactId>
