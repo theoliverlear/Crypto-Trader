@@ -1,5 +1,7 @@
 // terms-of-service.component.ts
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
+import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
 
 @Component({
     selector: 'terms-of-service',
@@ -7,6 +9,10 @@ import { Component } from '@angular/core';
     templateUrl: './terms-of-service.component.html',
     styleUrls: ['./terms-of-service.component.scss'],
 })
-export class TermsOfServiceComponent {
-    constructor() {}
+export class TermsOfServiceComponent implements OnInit {
+    constructor(private readonly logger: CryptoTraderLoggerService) {}
+
+    public ngOnInit(): void {
+        this.logger.info('TermsOfServiceComponent initialized.', 'TermsOfService');
+    }
 }
