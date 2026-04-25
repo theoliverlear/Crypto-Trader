@@ -15,7 +15,7 @@ class Prediction:
     percent_difference: float = attr(default=0.0)
     model_type: str = attr(default="lstm")
     num_rows: int = attr(default=10)
-    last_updated: datetime = attr(default=datetime.now())
+    last_updated: datetime = attr(factory=datetime.now)
 
     def to_json(self) -> dict:
         return {
@@ -24,8 +24,7 @@ class Prediction:
             "actualPrice": float(self.actual_price),
             "priceDifference": float(self.price_difference),
             "percentDifference": float(self.percent_difference),
-            "lastUpdated": self.last_updated.utcnow().strftime("%Y-%m-%dT%H:%M:%S"),
+            "lastUpdated": self.last_updated.strftime("%Y-%m-%dT%H:%M:%S"),
             "numRows": int(self.num_rows),
             "modelType": self.model_type
         }
-
