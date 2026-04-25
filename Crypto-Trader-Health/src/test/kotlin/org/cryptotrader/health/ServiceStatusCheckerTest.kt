@@ -4,7 +4,8 @@ import com.sun.net.httpserver.HttpContext
 import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
 import com.sun.net.httpserver.HttpServer
-import org.cryptotrader.health.models.CryptoTraderService
+import org.cryptotrader.health.library.model.CryptoTraderService
+import org.cryptotrader.health.library.model.isServiceAlive
 import org.cryptotrader.test.CryptoTraderTest
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
