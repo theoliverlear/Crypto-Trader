@@ -11,6 +11,7 @@ import { AuthService } from '@http/auth/auth.service';
 import { LoggedInService } from '@http/auth/status/logged-in.service';
 import { ConsoleCommandService } from '@http/console/console-command.service';
 import { TokenStorageService } from '@auth/token-storage.service';
+import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
 import { CryptoTraderConsole } from '@models/console/CryptoTraderConsole';
 
 /** A terminal component that displays the console.
@@ -32,11 +33,14 @@ export class TerminalComponent implements AfterViewInit, OnDestroy {
         private readonly authService: AuthService,
         private readonly loggedInService: LoggedInService,
         private readonly tokenStorageService: TokenStorageService,
+        private readonly log: CryptoTraderLoggerService,
     ) {}
     /** After the view is initialized, create the terminal and add a resize
      *  handler.
      */
     public ngAfterViewInit(): void {
+        this.log.setContext('Terminal');
+        this.log.info('Terminal component view initialized');
         this.terminal = new CryptoTraderConsole(
             this.host,
             this.consoleCommandService,
@@ -59,6 +63,7 @@ export class TerminalComponent implements AfterViewInit, OnDestroy {
      *
      */
     public ngOnDestroy(): void {
+        this.log.info('Terminal component destroyed');
         if (this.resizeHandler) {
             window.removeEventListener('resize', this.resizeHandler);
             this.resizeHandler = undefined;
