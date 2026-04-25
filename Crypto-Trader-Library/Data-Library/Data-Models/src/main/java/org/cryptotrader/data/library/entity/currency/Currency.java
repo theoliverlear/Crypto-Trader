@@ -122,6 +122,9 @@ public class Currency {
     }
     //-------------------------Get-Updated-Value------------------------------
     public double getUpdatedValue() {
+        if (this.urlPath == null) {
+            this.urlPath = this.getCoinbaseUrl();
+        }
         if (this.urlPath.equals(TESTING_URL)) {
             return this.value;
         }
