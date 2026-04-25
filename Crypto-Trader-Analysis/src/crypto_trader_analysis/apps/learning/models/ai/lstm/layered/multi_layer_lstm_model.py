@@ -15,6 +15,7 @@ from src.crypto_trader_analysis.apps.learning.models.ai.lstm.layered.multi_layer
 import os
 from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 
+MAX_RETRIES = 2
 
 
 @define
@@ -23,6 +24,7 @@ class MultiLayerLstmModel(MultiLayerBaseModel):
         self.initialize_model()
 
     def initialize_model(self):
+        import tensorflow as tf
         if self.dimension is None:
             raise ValueError(
                 "Please specify 'dimension' for MultiLayerLstmModel.")
@@ -44,7 +46,8 @@ class MultiLayerLstmModel(MultiLayerBaseModel):
             outputs=final_model,
             name="MultiLayerLstmModel"
         )
-        self.model.compile(optimizer="adam", loss="mean_squared_error")
+        self.model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
+                           loss="mean_squared_error")
         self.log_model_summary()
 
 
@@ -53,10 +56,10 @@ class MultiLayerLstmModel(MultiLayerBaseModel):
     def combine_model(model_input):
         lstm = LSTM(150, return_sequences=True,
                     recurrent_activation="sigmoid", use_bias=True,
-                    unroll=True)(model_input)
+                    unroll=False)(model_input)
         lstm = Dropout(0.2)(lstm)
         lstm = LSTM(100, recurrent_activation="sigmoid", use_bias=True,
-                    unroll=True)(lstm)
+                    unroll=False)(lstm)
         lstm = Dense(50, activation="relu")(lstm)
         return lstm
 
@@ -75,7 +78,8 @@ class MultiLayerLstmModel(MultiLayerBaseModel):
         )
 
     def train(self, dataset,
-              epochs=20, batch_size=32, patience=5):
+              val_dataset=None,
+              epochs=20, patience=5):
         from src.crypto_trader_analysis.apps.learning.models.ai.model_retriever import MULTI_LAYER_MODEL_DIRECTORY
         checkpoint_dir = os.path.join(MULTI_LAYER_MODEL_DIRECTORY,
                                       "checkpoints")
@@ -83,34 +87,35 @@ class MultiLayerLstmModel(MultiLayerBaseModel):
         checkpoint_path = os.path.join(checkpoint_dir,
                                        f"{self.target_currency}_checkpoint.keras")
 
+        monitor = "val_loss" if val_dataset is not None else "loss"
         callbacks = [
-            EarlyStopping(monitor="loss", patience=patience,
+            EarlyStopping(monitor=monitor, patience=patience,
                           restore_best_weights=True),
-            ModelCheckpoint(filepath=checkpoint_path, monitor="loss",
+            ModelCheckpoint(filepath=checkpoint_path, monitor=monitor,
                             save_best_only=True),
-            ReduceLROnPlateau(monitor='loss', factor=0.5, patience=3,
+            ReduceLROnPlateau(monitor=monitor, factor=0.5, patience=3,
                               min_lr=1e-6),
             MultiLayerLstmModel.get_tensorboard_callback(self.target_currency)
         ]
-        while True:
+        for attempt in range(MAX_RETRIES + 1):
             try:
                 return self.model.fit(dataset,
                                epochs=epochs,
-                               batch_size=batch_size,
                                verbose=1,
+                               validation_data=val_dataset,
                                callbacks=callbacks)
             except Exception as exception:
                 from src.crypto_trader_analysis.apps.learning.models.ai.model_type import ModelType
                 from src.crypto_trader_analysis.apps.learning.models.ai.model_retriever import model_exists, \
                     delete_model
 
-                if "Input 0 of layer" in str(exception):
-                    logging.info("Model dimension mismatch. Re-training model.")
+                if attempt < MAX_RETRIES and "Input 0 of layer" in str(exception):
+                    logging.warning(f"Model dimension mismatch (attempt {attempt + 1}). Re-initializing model.")
                     multi_model_exists: bool = model_exists(self.target_currency,
-                                                      ModelType.LSTM)
+                                                      ModelType.MULTI_LAYER)
                     if multi_model_exists:
                         delete_model(self.target_currency,
-                                     ModelType.LSTM)
+                                     ModelType.MULTI_LAYER)
                     self.initialize_model()
                 else:
                     raise
