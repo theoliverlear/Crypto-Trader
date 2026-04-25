@@ -1,0 +1,23 @@
+<!-- services-promo.component.html -->
+<ng-container>
+    <section class="services-section">
+        <scroll-reveal [threshold]="0.2">
+            <div class="section-content">
+                <div class="section-header">
+                    <eyebrow-label [text]="'PLATFORM BACKBONE'"/>
+                    <ss-title [text]="'Services That Power Everything'"
+                              [tagType]="TagType.H2"/>
+                    <subtitle [text]="'Authentication, orchestration, messaging, and AI — the services every module depends on.'"
+                              [tagType]="TagType.H5"/>
+                </div>
+
+                <div class="services-grid">
+                    @for (module of serviceModules; track module.name) {
+                        <module-card [module]="module"
+                                     [theme]="'light'"/>
+                    }
+                </div>
+            </div>
+        </scroll-reveal>
+    </section>
+</ng-container>

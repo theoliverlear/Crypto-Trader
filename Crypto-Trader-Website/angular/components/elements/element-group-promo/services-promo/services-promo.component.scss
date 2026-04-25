@@ -1,0 +1,50 @@
+@use '../../../../styles/globals' as *;
+@use '../../../../styles/gradients/global_gradient_placeholders' as *;
+@use '../../../../styles/gradients/global_gradient_variables' as *;
+@use '../../../../styles/gradients/global_gradient_mixins' as *;
+
+services-promo {
+    width: 100%;
+
+    .section-content {
+        width: $eighty-percent;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: $three-percent 0;
+    }
+
+    .section-header {
+        @include section-header-centered($midnight-navy, 0.8);
+
+        eyebrow-label {
+            color: $teal-green;
+        }
+
+        ss-title h2 {
+            @include gradient-text($regular-logo);
+        }
+
+        subtitle {
+            color: $blue-gray;
+        }
+    }
+
+    .services-section {
+        width: 100%;
+        background:
+            linear-gradient(
+                180deg,
+                $ivory-white 0%,
+                $pure-white 40%,
+                add-alpha($ocean-blue, 0.06) 100%
+            );
+        border-top: 3px solid add-alpha($ocean-blue, 0.3);
+        padding: $two-percent 0;
+    }
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: $one-percent;
+    }
+}
