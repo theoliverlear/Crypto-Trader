@@ -1,7 +1,8 @@
 // auth-console-login-section.component.ts
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 import { ButtonText, ElementSize } from '@theoliverlear/angular-suite';
+import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
 import { LoginCredentials } from '@models/auth/LoginCredentials';
 
 import { AuthInputType } from '../auth-input/models/AuthInputType';
@@ -15,13 +16,19 @@ import { AuthInputType } from '../auth-input/models/AuthInputType';
     templateUrl: './auth-console-login-section.component.html',
     styleUrls: ['./auth-console-login-section.component.scss'],
 })
-export class AuthConsoleLoginSectionComponent {
+export class AuthConsoleLoginSectionComponent implements OnInit {
     protected loginCredentials: LoginCredentials = new LoginCredentials();
     @Output() protected loginButtonClicked: EventEmitter<LoginCredentials> =
         new EventEmitter<LoginCredentials>();
-    constructor() {}
+    constructor(private readonly log: CryptoTraderLoggerService) {}
+
+    public ngOnInit(): void {
+        this.log.setContext('AuthConsoleLogin');
+        this.log.info('Auth console login section initialized');
+    }
 
     protected emitFields(): void {
+        this.log.info('Login button clicked, emitting credentials');
         this.loginButtonClicked.emit(this.loginCredentials);
     }
 
