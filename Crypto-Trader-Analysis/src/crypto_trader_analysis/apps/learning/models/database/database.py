@@ -1,9 +1,10 @@
 # database.py
 import io
 import logging
+import tempfile
 import time
 import traceback
-from os import getenv
+from django.conf import settings
 
 import pandas as pd
 from attr import attr
@@ -18,11 +19,11 @@ from src.crypto_trader_analysis.apps.learning.models.currency_json_generator imp
 @define
 class Database:
     #=============================-Variables-=================================
-    user: str = attr(default=getenv("PSQL_USER"))
-    password: str = attr(default=getenv("PSQL_PW"))
-    name: str = attr(default="crypto_trader")
-    port: str = attr(default="5432")
-    host: str = attr(default=getenv("PSQL_HOST"))
+    user: str = attr(factory=lambda: settings.DATABASES['default']['USER'])
+    password: str = attr(factory=lambda: settings.DATABASES['default']['PASSWORD'])
+    name: str = attr(factory=lambda: settings.DATABASES['default']['NAME'])
+    port: str = attr(factory=lambda: settings.DATABASES['default']['PORT'])
+    host: str = attr(factory=lambda: settings.DATABASES['default']['HOST'])
     connection = attr(default=None)
     engine: Engine = attr(default=None)
 
@@ -161,17 +162,27 @@ class Database:
 
     #----------------------Execute-Copy-To-Dataframe--------------------------
     def _execute_copy_to_dataframe(self, compiled_sql: str) -> pd.DataFrame:
-        buffer: io.StringIO = io.StringIO()
         raw_connection: PoolProxiedConnection = self.engine.raw_connection()
         try:
             with raw_connection.cursor() as cursor:
                 # Set transaction to read-only for the session
                 cursor.execute("SET TRANSACTION ISOLATION LEVEL READ COMMITTED READ ONLY")
+                cursor.execute("SET statement_timeout = '600s'")
                 formatted_query: str = compiled_sql.replace(';', '')
                 copy_command: str = f"COPY ({formatted_query}) TO STDOUT WITH (FORMAT CSV, HEADER)"
-                cursor.copy_expert(copy_command, buffer)
-            buffer.seek(0)
-            return pd.read_csv(buffer)
+                # 20 GB in memory before spilling to disk
+                with tempfile.SpooledTemporaryFile(
+                    max_size=20 * 1024 * 1024 * 1024,
+                    mode='w+b'
+                ) as buffer:
+                    cursor.copy_expert(copy_command, buffer)
+                    buffer.seek(0)
+                    try:
+                        return pd.read_csv(buffer, engine='c')
+                    except pd.errors.ParserError:
+                        logging.warning("C parser failed, retrying with Python engine")
+                        buffer.seek(0)
+                        return pd.read_csv(buffer, engine='python')
         except Exception as exception:
             logging.error(f"Error executing copy to dataframe: {str(exception)}")
             logging.debug(f"Compiled SQL: {compiled_sql}")
@@ -282,4 +293,5 @@ class Database:
 
     #--------------------------------Close------------------------------------
     def close(self) -> None:
-        self.connection.close()
+        if self.engine is not None:
+            self.engine.dispose()
