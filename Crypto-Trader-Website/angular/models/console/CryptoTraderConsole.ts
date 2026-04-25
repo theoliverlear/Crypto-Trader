@@ -2,12 +2,10 @@ import { type ElementRef } from '@angular/core';
 import { FitAddon } from '@xterm/addon-fit';
 import { WebLinksAddon } from '@xterm/addon-web-links';
 import { type Terminal } from '@xterm/xterm';
-import { catchError, concatMap, Observable, of, Subject, tap } from 'rxjs';
-
-
+import { catchError, concatMap, type Observable, of, Subject, tap } from 'rxjs';
 
 import { AuthType, HashPasswordService } from '@theoliverlear/angular-suite';
-import { defaultTerminal } from '@assets/consoleAssets';
+import { createTerminal } from '@assets/consoleAssets';
 import { type AuthService } from '@http/auth/auth.service';
 import { type LoggedInService } from '@http/auth/status/logged-in.service';
 import { type ConsoleCommandService } from '@http/console/console-command.service';
@@ -17,7 +15,9 @@ import { type AuthResponse, type LoginRequest, type SignupRequest } from '../aut
 import { ConsoleMode } from './ConsoleMode';
 import { LocalConsoleCommand } from './LocalConsoleCommand';
 
-
+/** The model for Crypto Trader Console functionality.
+ *
+ */
 export class CryptoTraderConsole {
     private readonly _terminal: Terminal;
     private readonly _fit: FitAddon;
@@ -53,7 +53,7 @@ export class CryptoTraderConsole {
         tokenStorageService: TokenStorageService,
     ) {
         this._elementRef = elementRef;
-        this._terminal = defaultTerminal;
+        this._terminal = createTerminal();
         this._fit = new FitAddon();
         this._links = new WebLinksAddon();
         this._consoleCommandService = consoleCommandService;
@@ -88,10 +88,7 @@ export class CryptoTraderConsole {
         let welcomeText: string = CryptoTraderConsole.getBoldText(
             'Welcome to the Crypto Trader console!',
         );
-        welcomeText = CryptoTraderConsole.getColoredText(
-            welcomeText,
-            CryptoTraderConsole.CYAN,
-        );
+        welcomeText = CryptoTraderConsole.getColoredText(welcomeText, CryptoTraderConsole.CYAN);
         this._terminal.writeln(welcomeText);
         const helpText: string = 'Type "help" to see commands.';
         this._terminal.writeln(helpText);
@@ -101,6 +98,7 @@ export class CryptoTraderConsole {
     private initReactivePipeline(): void {
         this._command$
             .pipe(
+                // TODO: Replace object literal with type.
                 concatMap((line: string): Observable<{ consoleOutput: string }> => {
                     if (!line) {
                         if (this.isLocalCommand(line)) {
@@ -112,20 +110,14 @@ export class CryptoTraderConsole {
                         this.execute(line);
                         return of({ consoleOutput: '' });
                     }
-                    return this._consoleCommandService
-                        .executeCommand({ command: line })
-                        .pipe(
-                            catchError(
-                                (
-                                    err,
-                                ): Observable<{ consoleOutput: string }> => {
-                                    this._terminal.writeln(
-                                        `${CryptoTraderConsole.RED}Error executing command: ${err?.message ?? err}${CryptoTraderConsole.RESET}`,
-                                    );
-                                    return of({ consoleOutput: '' });
-                                },
-                            ),
-                        );
+                    return this._consoleCommandService.executeCommand({ commandText: line }).pipe(
+                        catchError((err): Observable<{ consoleOutput: string }> => {
+                            this._terminal.writeln(
+                                `${CryptoTraderConsole.RED}Error executing command: ${err?.message ?? err}${CryptoTraderConsole.RESET}`,
+                            );
+                            return of({ consoleOutput: '' });
+                        }),
+                    );
                 }),
                 tap((response): void => {
                     if (response.consoleOutput) {
@@ -186,6 +178,9 @@ export class CryptoTraderConsole {
         );
     }
 
+    /** Handles the logic of confirming password during sign-up flow.
+     *
+     */
     handleAuthConfirmPasswordEnter(): void {
         const confirmPassword: string = this._buffer;
         this._buffer = '';
@@ -297,8 +292,11 @@ export class CryptoTraderConsole {
         this.redrawPromptAndBuffer();
     }
 
+    /** Utility for removing excess whitespace for input validation.
+     *
+     */
     removeTrailingSpaces(): void {
-        this._buffer = this._buffer.trimEnd();
+        this._buffer = this._buffer.trim();
     }
 
     private showPrompt(): void {
@@ -325,6 +323,10 @@ export class CryptoTraderConsole {
         }
     }
 
+    /** Executes the authorization via CLI.
+     *
+     * @param args
+     */
     handleAuthFlow(args: string[]): void {
         const containsLoginArg: boolean = args.includes('--login');
         const containsSignupArg: boolean = args.includes('--signup');
@@ -365,10 +367,7 @@ export class CryptoTraderConsole {
         const line: string = this._buffer.trim();
 
         if (line.length > 0) {
-            if (
-                this._history.length === 0 ||
-                this._history[this._history.length - 1] !== line
-            ) {
+            if (this._history.length === 0 || this._history[this._history.length - 1] !== line) {
                 this._history.push(line);
             }
             this._historyIndex = this._history.length;
@@ -383,9 +382,7 @@ export class CryptoTraderConsole {
         this._buffer = '';
 
         if (!email) {
-            this._terminal.writeln(
-                'Email cannot be empty. Try again or type Ctrl+C to cancel.',
-            );
+            this._terminal.writeln('Email cannot be empty. Try again or type Ctrl+C to cancel.');
             this._terminal.write('Email: ');
             return;
         }
@@ -454,8 +451,7 @@ export class CryptoTraderConsole {
                     this._loggedInService.isLoggedIn().subscribe();
                 }),
                 catchError((err): Observable<null> => {
-                    const message =
-                        err?.error?.message ?? err?.message ?? 'Unknown error';
+                    const message = err?.error?.message ?? err?.message ?? 'Unknown error';
                     this._terminal.writeln(
                         `${CryptoTraderConsole.RED}Logout failed: ${message}${CryptoTraderConsole.RESET}`,
                     );
@@ -492,8 +488,7 @@ export class CryptoTraderConsole {
                     }
                 }),
                 catchError((err): Observable<null> => {
-                    const message =
-                        err?.error?.message ?? err?.message ?? 'Unknown error';
+                    const message = err?.error?.message ?? err?.message ?? 'Unknown error';
                     this._terminal.writeln(
                         `${CryptoTraderConsole.RED}Authentication failed: ${message}${CryptoTraderConsole.RESET}`,
                     );
@@ -533,8 +528,7 @@ export class CryptoTraderConsole {
                     }
                 }),
                 catchError((err): Observable<null> => {
-                    const message =
-                        err?.error?.message ?? err?.message ?? 'Unknown error';
+                    const message = err?.error?.message ?? err?.message ?? 'Unknown error';
                     this._terminal.writeln(
                         `${CryptoTraderConsole.RED}Authentication failed: ${message}${CryptoTraderConsole.RESET}`,
                     );
@@ -549,15 +543,25 @@ export class CryptoTraderConsole {
             });
     }
 
+    /** Wrapper for fitting terminal to proper dimensions.
+     *
+     */
     public fit(): void {
         this._fit.fit();
     }
 
+    /** Detects whether commands should be executed on client or server.
+     *
+     * @param command The command to execute.
+     */
     public isLocalCommand(command: string): boolean {
         const [firstCommand, ...args] = command.split(/\s+/);
         return LocalConsoleCommand.isLocalCommand(firstCommand);
     }
 
+    /** Wrapper for destroying the terminal.
+     *
+     */
     public dispose(): void {
         this._terminal.dispose();
     }
