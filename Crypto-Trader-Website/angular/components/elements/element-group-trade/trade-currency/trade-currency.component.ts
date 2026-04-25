@@ -18,6 +18,7 @@ import { CurrencyValueWsService } from '@ws/currency-value-ws.service';
 import { CurrencyFormatterService } from '@ui/currency-formatter.service';
 import { CurrencyImageService } from '@ui/currency-image.service';
 import { NumberTweenService } from '@ui/number-tween.service';
+import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
 import { Currency, DisplayCurrency } from '@models/currency/types';
 
 @Component({
@@ -42,10 +43,12 @@ class TradeCurrencyComponent
         private currencyValueWebSocket: CurrencyValueWsService,
         private currencyFormatter: CurrencyFormatterService,
         private numberTween: NumberTweenService,
+        private readonly logger: CryptoTraderLoggerService,
     ) {}
 
     webSocketSubscriptions: Record<string, Subscription> = {};
     initializeWebSockets(): void {
+        this.logger.debug(`Initializing WebSockets for ${this.selectedCurrency?.currencyCode}`, 'TradeCurrency');
         this.currencyValueWebSocket.connect();
         this.webSocketSubscriptions['currency-value'] =
             this.currencyValueWebSocket.getMessages().subscribe({
@@ -55,9 +58,13 @@ class TradeCurrencyComponent
                     }
                     const numeric: number = Number(message);
                     if (!isFinite(numeric)) {
+                        this.logger.warn(`Received non-numeric price update: ${message}`, 'TradeCurrency');
                         return;
                     }
                     this.setCurrencyNumericPrice(numeric);
+                },
+                error: (error) => {
+                    this.logger.error(`WebSocket error for ${this.selectedCurrency?.currencyCode}`, error, 'TradeCurrency');
                 },
             });
     }
@@ -132,6 +139,7 @@ class TradeCurrencyComponent
     }
 
     ngOnInit() {
+        this.logger.info(`TradeCurrencyComponent initialized for ${this.selectedCurrency?.currencyCode}`, 'TradeCurrency');
         this.currencyPrice = this.currencyFormatter.formatCurrency(
             this.selectedCurrency.value,
         );
@@ -159,6 +167,7 @@ class TradeCurrencyComponent
         return `/assets/cryptofont/${currencyCode.toLowerCase()}.svg`;
     }
     ngOnDestroy(): void {
+        this.logger.debug(`Destroying TradeCurrencyComponent for ${this.selectedCurrency?.currencyCode}`, 'TradeCurrency');
         this.destroy$.next();
         this.destroy$.complete();
 
