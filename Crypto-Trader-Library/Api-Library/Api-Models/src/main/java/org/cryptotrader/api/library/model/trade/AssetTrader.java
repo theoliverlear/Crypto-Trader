@@ -11,10 +11,19 @@ import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset;
 public class AssetTrader implements TradingEngine {
     //============================-Variables-=================================
     protected PortfolioAsset asset;
+    protected double minProfit;
+    private static final double DEFAULT_MIN_PROFIT = 0.01;
     //===========================-Constructors-===============================
     public AssetTrader(PortfolioAsset asset) {
-        this.asset = asset;
+        this(asset, DEFAULT_MIN_PROFIT);
     }
+
+    public AssetTrader(PortfolioAsset asset, double minProfit) {
+        this.asset = asset;
+        this.minProfit = minProfit;
+    }
+
+
     //=============================-Methods-==================================
 
     //-------------------------------Trade------------------------------------
