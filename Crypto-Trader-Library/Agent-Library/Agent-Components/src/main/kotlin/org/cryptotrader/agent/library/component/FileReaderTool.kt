@@ -3,11 +3,16 @@ package org.cryptotrader.agent.library.component
 import info.debatty.java.stringsimilarity.Levenshtein
 import org.cryptotrader.agent.library.communication.response.DirectoryListingResponse
 import org.cryptotrader.agent.library.communication.response.FileContentResponse
+import org.cryptotrader.agent.library.communication.response.FileSearchResponse
 import org.cryptotrader.agent.library.config.AgentConstraintsProperties
 import org.cryptotrader.agent.library.model.FileMetadata
+import org.cryptotrader.agent.library.model.FileSearchResult
+import org.cryptotrader.security.library.infrastructure.annotation.UserRestricted
+import org.cryptotrader.api.library.entity.user.UserRoleTier
 import org.springaicommunity.mcp.annotation.McpToolParam
 import org.springframework.ai.tool.annotation.Tool
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import java.io.IOException
 import java.nio.charset.StandardCharsets
@@ -15,9 +20,6 @@ import java.nio.file.*
 import java.nio.file.attribute.BasicFileAttributes
 import kotlin.io.path.*
 
-// TODO: Make file searching/reading for sensitive files only accessible for
-//       super-admin users. Perhaps annotations like @Admin, @SuperAdmin,
-//       @User, etc would easily manage this across tools.
 @Component
 class FileReaderTool @Autowired constructor(
     private val properties: AgentConstraintsProperties
@@ -28,6 +30,7 @@ class FileReaderTool @Autowired constructor(
     }
 
     @Tool(description = "Read a UTF-8 text file within the project directory. Supports line-based reading and safety limits.")
+    @UserRestricted
     fun readFile(
         @McpToolParam(description = "The relative path to the file from the project root")
         relativePath: String,
@@ -40,6 +43,11 @@ class FileReaderTool @Autowired constructor(
     ): FileContentResponse {
         val path: Path = this.resolveAndVerify(relativePath)
         require(path.isRegularFile()) { "File not found or not a regular file: $relativePath" }
+
+        // Enforce SuperAdmin for sensitive files
+        if (isSensitive(path) && !isSuperAdmin()) {
+            throw SecurityException("Access to sensitive file '$relativePath' is restricted to SuperAdmins.")
+        }
 
         require(!this.looksLikeBinaryFile(path)) { "File appears to be binary. Binary files are not supported." }
 
@@ -116,6 +124,81 @@ class FileReaderTool @Autowired constructor(
         return DirectoryListingResponse(relativePath, entries)
     }
 
+    @Tool(description = "Search for text within files in the project. Example: searchInFiles(\"TODO\", \"**/*.kt\")")
+    @UserRestricted
+    fun searchTextInFiles(
+        @McpToolParam(description = "The text to search for within file contents")
+        query: String,
+        @McpToolParam(description = "The glob pattern to filter files (e.g., \"**/*.kt\")")
+        glob: String = "**/*",
+        @McpToolParam(description = "Number of surrounding lines to show for each match (default = 0)")
+        padding: Int = 0
+    ): FileSearchResponse {
+        val results: MutableList<FileSearchResult> = mutableListOf()
+        val ignoredNames: Set<String> = properties.ignoredDirectories
+        val pathMatcher: PathMatcher = FileSystems.getDefault().getPathMatcher("glob:$glob")
+        val isSuperAdmin: Boolean = this.isSuperAdmin()
+
+        Files.walkFileTree(this.allowedRoot, object : SimpleFileVisitor<Path>() {
+            override fun preVisitDirectory(dir: Path, attrs: BasicFileAttributes): FileVisitResult {
+                if (dir != allowedRoot && ignoredNames.contains(dir.fileName.toString())) {
+                    return FileVisitResult.SKIP_SUBTREE
+                }
+                return FileVisitResult.CONTINUE
+            }
+
+            override fun visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult {
+                val relPath: Path = allowedRoot.relativize(file)
+                if (pathMatcher.matches(relPath) && !looksLikeBinaryFile(file)) {
+                    if (isSensitive(file) && !isSuperAdmin) {
+                        return FileVisitResult.CONTINUE
+                    }
+                    try {
+                        val lines: List<String> = file.useLines { it.toList() }
+                        val matchingLineIndices = lines.indices.filter { i -> lines[i].contains(query, ignoreCase = true) }
+
+                        if (matchingLineIndices.isNotEmpty()) {
+                            val contextBlocks = mutableListOf<String>()
+                            if (padding <= 0) {
+                                for (i in matchingLineIndices) {
+                                    contextBlocks.add("Line ${i + 1}: ${lines[i]}")
+                                }
+                            } else {
+                                // Merge ranges for padding
+                                val ranges = matchingLineIndices.map { (it - padding).coerceAtLeast(0)..(it + padding).coerceAtMost(lines.size - 1) }
+                                val mergedRanges = mutableListOf<IntRange>()
+                                if (ranges.isNotEmpty()) {
+                                    var current = ranges[0]
+                                    for (i in 1 until ranges.size) {
+                                        val next = ranges[i]
+                                        if (next.first <= current.last + 1) {
+                                            current = current.first..maxOf(current.last, next.last)
+                                        } else {
+                                            mergedRanges.add(current)
+                                            current = next
+                                        }
+                                    }
+                                    mergedRanges.add(current)
+                                }
+
+                                for (range in mergedRanges) {
+                                    val block = range.joinToString("\n") { i -> "Line ${i + 1}: ${lines[i]}" }
+                                    contextBlocks.add(block)
+                                }
+                            }
+                            results.add(FileSearchResult(relPath.toString(), contextBlocks))
+                        }
+                    } catch (_: Exception) {
+                        // Skip files that can't be read
+                    }
+                }
+                return FileVisitResult.CONTINUE
+            }
+        })
+
+        return FileSearchResponse(results)
+    }
+
     @Tool(description = "Search for files by name or glob pattern within the project. Example: searchFiles(\"Toolkit\", \"*.kt\")")
     fun searchFiles(
         @McpToolParam(description = "The text to search for in the file name")
@@ -149,6 +232,7 @@ class FileReaderTool @Autowired constructor(
     }
 
     @Tool(description = "Read multiple files at once.")
+    @UserRestricted
     fun readManyFiles(
         @McpToolParam(description = "A list of relative paths to the files")
         paths: List<String>
@@ -156,6 +240,8 @@ class FileReaderTool @Autowired constructor(
         return paths.associateWith { path ->
             try {
                 this.readFile(path)
+            } catch (exception: SecurityException) {
+                throw exception
             } catch (_: Exception) {
                 throw IllegalArgumentException("Error reading file: $path")
             }
@@ -256,5 +342,20 @@ class FileReaderTool @Autowired constructor(
             bytes.take(maxBytes).toByteArray(),
             StandardCharsets.UTF_8
         )
+    }
+
+    // TODO: Move to service file.
+    private fun isSensitive(path: Path): Boolean {
+        val relPath = allowedRoot.relativize(path).toString()
+        val matcher = FileSystems.getDefault()
+        return properties.sensitiveFilePatterns.any { pattern ->
+            matcher.getPathMatcher("glob:$pattern").matches(Paths.get(relPath))
+        }
+    }
+
+    // TODO: Move to service file.
+    private fun isSuperAdmin(): Boolean {
+        val auth = SecurityContextHolder.getContext().authentication
+        return auth?.authorities?.any { it.authority == UserRoleTier.SUPER_ADMIN.authority } ?: false
     }
 }
