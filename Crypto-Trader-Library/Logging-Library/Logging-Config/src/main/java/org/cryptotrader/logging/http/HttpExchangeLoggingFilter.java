@@ -117,6 +117,7 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         String uri = req.getRequestURI();
         String query = req.getQueryString();
         String remote = req.getRemoteAddr();
+        String ipAddress = resolveIpAddress(req);
         int status = response.getStatus();
         boolean isWebSocket = isWebSocketUpgrade(req);
 
@@ -152,6 +153,9 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         }
         // Origin
         sb.append(' ').append(color("from " + remote, AnsiColor.BRIGHT_BLACK));
+        if (!ipAddress.equals(remote)) {
+            sb.append(' ').append(color("ip " + ipAddress, AnsiColor.BRIGHT_BLACK));
+        }
         // Scheme
         sb.append(' ').append(color("over " + scheme, AnsiColor.BRIGHT_BLACK));
 
@@ -199,6 +203,14 @@ public class HttpExchangeLoggingFilter extends OncePerRequestFilter {
         for (String name : res.getHeaderNames()) {
             sb.append("  ").append(color(name + ": ", AnsiColor.BRIGHT_BLACK)).append(color(String.join(", ", res.getHeaders(name)), AnsiColor.WHITE)).append('\n');
         }
+    }
+
+    private String resolveIpAddress(HttpServletRequest request) {
+        String xForwardedFor = request.getHeader("X-Forwarded-For");
+        if (xForwardedFor != null && !xForwardedFor.isBlank()) {
+            return xForwardedFor.split(",")[0].trim();
+        }
+        return request.getRemoteAddr();
     }
 
     private boolean isWebSocketUpgrade(HttpServletRequest req) {
