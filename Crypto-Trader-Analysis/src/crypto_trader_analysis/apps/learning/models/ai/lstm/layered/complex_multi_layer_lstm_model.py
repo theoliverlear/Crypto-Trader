@@ -15,6 +15,8 @@ from src.crypto_trader_analysis.apps.learning.models.ai.lstm.layered.multi_layer
 import os
 from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 
+MAX_RETRIES = 2
+
 @define
 class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
     def __attrs_post_init__(self):
@@ -41,7 +43,8 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
         self.model = Model(inputs=[short_input, medium_input, long_input],
                            outputs=final_model,
                            name="MultiLayerLSTM")
-        self.model.compile(optimizer="adam", loss="mean_squared_error")
+        self.model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=5e-4),
+                           loss="mean_squared_error")
         self.log_model_summary()
 
     @staticmethod
@@ -53,7 +56,7 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
         lstm = Bidirectional(LSTM(128,
                                         recurrent_activation="sigmoid",
                                         use_bias=True,
-                                        unroll=True))(lstm)
+                                        unroll=False))(lstm)
         lstm = Dropout(0.3)(lstm)
         return lstm
 
@@ -63,7 +66,7 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
                                   return_sequences=return_sequences,
                                   recurrent_activation="sigmoid",
                                   use_bias=True,
-                                  unroll=True))(model_input)
+                                  unroll=False))(model_input)
         lstm = Dropout(0.3)(lstm)
         lstm = BatchNormalization()(lstm)
         return lstm
@@ -82,39 +85,40 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
     @override
     def train(self,
               dataset,
+              val_dataset=None,
               epochs: int = 20,
-              batch_size: int = 32,
               patience: int = 5):
         from src.crypto_trader_analysis.apps.learning.models.ai.model_retriever import \
-            COMPLEX_MUlTI_LAYER_MODEL_DIRECTORY
-        checkpoint_dir = os.path.join(COMPLEX_MUlTI_LAYER_MODEL_DIRECTORY,
+            COMPLEX_MULTI_LAYER_MODEL_DIRECTORY
+        checkpoint_dir = os.path.join(COMPLEX_MULTI_LAYER_MODEL_DIRECTORY,
                                       "checkpoints")
         os.makedirs(checkpoint_dir, exist_ok=True)
         checkpoint_path = os.path.join(checkpoint_dir,
                                        f"{self.target_currency}_checkpoint.keras")
 
+        monitor = "val_loss" if val_dataset is not None else "loss"
         callbacks = [
-            EarlyStopping(monitor="loss", patience=patience,
+            EarlyStopping(monitor=monitor, patience=patience,
                           restore_best_weights=True),
-            ModelCheckpoint(filepath=checkpoint_path, monitor="loss",
+            ModelCheckpoint(filepath=checkpoint_path, monitor=monitor,
                             save_best_only=True),
-            ReduceLROnPlateau(monitor='loss', factor=0.5, patience=3,
+            ReduceLROnPlateau(monitor=monitor, factor=0.5, patience=3,
                               min_lr=1e-6),
             ComplexMultiLayerLstmModel.get_tensorboard_callback(self.target_currency)
         ]
-        while True:
+        for attempt in range(MAX_RETRIES + 1):
             try:
                 return self.model.fit(dataset,
                                epochs=epochs,
-                               batch_size=batch_size,
                                verbose=1,
+                               validation_data=val_dataset,
                                callbacks=callbacks)
             except Exception as exception:
                 from src.crypto_trader_analysis.apps.learning.models.ai.model_type import ModelType
                 from src.crypto_trader_analysis.apps.learning.models.ai.model_retriever import model_exists, \
                     delete_model
-                if "Input 0 of layer" in str(exception):
-                    logging.info("Model dimension mismatch. Re-training model.")
+                if attempt < MAX_RETRIES and "Input 0 of layer" in str(exception):
+                    logging.warning(f"Model dimension mismatch (attempt {attempt + 1}). Re-initializing model.")
                     complex_multi_model_exists: bool = model_exists(self.target_currency,
                                                       ModelType.COMPLEX_MULTI_LAYER)
                     if complex_multi_model_exists:
@@ -143,5 +147,5 @@ class ComplexMultiLayerLstmModel(MultiLayerBaseModel):
     @override
     def get_model_path(target_currency: str) -> str:
         from src.crypto_trader_analysis.apps.learning.models.ai.model_retriever import \
-            COMPLEX_MUlTI_LAYER_MODEL_DIRECTORY
-        return COMPLEX_MUlTI_LAYER_MODEL_DIRECTORY + target_currency + '_complex_multi_layer_model.keras'
+            COMPLEX_MULTI_LAYER_MODEL_DIRECTORY
+        return COMPLEX_MULTI_LAYER_MODEL_DIRECTORY + target_currency + '_complex_multi_layer_model.keras'
