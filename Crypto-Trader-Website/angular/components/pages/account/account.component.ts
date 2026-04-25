@@ -1,5 +1,7 @@
 // account.component.ts
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
+import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
 
 @Component({
     selector: 'account',
@@ -7,6 +9,11 @@ import { Component } from '@angular/core';
     templateUrl: './account.component.html',
     styleUrls: ['./account.component.scss'],
 })
-export class AccountComponent {
-    constructor() {}
+export class AccountComponent implements OnInit {
+    constructor(private readonly log: CryptoTraderLoggerService) {}
+
+    ngOnInit(): void {
+        this.log.setContext('Account');
+        this.log.info('Account component initialized');
+    }
 }
