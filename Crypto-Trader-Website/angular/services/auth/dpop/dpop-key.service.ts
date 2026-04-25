@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-
 import { environment } from '@environments/environment';
 
+import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
 import { DpopKeyStoreService } from './dpop-key-store.service';
 import { PossibleCryptoKeyPair, PossibleJsonWebKey } from './types';
 
@@ -23,27 +23,36 @@ export class DpopKeyService {
     private cachedJkt: string | null = null;
 
     // TODO: Clean up code.
-    constructor(private store: DpopKeyStoreService) {}
+    constructor(
+        private store: DpopKeyStoreService,
+        private log: CryptoTraderLoggerService,
+    ) {
+        this.log.setContext('DPoP');
+    }
 
     /** Ensure a keypair exists. */
     async ensureKeys(): Promise<void> {
         if (this.keyPair) return;
+
+        this.log.debug(`Ensuring keys...`);
 
         // Try to load from IndexedDB if enabled
         if (environment.persistDpopKey) {
             try {
                 const loaded = await this.store.load();
                 if (loaded) {
+                    this.log.info(`Keys loaded from store.`);
                     this.keyPair = loaded;
                     this.cachedJwk = null;
                     this.cachedJkt = null;
                     return;
                 }
             } catch {
-                /* ignore */
+                this.log.warn(`Failed to load keys from store.`);
             }
         }
 
+        this.log.info(`Generating new key pair...`);
         // Generate a new EC P-256 key pair for ES256
         this.keyPair = await crypto.subtle.generateKey(
             {
