@@ -15,6 +15,7 @@ open module org.cryptotrader.security {
     requires inet.ipaddr;
     requires org.cryptotrader.api.library.models;
     requires kotlin.stdlib;
+    requires org.cryptotrader.universal.library.config;
 
     exports org.cryptotrader.security;
 }
