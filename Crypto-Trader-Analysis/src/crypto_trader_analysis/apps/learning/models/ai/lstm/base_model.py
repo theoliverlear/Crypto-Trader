@@ -18,8 +18,8 @@ class BaseModel(ABC):
     @abstractmethod
     def train(self,
               dataset: tf.data.Dataset,
+              val_dataset: tf.data.Dataset = None,
               epochs: int = 20,
-              batch_size: int = 32,
               patience: int = 5):
         pass
 
@@ -43,7 +43,7 @@ class BaseModel(ABC):
         pass
 
     @staticmethod
-    def get_tensorboard_callback(self):
+    def get_tensorboard_callback(target_currency: str):
         pass
 
     def log_model_summary(self):
