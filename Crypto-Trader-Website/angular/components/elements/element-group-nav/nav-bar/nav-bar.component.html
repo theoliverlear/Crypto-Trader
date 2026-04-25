@@ -4,15 +4,11 @@
         <home-anchor />
         <div class="nav-items-div">
             @for (navBarItem of NavBarItemOption.values(); track navBarItem) {
-                <nav-bar-item [navBarItemOption]="navBarItem" />
+                @if (shouldShowNavItem(navBarItem)) {
+                    <nav-bar-item [navBarItemOption]="navBarItem" />
+                }
             }
         </div>
-        @if (isLoggedIn) {
-            <exit-anchor />
-        }
-        <!--        TODO: Add a conditional nav item for pro and elite users special
-                  panel.-->
-        <nav-console />
-        <nav-bar-profile-picture />
+        <nav-bumper />
     </nav>
 </ng-container>
