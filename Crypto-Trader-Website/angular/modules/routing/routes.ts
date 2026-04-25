@@ -2,10 +2,12 @@ import { type Route, type Routes } from '@angular/router';
 
 import { AccountComponent } from '@components/pages/account/account.component';
 import { AuthorizeComponent } from '@components/pages/authorize/authorize.component';
+import { ChatComponent } from '@components/pages/chat/chat.component';
 import { ConsoleComponent } from '@components/pages/console/console.component';
 import { CurrenciesComponent } from '@components/pages/currencies/currencies.component';
 import { DashboardComponent } from '@components/pages/dashboard/dashboard.component';
 import { HomeComponent } from '@components/pages/home/home.component';
+import { ModulesComponent } from '@components/pages/modules/modules.component';
 import { PortfolioComponent } from '@components/pages/portfolio/portfolio.component';
 import { StatisticsComponent } from '@components/pages/statistics/statistics.component';
 import { TermsOfServiceComponent } from '@components/pages/terms-of-service/terms-of-service.component';
@@ -42,10 +44,21 @@ export const authorizeRoute: Route = {
 export const homeRoute: Route = {
     path: '',
     component: HomeComponent,
+    pathMatch: 'full',
     canActivate: isDevelopment ? [] : [DashboardGuard],
     data: {
         meta: {
             title: 'Crypto Trader',
+            // showNavBar: false,
+        },
+    },
+};
+export const modulesRoute: Route = {
+    path: 'modules',
+    component: ModulesComponent,
+    data: {
+        meta: {
+            title: 'Modules | Crypto Trader',
         },
     },
 };
@@ -89,6 +102,16 @@ export const currenciesRoute: Route = {
     },
 };
 
+export const chatRoute: Route = {
+    path: 'chat',
+    component: ChatComponent,
+    canActivate: isDevelopment ? [] : [AuthGuard],
+    data: {
+        meta: {
+            title: 'Chat | Crypto Trader',
+        },
+    },
+};
 export const consoleRoute: Route = {
     path: 'console',
     component: ConsoleComponent,
@@ -135,9 +158,11 @@ export const routes: Routes = [
     accountRoute,
     authorizeRoute,
     homeRoute,
+    modulesRoute,
     portfolioRoute,
     termsOfServiceRoute,
     currenciesRoute,
+    chatRoute,
     consoleRoute,
     traderRoute,
     tradeRoute,
