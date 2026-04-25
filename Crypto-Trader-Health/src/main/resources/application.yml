@@ -1,0 +1,31 @@
+server:
+  port: 8094
+
+spring:
+  config:
+    import: aws-secretsmanager:/cryptotrader/dev
+  application:
+    name: crypto-trader-health
+  datasource:
+    url: ${PSQL_DB_URL}
+    username: ${PSQL_USER}
+    password: ${PSQL_PW}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  cloud:
+    aws:
+      region:
+        static: us-east-1
+
+ct:
+  health:
+    enabled: true
+    interval-seconds: 60
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
