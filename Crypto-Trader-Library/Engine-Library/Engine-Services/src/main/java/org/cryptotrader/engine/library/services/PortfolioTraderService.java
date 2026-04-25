@@ -14,6 +14,7 @@ import org.cryptotrader.api.library.entity.portfolio.Portfolio;
 import org.cryptotrader.api.library.model.trade.CryptoTrader;
 import org.cryptotrader.api.library.model.trade.Trader;
 import org.cryptotrader.api.library.services.TradeEventService;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -71,16 +72,7 @@ public class PortfolioTraderService {
     //--------------------------Trade-Portfolios------------------------------
     public void tradePortfolios(List<Portfolio> portfolios, SubscriptionTier subscriptionTier) {
         // TODO: Modularize logging formatting for tiers.
-        final String resetAnsi = "\u001B[0m";
-        final String purpleAnsi = "\u001B[35m";
-        final String greenAnsi = "\u001B[32m";
-        final String blueAnsi = "\u001B[34m";
-        final String chosenAnsi = switch (subscriptionTier) {
-            case FREE -> greenAnsi;
-            case PRO -> blueAnsi;
-            case ELITE -> purpleAnsi;
-        };
-        final String logPrefix = "%s[%s]%s".formatted(chosenAnsi, subscriptionTier.getLabel().toUpperCase(), resetAnsi);
+        final String logPrefix = getLogPrefix(subscriptionTier);
         if (portfolios == null || portfolios.isEmpty()) {
             log.info("{} No traders found. No trades will be made.", logPrefix);
             this.fillPortfolioList();
@@ -88,6 +80,20 @@ public class PortfolioTraderService {
         }
         log.info("{} Traders found. Trades are being be made.", logPrefix);
         this.triggerAllTraders(this.cryptoTrader.getTradersBySubscriptionTier(subscriptionTier));
+    }
+
+    private static @NonNull String getLogPrefix(SubscriptionTier subscriptionTier) {
+        final String resetAnsi = "\u001B[0m";
+        final String purpleAnsi = "\u001B[35m";
+        final String greenAnsi = "\u001B[32m";
+        final String blueAnsi = "\u001B[34m";
+        final String chosenAnsi = switch (subscriptionTier) {
+            case FREE -> greenAnsi;
+            case PRO -> blueAnsi;
+            case ULTIMATE -> purpleAnsi;
+        };
+        final String logPrefix = "%s[%s]%s".formatted(chosenAnsi, subscriptionTier.getLabel().toUpperCase(), resetAnsi);
+        return logPrefix;
     }
 
     @Transactional
@@ -108,10 +114,10 @@ public class PortfolioTraderService {
 
     @Transactional
     @Scheduled(fixedRate = 1000)
-    public void tradeElitePortfolios() {
+    public void tradeUltimatePortfolios() {
         this.fillPortfolioList();
-        List<Portfolio> portfolios = this.filterBySubscriptionTier(this.allUsersPortfolios, SubscriptionTier.ELITE);
-        this.tradePortfolios(portfolios, SubscriptionTier.ELITE);
+        List<Portfolio> portfolios = this.filterBySubscriptionTier(this.allUsersPortfolios, SubscriptionTier.ULTIMATE);
+        this.tradePortfolios(portfolios, SubscriptionTier.ULTIMATE);
     }
 
     public List<Portfolio> filterBySubscriptionTier(List<Portfolio> portfolios, SubscriptionTier tier) {
@@ -122,6 +128,7 @@ public class PortfolioTraderService {
     }
 
     private void fillPortfolioList() {
+        log.debug("Refreshing portfolio list for trading.");
         this.cryptoTrader.getTraders().clear();
         this.allUsersPortfolios = this.portfolioService.getAllPortfolios();
         this.cryptoTrader.addAllPortfolios(this.allUsersPortfolios);
@@ -143,6 +150,17 @@ public class PortfolioTraderService {
         PortfolioAsset traderAsset = assetTrader.getAsset();
         PortfolioAsset previousAsset = PortfolioAsset.from(traderAsset);
         boolean tradeOccurred = assetTrader.trade();
+        if (tradeOccurred) {
+            final String logPrefix = getLogPrefix(trader.getPortfolio().getUser().getSubscriptionTier());
+            log.info("{} Trade executed for trader {} on asset {}. Shares: {} {}, Wallet Dollars: {}, Target Price: {}.",
+                     logPrefix,
+                     trader.getPortfolio().getUser().getId(),
+                     traderAsset.getCurrency().getCurrencyCode(),
+                     traderAsset.getShares(),
+                     traderAsset.getCurrency().getCurrencyCode(),
+                     traderAsset.getAssetWalletDollars(),
+                     traderAsset.getTargetPrice());
+        }
         updateTraders(trader, assetTrader);
         if (hasAssetChanged(previousAsset, traderAsset)) {
             this.saveAssetChanges(trader, traderAsset, tradeOccurred);
