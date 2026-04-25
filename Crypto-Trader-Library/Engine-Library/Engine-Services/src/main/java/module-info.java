@@ -18,12 +18,14 @@ open module org.cryptotrader.engine.library.services {
     requires spring.security.crypto;
     requires spring.security.web;
     requires kotlin.stdlib;
-    requires org.cryptotrader.health;
+    requires org.cryptotrader.health.library.models;
+    requires org.cryptotrader.data.library.models;
 
     requires jakarta.xml.bind;
     requires jakarta.activation;
     requires org.apache.tomcat.embed.core;
     requires org.apache.tomcat.embed.websocket;
+    requires org.jspecify;
 
     exports org.cryptotrader.engine.library.services;
 }
