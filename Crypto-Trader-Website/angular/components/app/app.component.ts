@@ -4,6 +4,7 @@ import { filter, map, mergeMap, Observable } from 'rxjs';
 
 import { DelayService } from '@theoliverlear/angular-suite';
 import { AuthGuard } from '@guards/auth.guard';
+import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
 
 import { NavBarComponent } from '../elements/element-group-nav/nav-bar/nav-bar.component';
 
@@ -18,6 +19,7 @@ import { NavBarComponent } from '../elements/element-group-nav/nav-bar/nav-bar.c
 })
 export class AppComponent implements OnInit {
     protected showAuthGuardPopup: boolean = false;
+    protected showNavBar: boolean = true;
     protected title: string;
     @ViewChild(NavBarComponent) private readonly navBar: NavBarComponent;
 
@@ -26,6 +28,7 @@ export class AppComponent implements OnInit {
         private readonly activatedRoot: ActivatedRoute,
         private readonly authGuard: AuthGuard,
         private readonly delayService: DelayService,
+        private readonly logger: CryptoTraderLoggerService,
     ) {}
 
     /** Updates the nav bar with certain content if a user is logged in.
@@ -39,6 +42,7 @@ export class AppComponent implements OnInit {
      *
      */
     public ngOnInit(): void {
+        this.logger.info('AppComponent initialized.', 'App');
         this.router.events
             .pipe(
                 filter(
@@ -59,9 +63,12 @@ export class AppComponent implements OnInit {
                     title: string;
                     description: string;
                     roles: string[];
+                    showNavBar: boolean;
                 };
                 const metaInfo: Meta = (data['meta'] || {}) as Meta;
                 this.title = metaInfo['title'] || 'Crypto Trader';
+                this.showNavBar = metaInfo['showNavBar'] !== false;
+                this.logger.debug(`Route changed: ${this.title}, showNavBar: ${this.showNavBar}`, 'App');
                 this.updateNavBar();
             });
         this.authGuard
@@ -76,6 +83,7 @@ export class AppComponent implements OnInit {
      *
      */
     private async triggerAuthPopup(): Promise<void> {
+        this.logger.info('Triggering auth guard popup.', 'App');
         this.showAuthGuardPopup = true;
         await this.delayService.delay(4200);
         this.showAuthGuardPopup = false;
