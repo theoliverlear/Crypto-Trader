@@ -2,8 +2,8 @@
 import logging
 import time
 from datetime import datetime
-from os import getenv
 from typing import Optional
+from django.conf import settings
 
 import requests
 
@@ -48,17 +48,45 @@ def get_current_price(target_currency: str = 'BTC') -> Optional[float]:
     logging.debug(f"Current {target_currency} Price: ${current_price:,}")
     return current_price
 
+def get_fuzzy_price_at_start_time(start_time: datetime, target_currency: str) -> Optional[float]:
+    logging.info(f"Getting fuzzy price for {target_currency} at start time: {start_time}")
+    payload: dict = {
+        # To ISO format
+        "dateTime": start_time.isoformat()
+    }
+    try:
+        host: str = settings.CT_API_HOST
+        response = requests.post(f"http://{host}:8080/api/currency/history/fuzzy/{target_currency.upper()}", verify=False, json=payload)
+        if response.status_code != 200:
+            logging.error(f"Failed to get fuzzy price for {target_currency} at {start_time}. Status code: {response.status_code}, Response: {response.text}")
+            return None
+        data = response.json()
+        price = data.get("value")
+        if price is None:
+            logging.error(f"No price found in response for {target_currency} at {start_time}. Response: {data}")
+            return None
+        logging.info(f"Fuzzy price for {target_currency} at {start_time}: ${price:,}")
+        return price
+    except Exception as exception:
+        logging.error(f"Exception occurred while getting fuzzy price for {target_currency} at {start_time}: {exception}")
+        return None
+
+
 def actual_vs_predicted(target_currency: str = 'BTC',
                         training_model: TrainingModel = TrainingType.DETAILED_SHORT_TRAINING.value,
                         model_type: ModelType = ModelType.LSTM,
                         predicted_price: float | None = None,
-                        with_logging = False) -> Optional[Prediction]:
+                        with_logging = False,
+                        start_time: datetime | None = None) -> Optional[Prediction]:
     if predicted_price is None:
         predicted_price = predict(target_currency, training_model, model_type)
         if predicted_price is None:
             logging.error(f"No prediction model found for {target_currency}. Stopping prediction.")
             return None
-    current_price = get_current_price(target_currency)
+    if start_time is None:
+        current_price = get_current_price(target_currency)
+    else:
+        current_price = get_fuzzy_price_at_start_time(start_time, target_currency)
     if current_price is None:
         logging.error(f"No current price found for {target_currency}. Stopping prediction.")
         return None
@@ -110,18 +138,25 @@ def predict_and_send(target_currency: str = 'BTC',
 
 def send_prediction_to_server(prediction: Prediction) -> Optional[int]:
     try:
-        host: str = getenv("CT_DATA_HOST") or "localhost"
+        host: str = settings.CT_DATA_HOST
         response = requests.post(f"http://{host}:8085/data/predictions/add", json=prediction.to_json(), verify=False)
-        print(f"[{prediction.currency_code}] Status: {response.status_code} - {response.text}")
+        logging.info(f"[{prediction.currency_code}] Status: {response.status_code} - {response.text}")
         payload: dict = response.json()
-        return int(payload.get("predictionId"))
+        prediction_id = payload.get("predictionId")
+        if prediction_id is None:
+            logging.warning(f"No predictionId in response for {prediction.currency_code}")
+            return None
+        return int(prediction_id)
     except Exception as e:
-        print(f"Failed to send prediction for {prediction.currency_code}: {e}")
+        logging.error(f"Failed to send prediction for {prediction.currency_code}: {e}")
+        return None
 
 def predict_and_send_loop(target_currency: str = 'BTC',
-                          training_type: TrainingType = TrainingType.DETAILED_SHORT_TRAINING):
+                          training_type: TrainingType = TrainingType.DETAILED_SHORT_TRAINING,
+                          interval_seconds: float = 5.0):
     while True:
         predict_and_send(target_currency, training_type.value)
+        time.sleep(interval_seconds)
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -129,7 +164,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 def predict_and_send_all_loop(
         training_type: TrainingType = TrainingType.DETAILED_SHORT_TRAINING) -> None:
     currency_list: list[str] = get_all_currency_codes(True)
-    with ThreadPoolExecutor(max_workers=36) as executor:
+    with ThreadPoolExecutor(max_workers=8) as executor:
         while True:
             futures = {executor.submit(predict_and_send, currency,
                                        training_type.value): currency for currency
