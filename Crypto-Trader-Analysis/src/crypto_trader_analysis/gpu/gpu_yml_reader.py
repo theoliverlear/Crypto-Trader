@@ -1,8 +1,20 @@
 from __future__ import annotations
 
+import gc
 import logging
 import os
+import sys
 from typing import Any, Dict, List
+
+import tensorflow as tf
+
+_src_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+if _src_dir not in sys.path:
+    sys.path.insert(0, _src_dir)
+
+import django
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'crypto_trader_analysis.api.settings')
+django.setup()
 
 try:
     import yaml
@@ -155,7 +167,12 @@ def train_from_config(gpu_id: int) -> None:
             target_currency=target_currency,
             model_type=model_type,
         )
-        session.train()
+        try:
+            session.train()
+        finally:
+            del session
+            tf.keras.backend.clear_session()
+            gc.collect()
         return
 
     for code in currencies:
@@ -169,4 +186,7 @@ def train_from_config(gpu_id: int) -> None:
             session.train()
         except Exception as exception:
             logging.error(f"Error training {code} on GPU {gpu_id}: {exception}")
-            continue
+        finally:
+            del session
+            tf.keras.backend.clear_session()
+            gc.collect()
