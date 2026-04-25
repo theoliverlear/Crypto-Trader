@@ -64,7 +64,8 @@ open class SecurityConfig {
                     "/actuator/**",
                     "/.well-known/jwks.json",
                     "/api/currency/**",
-                    "/api/console/**"
+                    "/api/console/**",
+                    "/api/logs/**"
                 ).permitAll()
                 it.anyRequest().authenticated()
             }
