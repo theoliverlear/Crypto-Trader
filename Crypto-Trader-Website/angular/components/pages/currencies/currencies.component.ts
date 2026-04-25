@@ -2,7 +2,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 
 import { DisplayCurrenciesService } from '@http/currency/display-currencies.service';
-import { CurrencyList, DisplayCurrencyList } from '@models/currency/types';
+import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
+import { DisplayCurrencyList } from '@models/currency/types';
 
 import { listStagger } from '../../animations/animations';
 
@@ -24,7 +25,10 @@ export class CurrenciesComponent implements OnInit {
     private readonly pageSize: number = 10;
     hasMore: boolean = true;
     private scrollTimer: any = null;
-    constructor(private getAllCurrenciesService: DisplayCurrenciesService) {}
+    constructor(
+        private getAllCurrenciesService: DisplayCurrenciesService,
+        private readonly log: CryptoTraderLoggerService,
+    ) {}
 
     @HostListener('window:scroll', [])
     onScroll() {
@@ -46,11 +50,12 @@ export class CurrenciesComponent implements OnInit {
 
     onError(event: Event) {
         if (event instanceof ErrorEvent) {
-            console.log(event.message);
+            this.log.error(`Currency component error: ${event.message}`, undefined, event.message);
         }
     }
 
     ngOnInit(): void {
+        this.log.setContext('Currencies');
         this.initializeCurrencies();
         this.loadCurrencies(0);
     }
@@ -64,11 +69,13 @@ export class CurrenciesComponent implements OnInit {
     }
 
     private loadCurrencies(offset: number): void {
+        this.log.debug(`Loading currencies with offset ${offset}`);
         this.isFetching = true;
         this.getAllCurrenciesService
             .getAllCurrenciesWithOffset(offset)
             .subscribe({
                 next: (data: DisplayCurrencyList): void => {
+                    this.log.info(`Fetched ${data?.currencies?.length || 0} currencies`);
                     // append results
                     this.currencies.currencies = [
                         ...(this.currencies.currencies || []),
@@ -79,12 +86,14 @@ export class CurrenciesComponent implements OnInit {
                         this.offset += this.pageSize;
                     } else {
                         // no more data to load
+                        this.log.debug('No more currencies to load');
                         this.hasMore = false;
                     }
                     this.isLoaded = true;
                     this.isFetching = false;
                 },
-                error: (): void => {
+                error: (error): void => {
+                    this.log.error('Failed to load currencies', error);
                     this.isFetching = false;
                 },
             });
