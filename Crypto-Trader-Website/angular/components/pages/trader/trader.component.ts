@@ -11,6 +11,7 @@ import { TagType } from '@theoliverlear/angular-suite';
 import { AllTradeEventsService } from '@http/trader/all-trade-events.service';
 import { BatchedTradeEventsService } from '@http/trader/batched-trade-events.service';
 import { HasTradeEventsService } from '@http/trader/has-trade-events.service';
+import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
 import { TradeEvent, TradeEventList } from '@models/trader/types';
 
 import { listStagger } from '../../animations/animations';
@@ -39,12 +40,23 @@ export class TraderComponent implements OnInit, OnChanges {
     constructor(
         private batchedTradeEventsService: BatchedTradeEventsService,
         private hasTradeEventsService: HasTradeEventsService,
+        private readonly log: CryptoTraderLoggerService,
     ) {}
     ngOnInit(): void {
+        this.log.setContext('Trader');
+        this.log.info('Trader component initialized');
+
+        this.log.debug('Checking if trade events exist...');
         this.hasTradeEventsService
             .hasTradeEvents()
-            .subscribe((hasTradeEvents: boolean) => {
-                this.hasTradeEvents = hasTradeEvents;
+            .subscribe({
+                next: (hasTradeEvents: boolean) => {
+                    this.log.info(`Trade events exist: ${hasTradeEvents}`);
+                    this.hasTradeEvents = hasTradeEvents;
+                },
+                error: (error) => {
+                    this.log.error('Failed to check for trade events', error);
+                },
             });
         this.initializeTradeEvents();
         this.loadEvents(0);
@@ -77,11 +89,13 @@ export class TraderComponent implements OnInit, OnChanges {
     }
 
     private loadEvents(offset: number): void {
+        this.log.debug(`Loading trade events with offset ${offset}`);
         this.isFetching = true;
         this.batchedTradeEventsService
             .getBatchedTradeEvents(offset, this.pageSize)
             .subscribe({
                 next: (data: TradeEventList) => {
+                    this.log.info(`Fetched ${data?.events?.length || 0} trade events`);
                     this.tradeEvents.events = [
                         ...(this.tradeEvents.events || []),
                         ...(data?.events || []),
@@ -90,12 +104,14 @@ export class TraderComponent implements OnInit, OnChanges {
                     if (received === this.pageSize) {
                         this.offset += this.pageSize;
                     } else {
+                        this.log.debug('No more trade events to load');
                         this.hasMore = false;
                     }
                     this.isLoaded = true;
                     this.isFetching = false;
                 },
-                error: () => {
+                error: (error) => {
+                    this.log.error('Failed to load trade events', error);
                     this.isFetching = false;
                 },
             });
