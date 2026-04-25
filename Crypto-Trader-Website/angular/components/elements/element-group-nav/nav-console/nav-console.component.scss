@@ -8,9 +8,7 @@ nav-console {
     // background-color: $ocean-blue;
     background-color: $light-charcoal;
     padding: $quarter-percent;
-    position: absolute;
-    top: $one-percent;
-    right: $five-percent;
+    position: relative;
     box-shadow: add-alpha($light-charcoal, 0.5) 0 0 $quarter-percent
         simplest-calc(0.001);
     transition: background-color, box-shadow, scale, 0.15s;
