@@ -1,14 +1,14 @@
 export enum SubscriptionTier {
     FREE = 'Free Tier',
     PRO = 'Pro Tier',
-    ELITE = 'Elite Tier',
+    ULTIMATE = 'Ultimate Tier',
 }
 export namespace SubscriptionTier {
     export function values(): SubscriptionTier[] {
         return [
             SubscriptionTier.FREE,
             SubscriptionTier.PRO,
-            SubscriptionTier.ELITE,
+            SubscriptionTier.ULTIMATE,
         ];
     }
 }
