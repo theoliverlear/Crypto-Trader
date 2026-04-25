@@ -3,6 +3,7 @@ import time
 from datetime import datetime, timezone, timedelta, date
 import os
 from typing import Any
+from django.conf import settings
 
 import worldnewsapi
 from worldnewsapi import SearchNews200Response, ApiResponse
@@ -10,7 +11,7 @@ from worldnewsapi import SearchNews200Response, ApiResponse
 from src.crypto_trader_analysis.apps.news.models.sources.news_sources import ALL_NEWS_SOURCES_LINKS, \
     get_by_link, FILTERED_NEWS_SOURCES_LINKS
 
-api_key: str = os.getenv("WORLDNEWS_API_KEY")
+api_key: str = settings.WORLDNEWS_API_KEY
 api_config = worldnewsapi.Configuration(api_key={'apiKey': api_key})
 api_instance = worldnewsapi.NewsApi(worldnewsapi.ApiClient(api_config))
 # TODO: Optimize and maximize the number of queries. Max 100 chars.
@@ -44,8 +45,8 @@ def get_points_remaining(headers: Any) -> float:
     headers_dict: dict = dict(headers)
     print(headers_dict)
     return float(headers_dict.get("X-API-Quota-Left"))
-    
-    
+
+
 def get_points_used(headers: Any) -> float:
     headers_dict: dict = dict(headers)
     return float(headers_dict.get("X-API-Quota-Request"))
@@ -116,7 +117,7 @@ def fetch_articles(earliest_date: str,
         if len(collected) >= num_articles:
             break
         rate_limit_sleep()
-    
+
     print(f"""Used {total_points_used:.4f} points
     Total articles: {len(collected)}""")
     return list(collected.values())
