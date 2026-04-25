@@ -19,6 +19,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <argLine/>
+        <java.release>23</java.release>
+        <kotlin.jvm.target>23</kotlin.jvm.target>
     </properties>
 
     <dependencies>
@@ -87,7 +89,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <release>23</release>
+                    <release>${java.release}</release>
                     <useModulePath>true</useModulePath>
                     <annotationProcessorPaths>
                         <path>
@@ -108,13 +110,12 @@
                         <phase>process-sources</phase>
                         <goals><goal>compile</goal></goals>
                         <configuration>
-                            <jvmTarget>23</jvmTarget>
+                            <jvmTarget>${kotlin.jvm.target}</jvmTarget>
                             <sourceDirs>
                                 <sourceDir>src/main/kotlin</sourceDir>
                             </sourceDirs>
                             <args>
-                                <!-- Bind to JDK 23 APIs while producing stable bytecode -->
-                                <arg>-Xjdk-release=23</arg>
+                                <arg>-Xjdk-release=${kotlin.jvm.target}</arg>
                             </args>
                         </configuration>
                     </execution>
@@ -123,9 +124,9 @@
                         <phase>process-test-sources</phase>
                         <goals><goal>test-compile</goal></goals>
                         <configuration>
-                            <jvmTarget>23</jvmTarget>
+                            <jvmTarget>${kotlin.jvm.target}</jvmTarget>
                             <args>
-                                <arg>-Xjdk-release=23</arg>
+                                <arg>-Xjdk-release=${kotlin.jvm.target}</arg>
                             </args>
                         </configuration>
                     </execution>
@@ -147,4 +148,60 @@
             </plugin>
         </plugins>
     </build>
+
+<!--    TODO: This is temporary. Use desugaring instead. -->
+    <profiles>
+        <profile>
+            <id>mobile</id>
+            <properties>
+                <java.release>21</java.release>
+                <kotlin.jvm.target>21</kotlin.jvm.target>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jetbrains.kotlin</groupId>
+                        <artifactId>kotlin-maven-plugin</artifactId>
+                        <version>2.2.0</version>
+                        <executions>
+                            <execution>
+                                <id>compile</id>
+                                <configuration>
+                                    <jvmTarget>21</jvmTarget>
+                                    <args>
+                                        <arg>-Xjdk-release=21</arg>
+                                    </args>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>test-compile</id>
+                                <configuration>
+                                    <jvmTarget>21</jvmTarget>
+                                    <args>
+                                        <arg>-Xjdk-release=21</arg>
+                                    </args>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <jvmTarget>21</jvmTarget>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>mobile-jar</id>
+                                <goals><goal>jar</goal></goals>
+                                <configuration>
+                                    <classifier>mobile</classifier>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
