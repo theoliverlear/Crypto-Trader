@@ -294,13 +294,13 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-logging</artifactId>
+            <artifactId>logging-config</artifactId>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.cryptotrader</groupId>
-            <artifactId>crypto-trader-health</artifactId>
+            <artifactId>health-models</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
