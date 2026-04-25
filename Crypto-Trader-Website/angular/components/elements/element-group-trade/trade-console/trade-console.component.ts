@@ -11,6 +11,7 @@ import {
 } from '@models/currency/types';
 import { PossibleVendor } from '@models/vendor/types';
 import { VendorOption } from '@models/vendor/VendorOption';
+import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
 
 import { TradeConsoleTitles } from './models/TradeConsoleTitles';
 import { TradeConsoleTitle } from './models/types';
@@ -32,18 +33,27 @@ export class TradeConsoleComponent implements OnInit {
     constructor(
         private currencyNamesService: CurrencyNamesService,
         private displayCurrencyService: DisplayCurrencyService,
+        private readonly logger: CryptoTraderLoggerService,
     ) {}
 
     protected set selectedCurrency(value: string) {
+        this.logger.debug(`Currency selected: ${value}`, 'TradeConsole');
         this._selectedCurrency = value;
         if (value) {
             const code: string | undefined = this.getCurrencyCode();
             if (code) {
+                this.logger.debug(`Fetching display currency for code: ${code}`, 'TradeConsole');
                 this.displayCurrencyService.getDisplayCurrency(code).subscribe({
                     next: (displayCurrency: DisplayCurrency): void => {
+                        this.logger.info(`Display currency loaded: ${displayCurrency.currencyName}`, 'TradeConsole');
                         this.displayCurrency = displayCurrency;
                     },
+                    error: (error): void => {
+                        this.logger.error(`Failed to load display currency for ${code}`, error, 'TradeConsole');
+                    },
                 });
+            } else {
+                this.logger.warn(`Could not extract currency code from: ${value}`, 'TradeConsole');
             }
         }
     }
@@ -60,10 +70,15 @@ export class TradeConsoleComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.logger.info('TradeConsoleComponent initialized', 'TradeConsole');
         this.currencyNamesService.getCurrencyNames(true).subscribe({
             next: (currencyNames: CurrencyNames): void => {
+                this.logger.info(`Loaded ${currencyNames.currencyNames.length} currency names`, 'TradeConsole');
                 this.currencyNames = currencyNames.currencyNames;
                 this.sortCurrencyNamesAlphabetically();
+            },
+            error: (error): void => {
+                this.logger.error('Failed to load currency names', error, 'TradeConsole');
             },
         });
     }
@@ -83,12 +98,14 @@ export class TradeConsoleComponent implements OnInit {
     }
 
     setVendorOption(vendorOption: VendorOption): void {
+        this.logger.info(`Vendor selected: ${vendorOption}`, 'TradeConsole');
         this.selectedVendor = vendorOption;
         this.isVendorSelected = true;
         this.currentTitle = TradeConsoleTitles.CURRENCY;
     }
 
     clearContainer(): void {
+        this.logger.debug('Clearing trade console container', 'TradeConsole');
         this.selectedVendor = null;
         this.isVendorSelected = false;
         this.isCurrencySelected = false;
