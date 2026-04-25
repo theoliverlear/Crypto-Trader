@@ -1,5 +1,6 @@
 package org.cryptotrader.api.library.events.publisher
 
+import org.cryptotrader.api.library.events.ApiEventBinding
 import org.cryptotrader.universal.library.component.EventPublisher
 import org.cryptotrader.api.library.events.UserRegisteredEvent
 import org.slf4j.LoggerFactory
@@ -15,7 +16,7 @@ class UserEventsPublisher @Autowired constructor(
 
     fun publishUserRegisteredEvent(registerEvent: UserRegisteredEvent) {
         if (this.eventPublisher != null) {
-            eventPublisher.publish("userRegistered-out-0", registerEvent)
+            this.eventPublisher.publish(ApiEventBinding.USER_REGISTERED.bindingName, registerEvent)
         } else {
             log.debug("EventPublisher unavailable; skipping publishUserRegisteredEvent in docs/non-stream context.")
         }
