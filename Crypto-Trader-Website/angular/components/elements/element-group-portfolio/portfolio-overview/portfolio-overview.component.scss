@@ -16,7 +16,7 @@ portfolio-overview {
     }
 
     .portfolio-field {
-        @include flex(space-betwen, center, row);
+        @include flex(space-between, center, row);
         width: 100%;
 
         ss-title:nth-child(1) {
