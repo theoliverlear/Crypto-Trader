@@ -1,7 +1,8 @@
 // auth-console-signup-section.component.ts
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 import { AuthPopup, ButtonText, ElementSize } from '@theoliverlear/angular-suite';
+import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
 import { SignupCredentials } from '@models/auth/SignupCredentials';
 
 import { AuthInputType } from '../auth-input/models/AuthInputType';
@@ -15,12 +16,17 @@ import { AuthInputType } from '../auth-input/models/AuthInputType';
     templateUrl: './auth-console-signup-section.component.html',
     styleUrls: ['./auth-console-signup-section.component.scss'],
 })
-export class AuthConsoleSignupSectionComponent {
+export class AuthConsoleSignupSectionComponent implements OnInit {
     protected signupCredentials: SignupCredentials = new SignupCredentials();
     @Output() public signupButtonClicked: EventEmitter<SignupCredentials> =
         new EventEmitter<SignupCredentials>();
     @Output() public authPopupEvent: EventEmitter<AuthPopup> = new EventEmitter<AuthPopup>();
-    constructor() {}
+    constructor(private readonly log: CryptoTraderLoggerService) {}
+
+    public ngOnInit(): void {
+        this.log.setContext('AuthConsoleSignup');
+        this.log.info('Auth console signup section initialized');
+    }
 
     /** Emits an authorization popup event to the parent component.
      *
@@ -53,7 +59,7 @@ export class AuthConsoleSignupSectionComponent {
      */
     private emitPossibleInvalidEmail(): void {
         if (!this.signupCredentials.isValidEmail()) {
-            console.log('Invalid email');
+            this.log.warn('Invalid email format detected during signup');
             this.emitAuthPopup(AuthPopup.INVALID_EMAIL);
         } else {
             this.emitAuthPopup(this.signupCredentials.getAnyTypingIssue());
@@ -75,6 +81,7 @@ export class AuthConsoleSignupSectionComponent {
      */
     private emitPossibleMismatch(): void {
         if (!this.signupCredentials.isPasswordMatch()) {
+            this.log.warn('Passwords do not match during signup');
             this.emitAuthPopup(AuthPopup.PASSWORDS_DONT_MATCH);
         } else {
             this.emitAuthPopup(this.signupCredentials.getAnyTypingIssue());
@@ -93,6 +100,7 @@ export class AuthConsoleSignupSectionComponent {
      *
      */
     protected emitFields(): void {
+        this.log.info('Signup button clicked, emitting credentials');
         this.signupButtonClicked.emit(this.signupCredentials);
     }
 
