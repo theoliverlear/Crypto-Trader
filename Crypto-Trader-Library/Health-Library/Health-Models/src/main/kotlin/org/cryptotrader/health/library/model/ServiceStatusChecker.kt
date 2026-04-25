@@ -1,16 +1,15 @@
 @file:JvmName("ServiceStatusChecker")
-package org.cryptotrader.health
+package org.cryptotrader.health.library.model
 
 import org.apache.http.HttpResponse
 import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClientBuilder
-import org.cryptotrader.health.models.CryptoTraderService
 import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.net.URI
 
-private const val BASE_OVERRIDE_PROP = "ct.health.base" // e.g., "http://localhost:12345"
+private const val BASE_OVERRIDE_PROP = "ct.health.base"
 private const val BASE_OVERRIDE_ENV = "CT_HEALTH_BASE"
 
 private val log = LoggerFactory.getLogger("org.cryptotrader.health.ServiceStatus")
