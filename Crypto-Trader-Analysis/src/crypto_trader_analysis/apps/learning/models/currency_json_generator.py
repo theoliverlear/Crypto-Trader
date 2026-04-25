@@ -1,8 +1,11 @@
 import json
+from pathlib import Path
 from typing import Any
 
 import requests
 from requests import Response
+
+_CURRENCIES_JSON = Path(__file__).resolve().parents[4] / "src" / "main" / "resources" / "static" / "currencies.json"
 
 
 def fetch_json(url):
@@ -30,7 +33,7 @@ def get_currencies():
     return matched_cryptos
 
 def get_cached_currencies() -> list[dict[str, Any]]:
-    with open("../src/main/resources/static/currencies.json", "r") as file:
+    with open(_CURRENCIES_JSON, "r") as file:
         cached_currencies = json.load(file)
     return cached_currencies
 
