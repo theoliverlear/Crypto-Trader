@@ -1,5 +1,5 @@
 export type ConsoleCommandRequest = {
-    command: string;
+    commandText: string;
 };
 
 export type ConsoleCommandResponse = {
