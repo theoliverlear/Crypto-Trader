@@ -1,5 +1,7 @@
 // not-found.component.ts
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
+import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
 
 @Component({
     selector: 'not-found',
@@ -7,6 +9,10 @@ import { Component } from '@angular/core';
     templateUrl: './not-found.component.html',
     styleUrls: ['./not-found.component.scss'],
 })
-export class NotFoundComponent {
-    constructor() {}
+export class NotFoundComponent implements OnInit {
+    constructor(private readonly logger: CryptoTraderLoggerService) {}
+
+    public ngOnInit(): void {
+        this.logger.info('NotFoundComponent initialized.', 'NotFound');
+    }
 }
