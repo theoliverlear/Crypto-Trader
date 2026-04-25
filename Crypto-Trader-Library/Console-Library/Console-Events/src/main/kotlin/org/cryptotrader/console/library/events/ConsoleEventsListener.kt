@@ -3,6 +3,7 @@ package org.cryptotrader.console.library.events
 import org.cryptotrader.console.library.communication.request.ConsoleCommandRequest
 import org.cryptotrader.console.library.communication.response.ConsoleCommandResponse
 import org.cryptotrader.console.library.component.ConsoleAuthenticationRunner
+import org.cryptotrader.console.library.component.ConsoleEventBinding
 import org.cryptotrader.console.library.services.ConsoleCommandService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -56,7 +57,7 @@ open class ConsoleEventsListener @Autowired constructor(
                 .withPayload(result)
                 .setHeader("correlationId", correlationIdHeader)
                 .build()
-            this.streamBridge.send("consoleReplies-out-0", replyMessage)
+            this.streamBridge.send(ConsoleEventBinding.CONSOLE_REPLIES.bindingName, replyMessage)
         }
     }
 }
