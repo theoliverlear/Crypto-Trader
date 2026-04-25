@@ -51,6 +51,41 @@ export class AuthInputComponent implements OnInit {
     }
 
     /**
+     * Returns a clean label for the input field.
+     * @returns The label string.
+     */
+    public getLabel(): string {
+        return this.authInputType;
+    }
+
+    /**
+     * Returns the placeholder text for the input field.
+     * @returns The placeholder string.
+     */
+    public getPlaceholder(): string {
+        switch (this.authInputType) {
+            case AuthInputType.EMAIL:
+                return 'you@example.com';
+            case AuthInputType.PASSWORD:
+                return 'Enter your password';
+            case AuthInputType.CONFIRM_PASSWORD:
+                return 'Confirm your password';
+            case AuthInputType.USERNAME:
+                return 'Enter your username';
+            default:
+                return '';
+        }
+    }
+
+    /**
+     * Returns whether this input is the terms checkbox.
+     * @returns True if this is the terms input.
+     */
+    public isTermsInput(): boolean {
+        return this.authInputType === AuthInputType.AGREED_TERMS;
+    }
+
+    /**
      * Returns the input type based on the auth input type.
      * @returns The corresponding InputType.
      */
