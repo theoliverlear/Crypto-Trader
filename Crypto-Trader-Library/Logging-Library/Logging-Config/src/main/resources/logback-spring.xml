@@ -14,7 +14,7 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>
-                ${ct_console_pattern:-%clr(%d{HH:mm:ss}){faint} %clr(%5p) %clr(%logger{36}){cyan} %clr(-){faint} %m%n${ct_exception_word:-${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}}
+                ${ct_console_pattern:-%clr(%d{MM/dd/yyyy - HH:mm:ss, America/Chicago}){faint} %clr(%5p) %clr(%logger{36}){cyan} %clr(-){faint} %m%n${ct_exception_word:-${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}}
             </pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -23,13 +23,12 @@
     </appender>
 
     <appender name="ALL_LOGS" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>./logs/all.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>./logs/all-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>50MB</maxFileSize>
         </rollingPolicy>
         <encoder>
-            <pattern>${ct_file_pattern:-%date %-5level %logger{36} - %strip(%msg)%n}</pattern>
+            <pattern>${ct_file_pattern:-%d{yyyy-MM-dd HH:mm:ss.SSS, America/Chicago} %-5level %logger{36} - %strip(%msg)%n}</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>${ct_file_level}</level>
@@ -37,14 +36,13 @@
     </appender>
 
     <appender name="BUGS_LOGS" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>./logs/bugs.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>./logs/bugs-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>50MB</maxFileSize>
         </rollingPolicy>
         <encoder>
             <pattern>
-                ${ct_error_file_pattern:-%date %-5level %logger{36} - %strip(%msg)%n${ct_exception_word:-${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}}
+                ${ct_error_file_pattern:-%d{yyyy-MM-dd HH:mm:ss.SSS, America/Chicago} %-5level %logger{36} - %strip(%msg)%n${ct_exception_word:-${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}}
             </pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
