@@ -1,14 +1,57 @@
 <!-- transparency-promo.component.html -->
 <ng-container>
-    <ss-title [tagType]="TagType.H3" [text]="'Transparency'" />
-    <div class="text-with-button-div">
-        <ss-paragraph [text]="transparencyParagraph" />
-        <div class="transparency-buttons-div">
-            <ss-anchor
-                [isButton]="true"
-                [elementLink]="repositoryElementLink"
-            />
-            <ss-anchor [isButton]="true" [elementLink]="docsElementLink" />
+    <scroll-reveal [threshold]="0.2">
+        <div class="transparency-backdrop">
+            <div class="orb orb-1" aria-hidden="true"></div>
+            <div class="orb orb-2" aria-hidden="true"></div>
+            <div class="orb orb-3" aria-hidden="true"></div>
+
+<!--            TODO: Move text to assets. -->
+            <div class="code-watermark" aria-hidden="true">
+                // Every algorithm, visible to all
+                public class TradeEngine &#123;
+                &nbsp;&nbsp;execute(strategy: Strategy) &#123; ... &#125;
+                &#125;
+                // Zero hidden logic. Zero black boxes.
+                val signal = strategy.analyze(market)
+                if (signal.confidence > threshold) &#123;
+                &nbsp;&nbsp;broker.place(signal.order)
+                &#125;
+            </div>
+
+            <div class="glass-panel">
+                <div class="copy-col">
+                    <eyebrow-label [text]="'Open Source & Auditable'" />
+                    <ss-title [text]="'Nothing to Hide'" [tagType]="TagType.H2" />
+
+                    <div class="trust-points">
+                        <icon-text-item [icon]="circleCheckmarkIcon" [text]="'Every algorithm is public — audit the code that trades your money'" />
+                        <icon-text-item [icon]="bookIcon" [text]="'Full documentation — understand every decision the system makes'" />
+                        <icon-text-item [icon]="electricPlugIcon" [text]="'Modular architecture — inspect, extend, or replace any component'" />
+                    </div>
+
+                    <div class="cta-row">
+                        <cta-button
+                            [text]="'Explore the Code'"
+                            [href]="'https://github.com/theoliverlear/Crypto-Trader'"
+                            [showArrow]="true"
+                            class="glass-primary"
+                        />
+                        <cta-button
+                            [text]="'Read the Docs'"
+                            [href]="'https://theoliverlear.github.io/Crypto-Trader/'"
+                            [showArrow]="false"
+                            class="ghost-glass"
+                        />
+                    </div>
+                </div>
+
+                <div class="visual-col">
+                    <code-window
+                        [codeWindow]="homeEngineCodeWindow"
+                    />
+                </div>
+            </div>
         </div>
-    </div>
+    </scroll-reveal>
 </ng-container>
