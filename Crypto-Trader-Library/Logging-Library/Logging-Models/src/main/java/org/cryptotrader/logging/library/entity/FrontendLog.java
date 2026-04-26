@@ -1,0 +1,61 @@
+package org.cryptotrader.logging.library.entity;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+import java.time.LocalDateTime;
+@Entity
+@Table(name = "frontend_logs")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class FrontendLog {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "timestamp")
+    private LocalDateTime timestamp;
+
+    @Column(name = "level")
+    private String level;
+
+    @Column(name = "logger")
+    private String logger;
+
+    @Column(name = "context")
+    private String context;
+
+    @Column(name = "message", columnDefinition = "TEXT")
+    private String message;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "metadata", columnDefinition = "JSONB")
+    private String metadata;
+
+    @Column(name = "error_name")
+    private String errorName;
+
+    @Column(name = "error_message", columnDefinition = "TEXT")
+    private String errorMessage;
+
+    @Column(name = "error_stack", columnDefinition = "TEXT")
+    private String errorStack;
+
+    @Column(name = "client_app")
+    private String clientApp;
+
+    @Column(name = "user_agent")
+    private String userAgent;
+
+    @Column(name = "ip_address")
+    private String ipAddress;
+
+    @Column(name = "remote_address")
+    private String remoteAddress;
+
+    @Column(name = "received_at")
+    private LocalDateTime receivedAt;
+}
