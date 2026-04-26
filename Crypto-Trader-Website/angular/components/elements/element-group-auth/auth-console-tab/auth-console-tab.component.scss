@@ -1,46 +1,49 @@
 // auth-console-tab-style.component.scss
 @use '../../../../styles/globals' as *;
 
-$simplest-one-percent: simplest-calc(1);
-$simplest-quarter-percent: simplest-calc(0.25);
-
+$auth-font: 'Inter', system-ui, 'Segoe UI', sans-serif;
+// TODO: Replace px with variables.
 auth-console-tab {
     @include flex(center, center, row);
-    border : {
-        top: black $very-thin-border solid;
-        left: black $very-thin-border solid;
-        right: black $very-thin-border solid;
-        radius: $simplest-one-percent $simplest-one-percent 0 0;
+    flex: 1;
+    padding: 10px 0;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+
+    ss-title {
+        h5 {
+            font-family: $auth-font;
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748b;
+            margin: 0;
+            transition: color 0.2s ease;
+        }
     }
-    z-index: 3;
-    background-color: $pure-white;
-    box-shadow: $blue-gray $simplest-quarter-percent
-        calc($simplest-quarter-percent * -1) 0 0;
-    padding: $half-percent $simplest-one-percent $quarter-percent
-        $simplest-one-percent;
-    width: simple-calc(6, 2.75);
-    text-align: center;
-    transition:
-        box-shadow, transform, margin-top, margin-left, transform,
-        padding-bottom, 0.3s;
-    transform: none;
 
-    $margin-padding-box-shadow: simplest-calc(0.35);
+    &.active {
+        background: $pure-white;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 
-    &:hover {
-        cursor: pointer;
-        box-shadow: $blue-gray $margin-padding-box-shadow
-            calc($margin-padding-box-shadow * -1) 0 0;
+        ss-title {
+            h5 {
+                color: #0f172a;
+                font-weight: 600;
+            }
+        }
+    }
+
+    &:hover:not(.active) {
+        background: rgba(255, 255, 255, 0.5);
     }
 
     &:active {
+        transform: none;
+        margin-top: 0;
         box-shadow: none;
-        margin : {
-            top: calc($margin-padding-box-shadow * -1);
-
-            // left: $margin-padding-box-shadow;
-        }
-        transform: translateX($margin-padding-box-shadow);
-        padding-bottom: calc($margin-padding-box-shadow + $quarter-percent);
     }
 }
