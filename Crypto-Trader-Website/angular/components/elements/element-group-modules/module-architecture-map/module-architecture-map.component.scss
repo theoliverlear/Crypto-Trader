@@ -1,0 +1,79 @@
+// module-architecture-map.component.scss
+@use 'sass:color';
+@use '../../../../styles/globals' as *;
+@use '../../../../styles/gradients/global_gradient_variables' as *;
+// TODO: Replace pixels with variables.
+module-architecture-map {
+    display: block;
+
+    .architecture-map {
+        @include flex(center, center, column);
+        gap: 0;
+        padding: $two-percent;
+        background: add-alpha($pure-white, 0.04);
+        backdrop-filter: blur(16px);
+        border: 1px solid add-alpha($mint-green, 0.15);
+        border-radius: $half-percent;
+        margin-bottom: $two-percent;
+    }
+
+    .arch-layer {
+        @include flex(center, center, column);
+        gap: $half-percent;
+        width: 100%;
+        padding: $one-percent;
+    }
+
+    .arch-layer-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: add-alpha($pale-mint, 0.6);
+        margin-bottom: $quarter-percent;
+    }
+
+    .arch-nodes {
+        @include flex(center, center, row);
+        flex-wrap: wrap;
+        gap: $half-percent;
+    }
+
+    .arch-node {
+        display: inline-block;
+        padding: 6px 16px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: $pale-mint;
+        background: add-alpha($pure-white, 0.08);
+        border: 1px solid add-alpha($mint-green, 0.2);
+        border-radius: $quarter-percent;
+        transition: background 0.2s ease;
+
+        &.highlight {
+            background: add-alpha($teal-green, 0.15);
+            border-color: add-alpha($teal-green, 0.4);
+            color: $mint-green;
+        }
+
+        &.small {
+            padding: 4px 10px;
+            font-size: 0.7rem;
+        }
+    }
+
+    .arch-connector {
+        color: add-alpha($mint-green, 0.4);
+        font-size: 1.2rem;
+        line-height: 1;
+        padding: $quarter-percent 0;
+    }
+
+    .badge-grid-wrapper {
+        margin-top: $one-percent;
+
+        badge-grid {
+            width: 100%;
+        }
+    }
+}

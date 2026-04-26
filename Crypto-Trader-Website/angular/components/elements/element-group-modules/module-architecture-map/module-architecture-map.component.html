@@ -1,0 +1,26 @@
+<!-- module-architecture-map.component.html -->
+<ng-container>
+    <div class="architecture-map">
+        <ng-container *ngFor="let layer of layers; let last = last">
+            <div class="arch-layer">
+                <span class="arch-layer-label">{{ layer.label }}</span>
+                <div class="arch-nodes">
+                <span class="arch-node"
+                      *ngFor="let node of layer.nodes"
+                      [class.highlight]="node.highlight"
+                      [class.small]="node.small">
+                    {{ node.name }}
+                </span>
+                </div>
+            </div>
+            <div class="arch-connector" *ngIf="!last">▼</div>
+        </ng-container>
+    </div>
+
+    <div class="badge-grid-wrapper">
+        <badge-grid [items]="allModuleNames"
+                    [columns]="5"
+                    [ariaLabel]="'All Modules'"
+                    [staggerAnimation]="true" />
+    </div>
+</ng-container>
