@@ -1,6 +1,6 @@
 // console.component.scss
 @use '../../../styles/globals' as *;
-
+// TODO: Replace pixels with variables.
 console {
     @include flex(center, center, column);
     @extend %fill-container;
