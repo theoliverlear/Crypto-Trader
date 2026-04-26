@@ -1,13 +1,12 @@
 // auth-console-tab-section-style.component.scss
 @use '../../../../styles/globals' as *;
-
+// TODO: Replace pixels with variables.
 auth-console-tab-section {
-    @include flex(flex-start, center, row);
+    @include flex(center, center, row);
     width: 100%;
-    z-index: 2;
-
-    // margin-left: $three-percent;
-    auth-console-tab {
-        margin-left: $one-half-percent;
-    }
+    background: #f1f5f9;
+    border-radius: 12px;
+    padding: 4px;
+    box-sizing: border-box;
+    gap: 4px;
 }
