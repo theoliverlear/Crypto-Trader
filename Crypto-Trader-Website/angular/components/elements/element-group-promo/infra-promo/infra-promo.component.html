@@ -1,0 +1,22 @@
+<!-- infra-promo.component.html -->
+<ng-container>
+    <section class="infra-section">
+        <scroll-reveal [threshold]="0.2">
+            <div class="section-content">
+                <div class="section-header">
+                    <eyebrow-label [text]="'BUILT TO LAST'"/>
+                    <ss-title [text]="'Infrastructure &amp; Quality'"
+                              [tagType]="TagType.H2"/>
+                    <subtitle [text]="'The foundation modules that keep everything tested, monitored, documented, and versioned.'"
+                              [tagType]="TagType.H5"/>
+                </div>
+
+                <div class="infra-grid">
+                    @for (module of infraModules; track module.name) {
+                        <module-infra-tile [module]="module"/>
+                    }
+                </div>
+            </div>
+        </scroll-reveal>
+    </section>
+</ng-container>
