@@ -1,70 +1,164 @@
 // transparency-promo.component.scss
 @use '../../../../styles/globals' as *;
+@use '../../../../styles/gradients/global_gradient_variables' as *;
+@use '../../../../styles/gradients/global_gradient_placeholders' as *;
+@use '../../../../styles/gradients/global_gradient_mixins' as *;
 
+// TODO: Replace pixels with variables.
 transparency-promo {
-    @include flex(center, center, column);
+    @include promo-section-block;
 
-    @extend %soft-border-radius;
-    padding: $one-percent;
-    width: 90%;
-    background-color: add-alpha($alabaster-stone, 0.2);
-    opacity: 0;
-    transform: translateY(16px);
-    transition:
-        opacity 900ms ease-out,
-        transform 900ms ease-out;
-
-    &.in-view {
-        opacity: 1;
-        transform: translateY(0);
+    .transparency-backdrop {
+        @include dark-section-backdrop;
+        padding: $three-percent $five-percent;
+        background:
+            radial-gradient(ellipse at 20% 80%, add-alpha($teal-green, 0.08), transparent 50%),
+            radial-gradient(ellipse at 80% 20%, add-alpha($muted-blue, 0.1), transparent 50%),
+            linear-gradient(180deg, $midnight-navy, $deep-ocean);
     }
 
-    ss-title {
-        // @extend %soft-text-shadow;
-        // text-shadow: add-alpha($charcoal, 0.1) 0 0 $half-percent;
-        // text-shadow: -2px -2px 0 #000,  /* Top-left */
-        // 2px -2px 0 #000,   /* Top-right */
-        // -2px 2px 0 #000,   /* Bottom-left */
-        // 2px 2px 0 #000;
-        -webkit-text-stroke: 2px add-alpha($charcoal, 0.1);
-        color: add-alpha($pure-white, 1);
-        text-decoration: underline;
-        margin: $half-percent 0;
-    }
+    // --- Floating orbs behind the glass ---
+    .orb {
+        @include decorative-orb;
 
-    .text-with-button-div {
-        @include flex(space-around, center, column);
-
-        ss-paragraph {
-            // width: 35%;
-            flex: 2;
-            margin: $half-percent $one-percent $half-percent 0;
+        &.orb-1 {
+            @include square-size(200px);
+            background: add-alpha($teal-green, 0.15);
+            top: 10%;
+            left: 15%;
         }
 
-        .transparency-buttons-div {
-            @include flex(space-around, center, row);
-            width: 100%;
+        &.orb-2 {
+            @include square-size(150px);
+            background: add-alpha($muted-blue, 0.12);
+            bottom: 15%;
+            right: 20%;
+        }
 
-            ss-anchor {
-                // background-color: add-alpha-opaque($sunbeam-yellow, 0.5, $pure-white);
-                // width: $twenty-five-percent;
-                max-height: $four-percent;
-                text-shadow: none;
-                color: add-alpha($pure-white, 1);
+        &.orb-3 {
+            @include square-size(100px);
+            background: add-alpha($sunbeam-yellow, 0.08);
+            top: 50%;
+            right: 40%;
+        }
+    }
 
-                a {
-                    h1,
-                    h2,
-                    h3,
-                    h4,
-                    h5,
-                    h6 {
-                        min-width: 12ch;
+    // --- Code watermark behind the glass ---
+    .code-watermark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        font-family: monospace;
+        font-size: 0.85rem;
+        line-height: 2.5;
+        color: add-alpha($teal-green, 0.06);
+        white-space: pre;
+        overflow: hidden;
+        pointer-events: none;
+        user-select: none;
+        padding: $two-percent;
+    }
 
-                        @extend %transparent-text;
-                    }
-                }
+    // --- Frosted glass panel ---
+    .glass-panel {
+        @include glass-panel;
+        @include two-column-layout;
+        padding: $two-percent $three-percent;
+
+        // Reflective accent line at top
+        &::before {
+            @include glass-reflection-line;
+        }
+
+        // Shimmer animation sweep
+        &::after {
+            @include shimmer-overlay;
+        }
+
+        // --- Entrance animation ---
+        @include scroll-reveal-entrance($distance: 16px);
+        transform: scale(0.97) translateY(16px);
+    }
+
+    // --- Copy column ---
+    .copy-col {
+        ss-title {
+            @include gradient-text($light-logo);
+        }
+
+        .trust-points {
+            @include flex(flex-start, flex-start, column);
+            gap: $half-percent;
+            margin-top: $half-percent;
+            color: add-alpha($pure-white, 0.9);
+
+            icon-text-item .item-icon {
+                filter: brightness(1.2);
             }
+        }
+
+        .cta-row {
+            @include flex(flex-start, center, row);
+            gap: $one-percent;
+            margin-top: $one-percent;
+        }
+    }
+
+    // --- Glass-primary CTA override ---
+    .glass-primary .cta-button {
+        background: add-alpha($teal-green, 0.25);
+        border: 1px solid add-alpha($teal-green, 0.4);
+        color: $pure-white;
+
+        &:hover {
+            background: add-alpha($teal-green, 0.4);
+            box-shadow: 0 0 16px add-alpha($teal-green, 0.3);
+        }
+    }
+
+    // --- Code window entrance ---
+    code-window {
+        @include scroll-reveal-entrance($delay: 200ms, $distance: 20px);
+    }
+
+    // --- Scroll-reveal entrance triggers ---
+    scroll-reveal.in-view {
+        .glass-panel {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        code-window {
+            @extend %scroll-reveal-visible;
+        }
+    }
+
+    // --- Responsive ---
+    @include mobile-breakpoint {
+        .glass-panel {
+            @include two-column-responsive;
+        }
+
+        .cta-row {
+            @include flex(flex-start, center, column);
+        }
+    }
+
+    // --- Reduced motion ---
+    @include reduced-motion {
+        .glass-panel {
+            @include reduced-motion-reset;
+
+            &::after {
+                animation: none;
+                display: none;
+            }
+        }
+
+        .code-window {
+            @include reduced-motion-reset;
         }
     }
 }
