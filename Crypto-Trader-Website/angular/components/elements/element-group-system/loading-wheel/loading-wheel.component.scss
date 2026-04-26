@@ -1,0 +1,200 @@
+// loading-wheel.component.scss
+@use '../../../../styles/globals' as *;
+
+loading-wheel {
+    @include flex(center, center, column);
+    @include square-size($six-percent);
+    position: relative;
+    margin: $one-percent 0;
+
+    &.small {
+        @include square-size($three-percent);
+
+        .loader-dot {
+            @include square-size($two-percent);
+        }
+    }
+
+    &.medium {
+        @include square-size($six-percent);
+
+        .loader-dot {
+            @include square-size($four-percent);
+        }
+    }
+
+    &.large {
+        @include square-size($ten-percent);
+
+        .loader-dot {
+            @include square-size($seven-percent);
+        }
+    }
+
+    &.very-large {
+        @include square-size($fifteen-percent);
+
+        .loader-dot {
+            @include square-size($ten-percent);
+        }
+    }
+
+    &.color-ocean {
+        .loader-ring {
+            background: conic-gradient(
+                from 0deg,
+                lightblue,
+                $mint-green,
+                $air-blue,
+                $pure-white
+            );
+            border: $thin-border solid $alabaster-stone;
+            box-shadow:
+                0 0 $eighth-percent $sea-blue,
+                0 0 $quarter-percent $turquoise-blue;
+        }
+
+        .loader-dot {
+            background-color: $pure-white;
+            box-shadow: 0 0 $half-percent $turquoise-blue;
+        }
+    }
+
+    &.color-sunset {
+        .loader-ring {
+            background: conic-gradient(
+                from 0deg,
+                $sunbeam-yellow,
+                $red-orange,
+                $bitcoin-color,
+                $pure-white
+            );
+            border: $thin-border solid $alabaster-stone;
+            box-shadow:
+                0 0 $eighth-percent $red-orange,
+                0 0 $quarter-percent $bitcoin-color;
+        }
+
+        .loader-dot {
+            background-color: $sunbeam-yellow;
+            box-shadow: 0 0 $half-percent $red-orange;
+        }
+    }
+
+    &.color-golden {
+        .loader-ring {
+            background: conic-gradient(
+                from 0deg,
+                $sunbeam-yellow,
+                $bitcoin-color,
+                $ivory-white,
+                $pure-white
+            );
+            border: $thin-border solid $alabaster-stone;
+            box-shadow:
+                0 0 $eighth-percent $bitcoin-color,
+                0 0 $quarter-percent $sunbeam-yellow;
+        }
+
+        .loader-dot {
+            background-color: $pure-white;
+            box-shadow: 0 0 $half-percent $bitcoin-color;
+        }
+    }
+
+    &.color-emerald {
+        .loader-ring {
+            background: conic-gradient(
+                from 0deg,
+                $green-lemon,
+                $teal-green,
+                $sage-green,
+                $pure-white
+            );
+            border: $thin-border solid $alabaster-stone;
+            box-shadow:
+                0 0 $eighth-percent $jungle-green,
+                0 0 $quarter-percent $mint-green;
+        }
+
+        .loader-dot {
+            background-color: $pale-mint;
+            box-shadow: 0 0 $half-percent $teal-green;
+        }
+    }
+
+    &.color-frost {
+        .loader-ring {
+            background: conic-gradient(
+                from 0deg,
+                $pure-white,
+                $air-blue,
+                $morning-frost-blue,
+                $soft-grey
+            );
+            border: $thin-border solid $alabaster-stone;
+            box-shadow:
+                0 0 $eighth-percent $muted-blue,
+                0 0 $quarter-percent $morning-frost-blue;
+        }
+
+        .loader-dot {
+            background-color: $pure-white;
+            box-shadow: 0 0 $half-percent $morning-frost-blue;
+        }
+    }
+
+    .loader-ring {
+        @extend %fill-container;
+        border-radius: 50%;
+        position: absolute;
+        opacity: 0.7;
+        animation: spinning 1s cubic-bezier(0.6, 0.45, 0.1, 0.6) infinite;
+    }
+
+    .loader-dot {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        @include square-size($four-percent);
+        border-radius: 50%;
+        animation: jumping 2s cubic-bezier(0.2, 0.57, 0.36, 0.98) infinite;
+    }
+
+    @keyframes spinning {
+        0% {
+            transform: rotate(0deg) scale(1);
+        }
+
+        100% {
+            transform: rotate(360deg) scale(1);
+        }
+    }
+
+    @keyframes glowing {
+        0% {
+            opacity: 0.6;
+            box-shadow: 0 0 $quarter-percent $deep-ocean;
+        }
+
+        100% {
+            opacity: 1;
+            box-shadow:
+                0 0 $six-percent $mint-green,
+                0 0 $quarter-percent $muted-blue;
+        }
+    }
+
+    @keyframes jumping {
+        0%,
+        100% {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        50% {
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+    }
+}
