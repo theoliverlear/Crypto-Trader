@@ -1,40 +1,282 @@
 // tier-promo.component.scss
 @use '../../../../styles/globals' as *;
-
+// TODO: Replace pixels with variables.
 tier-promo {
-    @include flex(center, center, column);
-    max-width: 30vw;
+    display: block;
+    position: relative;
 
-    @extend %soft-border-radius;
+    .tier-card {
+        @include elevated-card;
+        @include flex(flex-start, center, column);
+        padding: $one-half-percent $one-percent;
+        height: 100%;
+        position: relative;
+        overflow: visible;
 
-    // background-color: $darker-black-shadow;
-    margin: 0 $half-percent;
-    padding: $one-percent $half-percent;
+        // --- Tier-specific accent colors ---
+        &.tier-free {
+            border-top-color: $muted-blue;
+        }
 
-    ss-title {
-        margin: $quarter-percent;
+        &.tier-pro {
+            border-top-color: $teal-green;
+        }
+
+        &.tier-ultimate {
+            border-top-color: $sunbeam-yellow;
+            transform: scale(1.03);
+            box-shadow:
+                add-alpha($sunbeam-yellow, 0.2) 0 0 20px,
+                add-alpha(black, 0.1) 0 8px 30px;
+            z-index: 1;
+
+            &:hover {
+                transform: scale(1.03) translateY(-4px);
+                box-shadow:
+                    add-alpha($sunbeam-yellow, 0.3) 0 0 28px,
+                    add-alpha(black, 0.18) 0 12px 36px;
+            }
+        }
     }
 
-    ss-paragraph {
-        max-width: $twenty-percent;
+    // --- Recommended badge ---
+    .recommended-badge {
+        position: absolute;
+        top: simplest-calc(-0.4);
+        left: 50%;
+        transform: translateX(-50%);
+        background: $teal-green;
+        color: $pure-white;
+        padding: $eighth-percent $half-percent;
+        border-radius: $quarter-percent;
+        font-size: $smallest-p-font-size;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        z-index: 2;
     }
 
-    ss-img {
-        @include square-size($six-percent);
+    // --- Icon ---
+    .icon-wrap {
+        margin-bottom: $quarter-percent;
+
+        ss-img {
+            @include square-size($five-percent);
+            padding: $quarter-percent;
+            border-radius: 50%;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    }
+
+    .tier-free .icon-wrap ss-img {
         background-image: radial-gradient(
-            114.74% 114.74% at 96.86% 3.84%,
-            #c0ecd7 0%,
-            #6fc164 30%,
-            #3eb98d 60%,
-            #26929d 100%
+            circle,
+            add-alpha($muted-blue, 0.15),
+            add-alpha($muted-blue, 0.05)
         );
-        background-repeat: no-repeat;
-        background-size: cover;
-        padding: $half-percent;
-        box-shadow: $blue-gray $quarter-percent $quarter-percent 0 0;
+        border: 2px solid add-alpha($muted-blue, 0.3);
+    }
 
-        img {
-            // filter: invert(0.75);
+    .tier-pro .icon-wrap ss-img {
+        background-image: radial-gradient(
+            circle,
+            add-alpha($teal-green, 0.15),
+            add-alpha($teal-green, 0.05)
+        );
+        border: 2px solid add-alpha($teal-green, 0.3);
+    }
+
+    .tier-ultimate .icon-wrap ss-img {
+        background-image: radial-gradient(
+            circle,
+            add-alpha($sunbeam-yellow, 0.25),
+            add-alpha($sunbeam-yellow, 0.05)
+        );
+        border: 2px solid add-alpha($sunbeam-yellow, 0.5);
+        box-shadow: 0 0 12px add-alpha($sunbeam-yellow, 0.3);
+    }
+
+    // --- Title ---
+    ss-title {
+        margin: $quarter-percent 0;
+
+        h3 {
+            color: $midnight-navy;
+            font-weight: 700;
+        }
+    }
+
+    // --- Price label ---
+    .price-label {
+        font-size: $smallest-p-font-size;
+        font-weight: 600;
+        color: $blue-gray;
+        margin-bottom: $quarter-percent;
+        letter-spacing: 0.02em;
+    }
+
+    // --- Description ---
+    ss-paragraph {
+        text-align: center;
+
+        p {
+            color: $blue-gray;
+            font-size: $smallest-p-font-size;
+            line-height: 1.5;
+        }
+    }
+
+    // --- Feature list ---
+    .feature-list {
+        list-style: none;
+        padding: 0;
+        margin: $half-percent 0;
+        width: 100%;
+        text-align: left;
+
+        li {
+            display: flex;
+            align-items: center;
+            gap: $quarter-percent;
+            padding: $eighth-percent 0;
+            font-size: $smallest-p-font-size;
+            color: $blue-gray;
+
+            .check {
+                color: $teal-green;
+                font-weight: 700;
+                flex-shrink: 0;
+            }
+
+            &.highlight {
+                font-weight: 700;
+                color: $midnight-navy;
+
+                .check {
+                    color: $sunbeam-yellow;
+                }
+            }
+        }
+    }
+
+    .tier-free .feature-list .check {
+        color: $muted-blue;
+    }
+
+    .tier-pro .feature-list .check {
+        color: $teal-green;
+    }
+
+    .tier-ultimate .feature-list .check {
+        color: $sunbeam-yellow;
+    }
+
+    // --- Ultimate exclusive section ---
+    .ultimate-exclusive {
+        width: 100%;
+        margin: $half-percent 0;
+        padding: $half-percent;
+        border-radius: $quarter-percent;
+        background: linear-gradient(
+            135deg,
+            add-alpha($sunbeam-yellow, 0.08),
+            add-alpha($midnight-navy, 0.06)
+        );
+        border: 1px solid add-alpha($sunbeam-yellow, 0.3);
+
+        .exclusive-badge {
+            @include flex(flex-start, center, row);
+            gap: $quarter-percent;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: $midnight-navy;
+            margin-bottom: $eighth-percent;
+
+            .bolt {
+                font-size: 1.1rem;
+            }
+        }
+
+        .exclusive-desc {
+            font-size: $smallest-p-font-size;
+            color: $blue-gray;
+            line-height: 1.4;
+            margin: 0 0 $quarter-percent 0;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    // --- CTA button ---
+    cta-button {
+        margin-top: auto;
+        padding-top: $half-percent;
+        width: 100%;
+        text-align: center;
+
+        .cta-button {
+            width: 100%;
+        }
+    }
+
+    .tier-free cta-button .cta-button {
+        background-color: $muted-blue;
+        color: $pure-white;
+
+        &:hover {
+            box-shadow: add-alpha($muted-blue, 0.4) 0 simplest-calc(0.25)
+                simplest-calc(0.75);
+        }
+    }
+
+    .tier-pro cta-button .cta-button {
+        background-color: $teal-green;
+        color: $pure-white;
+
+        &:hover {
+            box-shadow: add-alpha($teal-green, 0.4) 0 simplest-calc(0.25)
+                simplest-calc(0.75);
+        }
+    }
+
+    .tier-ultimate cta-button .cta-button {
+        background-color: $sunbeam-yellow;
+        color: $midnight-navy;
+
+        &:hover {
+            box-shadow: add-alpha($sunbeam-yellow, 0.5) 0 simplest-calc(0.25)
+                simplest-calc(0.75);
+        }
+    }
+
+    // --- Responsive ---
+    @include mobile-breakpoint {
+        .tier-card {
+            padding: $one-percent $half-percent;
+
+            &.tier-ultimate {
+                transform: none;
+
+                &:hover {
+                    transform: translateY(-4px);
+                }
+            }
+        }
+    }
+
+    @include reduced-motion {
+        .tier-card {
+            transition: none;
+
+            &.tier-ultimate {
+                &:hover {
+                    transform: scale(1.03);
+                }
+            }
         }
     }
 }
