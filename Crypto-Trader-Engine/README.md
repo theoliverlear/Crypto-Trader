@@ -1,19 +1,19 @@
-﻿# Crypto Trader — Engine Module
+# Crypto Trader — Engine Module
 ## The execution core that turns signals into live trades
 
 ---
 
 Crypto‑Trader‑Engine is the platform’s main trading engine. It runs the trading
-loop, sizes positions under strict guardrails, talks to exchanges, and 
+loop, sizes positions under strict guardrails, talks to exchanges, and
 executes entries/exits with discipline and speed.
 
 "Crypto Trader is a platform that allows users to trade cryptocurrencies with
-two approaches. One approach is the tried and true "buy low, sell high" 
+two approaches. One approach is the tried and true "buy low, sell high"
 method." Using this automated approach, Crypto Trader outperforms the market.
 This is because buying low and selling high is a time-based endeavor. Since
-computers can make mathematical decisions much faster than humans, our users 
-are given an edge. The other approach is using Crypto Trader's deep learning 
-models. With a GPU farm constantly updating the models, Crypto Trader can 
+computers can make mathematical decisions much faster than humans, our users
+are given an edge. The other approach is using Crypto Trader's deep learning
+models. With a GPU farm constantly updating the models, Crypto Trader can
 predict supported currencies’ price over time with high accuracy.
 
 Important: Past results and backtests do not guarantee future performance.
@@ -21,7 +21,7 @@ Always start in paper mode. Liability is your own.
 
 ## 🧭 Plans and execution tiers (Engine benefits)
 
-| Feature               | 🆓 Free                                                                     | 🧠 Pro                                                                      | 📰 Elite                                                                    |
+| Feature               | 🆓 Free                                                                     | 🧠 Pro                                                                      | 📰 Ultimate                                                                 |
 |-----------------------|-----------------------------------------------------------------------------|-----------------------------------------------------------------------------|-----------------------------------------------------------------------------|
 | Execution cadence     | Every `20s`                                                                 | Every `10s`                                                                 | Every `5s`                                                                  |
 | Strategy modes        | Buy Low / Sell High                                                         | Algorithmic, ML, or Hybrid                                                  | Algorithmic, ML, or Hybrid                                                  |
@@ -34,26 +34,26 @@ Always start in paper mode. Liability is your own.
 
 ## ⭐️ What the Engine does
 - Trading loop and scheduling
-  - Runs 24/7 with `@EnableScheduling` and `@EnableAsync` to evaluate and act
-    quickly.
+    - Runs 24/7 with `@EnableScheduling` and `@EnableAsync` to evaluate and act
+      quickly.
 - Position sizing and guardrails
-  - Enforces max position size, stop‑loss/take‑profit, exposure caps, and kill
-    switches.
+    - Enforces max position size, stop‑loss/take‑profit, exposure caps, and kill
+      switches.
 - Exchange orchestration
-  - Prepares, routes, and audits orders; integrates via HTTP/REST clients.
+    - Prepares, routes, and audits orders; integrates via HTTP/REST clients.
 - Strategy integration
-  - Executes classic buy‑low/sell‑high and consumes ML predictions from the 
-    Analysis module.
+    - Executes classic buy‑low/sell‑high and consumes ML predictions from the
+      Analysis module.
 - Paper and live modes
-  - Start in paper; flip to live with the same guardrails when ready.
+    - Start in paper; flip to live with the same guardrails when ready.
 
 ## ✅ Why it matters
-- Time back: automation evaluates markets continuously, reacting within 
+- Time back: automation evaluates markets continuously, reacting within
   milliseconds.
 - Discipline by default: guardrails, throttles, and cool‑offs reduce emotional
   and impulsive trades.
 - Built for volatility: consistent execution even when markets move fast.
-- Proven architecture: decoupled data (Data module), analysis (Analysis), and 
+- Proven architecture: decoupled data (Data module), analysis (Analysis), and
   execution (Engine).
 
 ## 🚀 How it trades (at a glance)
@@ -63,21 +63,21 @@ Always start in paper mode. Liability is your own.
 4. Places orders via exchange adapter and tracks fills.
 5. Records outcomes and schedules the next evaluation cycle.
 
-Tip: You can disable the trading loop to run in a safe, docs/paper mode using 
+Tip: You can disable the trading loop to run in a safe, docs/paper mode using
 the flag below.
 
 ## 🔗 Where it fits in the platform
 - Consumes market data and predictions from the Data and Analysis modules.
-- Drives the final step: turns signals into orders under strict risk 
+- Drives the final step: turns signals into orders under strict risk
   management.
-- Surfaces health and docs endpoints (OpenAPI via Springdoc) for internal 
+- Surfaces health and docs endpoints (OpenAPI via Springdoc) for internal
   observability.
 
 ## 🔒 Safety, privacy, and control
 - Start in paper mode and set strict limits.
 - Use kill switches: you can disable the scheduler (trading loop) at runtime
   with a single flag.
-- Do not store exchange API keys in plaintext; manage secrets via platform 
+- Do not store exchange API keys in plaintext; manage secrets via platform
   configuration.
 - You are responsible for outcomes. Read and respect the LICENSE.
 
@@ -91,7 +91,7 @@ the flag below.
 
 ## 📝 Conventions
 - Always validate in paper mode first; promote incrementally to live.
-- Keep guardrails on: max position, stop‑loss, exposure caps, and kill 
+- Keep guardrails on: max position, stop‑loss, exposure caps, and kill
   switches.
 - Favor deterministic, replayable strategies; log decisions and outcomes.
 
