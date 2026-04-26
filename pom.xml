@@ -1155,7 +1155,7 @@
             </releases>
         </repository>
         <repository>
-            <id>gh-sigwarth-suite</id>
+            <id>github</id>
             <url>https://maven.pkg.github.com/theoliverlear/Sigwarth-Software-Suite</url>
         </repository>
         <!-- Standard public repositories -->
