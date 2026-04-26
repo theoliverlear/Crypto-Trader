@@ -1,0 +1,29 @@
+<!-- module-interface-selector.component.html -->
+<ng-container>
+    <div class="interfaces-selector">
+        <div class="interface-tabs">
+            <button class="interface-tab"
+                    *ngFor="let mod of modules"
+                    [class.active]="activeInterface === mod.name.toLowerCase()"
+                    (click)="selectInterface(mod.name)">
+                <img [src]="mod.icon.src" [alt]="mod.icon.alt"
+                     class="tab-icon" />
+                <span class="tab-name">{{ mod.name }}</span>
+            </button>
+        </div>
+
+        <div class="interface-detail" *ngIf="getActiveInterface() as active">
+            <h3 class="detail-name">{{ active.name }}</h3>
+            <span class="detail-tagline">{{ active.tagline }}</span>
+            <p class="detail-desc">{{ active.description }}</p>
+            <ul class="detail-features">
+                <li *ngFor="let feat of active.features">{{ feat }}</li>
+            </ul>
+            <div class="tech-badges">
+            <span class="tech-badge" *ngFor="let tech of active.techStack">
+                {{ tech }}
+            </span>
+            </div>
+        </div>
+    </div>
+</ng-container>
