@@ -1,4 +1,4 @@
-// =================================-Imports-==================================
+//=================================-Imports-==================================
 @use 'global-variables' as *;
 @use 'global-mixins' as *;
 @use 'global-functions' as *;
@@ -7,7 +7,7 @@
 @use '@theoliverlear/styles-suite/sigwarth-mixins' as *;
 @use '@theoliverlear/styles-suite/sigwarth-variables' as *;
 
-// ===============================-Placeholders-===============================
+//===============================-Placeholders-===============================
 
 %nav-bar-padding-top {
     padding-top: $four-percent;
