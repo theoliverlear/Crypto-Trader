@@ -1,0 +1,37 @@
+<ng-container>
+    <content-stripe class="intro-stripe">
+        <ss-img [imageAsset]="transparentLogo" class="hero-logo-bg" />
+        <div class="hero-copy-col">
+            <eyebrow-label [text]="'Right trades, at the right time, every time.'" />
+            <ss-title
+                [text]="'Crypto Trader'"
+                [tagType]="TagType.H1"
+                id="crypto-trader-name-title"
+            />
+            <subtitle
+                [text]="'Automated crypto trading — open-source, zero-margin, built for everyone.'"
+                [tagType]="TagType.H4"
+            />
+
+            <div class="value-props">
+                <icon-text-item [icon]="stockIcon" [text]="'Set strategies and step away from the screen'" />
+                <icon-text-item [icon]="circleCheckmarkIcon" [text]="'Paid tiers only cover compute — zero profit margin'" />
+                <icon-text-item [icon]="bookIcon" [text]="'Fully open-source — see every algorithm, every trade'" />
+            </div>
+
+            <div class="hero-cta-row">
+                <cta-button
+                    [text]="'Get Started'"
+                    [routerLink]="'/authorize'"
+                    [showArrow]="true"
+                />
+                <cta-button
+                    [text]="'Explore Modules'"
+                    [routerLink]="'/modules'"
+                    [showArrow]="false"
+                    class="ghost"
+                />
+            </div>
+        </div>
+    </content-stripe>
+</ng-container>
