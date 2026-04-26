@@ -1,0 +1,11 @@
+// modules.component.scss
+@use 'sass:color';
+@use '../../../styles/globals' as *;
+@use '../../../styles/gradients/global_gradient_placeholders' as *;
+@use '../../../styles/gradients/global_gradient_variables' as *;
+@use '../../../styles/gradients/global_gradient_mixins' as *;
+
+modules {
+    @include flex(flex-start, center, column);
+    width: 100%;
+}
