@@ -1,0 +1,224 @@
+// module-card.component.scss
+@use 'sass:color';
+@use '../../../../styles/globals' as *;
+@use '../../../../styles/gradients/global_gradient_variables' as *;
+@use '../../../../styles/gradients/global_gradient_mixins' as *;
+// TODO: Replace pixels with variables.
+module-card {
+    display: block;
+
+    // ─── Shared tech badge styles ───
+    .tech-badges {
+        @include flex(flex-start, center, row);
+        flex-wrap: wrap;
+        gap: $quarter-percent;
+        margin-top: auto;
+        padding-top: $half-percent;
+    }
+
+    .tech-badge {
+        display: inline-block;
+        padding: 3px 10px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        border-radius: 999px;
+        white-space: nowrap;
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // DARK theme (glass panel — used for pipeline cards)
+    // ═══════════════════════════════════════════════════════════════
+    .module-card.dark {
+        @include flex(flex-start, flex-start, column);
+        padding: $one-half-percent;
+        background: add-alpha($pure-white, 0.05);
+        backdrop-filter: blur(16px);
+        border: 1px solid add-alpha($mint-green, 0.2);
+        border-radius: $half-percent;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                add-alpha($mint-green, 0.4),
+                transparent
+            );
+        }
+
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 32px add-alpha($mint-green, 0.12);
+        }
+
+        .module-card-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: $half-percent;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                filter: brightness(0) invert(1);
+                opacity: 0.9;
+            }
+        }
+
+        .module-card-name {
+            @include gradient-text($light-logo);
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 0 0 $quarter-percent;
+        }
+
+        .module-card-tagline {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: $mint-green;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: $half-percent;
+        }
+
+        .module-card-desc {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: $alabaster-stone;
+            opacity: 0.85;
+            margin-bottom: $half-percent;
+        }
+
+        .module-card-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 $half-percent;
+
+            li {
+                position: relative;
+                padding-left: 1.2em;
+                font-size: 0.82rem;
+                line-height: 1.8;
+                color: add-alpha($pale-mint, 0.9);
+
+                &::before {
+                    content: '▸';
+                    position: absolute;
+                    left: 0;
+                    color: $mint-green;
+                }
+            }
+        }
+
+        .tech-badge {
+            background: add-alpha($mint-green, 0.15);
+            color: $pale-mint;
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // LIGHT theme (elevated card — used for service cards)
+    // ═══════════════════════════════════════════════════════════════
+    .module-card.light {
+        @include flex(flex-start, flex-start, column);
+        padding: $one-half-percent;
+        background: $pure-white;
+        border-radius: $half-percent;
+        border-top: 3px solid $ocean-blue;
+        box-shadow: 0 2px 12px add-alpha($absolute-black, 0.06);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px add-alpha($absolute-black, 0.1);
+        }
+
+        &[data-accent='teal-green'] {
+            border-top-color: $teal-green;
+        }
+
+        &[data-accent='sunbeam-yellow'] {
+            border-top-color: $sunbeam-yellow;
+        }
+
+        &[data-accent='mint-green'] {
+            border-top-color: $mint-green;
+        }
+
+        &[data-accent='ocean-blue'] {
+            border-top-color: $ocean-blue;
+        }
+
+        .module-card-icon {
+            width: 40px;
+            height: 40px;
+            margin-bottom: $half-percent;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+        }
+
+        .module-card-name {
+            @include gradient-text($regular-logo);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0 0 $quarter-percent;
+        }
+
+        .module-card-tagline {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: $ocean-blue;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: $half-percent;
+        }
+
+        .module-card-desc {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: $charcoal;
+            opacity: 0.85;
+            margin-bottom: $half-percent;
+        }
+
+        .module-card-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 $half-percent;
+
+            li {
+                position: relative;
+                padding-left: 1.2em;
+                font-size: 0.8rem;
+                line-height: 1.8;
+                color: $blue-gray;
+
+                &::before {
+                    content: '✓';
+                    position: absolute;
+                    left: 0;
+                    color: $teal-green;
+                    font-weight: 700;
+                }
+            }
+        }
+
+        .tech-badge {
+            background: add-alpha($teal-green, 0.1);
+            color: $teal-green;
+        }
+    }
+}

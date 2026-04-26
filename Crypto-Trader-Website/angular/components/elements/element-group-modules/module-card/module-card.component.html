@@ -1,0 +1,22 @@
+<!-- module-card.component.html -->
+<ng-container>
+    <div class="module-card"
+         [class.dark]="theme === 'dark'"
+         [class.light]="theme === 'light'"
+         [attr.data-accent]="module.accentColor">
+        <div class="module-card-icon">
+            <img [src]="module.icon.src" [alt]="module.icon.alt" />
+        </div>
+        <h3 class="module-card-name">{{ module.name }}</h3>
+        <span class="module-card-tagline">{{ module.tagline }}</span>
+        <p class="module-card-desc">{{ module.description }}</p>
+        <ul class="module-card-features">
+            <li *ngFor="let feat of module.features">{{ feat }}</li>
+        </ul>
+        <div class="tech-badges">
+        <span class="tech-badge" *ngFor="let tech of module.techStack">
+            {{ tech }}
+        </span>
+        </div>
+    </div>
+</ng-container>
