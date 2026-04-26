@@ -3,6 +3,7 @@ package org.cryptotrader.contact.service.email
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.mail.internet.MimeMessage
 import org.cryptotrader.contact.comm.email.request.EmailRequest
+import java.time.Year
 import org.cryptotrader.contact.service.email.template.Template
 import org.cryptotrader.contact.service.email.template.TemplateService
 import org.springframework.mail.javamail.JavaMailSender
@@ -31,7 +32,7 @@ class EmailService(
             "subject" to email.subject,
             "name" to "User",
             "ctaLabel" to "Open app",
-            "year" to "2025"
+            "year" to Year.now().toString()
         )
         helper.setTo(email.to)
         helper.setSubject(email.subject)
