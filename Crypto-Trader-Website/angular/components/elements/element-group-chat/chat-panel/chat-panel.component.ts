@@ -1,0 +1,46 @@
+// chat-panel.component.ts
+import { Component } from '@angular/core';
+
+import { chatModuleIcon, ImageAsset } from '@assets/imageAssets';
+import { ChatMessage } from '@models/chat/types';
+
+@Component({
+    selector: 'chat-panel',
+    templateUrl: './chat-panel.component.html',
+    styleUrls: ['./chat-panel.component.scss'],
+    standalone: false,
+})
+export class ChatPanelComponent {
+    protected readonly chatIcon: ImageAsset = chatModuleIcon;
+    protected messages: ChatMessage[] = [];
+    protected userInput: string = '';
+    protected isLoading: boolean = false;
+
+    constructor() {}
+
+    public sendMessage(): void {
+        const text: string = this.userInput.trim();
+        if (!text) {
+            return;
+        }
+        this.messages.push({ role: 'user', content: text, timestamp: new Date() });
+        this.userInput = '';
+        this.isLoading = true;
+        // TODO: Connect to ChatService backend
+        setTimeout((): void => {
+            this.messages.push({
+                role: 'assistant',
+                content: 'Chat backend is not yet connected.',
+                timestamp: new Date(),
+            });
+            this.isLoading = false;
+        }, 500);
+    }
+
+    public onKeyDown(event: KeyboardEvent): void {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            this.sendMessage();
+        }
+    }
+}

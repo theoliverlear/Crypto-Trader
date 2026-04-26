@@ -1,0 +1,19 @@
+<!-- chat-panel.component.html -->
+<ng-container>
+    <div class="chat-header">
+        <img [src]="chatIcon.src" [alt]="chatIcon.alt" class="chat-header-icon" />
+        <eyebrow-label [text]="'AI ASSISTANT'" />
+    </div>
+    <div class="chat-messages">
+        @for (message of messages; track message.timestamp) {
+            <chat-bubble [message]="message" />
+        }
+        @if (isLoading) {
+            <loading-wheel />
+        }
+    </div>
+    <chat-input
+        [(value)]="userInput"
+        (send)="sendMessage()"
+        (keyDown)="onKeyDown($event)" />
+</ng-container>

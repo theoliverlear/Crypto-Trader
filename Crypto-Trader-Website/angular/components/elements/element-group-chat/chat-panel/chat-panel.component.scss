@@ -1,0 +1,50 @@
+// chat-panel.component.scss
+@use '../../../../styles/globals' as *;
+
+chat-panel {
+    @include flex(stretch, stretch, column);
+    @extend %fill-container;
+    background-color: $charcoal;
+    height: 100%;
+
+    .chat-header {
+        @include flex(center, flex-start, row);
+        gap: $half-percent;
+        padding: $three-quarter-percent $one-percent;
+        border-bottom: 1px solid add-alpha($pure-white, 0.08);
+
+        .chat-header-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+    }
+
+    .chat-messages {
+        @include flex(flex-start, flex-start, column);
+        flex: 1;
+        overflow-y: auto;
+        padding: $one-percent;
+        gap: $half-percent;
+
+        &::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: add-alpha($pure-white, 0.15);
+            border-radius: 3px;
+
+            &:hover {
+                background: add-alpha($pure-white, 0.25);
+            }
+        }
+    }
+
+    chat-input {
+        border-top: 1px solid add-alpha($pure-white, 0.08);
+    }
+}
