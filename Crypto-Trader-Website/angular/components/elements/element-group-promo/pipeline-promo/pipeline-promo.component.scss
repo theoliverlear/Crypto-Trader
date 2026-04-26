@@ -1,0 +1,56 @@
+@use '../../../../styles/globals' as *;
+@use '../../../../styles/gradients/global_gradient_placeholders' as *;
+@use '../../../../styles/gradients/global_gradient_variables' as *;
+@use '../../../../styles/gradients/global_gradient_mixins' as *;
+
+pipeline-promo {
+    width: 100%;
+
+    .section-content {
+        width: $eighty-percent;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: $three-percent 0;
+    }
+
+    .section-header {
+        @include section-header-centered($midnight-navy, 0.8);
+
+        eyebrow-label {
+            color: $mint-green;
+        }
+
+        ss-title h2 {
+            @include gradient-text($light-logo);
+        }
+
+        subtitle {
+            color: $alabaster-stone;
+            opacity: 0.85;
+        }
+    }
+
+    .pipeline-section {
+        width: 100%;
+        background:
+            radial-gradient(ellipse at 30% 50%, add-alpha($teal-green, 0.08), transparent 50%),
+            linear-gradient(180deg, $midnight-navy, $deep-ocean);
+        padding: $two-percent 0;
+    }
+
+    .pipeline-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: $one-half-percent;
+        margin-bottom: $two-percent;
+    }
+
+    .code-showcase {
+        max-width: 600px;
+        margin: 0 auto;
+
+        code-window {
+            width: 100%;
+        }
+    }
+}

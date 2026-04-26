@@ -1,0 +1,27 @@
+<!-- pipeline-promo.component.html -->
+<ng-container>
+    <section class="pipeline-section">
+        <scroll-reveal [threshold]="0.2">
+            <div class="section-content">
+                <div class="section-header">
+                    <eyebrow-label [text]="'CORE TRADING PIPELINE'"/>
+                    <ss-title [text]="'Where Trades Are Born'"
+                              [tagType]="TagType.H2"/>
+                    <subtitle [text]="'Three modules form the beating heart of Crypto Trader — harvesting data, predicting markets, and executing trades.'"
+                              [tagType]="TagType.H5"/>
+                </div>
+
+                <div class="pipeline-grid">
+                    @for (module of pipelineModules; track module.name) {
+                        <module-card [module]="module"
+                                     [theme]="'dark'"/>
+                    }
+                </div>
+
+                <div class="code-showcase">
+                    <code-window [codeWindow]="analysisCodeWindow"/>
+                </div>
+            </div>
+        </scroll-reveal>
+    </section>
+</ng-container>
