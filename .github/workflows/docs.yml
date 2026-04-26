@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GITHUB_ACTOR: ${{ github.actor }}
