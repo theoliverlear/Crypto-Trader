@@ -26,18 +26,18 @@ you.
   - Models analyze large, diverse datasets to estimate multi‑term price 
     direction and confidence.
   - You choose risk parameters; the system sizes positions accordingly.
-- 📰 Elite — **Multi‑Media Intelligence**
+- 📰 Ultimate — **Multi‑Media Intelligence**
   - Combines price action with additional context (e.g., news sentiment) to
     inform entries and exits.
   - Built to seek the most robust strategies from multiple signal sources.
   - Access to Beast Mode compute tier for ultra‑fast trades.
 
-## ⚡ Beast Mode, Elite Trades for Elite Members
+## ⚡ Beast Mode, Ultimate Trades for Ultimate Members
 
 <img src="Crypto-Trader-Assets/src/main/resources/assets/images/logos/beast_mode/beast_mode_logo_cropped_transparent.png" alt="Crypto Trader Logo" width="320">
 
 Love Crypto? Then you'll love Beast Mode. Beast Mode is our premium compute 
-tier for Elite members. Your strategies run on dedicated, high‑performance 
+tier for Ultimate members. Your strategies run on dedicated, high‑performance 
 infrastructure tuned for ultra‑low latency and high‑throughput execution. 
 Faster trades means better more opportunities for profitable contracts. 
 High-compute means Deep Learning models can train and run much faster. Crypto
@@ -52,7 +52,7 @@ What you get:
 - Automatic burst scaling under heavy load.
 
 Who can use it:
-- Available to Elite tier members. No extra setup required.
+- Available to Ultimate tier members. No extra setup required.
 
 _Important:_ Past results and backtests do not guarantee future performance.
 Always start in paper mode. Liability is your own.
@@ -107,7 +107,7 @@ step-by-step guides, live API references, and full module documentation.
 Quick start (docs):
 1. Read the Getting Started guide and run in paper mode.
 2. Connect an exchange with read-only or small limits.
-3. Pick a plan (Free/Pro/Elite), set guardrails, and monitor results.
+3. Pick a plan (Free/Pro/Ultimate), set guardrails, and monitor results.
 
 Tip: Always begin in paper mode and set strict limits before funding. See 
 “Safety, privacy, and control” above.
