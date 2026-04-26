@@ -5,9 +5,9 @@
 
 ---
 
-**Crypto Trader** is a web application that automates cryptocurrency trading 
-so you do not have to watch markets all day. Our mission is simple: 
-democratize high‑frequency trading for everyone. We operate without taking a 
+**Crypto Trader** is a web application that automates cryptocurrency trading
+so you do not have to watch markets all day. Our mission is simple:
+democratize high‑frequency trading for everyone. We operate without taking a
 profit; paid tiers only cover compute costs so the value created stays with
 you.
 
@@ -23,7 +23,7 @@ you.
   - Proven in historical backtests to be profitable across common market
     conditions.
 - 🧠 Pro — **Machine Learning Signals**
-  - Models analyze large, diverse datasets to estimate multi‑term price 
+  - Models analyze large, diverse datasets to estimate multi‑term price
     direction and confidence.
   - You choose risk parameters; the system sizes positions accordingly.
 - 📰 Ultimate — **Multi‑Media Intelligence**
@@ -36,17 +36,17 @@ you.
 
 <img src="Crypto-Trader-Assets/src/main/resources/assets/images/logos/beast_mode/beast_mode_logo_cropped_transparent.png" alt="Crypto Trader Logo" width="320">
 
-Love Crypto? Then you'll love Beast Mode. Beast Mode is our premium compute 
-tier for Ultimate members. Your strategies run on dedicated, high‑performance 
-infrastructure tuned for ultra‑low latency and high‑throughput execution. 
-Faster trades means better more opportunities for profitable contracts. 
+Love Crypto? Then you'll love Beast Mode. Beast Mode is our premium compute
+tier for Ultimate members. Your strategies run on dedicated, high‑performance
+infrastructure tuned for ultra‑low latency and high‑throughput execution.
+Faster trades means better more opportunities for profitable contracts.
 High-compute means Deep Learning models can train and run much faster. Crypto
 Trader wants to offer the best possible for all levels of trader interest, and
 so, if you are a Beast Trader, try Beast Mode.
 
 What you get:
 - Priority execution queues for faster order placement during market spikes.
-- Accelerated signal processing and model refresh on high‑core, 
+- Accelerated signal processing and model refresh on high‑core,
   high‑RAM servers.
 - Lower‑latency market data ingestion and routing paths.
 - Automatic burst scaling under heavy load.
@@ -101,7 +101,7 @@ step-by-step guides, live API references, and full module documentation.
     - [Data API (market and data services)](https://theoliverlear.github.io/Crypto-Trader/data/)
     - [Engine API (strategy execution)](https://theoliverlear.github.io/Crypto-Trader/engine/)
 - Deep dives and references (per module):
-    - Api • Admin • Assets • Data • Engine • Library • Logging • Testing • Version • Contact • Health • Coverage
+    - Api • Admin • Agent • Assets • Chat • Data • Engine • Library • Logging • Simulator • Testing • Transactions • Version • Contact • Health • Coverage
     - [Reference hub](https://theoliverlear.github.io/Crypto-Trader/reference/)
 
 Quick start (docs):
@@ -109,16 +109,18 @@ Quick start (docs):
 2. Connect an exchange with read-only or small limits.
 3. Pick a plan (Free/Pro/Ultimate), set guardrails, and monitor results.
 
-Tip: Always begin in paper mode and set strict limits before funding. See 
+Tip: Always begin in paper mode and set strict limits before funding. See
 “Safety, privacy, and control” above.
 
 ## 🧩 Modules at a glance
 | Module                              | Purpose                                                                                           |
 |-------------------------------------|---------------------------------------------------------------------------------------------------|
 | [Admin](Crypto-Trader-Admin/)       | Desktop portal for secure operations: monitoring, logs, user controls, and kill‑switches.         |
+| [Agent](Crypto-Trader-Agent/)       | AI‑driven developer agent for automated code analysis, assistance, and MCP‑based tools.           |
 | [Analysis](Crypto-Trader-Analysis/) | Machine learning and market analytics engine for training and price predictions.                  |
 | [Api](Crypto-Trader-Api/)           | Core backend for identity, portfolios, and platform orchestration.                                |
 | [Assets](Crypto-Trader-Assets/)     | Inward‑facing, curated assets and loaders powering a consistent UI.                               |
+| [Chat](Crypto-Trader-Chat/)         | AI‑based chat interface powered by OpenAI and Spring AI for trading insights.                     |
 | [Contact](Crypto-Trader-Contact/)   | Outbound messaging and support communications (email templates, event-driven sends, policies).    |
 | [Console](Crypto-Trader-Console/)   | For power users who prefer commands over a UI.                                                    |
 | [Coverage](Crypto-Trader-Coverage/) | Aggregated JaCoCo test coverage for the entire platform.                                          |
@@ -130,7 +132,9 @@ Tip: Always begin in paper mode and set strict limits before funding. See
 | [Logging](Crypto-Trader-Logging/)   | Structured observability toolkit for consistent, actionable logs.                                 |
 | [Mobile](Crypto-Trader-Mobile/)     | Mobile companion app for monitoring, notifications, and portfolio controls.                       |
 | [Security](Crypto-Trader-Security/) | Authentication and authorization services, shared security models, and configurations.            |
+| [Simulator](Crypto-Trader-Simulator/) | Strategy backtesting and paper‑trading simulator for historical data replay.                      |
 | [Testing](Crypto-Trader-Testing/)   | Shared test toolkit with assertions, fixtures, and containerized environments.                    |
+| [Transactions](Crypto-Trader-Transactions/) | Transaction management service for order execution, auditing, and historical records.      |
 | [Version](Crypto-Trader-Version/)   | Versioning and release intelligence for coordinated, traceable releases.                          |
 | [Website](Crypto-Trader-Website/)   | Public site for brand, story, and a gateway to documentation.                                     |
 
