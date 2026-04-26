@@ -1,0 +1,10 @@
+// nav-bumper.component.scss
+@use '../../../../styles/globals' as *;
+
+nav-bumper {
+    @include flex(flex-end, center, row);
+    position: absolute;
+    top: $one-percent;
+    right: $one-percent;
+    gap: $one-percent;
+}
