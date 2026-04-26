@@ -2,53 +2,79 @@
 @use '../../../../styles/globals' as *;
 
 tier-promo-stripe {
-    @include flex(center, center, column);
-    background-color: add-alpha($sunbeam-yellow, 0.3);
+    display: block;
+    background: linear-gradient(
+        180deg,
+        $ivory-white 0%,
+        $pure-white 40%,
+        add-alpha($sunbeam-yellow, 0.12) 100%
+    );
+    border-top: 3px solid add-alpha($sunbeam-yellow, 0.6);
     width: 100%;
-    padding: $one-percent 0;
+    padding: $four-percent 0;
     margin: $one-half-percent 0;
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    .tier-header {
+        @include section-header-centered;
+
+        eyebrow-label {
+            .eyebrow {
+                color: $teal-green;
+            }
+        }
+
+        ss-title {
+            h2 {
+                color: $midnight-navy;
+            }
+        }
+
+        subtitle {
+            h5 {
+                color: $blue-gray;
+            }
+        }
+    }
 
     .tier-promos {
-        @include flex(center, center, row);
+        @include flex(center, stretch, row);
         gap: $one-percent;
+        max-width: 1200px;
+        margin: 0 auto;
     }
 
     .tier-promos > tier-promo {
-        opacity: 0;
-        transform: translateX(80px);
-        transition:
-            opacity 800ms ease-out,
-            transform 800ms ease-out;
+        flex: 1 1 30%;
+        @include scroll-reveal-entrance;
     }
 
-    &.in-view {
+    scroll-reveal.in-view {
         .tier-promos > tier-promo {
-            opacity: 1;
-            transform: translateX(0);
+            @extend %scroll-reveal-visible;
         }
 
-        .tier-promos > tier-promo:nth-child(1) {
-            transition-delay: 0ms;
+        @include stagger-children('.tier-promos > tier-promo', 3);
+    }
+
+    @include mobile-breakpoint {
+        padding: $one-percent;
+
+        .tier-promos {
+            @include flex(center, stretch, column);
+            gap: $one-percent;
         }
 
-        .tier-promos > tier-promo:nth-child(2) {
-            transition-delay: 200ms;
+        .tier-promos > tier-promo {
+            flex: 1 1 auto;
+            width: 100%;
         }
+    }
 
-        .tier-promos > tier-promo:nth-child(3) {
-            transition-delay: 400ms;
-        }
-
-        .tier-promos > tier-promo:nth-child(4) {
-            transition-delay: 600ms;
-        }
-
-        .tier-promos > tier-promo:nth-child(5) {
-            transition-delay: 800ms;
-        }
-
-        .tier-promos > tier-promo:nth-child(6) {
-            transition-delay: 1000ms;
+    @include reduced-motion {
+        .tier-promos > tier-promo {
+            @include reduced-motion-reset;
         }
     }
 }
