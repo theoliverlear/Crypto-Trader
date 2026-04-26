@@ -1,5 +1,5 @@
 // auth-console-tab-section.component.ts
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { AuthPopup, AuthType } from '@theoliverlear/angular-suite';
 
@@ -13,6 +13,7 @@ import { AuthPopup, AuthType } from '@theoliverlear/angular-suite';
     styleUrls: ['./auth-console-tab-section.component.scss'],
 })
 export class AuthConsoleTabSectionComponent {
+    @Input() public currentAuthType: AuthType = AuthType.SIGN_UP;
     @Output() public authTypeClicked: EventEmitter<AuthType> = new EventEmitter<AuthType>();
     constructor() {}
     /** Emits the auth type when clicked.
