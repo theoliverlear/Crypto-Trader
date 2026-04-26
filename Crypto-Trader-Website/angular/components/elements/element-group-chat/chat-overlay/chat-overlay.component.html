@@ -1,0 +1,33 @@
+<!-- chat-overlay.component.html -->
+@if (isVisible) {
+    <ng-container>
+        <div class="chat-fab" (click)="toggle()">
+            <img [src]="chatIcon.src" [alt]="chatIcon.alt" class="chat-fab-icon" />
+        </div>
+    </ng-container>
+    @if (isOpen) {
+        <ng-container>
+            <div class="chat-overlay-panel">
+                <div class="chat-overlay-header">
+                    <img [src]="chatIcon.src" [alt]="chatIcon.alt" class="chat-overlay-header-icon" />
+                    <eyebrow-label [text]="'QUICK CHAT'" />
+                    <button class="chat-overlay-close" (click)="toggle()">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="chat-overlay-messages">
+                    @for (message of messages; track message.timestamp) {
+                        <chat-bubble [message]="message" />
+                    }
+                    @if (isLoading) {
+                        <loading-wheel />
+                    }
+                </div>
+                <chat-input
+                    [(value)]="userInput"
+                    (send)="sendMessage()"
+                    (keyDown)="onKeyDown($event)" />
+            </div>
+        </ng-container>
+    }
+}
