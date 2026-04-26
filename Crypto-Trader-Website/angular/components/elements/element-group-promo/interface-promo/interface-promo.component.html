@@ -1,0 +1,23 @@
+<!-- interface-promo.component.html -->
+<ng-container>
+    <section class="interfaces-section">
+        <scroll-reveal [threshold]="0.2">
+            <div class="section-content">
+                <div class="interfaces-layout">
+                    <div class="interfaces-copy">
+                        <eyebrow-label [text]="'CONTROL YOUR WAY'"/>
+                        <ss-title [text]="'Four Ways to Interact'"
+                                  [tagType]="TagType.H2"/>
+                        <subtitle [text]="'Whether you prefer a browser, a desktop app, a terminal, or your phone — Crypto Trader meets you where you are.'"
+                                  [tagType]="TagType.H5"/>
+                        <cta-button [text]="'Read the Docs'"
+                                    [href]="'https://theoliverlear.github.io/Crypto-Trader/'"
+                                    [showArrow]="true"/>
+                    </div>
+
+                    <module-interface-selector [modules]="interfaceModules"/>
+                </div>
+            </div>
+        </scroll-reveal>
+    </section>
+</ng-container>
