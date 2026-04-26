@@ -1,5 +1,255 @@
 // dashboard.component.scss
+@use 'sass:color';
 @use '../../../styles/globals' as *;
+@use '../../../styles/gradients/global_gradient_placeholders' as *;
+@use '../../../styles/backgrounds/global_background_placeholders' as *;
 
 dashboard {
+    @include flex(flex-start, center, column);
+    width: 100%;
+    padding-bottom: $two-percent;
+
+    // ── Snapshot Strip ──────────────────────────────────────────────────────
+    .snapshot-strip {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: $half-percent;
+        width: 100%;
+        max-width: $eighty-percent;
+        margin: $one-percent auto;
+
+        .snapshot-card {
+            @include flex(center, center, column);
+            gap: 4px;
+            padding: $one-percent $half-percent;
+            position: relative;
+            overflow: hidden;
+
+            background: linear-gradient(135deg, $midnight-navy 0%, $deep-ocean 100%);
+            border: $very-thin-border rgba($mint-green, 0.2) solid;
+            box-shadow: 0 0 12px rgba($mint-green, 0.04),
+                        0 2px 8px rgba($absolute-black, 0.3);
+
+            @extend %softer-border-radius;
+
+            transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+
+            &:hover {
+                transform: translateY(-2px);
+                border-color: rgba($mint-green, 0.4);
+                box-shadow: 0 0 20px rgba($mint-green, 0.1),
+                            0 4px 16px rgba($absolute-black, 0.4);
+            }
+
+            .snapshot-icon {
+                font-size: 1.4rem;
+                margin-bottom: 2px;
+            }
+
+            .snapshot-label {
+                font-size: 0.7rem;
+                font-weight: 600;
+                color: $sage-green;
+                text-transform: uppercase;
+                letter-spacing: 0.8px;
+            }
+
+            .snapshot-value {
+                @extend %signature-brand-gradient-text-small-reflection;
+                font-size: 1.1rem;
+            }
+        }
+    }
+
+    // ── Allocation Badges ───────────────────────────────────────────────────
+    .allocation-badges {
+        @include flex(center, center, row);
+        gap: $one-percent;
+        max-width: $eighty-percent;
+        width: 100%;
+        margin: $half-percent auto;
+    }
+
+    // ── Charts Row ──────────────────────────────────────────────────────────
+    .charts-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: $one-percent;
+        width: 100%;
+        max-width: $eighty-percent;
+        margin: $one-percent auto;
+    }
+
+    .chart-panel {
+        @include flex(flex-start, stretch, column);
+        padding: $one-percent;
+        cursor: pointer;
+
+        background: linear-gradient(135deg, $midnight-navy 0%, $deep-ocean 100%);
+        border: $very-thin-border rgba($mint-green, 0.25) solid;
+        box-shadow: 0 0 20px rgba($mint-green, 0.06),
+                    0 4px 16px rgba($absolute-black, 0.4);
+
+        @extend %softer-border-radius;
+
+        transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+
+        &:hover {
+            transform: translateY(-2px);
+            border-color: rgba($mint-green, 0.45);
+            box-shadow: 0 0 30px rgba($mint-green, 0.12),
+                        0 6px 24px rgba($absolute-black, 0.5);
+        }
+
+        .panel-title {
+            @extend %signature-brand-gradient-text-small-reflection;
+            margin-bottom: $half-percent;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .doughnut-container {
+            display: flex;
+            align-items: center;
+            height: 300px;
+
+            canvas {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .doughnut-center-label {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
+                pointer-events: none;
+
+                .center-value {
+                    display: block;
+                    font-size: 1.3rem;
+                    font-weight: 700;
+                    color: $pale-mint;
+                }
+
+                .center-caption {
+                    font-size: 0.7rem;
+                    color: $sage-green;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+            }
+        }
+
+        .bar-container {
+            height: 260px;
+        }
+    }
+
+    // ── Section Headers ─────────────────────────────────────────────────────
+    .section-header {
+        @include flex(space-between, center, row);
+        width: 100%;
+        max-width: $eighty-percent;
+        margin: $one-percent auto $half-percent;
+        cursor: pointer;
+
+        .section-title {
+            @extend %signature-brand-gradient-text-small-reflection;
+        }
+
+        .see-all {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: $ocean-blue;
+            transition: color 0.15s ease;
+
+            &:hover {
+                color: color.adjust($ocean-blue, $lightness: -10%);
+            }
+        }
+    }
+
+    // ── Currency Ticker ─────────────────────────────────────────────────────
+    .currency-ticker {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: $half-percent;
+        width: 100%;
+        max-width: $eighty-percent;
+        margin: 0 auto;
+    }
+
+    // ── Trades Table ────────────────────────────────────────────────────────
+    .trades-table-wrapper {
+        width: 100%;
+        max-width: $eighty-percent;
+        margin: 0 auto;
+        overflow-x: auto;
+
+        background-color: add-alpha-opaque($alabaster-stone, 0.85, $pure-white);
+        border: $very-thin-border $charcoal solid;
+        box-shadow: $quarter-percent $quarter-percent 0 $absolute-black;
+
+        @extend %softer-border-radius;
+    }
+
+    .trades-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+
+        th {
+            padding: $half-percent $one-percent;
+            text-align: left;
+            font-weight: 700;
+            color: $blue-gray;
+            border-bottom: 2px solid rgba($charcoal, 0.15);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: $half-percent $one-percent;
+            color: $blue-gray;
+            border-bottom: 1px solid rgba($charcoal, 0.06);
+        }
+    }
+
+    // ── Empty State ─────────────────────────────────────────────────────────
+    .empty-state {
+        @include flex(center, center, row);
+        width: 100%;
+        max-width: $eighty-percent;
+        margin: 0 auto;
+        padding: $two-percent;
+        cursor: pointer;
+
+        background-color: add-alpha-opaque($alabaster-stone, 0.85, $pure-white);
+        border: $very-thin-border $charcoal dashed;
+
+        @extend %softer-border-radius;
+
+        .empty-text {
+            color: $charcoal;
+            opacity: 0.6;
+            text-align: center;
+        }
+    }
+
+    // ── Card Grid ───────────────────────────────────────────────────────────
+    .dashboard-card-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: $half-percent;
+        width: 100%;
+        max-width: $eighty-percent;
+        margin: $half-percent auto;
+        padding: 0;
+    }
 }

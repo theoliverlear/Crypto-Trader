@@ -1,1 +1,209 @@
-<!-- dashboard.component.html -->
+<ng-container>
+
+<!--    TODO: Extract components.-->
+
+    <!-- ── 1. Page Header ── -->
+    <page-title-stripe
+        [pageTitle]="'Dashboard'"
+        [pageSubtitle]="'Your Crypto Trader hub — everything in one place.'"
+    />
+
+    <!-- ── 2. Portfolio Snapshot Strip ── -->
+    <loading-wheel [visible]="isFetching" />
+    @if (!isFetching) {
+        <div class="snapshot-strip">
+            <div class="snapshot-card" (click)="navigateTo('/portfolio')">
+                <span class="snapshot-icon">💰</span>
+                <span class="snapshot-label">Total Worth</span>
+                <ss-title
+                    [text]="getTotalWorth()"
+                    [tagType]="TagType.H4"
+                    class="snapshot-value"
+                />
+            </div>
+            <div class="snapshot-card" (click)="navigateTo('/portfolio')">
+                <span class="snapshot-icon">💵</span>
+                <span class="snapshot-label">Cash Balance</span>
+                <ss-title
+                    [text]="getDollarBalance()"
+                    [tagType]="TagType.H4"
+                    class="snapshot-value"
+                />
+            </div>
+            <div class="snapshot-card" (click)="navigateTo('/portfolio')">
+                <span class="snapshot-icon">📊</span>
+                <span class="snapshot-label">Share Balance</span>
+                <ss-title
+                    [text]="getShareBalance()"
+                    [tagType]="TagType.H4"
+                    class="snapshot-value"
+                />
+            </div>
+            <div class="snapshot-card" (click)="navigateTo('/portfolio')">
+                <span class="snapshot-icon">🪙</span>
+                <span class="snapshot-label">Assets</span>
+                <ss-title
+                    [text]="getAssetCount()"
+                    [tagType]="TagType.H4"
+                    class="snapshot-value"
+                />
+            </div>
+            <div class="snapshot-card">
+                <span class="snapshot-icon">🕐</span>
+                <span class="snapshot-label">Last Updated</span>
+                <ss-title
+                    [text]="getLastUpdated()"
+                    [tagType]="TagType.H4"
+                    class="snapshot-value"
+                />
+            </div>
+        </div>
+
+        <!-- ── 3. Allocation Summary Badges ── -->
+        <div class="allocation-badges">
+            <allocation-badge
+                [label]="'Cash'"
+                [value]="getCashAllocationPercent() + '%'"
+                [variant]="'cash'"
+                (badgeClick)="navigateTo('/portfolio')"
+            />
+            <allocation-badge
+                [label]="'Crypto'"
+                [value]="getCryptoAllocationPercent() + '%'"
+                [variant]="'crypto'"
+                (badgeClick)="navigateTo('/portfolio')"
+            />
+            <allocation-badge
+                [label]="'Holdings'"
+                [value]="getAssetCount()"
+                [variant]="'assets'"
+                (badgeClick)="navigateTo('/portfolio')"
+            />
+        </div>
+    }
+
+    <!-- ── 4. Charts Section ── -->
+    @if (!isFetching && hasAssets()) {
+        <div class="charts-row">
+            <div class="chart-panel" (click)="navigateTo('/portfolio')">
+                <ss-title
+                    [text]="'Asset Allocation'"
+                    [tagType]="TagType.H5"
+                    class="panel-title"
+                />
+                <div class="chart-container doughnut-container">
+                    <canvas
+                        baseChart
+                        [data]="allocationChartData"
+                        [options]="allocationChartOptions"
+                        type="doughnut"
+                    ></canvas>
+                    <div class="doughnut-center-label">
+                        <span class="center-value">{{ getTotalWorth() }}</span>
+                        <span class="center-caption">Total Value</span>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-panel" (click)="navigateTo('/portfolio')">
+                <ss-title
+                    [text]="'Asset Values'"
+                    [tagType]="TagType.H5"
+                    class="panel-title"
+                />
+                <div class="chart-container bar-container">
+                    <canvas
+                        baseChart
+                        [data]="assetBarChartData"
+                        [options]="assetBarChartOptions"
+                        type="bar"
+                    ></canvas>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- ── 5. Currencies Ticker ── -->
+    <div class="section-header" (click)="navigateTo('/currencies')">
+        <ss-title
+            [text]="'Top Currencies'"
+            [tagType]="TagType.H5"
+            class="section-title"
+        />
+        <span class="see-all">See All →</span>
+    </div>
+    <loading-wheel [visible]="isFetchingCurrencies" />
+    @if (!isFetchingCurrencies && currencies.length > 0) {
+        <div class="currency-ticker">
+            @for (currency of currencies; track currency.currencyCode) {
+                <currency-ticker-tile
+                    [currency]="currency"
+                    [performance]="getPerformance(currency.currencyCode)"
+                    (tileClick)="navigateTo('/currencies')"
+                />
+            }
+        </div>
+    }
+
+    <!-- ── 6. Recent Trades ── -->
+    <div class="section-header" (click)="navigateTo('/trader')">
+        <ss-title
+            [text]="'Recent Trades'"
+            [tagType]="TagType.H5"
+            class="section-title"
+        />
+        <span class="see-all">See All →</span>
+    </div>
+    <loading-wheel [visible]="isFetchingTrades" />
+    @if (!isFetchingTrades && recentTrades.length > 0) {
+        <div class="trades-table-wrapper">
+            <table class="trades-table">
+                <thead>
+                    <tr>
+                        <th>Currency</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                        <th>Shares</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (trade of recentTrades; track trade.id) {
+                        <trade-row
+                            [trade]="trade"
+                            (rowClick)="navigateTo('/trader')"
+                        />
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    @if (!isFetchingTrades && recentTrades.length === 0) {
+        <div class="empty-state" (click)="navigateTo('/trade')">
+            <ss-paragraph
+                [text]="'No trades yet — start trading to see your activity here.'"
+                class="empty-text"
+            />
+        </div>
+    }
+
+    <!-- ── 7. Feature Card Grid ── -->
+    <div class="section-header">
+        <ss-title
+            [text]="'Quick Actions'"
+            [tagType]="TagType.H5"
+            class="section-title"
+        />
+    </div>
+    <div class="dashboard-card-grid">
+        @for (card of cards; track card.route) {
+            <quick-action-card
+                [label]="card.label"
+                [description]="card.description"
+                [route]="card.route"
+                [icon]="card.icon"
+                [isConsole]="card.route === '/console'"
+            />
+        }
+    </div>
+
+</ng-container>
