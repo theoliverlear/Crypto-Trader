@@ -3,7 +3,7 @@
 
 ---
 
-The Analysis module powers Crypto Trader’s price prediction and model 
+The Analysis module powers Crypto Trader’s price prediction and model
 training. It ingests market data from PostgreSQL, engineers features, trains
 LSTM‑based models (including multi‑layer variants), generates predictions, and
 reports results back to the platform.
@@ -26,7 +26,7 @@ Always start in paper mode. Liability is your own.
     `historical_spaced`.
 - Feature engineering
   - Sliding time windows (configurable `sequence_length`).
-  - Engineered channels: past trends, key timestamps, correlation with target 
+  - Engineered channels: past trends, key timestamps, correlation with target
     returns.
   - Multi‑scale preprocessing for multi‑layer models (short/medium/long
     horizons).
@@ -70,20 +70,77 @@ GPUs for training.
     - Entry: `src/apps/learning/models/training/training_session.py`
     - Note: `TrainingSession.train()` will compute a prediction after training
       and report it via the platform integration.
-    - Standalone utilities for sending predictions also exist under 
+    - Standalone utilities for sending predictions also exist under
       `apps/learning/models/prediction/predictions.py` if needed.
   - Run a GPU‑oriented launcher
-    - Scripts under `gpu/` (e.g., `gpu/run_gpu_zero.py`, 
+    - Scripts under `gpu/` (e.g., `gpu/run_gpu_zero.py`,
      `gpu/run_gpu_one.py`).
 
 Notes:
-- Training hyperparameters can be chosen via `TrainingType` 
-  (`src/apps/learning/models/training/training_type.py`) or by building a 
+- Training hyperparameters can be chosen via `TrainingType`
+  (`src/apps/learning/models/training/training_type.py`) or by building a
   `TrainingModel`.
 - Multi‑layer models live under `src/apps/learning/models/ai/lstm/layered/...`.
 
+---
+
+## Configuration
+
+### 1. 🏆 Optimal Configuration (Maximum Accuracy)
+
+```yaml
+# Optimal Configuration for High-End Systems
+# Maximizes learning capacity for 440-column feature vectors
+dataset_size: MASSIVE          # 1,500,000 records (Current maximum enum value)
+epochs: COMPLETE_ANALYSIS      # 200 epochs
+batch_size: GENERALIZED        # 128 (Better for large feature sets on 16GB VRAM)
+sequence_length: 20            # Increased for better temporal context
+query_type: HISTORICAL_PRICE
+model_type: COMPLEX_MULTI_LAYER
+use_currency_generator: true
+generator_use_cache: true
+split_currencies_by_gpu: true  # Highly recommended for dual GPU setup
+```
+
+---
+
+### 2. ⚡ High Performance / Balanced Configuration
+
+```yaml
+# Balanced Configuration
+# Faster training cycles with high accuracy
+dataset_size: EXTRA_LARGE      # 600,000 records
+epochs: STANDARD_ANALYSIS      # 50 epochs
+batch_size: BALANCED           # 64
+sequence_length: 15
+query_type: HISTORICAL_PRICE
+model_type: MULTI_LAYER
+use_currency_generator: true
+generator_use_cache: true
+split_currencies_by_gpu: true
+```
+
+---
+
+### 3. 🧪 Rapid Iteration / Testing Configuration
+
+```yaml
+# Fast Testing Configuration
+# Quick feedback on model convergence
+dataset_size: STANDARD         # 225,000 records
+epochs: SMALL_ANALYSIS         # 10 epochs
+batch_size: DETAILED           # 32
+sequence_length: 10
+query_type: HISTORICAL_PRICE
+model_type: LSTM
+use_currency_generator: false
+target_currency: BTC           # Focus on one currency for testing
+```
+
+---
+
 ## 🔒 Safety, privacy, and control
-- This module does not manage exchange API keys directly; it trains/predicts 
+- This module does not manage exchange API keys directly; it trains/predicts
   from database data.
 - Start with small datasets and paper trading.
 - Guardrails (e.g., position sizing, stop loss) are enforced by the trading
