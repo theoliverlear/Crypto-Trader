@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import { ElementSize, TagType } from '@theoliverlear/angular-suite';
+import { ElementSize } from '@theoliverlear/angular-suite';
 import { getStartedElementLink } from '@assets/elementLinkAssets';
-import { transparentLogo } from '@assets/imageAssets';
-import { cryptoTraderDescription } from '@assets/textAssets';
+import { CryptoTraderLoggerService } from '@services/logging/crypto-trader-logger.service';
 
 @Component({
     selector: 'home',
@@ -11,13 +10,25 @@ import { cryptoTraderDescription } from '@assets/textAssets';
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent {
-    constructor() {}
+export class HomeComponent implements OnInit {
+    constructor(private readonly log: CryptoTraderLoggerService) {}
 
-    protected readonly TagType = TagType;
-    protected readonly transparentLogo = transparentLogo;
-    protected readonly cryptoTraderDescription = cryptoTraderDescription;
-    protected readonly crypto = crypto;
+    public ngOnInit(): void {
+        this.log.setContext('Home');
+        this.log.info('Home component initialized');
+    }
+
     protected readonly ElementSize = ElementSize;
     protected readonly getStartedElementLink = getStartedElementLink;
+    // TODO: Move to assets.
+    protected readonly flipWords: string[] = [
+        'a security gateway',
+        'a machine learning engine',
+        'a real-time data backbone',
+        'a trade execution core',
+        'an AI-powered chatbot',
+        'a health monitoring system',
+        'an observability platform',
+        'a desktop admin portal',
+    ];
 }
