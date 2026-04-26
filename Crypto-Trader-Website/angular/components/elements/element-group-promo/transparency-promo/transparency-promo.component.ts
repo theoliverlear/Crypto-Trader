@@ -1,18 +1,12 @@
 // transparency-promo.component.ts
+import { Component } from '@angular/core';
+import { TagType } from '@theoliverlear/angular-suite';
 import {
-    AfterViewInit,
-    Component,
-    ElementRef,
-    HostBinding,
-    OnDestroy,
-} from '@angular/core';
-
-import { TagType, TextElementLink } from '@theoliverlear/angular-suite';
-import {
-    docsElementLink,
-    repositoryElementLink,
-} from '@assets/elementLinkAssets';
-import { transparencyParagraph } from '@assets/textAssets';
+    circleCheckmarkIcon,
+    bookIcon,
+    electricPlugIcon,
+} from '@assets/imageAssets';
+import { homeEngineCodeWindow } from '@assets/codeWindowAssets';
 
 @Component({
     selector: 'transparency-promo',
@@ -20,42 +14,12 @@ import { transparencyParagraph } from '@assets/textAssets';
     templateUrl: './transparency-promo.component.html',
     styleUrls: ['./transparency-promo.component.scss'],
 })
-export class TransparencyPromoComponent implements AfterViewInit, OnDestroy {
-    @HostBinding('class.in-view') private inView: boolean = false;
-
-    private observer?: IntersectionObserver;
-
-    constructor(private readonly elRef: ElementRef<HTMLElement>) {}
-
-    public ngAfterViewInit(): void {
-        if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
-            this.observer = new IntersectionObserver(
-                (entries: IntersectionObserverEntry[]): void => {
-                    for (const entry of entries) {
-                        if (entry.isIntersecting) {
-                            this.inView = true;
-                            if (this.observer) {
-                                this.observer.unobserve(entry.target);
-                            }
-                        }
-                    }
-                },
-                { threshold: 0.2 },
-            );
-            this.observer.observe(this.elRef.nativeElement);
-        } else {
-            this.inView = true;
-        }
-    }
-
-    public ngOnDestroy(): void {
-        if (this.observer) {
-            this.observer.disconnect();
-        }
-    }
-
+export class TransparencyPromoComponent {
     protected readonly TagType: typeof TagType = TagType;
-    protected readonly transparencyParagraph: string = transparencyParagraph;
-    protected readonly repositoryElementLink: TextElementLink = repositoryElementLink;
-    protected readonly docsElementLink: TextElementLink = docsElementLink;
+    protected readonly circleCheckmarkIcon = circleCheckmarkIcon;
+    protected readonly bookIcon = bookIcon;
+    protected readonly electricPlugIcon = electricPlugIcon;
+
+
+    protected readonly homeEngineCodeWindow = homeEngineCodeWindow;
 }
