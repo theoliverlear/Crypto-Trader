@@ -1,0 +1,48 @@
+<!-- meet-crypto-trader-promo.component.html -->
+<ng-container>
+    <scroll-reveal [threshold]="0.2">
+        <content-stripe class="meet-ct-stripe">
+            <div class="copy-col">
+                <eyebrow-label [text]="'MEET CRYPTO TRADER'" />
+
+                <div class="flipline">
+                    <ss-title
+                        [text]="'Crypto Trader is '"
+                        [tagType]="TagType.H3"
+                    />
+                    <flip-words
+                        [tagType]="TagType.H5"
+                        [words]="words"
+                        [periodMs]="periodMs"
+                        [shouldPunctuate]="true"
+                    />
+                </div>
+
+                <subtitle
+                    [text]="'An ecosystem for mastering digital asset trading — secure, observable, modular.'"
+                    [tagType]="TagType.H5"
+                />
+
+                <ss-paragraph
+                    [text]="'Ingest market data. Execute trades. Monitor everything. Start with one module — scale to the full stack.'"
+                    class="lead"
+                />
+
+                <cta-button
+                    [text]="ctaText"
+                    [routerLink]="ctaRouterLink"
+                    [showArrow]="true"
+                />
+            </div>
+
+            <div class="modules-col">
+                <badge-grid
+                    [items]="modules"
+                    [columns]="2"
+                    [ariaLabel]="'Core modules'"
+                    [staggerAnimation]="true"
+                />
+            </div>
+        </content-stripe>
+    </scroll-reveal>
+</ng-container>

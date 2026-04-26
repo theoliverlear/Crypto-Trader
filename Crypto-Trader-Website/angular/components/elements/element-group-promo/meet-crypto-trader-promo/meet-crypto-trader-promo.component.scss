@@ -1,0 +1,57 @@
+// meet-crypto-trader-promo.component.scss
+@use '../../../../styles/globals' as *;
+@use '../../../../styles/gradients/global_gradient_placeholders' as *;
+@use '../../../../styles/gradients/global_gradient_variables' as *;
+@use '../../../../styles/gradients/global_gradient_mixins' as *;
+
+meet-crypto-trader-promo {
+    @include promo-section-block;
+    overflow: hidden;
+    width: 100%;
+    border-radius: 0;
+    .meet-ct-stripe {
+        @include two-column-layout;
+        background: radial-gradient(
+                ellipse at 30% 50%,
+                add-alpha($muted-blue, 0.15),
+                transparent
+            ),
+            $midnight-navy;
+        padding: $two-percent $three-percent;
+        border-radius: $quarter-percent;
+
+        .copy-col {
+            .flipline {
+                @include flex(flex-start, baseline, column);
+                gap: 0.4ch;
+
+                ss-title,
+                flip-words {
+                    display: inline-block;
+                    color: $pure-white;
+                }
+            }
+
+            subtitle {
+                color: $alabaster-stone;
+                margin-top: $quarter-percent;
+            }
+
+            .lead {
+                width: 90%;
+                color: add-alpha($alabaster-stone, 0.85);
+                margin-top: $quarter-percent;
+            }
+
+            cta-button {
+                margin-top: $one-percent;
+            }
+        }
+    }
+
+    @include mobile-breakpoint {
+        .meet-ct-stripe {
+            @include two-column-responsive;
+        }
+    }
+}
