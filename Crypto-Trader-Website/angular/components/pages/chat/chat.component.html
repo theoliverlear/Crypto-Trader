@@ -1,0 +1,60 @@
+<!-- chat.component.html -->
+<ng-container>
+    <div class="chat-layout">
+        <aside class="chat-history">
+            <div class="chat-history-header">
+                <img [src]="chatIcon.src" [alt]="chatIcon.alt" class="chat-history-icon" />
+                <eyebrow-label [text]="'CHAT HISTORY'" />
+            </div>
+            <button class="chat-new-button" (click)="startNewConversation()">
+                <i class="fa-solid fa-plus"></i>
+                <span>New Chat</span>
+            </button>
+            <div class="chat-history-list">
+                @for (conversation of conversations; track conversation.id) {
+                    <div class="chat-history-item"
+                         [class.active]="activeConversation?.id === conversation.id"
+                         (click)="selectConversation(conversation)">
+                        <i class="fa-regular fa-comment"></i>
+                        <span class="chat-history-title">{{ conversation.title }}</span>
+                        <button class="chat-history-delete" (click)="deleteConversation(conversation, $event)">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                }
+                @if (conversations.length === 0) {
+                    <p class="chat-history-empty">No conversations yet.</p>
+                }
+            </div>
+        </aside>
+        <section class="chat-window">
+            @if (activeConversation) {
+                <div class="chat-window-header">
+                    <eyebrow-label [text]="'AI ASSISTANT'" />
+                </div>
+                <div class="chat-window-messages">
+                    @for (message of activeConversation.messages; track message.timestamp) {
+                        <chat-bubble [message]="message" />
+                    }
+                    @if (isLoading) {
+                        <loading-wheel />
+                    }
+                </div>
+                <chat-input
+                    [(value)]="userInput"
+                    (send)="sendMessage()"
+                    (keyDown)="onKeyDown($event)" />
+            } @else {
+                <div class="chat-window-empty">
+                    <img [src]="chatIcon.src" [alt]="chatIcon.alt" class="chat-empty-icon" />
+                    <h2>AI Assistant</h2>
+                    <p>Start a new conversation to chat with the AI about your portfolio, trades, and market data.</p>
+                    <button class="chat-start-button" (click)="startNewConversation()">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Start a Chat</span>
+                    </button>
+                </div>
+            }
+        </section>
+    </div>
+</ng-container>
