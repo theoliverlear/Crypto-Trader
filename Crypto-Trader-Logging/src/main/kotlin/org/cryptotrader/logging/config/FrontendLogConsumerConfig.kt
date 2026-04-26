@@ -1,7 +1,7 @@
 package org.cryptotrader.logging.config
 
 import org.cryptotrader.logging.library.events.FrontendLogBatchEvent
-import org.cryptotrader.logging.library.service.FrontendLogPersistenceService
+import org.cryptotrader.logging.library.service.FrontendLogService
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -10,7 +10,7 @@ import java.util.function.Consumer
 
 @Configuration
 open class FrontendLogConsumerConfig(
-    private val persistenceService: FrontendLogPersistenceService
+    private val persistenceService: FrontendLogService
 ) {
     private val log = LoggerFactory.getLogger(FrontendLogConsumerConfig::class.java)
 
