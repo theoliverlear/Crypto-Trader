@@ -1,0 +1,85 @@
+// badge-grid.component.scss
+@use '../../../../styles/globals' as *;
+
+badge-grid {
+    display: block;
+
+    .badge-grid {
+        display: grid;
+        gap: $half-percent;
+    }
+
+    .badge {
+        display: flex;
+        align-items: center;
+        gap: $quarter-percent;
+        padding: $quarter-percent $half-percent;
+        border-radius: $quarter-percent;
+        background: add-alpha($blue-gray, 0.45);
+        color: $alabaster-stone;
+        max-width: $twelve-percent;
+        transition:
+            box-shadow 200ms ease,
+            background 200ms ease,
+            transform 200ms ease;
+
+        &.stagger {
+            opacity: 0;
+            transform: translateY(12px);
+            transition:
+                opacity 500ms ease-out,
+                transform 500ms ease-out,
+                box-shadow 200ms ease,
+                background 200ms ease;
+
+            @for $i from 1 through 20 {
+                &:nth-child(#{$i}) {
+                    transition-delay: #{$i * 80}ms;
+                }
+            }
+        }
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: add-alpha(black, 0.3) 0 4px 12px;
+            background: add-alpha($blue-gray, 0.65);
+            cursor: default;
+        }
+
+        .dot {
+            width: 0.6rem;
+            height: 0.6rem;
+            border-radius: 50%;
+            flex-shrink: 0;
+            background: linear-gradient(
+                135deg,
+                $sunbeam-yellow,
+                $muted-blue
+            );
+            box-shadow: add-alpha(black, 0.25) 0 0 0.15rem;
+        }
+
+        .label {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    @include mobile-breakpoint {
+        .badge-grid {
+            grid-template-columns: 1fr !important;
+        }
+    }
+
+    @include reduced-motion {
+        .badge.stagger {
+            @include reduced-motion-reset;
+        }
+    }
+}
+
+scroll-reveal.in-view badge-grid .badge.stagger {
+    opacity: 1;
+    transform: translateY(0);
+}

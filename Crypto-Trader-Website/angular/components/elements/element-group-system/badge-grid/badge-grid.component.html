@@ -1,0 +1,19 @@
+<!-- badge-grid.component.html -->
+<ng-container>
+    <div
+        class="badge-grid"
+        [style.grid-template-columns]="'repeat(' + columns + ', minmax(0, 1fr))'"
+        [attr.aria-label]="ariaLabel"
+    >
+        @for (item of items; track item) {
+            <div
+                class="badge"
+                [title]="item"
+                [class.stagger]="staggerAnimation"
+            >
+                <span class="dot" aria-hidden="true"></span>
+                <span class="label">{{ item }}</span>
+            </div>
+        }
+    </div>
+</ng-container>
