@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
-import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class LoggingController {
         HttpServletRequest request) {
         FrontendLogEvent event = this.mapToEvent(logEntry, request);
         FrontendLogBatchEvent batch = new FrontendLogBatchEvent(
-            List.of(event), Instant.now());
+            List.of(event), LocalDateTime.now(ZoneId.of("America/Chicago")));
         this.logEventsPublisher.publishBatch(LogEventBinding.FRONTEND_LOGS.getBindingName(), batch);
         return ResponseEntity.accepted()
             .body(new FrontendLogResponse(1, "accepted"));
@@ -54,7 +55,7 @@ public class LoggingController {
         HttpServletRequest request) {
         List<FrontendLogEvent> entries = this.parseNdjson(ndjsonBody, request);
         FrontendLogBatchEvent batch = new FrontendLogBatchEvent(
-            entries, Instant.now());
+            entries, LocalDateTime.now(ZoneId.of("America/Chicago")));
         this.logEventsPublisher.publishBatch(LogEventBinding.FRONTEND_LOGS.getBindingName(), batch);
         return ResponseEntity.accepted()
             .body(new FrontendLogResponse(entries.size(), "accepted"));
