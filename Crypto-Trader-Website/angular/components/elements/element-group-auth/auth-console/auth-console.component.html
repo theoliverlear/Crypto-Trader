@@ -1,14 +1,44 @@
 <ng-container>
-    <auth-console-tab-section (authTypeClicked)="setAuthType($event)" />
-    @if (isSignupSection()) {
-        <auth-console-signup-section
-            (authPopupEvent)="emitAuthPopup($event)"
-            (signupButtonClicked)="attemptSignup($event)"
+    <div class="auth-card">
+        <button class="auth-close-btn" (click)="navigateHome()" aria-label="Close">
+            ✕
+        </button>
+        <div class="auth-card-header">
+            @if (isSignupSection()) {
+                <h2 class="auth-title">Create your account</h2>
+                <p class="auth-subtitle">Start using Crypto Trader in minutes</p>
+            }
+            @if (isLoginSection()) {
+                <h2 class="auth-title">Welcome back</h2>
+                <p class="auth-subtitle">Sign in to your Crypto Trader account</p>
+            }
+        </div>
+        <auth-console-tab-section
+            [currentAuthType]="currentAuthType"
+            (authTypeClicked)="setAuthType($event)"
         />
-    }
-    @if (isLoginSection()) {
-        <auth-console-login-section
-            (loginButtonClicked)="attemptLogin($event)"
-        />
-    }
+        <div class="auth-card-body">
+            @if (isSignupSection()) {
+                <auth-console-signup-section
+                    (authPopupEvent)="emitAuthPopup($event)"
+                    (signupButtonClicked)="attemptSignup($event)"
+                />
+            }
+            @if (isLoginSection()) {
+                <auth-console-login-section
+                    (loginButtonClicked)="attemptLogin($event)"
+                />
+            }
+        </div>
+        <p class="auth-switch-text">
+            @if (isSignupSection()) {
+                Already have an account?
+                <a class="auth-switch-link" (click)="setAuthType(AuthType.LOGIN)">Log in</a>
+            }
+            @if (isLoginSection()) {
+                Don't have an account?
+                <a class="auth-switch-link" (click)="setAuthType(AuthType.SIGN_UP)">Sign up</a>
+            }
+        </p>
+    </div>
 </ng-container>
