@@ -60,6 +60,28 @@ documentation.
 
 ---
 
+### 👨‍💻 Development
+
+To generate new components with the project's specific requirements (SCSS,
+no tests, automatic `angular.json` update), use the following command from the
+`Crypto-Trader-Website` directory:
+
+```bash
+npm run g:c -- <path/to/component>
+```
+
+**Example:**
+```bash
+npm run g:c -- pages/new-feature
+```
+
+This will:
+1. Create the component files in `angular/components/pages/new-feature/`.
+2. Add the component's SCSS path to the `styles` array in `angular.json` in alphabetical order.
+3. Automatically register the component in `pages.ts` or `elements.ts` using `ts-morph` (if applicable).
+
+---
+
 ### 🔗 Documentation Quick Links
 
 - [Guides](https://theoliverlear.github.io/Crypto-Trader/guides/)
