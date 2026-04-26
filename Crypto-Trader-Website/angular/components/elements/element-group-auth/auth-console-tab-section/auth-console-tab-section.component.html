@@ -2,10 +2,12 @@
 <ng-container>
     <auth-console-tab
         [authType]="AuthType.SIGN_UP"
+        [isActive]="currentAuthType === AuthType.SIGN_UP"
         (authTabClicked)="setAuthType($event)"
     />
     <auth-console-tab
         [authType]="AuthType.LOGIN"
+        [isActive]="currentAuthType === AuthType.LOGIN"
         (authTabClicked)="setAuthType($event)"
     />
 </ng-container>
