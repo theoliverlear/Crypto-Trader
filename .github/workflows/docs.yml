@@ -36,7 +36,8 @@ jobs:
       APP_NAME: ${{ secrets.APP_NAME }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       SECURITY_HONEYPOT_PATHS: ${{ secrets.SECURITY_HONEYPOT_PATHS }}
-      # Docs workflow configuration
+      MAVEN_OPTS: "-XX:MaxMetaspaceSize=1g"
+        # Docs workflow configuration
       # Minimum number of bytes for an OpenAPI document to be considered "ready" (tiny skeletons will be treated as not ready)
       OPENAPI_MIN_BYTES: "512"
       # Which services must be ready for the job to proceed
