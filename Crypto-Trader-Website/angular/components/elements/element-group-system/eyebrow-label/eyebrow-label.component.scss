@@ -1,0 +1,15 @@
+// eyebrow-label.component.scss
+@use '../../../../styles/globals' as *;
+
+eyebrow-label {
+    display: block;
+
+    .eyebrow {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: $sunbeam-yellow;
+        margin-bottom: $quarter-percent;
+    }
+}
