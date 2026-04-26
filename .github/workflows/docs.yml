@@ -11,472 +11,56 @@ concurrency:
 
 permissions:
   contents: read
-  packages: read
-  # pages/id-token moved to deploy job
+  pages: write
+  id-token: write
 
 jobs:
-  build:
+  build-on-aws:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      GITHUB_ACTOR: ${{ github.actor }}
-      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-      OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
-      PSQL_DB_URL: ${{ secrets.PSQL_DB_URL }}
-      PSQL_HOST: ${{ secrets.PSQL_HOST }}
-      PSQL_PW: ${{ secrets.PSQL_PW }}
-      PSQL_USER: ${{ secrets.PSQL_USER }}
-      PYTHONUNBUFFERED: ${{ secrets.PYTHONUNBUFFERED }}
-      WORLDNEWS_API_KEY: ${{ secrets.WORLDNEWS_API_KEY }}
-      X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
-      X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
-      X_API_KEY: ${{ secrets.X_API_KEY }}
-      X_SECRET: ${{ secrets.X_SECRET }}
-      REPO_NAME: ${{ secrets.REPO_NAME }}
-      APP_NAME: ${{ secrets.APP_NAME }}
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      SECURITY_HONEYPOT_PATHS: ${{ secrets.SECURITY_HONEYPOT_PATHS }}
-      MAVEN_OPTS: >-
-          -Xms1g
-          -Xmx6g
-          -XX:MetaspaceSize=512m
-          -XX:MaxMetaspaceSize=2g
-          -XX:+UseG1GC
-        # Docs workflow configuration
-      # Minimum number of bytes for an OpenAPI document to be considered "ready" (tiny skeletons will be treated as not ready)
-      OPENAPI_MIN_BYTES: "512"
-      # Which services must be ready for the job to proceed
-      REQUIRED_SERVICES: "api data contact"
-      # Optional services – probed and collected, but do not gate readiness
-      OPTIONAL_SERVICES: "engine"
-      # When true, proceed even if some REQUIRED specs are missing (will emit warnings instead of failing)
-      ALLOW_PARTIAL_DOCS: "false"
     outputs:
-      pages_enabled: ${{ steps.pages.outcome }}
-      site_ready: ${{ steps.verify_site.outputs.site_ready }}
-
+      site_ready: ${{ steps.download.outputs.site_ready }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Java (23)
-        uses: actions/setup-java@v4
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          distribution: temurin
-          java-version: '23'
-          cache: 'maven'
+          role-to-assume: ${{ secrets.AWS_DOCS_ROLE_ARN }}
+          aws-region: us-east-1
 
-      - name: Cache Dokka Metadata
-        uses: actions/cache@v4
+      - name: Trigger CodeBuild and wait
+        id: codebuild
+        uses: aws-actions/aws-codebuild-run-build@v1
         with:
-          path: "**/target/dokka"
-          key: ${{ runner.os }}-dokka-${{ github.ref_name }}-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-dokka-${{ github.ref_name }}-
-            ${{ runner.os }}-dokka-
+          project-name: ct-docs-build
+          buildspec-override: .aws/buildspec-docs.yml
+          env-vars-for-codebuild: |
+            GITHUB_SHA,
+            GITHUB_REF_NAME
 
-      # Build and install all modules with Dokka, so subsequent runs can resolve internal artifacts
-      - name: Build (install) with Dokka for all modules
-        run: mvn -B -s .github/maven-settings.xml -DskipTests -am -U -P release install org.jetbrains.dokka:dokka-maven-plugin:1.9.20:dokka
-
-      - name: Start Kafka (docker-compose)
+      - name: Download site artifact from S3
+        id: download
         run: |
-          set -euo pipefail
-          docker compose -f infra/kafka/docker-compose.yml up -d
-          # Wait for Kafka (port 9092) to be reachable
-          for i in $(seq 1 60); do
-            if timeout 1 bash -c 'cat </dev/null >/dev/tcp/127.0.0.1/9092' 2>/dev/null; then
-              echo "Kafka is up"
-              break
-            fi
-            echo "Waiting for Kafka... ($i/60)"
-            sleep 2
-          done
-          if ! timeout 1 bash -c 'cat </dev/null >/dev/tcp/127.0.0.1/9092' 2>/dev/null; then
-            echo "::error::Kafka failed to start on port 9092"
-            docker compose -f infra/kafka/docker-compose.yml logs || true
-            exit 1
-          fi
-
-      # Start all services with docs profile, wait until /v3/api-docs.yaml is up, fail fast if any process exits
-      - name: Start services (docs profile) and wait
-        run: |
-          set -euo pipefail
-          shopt -s nullglob
-
-          SERVICES=$(cat <<'EOF'
-          api      Crypto-Trader-Api      18080   ""
-          data     Crypto-Trader-Data     18081   "--cryptotrader..load.currency=false"
-          engine   Crypto-Trader-Engine   18082   "--cryptotrader.engine.trading.enabled=false"
-          contact  Crypto-Trader-Contact  18083   "--cryptotrader.engine.trading.enabled=false"
-          EOF
-          )
-
-          # helper to check if a service is required
-          is_required() {
-            local name="$1"
-            for req in ${REQUIRED_SERVICES:-api}; do
-              if [ "$req" = "$name" ]; then
-                return 0
-              fi
-            done
-            return 1
-          }
-
-          start_one () {
-            local name="$1" module="$2" port="$3" extra="$4"
-            echo "==> starting $name on :$port ($module)"
-            if [ "$name" = "data" ]; then
-              # Data service: set JVM system property so pre-Spring generator is disabled
-              nohup mvn -B -s .github/maven-settings.xml -DskipTests \
-                -f "$module/pom.xml" -am \
-                -Dspring-boot.run.profiles=docs \
-                -Dspring-boot.run.jvmArguments="-Dcryptotrader.load.currency=false" \
-                -Dspring-boot.run.arguments="--server.port=$port $extra" \
-                spring-boot:run > "$name.log" 2>&1 &
-            else
-              nohup mvn -B -s .github/maven-settings.xml -DskipTests \
-                -f "$module/pom.xml" -am \
-                -Dspring-boot.run.profiles=docs \
-                -Dspring-boot.run.arguments="--server.port=$port $extra" \
-                spring-boot:run > "$name.log" 2>&1 &
-            fi
-            echo $! > "$name.pid"
-          }
-
-          echo "$SERVICES" | awk 'NF && $1 !~ /^#/' | while read -r name module port extra; do
-            start_one "$name" "$module" "$port" "$extra"
-          done
-
-          die() {
-            echo "::error::$1"
-            echo "---- tail logs ----"
-            tail -n 200 *.log || true
-            exit 1
-          }
-
-          probe() {
-            local port="$1"
-            local min=${OPENAPI_MIN_BYTES:-512}
-            # Consider endpoint ready only if response body is non-empty (>20 bytes)
-            local tmp=".probe_${port}.out"
-            rm -f "$tmp"
-            if curl -fsS "http://localhost:${port}/v3/api-docs.yaml" -o "$tmp"; then
-              # Use file size to avoid parsing issues with wc/tr/newlines
-              local sz
-              sz=$(wc -c < "$tmp" 2>/dev/null || echo 0)
-              case "$sz" in
-                ''|*[!0-9]*) sz=0 ;;
-              esac
-              if [ "$sz" -gt "$min" ]; then rm -f "$tmp"; echo ok; return; fi
-              # YAML empty; try JSON
-              rm -f "$tmp"
-              if curl -fsS "http://localhost:${port}/v3/api-docs" -o "$tmp"; then
-                sz=$(wc -c < "$tmp" 2>/dev/null || echo 0)
-                case "$sz" in
-                  ''|*[!0-9]*) sz=0 ;;
-                esac
-                rm -f "$tmp"
-                if [ "$sz" -gt "$min" ]; then echo ok; else echo no; fi
-              else
-                rm -f "$tmp" 2>/dev/null || true
-                echo no
-              fi
-            else
-              # YAML request failed; try JSON directly
-              if curl -fsS "http://localhost:${port}/v3/api-docs" -o "$tmp"; then
-                local sz
-                sz=$(wc -c < "$tmp" 2>/dev/null || echo 0)
-                case "$sz" in
-                  ''|*[!0-9]*) sz=0 ;;
-                esac
-                rm -f "$tmp"
-                if [ "$sz" -gt "$min" ]; then echo ok; else echo no; fi
-              else
-                rm -f "$tmp" 2>/dev/null || true
-                echo no
-              fi
-            fi
-          }
-
-          # Wait up to ~8 minutes (240 * 2s)
-          for i in $(seq 1 240); do
-            # Fail fast only if a REQUIRED service died; warn for OPTIONAL
-            for pidfile in *.pid; do
-              [ -f "$pidfile" ] || continue
-              pid=$(cat "$pidfile")
-              if ! ps -p "$pid" >/dev/null 2>&1; then
-                svc="${pidfile%.pid}"
-                if is_required "$svc"; then
-                  die "Required service '$svc' exited before becoming ready."
-                else
-                  echo "::warning::Optional service '$svc' exited before readiness; continuing."
-                fi
-              fi
-            done
-
-            A=$(probe 18080)
-            D=$(probe 18081)
-            E=$(probe 18082)
-            C=$(probe 18083)
-
-            echo "probe #$i  A=$A D=$D E=$E C=$C"
-
-            # Check readiness only for required services
-            all_required_ready=true
-            for req in ${REQUIRED_SERVICES:-api}; do
-              case "$req" in
-                api)     [ "$A" = ok ] || all_required_ready=false ;;
-                data)    [ "$D" = ok ] || all_required_ready=false ;;
-                engine)  [ "$E" = ok ] || all_required_ready=false ;;
-                contact) [ "$C" = ok ] || all_required_ready=false ;;
-              esac
-            done
-
-            if $all_required_ready; then
-              echo "All required services are ready: ${REQUIRED_SERVICES}"
-              break
-            fi
-            sleep 2
-          done
-
-          if ! $all_required_ready; then
-            if [ "${ALLOW_PARTIAL_DOCS}" = "true" ]; then
-              echo "::warning::Timed out waiting for all required services; proceeding due to ALLOW_PARTIAL_DOCS=true"
-            else
-              die "Timed out waiting for required services to start: ${REQUIRED_SERVICES}"
-            fi
-          fi
-
-      # Generate OpenAPI + move into docs via the Docs module (keeps your POM behavior)
-      - name: Build docs module (generate OpenAPI + copy to docs)
-        run: mvn -B -s .github/maven-settings.xml -DskipTests -Ddocs.skipOpenapi=false -f Crypto-Trader-Docs/pom.xml -N verify
-
-      # Ensure specs for all services exist in docs while services are still up (fallback to live only here)
-      - name: Ensure OpenAPI specs exist (while services are up)
-        run: |
-          set -euo pipefail
-
-          BASE="Crypto-Trader-Docs/docs/api"
-          mkdir -p "$BASE"
-
-          fetch_if_missing() {
-            local name="$1" port="$2"
-            local file="$BASE/openapi-${name}.yaml"
-            local tmp="$file.tmp"
-            if [ -s "$file" ]; then
-              echo "Found existing spec for $name at $file"
-              return 0
-            fi
-            echo "Spec for $name missing; attempting to pull from :$port (yaml, then json)…"
-            if curl -fsS "http://localhost:${port}/v3/api-docs.yaml" -o "$tmp"; then
-              if [ -s "$tmp" ]; then
-                mv -f "$tmp" "$file"; echo "Saved $file (yaml)"; return 0
-              else
-                echo "YAML empty for $name; trying JSON…"; rm -f "$tmp"
-              fi
-            else
-              echo "YAML fetch failed for $name; trying JSON…"
-            fi
-            if curl -fsS "http://localhost:${port}/v3/api-docs" -o "$tmp"; then
-              if [ -s "$tmp" ]; then
-                mv -f "$tmp" "$file"; echo "Saved $file (json->yaml path)"; return 0
-              else
-                echo "::error::JSON fetch returned empty body for $name"; rm -f "$tmp"; return 1
-              fi
-            else
-              echo "::error::JSON fetch failed for $name"; return 1
-            fi
-          }
-
-          # Utility: file size
-          size_of() {
-            local f="$1"
-            if [ -f "$f" ]; then wc -c < "$f" 2>/dev/null || echo 0; else echo 0; fi
-          }
-
-          # Generate a small stub OpenAPI file for services without HTTP controllers
-          generate_stub() {
-            local name="$1"; shift
-            local title="$1"; shift
-            local description="$1"; shift || true
-            local file="$BASE/openapi-${name}.yaml"
-            # Write a minimal OpenAPI 3.0 document without using shell heredocs (avoids YAML parser confusion)
-            : > "$file"
-            printf '%s\n' \
-              "openapi: 3.0.3" \
-              "info:" \
-              "  title: ${title}" \
-              "  version: 0.0.0" \
-              "  description: ${description}" \
-              "servers: []" \
-              "paths: {}" \
-              "components: {}" \
-              > "$file"
-            echo "::warning::Generated stub spec for ${name} at $file (no HTTP endpoints yet)"
-          }
-
-          status=0
-          fetch_if_missing api 18080   || status=1
-          fetch_if_missing data 18081  || status=1
-          fetch_if_missing engine 18082|| status=1
-          fetch_if_missing contact 18083|| status=1
-
-          echo "Specs in docs:"
-          ls -l "$BASE" || true
-
-          min=${OPENAPI_MIN_BYTES:-512}
-          # Validate REQUIRED specs by size; OPTIONAL specs may be stubbed
-          for s in ${REQUIRED_SERVICES:-api}; do
-            f="$BASE/openapi-$s.yaml"
-            sz=$(size_of "$f")
-            if [ "$sz" -lt "$min" ]; then
-              if [ "${ALLOW_PARTIAL_DOCS}" = "true" ]; then
-                echo "::warning::Required spec too small or missing ($sz bytes < $min): $f"
-              else
-                echo "::error::Required spec too small or missing ($sz bytes < $min): $f"; status=1
-              fi
-            fi
-          done
-
-          # Optional services handling (Engine)
-          for s in ${OPTIONAL_SERVICES:-}; do
-            f="$BASE/openapi-$s.yaml"
-            sz=$(size_of "$f")
-            if [ "$sz" -lt "$min" ]; then
-              if [ "$s" = "engine" ]; then
-                generate_stub engine "Crypto Trader Engine API" "No HTTP endpoints yet."
-              else
-                echo "::warning::Optional spec missing or small for $s; leaving as-is"
-              fi
-            fi
-          done
-
-          echo "Spec sizes and hashes:"
-          for f in "$BASE"/openapi-*.yaml; do
-            [ -f "$f" ] || continue
-            wc -c "$f" | awk '{print "bytes:", $1, "file:", $2}'
-            sha256sum "$f" || true
-          done
-          exit "$status"
-
-      - name: Stop services
-        if: always()
-        run: |
-          for f in api.pid data.pid engine.pid contact.pid; do
-            [ -f "$f" ] && kill "$(cat "$f")" || true
-          done
-
-      # Coverage build (aggregate)
-      - name: Run tests with coverage (aggregate)
-        run: mvn -B -s .github/maven-settings.xml -ntp -Pcoverage -DskipITs=true -DfailIfNoTests=false -Djunit.platform.excludeTags=ui clean verify
-
-      - name: Set up .NET (for ReportGenerator)
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.0.x
-
-      - name: Cache .NET Global Tools
-        uses: actions/cache@v4
-        with:
-          path: ~/.dotnet/tools
-          key: ${{ runner.os }}-dotnet-tools
-          restore-keys: |
-            ${{ runner.os }}-dotnet-tools
-
-      - name: Install ReportGenerator & add to PATH
-        run: |
-          if [ ! -f "$HOME/.dotnet/tools/reportgenerator" ] && [ ! -f "$HOME/.dotnet/tools/reportgenerator.exe" ]; then
-            dotnet tool install --global dotnet-reportgenerator-globaltool
-          else
-            echo "ReportGenerator already installed (from cache)"
-          fi
-          echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
-
-      - name: Build single aggregate coverage site
-        run: |
-          reportgenerator \
-            -reports:"Crypto-Trader-Coverage/target/site/jacoco-aggregate/jacoco.xml" \
-            -targetdir:"Crypto-Trader-Docs/docs/coverage" \
-            -reporttypes:"Html;HtmlChart;Badges" \
-            -sourcedirs:. \
-            -classdirectories:"**/target/classes" \
-            -assemblymode:MergeByClass
-          if [ -f Crypto-Trader-Docs/docs/coverage/index.htm ] && [ ! -f Crypto-Trader-Docs/docs/coverage/index.html ]; then
-            cp Crypto-Trader-Docs/docs/coverage/index.htm Crypto-Trader-Docs/docs/coverage/index.html
-          fi
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-          cache: 'pip'
-
-      - name: Install MkDocs Material
-        working-directory: Crypto-Trader-Docs
-        run: |
-          python -m pip install --upgrade pip
-          pip install mkdocs mkdocs-material
-
-      - name: Build MkDocs site
-        working-directory: Crypto-Trader-Docs
-        run: mkdocs build --site-dir site
-
-      # Copy all specs from docs into built site; DO NOT fetch live here
-      - name: Copy specs into site/api and verify
-        run: |
-          set -euo pipefail
-          SRC_DIR="Crypto-Trader-Docs/docs/api"
-          DST_DIR="Crypto-Trader-Docs/site/api"
-          mkdir -p "$DST_DIR"
-          cp -fv "$SRC_DIR"/openapi-*.yaml "$DST_DIR/"
-
-          # prevent Jekyll munging
-          touch "Crypto-Trader-Docs/site/.nojekyll"
-
-          # prove they’re in the artifact
-          ls -l "$DST_DIR"
-          for f in "$DST_DIR"/openapi-*.yaml; do
-            [ -s "$f" ] || { echo "::error::Empty spec in site: $f"; exit 1; }
-            sha256sum "$f"
-          done
-
-      - name: Configure Pages
-        id: pages
-        uses: actions/configure-pages@v5
-        continue-on-error: true
-        with:
-          enablement: true
-
-      - name: Verify built site is non-empty
-        id: verify_site
-        run: |
-          SITE_DIR="Crypto-Trader-Docs/site"
-          if [ -s "$SITE_DIR/index.html" ] && [ "$(find "$SITE_DIR" -type f | wc -l)" -gt 5 ]; then
+          aws s3 cp s3://ct-docs-build-artifacts/${{ github.sha }}/site.tar.gz site.tar.gz
+          mkdir -p site
+          tar xzf site.tar.gz -C site
+          if [ -s "site/index.html" ] && [ "$(find site -type f | wc -l)" -gt 5 ]; then
             echo "site_ready=true" >> "$GITHUB_OUTPUT"
-            echo "Site verified."
           else
             echo "site_ready=false" >> "$GITHUB_OUTPUT"
-            echo "::warning::Site is missing or empty. Skipping upload and deploy."
           fi
 
       - name: Upload Pages artifact
-        if: ${{ steps.verify_site.outputs.site_ready == 'true' }}
+        if: steps.download.outputs.site_ready == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: Crypto-Trader-Docs/site
-
-      - name: Stop Kafka (docker-compose)
-        if: always()
-        run: docker compose -f infra/kafka/docker-compose.yml down -v
+          path: site
 
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: build
-    if: needs.build.result == 'success' && needs.build.outputs.pages_enabled == 'success' && needs.build.outputs.site_ready == 'true'
+    needs: build-on-aws
+    if: needs.build-on-aws.result == 'success' && needs.build-on-aws.outputs.site_ready == 'true'
     permissions:
       pages: write
       id-token: write
