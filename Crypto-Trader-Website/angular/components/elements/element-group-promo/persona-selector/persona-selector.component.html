@@ -1,0 +1,63 @@
+<ng-container>
+    <scroll-reveal [threshold]="0.2">
+        <div class="persona-section">
+            <div class="section-header">
+                <eyebrow-label [text]="'A Democratic App for a Democratic Currency'" />
+                <ss-title [text]="'Who do you want to be?'" [tagType]="TagType.H2" />
+                <subtitle
+                    [text]="'Every trader is different. Crypto Trader adapts to you.'"
+                    [tagType]="TagType.H5"
+                />
+            </div>
+
+            <!-- Character Select Row -->
+            <div class="avatar-row" role="tablist" aria-label="Choose your persona">
+                @for (persona of personas; track persona.id; let i = $index) {
+                    <button
+                        class="avatar-slot {{ persona.accentColor }}"
+                        [class.active]="i === activeIndex"
+                        (click)="select(i)"
+                        role="tab"
+                        [attr.aria-selected]="i === activeIndex"
+                        [attr.aria-controls]="'persona-panel'"
+                    >
+                        <div class="avatar-icon-ring">
+                            <ss-img [imageAsset]="persona.icon" class="avatar-icon" />
+                        </div>
+                        <span class="avatar-name">{{ persona.name }}</span>
+                    </button>
+                }
+            </div>
+
+            <!-- Detail Panel -->
+            <div class="detail-panel {{ active.accentColor }}" id="persona-panel" role="tabpanel">
+                <div class="detail-copy">
+                    <div class="detail-header">
+                        <ss-title [text]="active.name" [tagType]="TagType.H3" />
+                        <span class="tier-badge">{{ active.suggestedTier }} Tier</span>
+                    </div>
+                    <p class="detail-tagline">{{ active.tagline }}</p>
+                    <p class="detail-description">{{ active.description }}</p>
+
+                    <div class="trait-row">
+                        @for (trait of active.traits; track trait) {
+                            <span class="trait-chip">{{ trait }}</span>
+                        }
+                    </div>
+
+                    <cta-button
+                        [text]="'Get Started as ' + active.name"
+                        [routerLink]="'/authorize'"
+                        [showArrow]="true"
+                    />
+                </div>
+
+                <div class="detail-visual">
+                    <div class="persona-emblem">
+                        <ss-img [imageAsset]="active.icon" class="emblem-icon" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </scroll-reveal>
+</ng-container>
