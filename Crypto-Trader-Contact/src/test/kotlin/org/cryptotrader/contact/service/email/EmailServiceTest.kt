@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
+import java.time.Year
 
 @SpringBootTest(properties = [
     "spring.autoconfigure.exclude=org.cryptotrader.docs.autoconfigure.CryptoTraderDocsAutoConfiguration,org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration,org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration",
@@ -71,9 +72,9 @@ class EmailServiceTest @Autowired constructor(
                 getExpectedWelcomeHtml(
                     "Testing Crypto Trader",
                     "Hello from Spring Boot in Kotlin".normalized(),
-                    "Test User",
+                    "User",
                     "Open app",
-                    "2026"
+                    Year.now().toString()
                 ).normalized()
             )
         }
