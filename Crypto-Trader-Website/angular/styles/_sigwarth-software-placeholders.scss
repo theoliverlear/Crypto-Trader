@@ -1,6 +1,8 @@
 @use 'globals' as *;
 @use 'global-fonts' as *;
 
+// TODO: Replace pixels with variables.
+
 %sigwarth-software-app {
     ss-anchor {
         @include flex(center, center, row);
@@ -20,23 +22,20 @@
 
         a {
             text-align: center;
-
-            // @extend %fill-container;
         }
     }
 
     ss-button {
         @include flex(center, center, row);
-
-        // box-sizing: border-box;
         position: relative;
-        border-radius: simplest-calc(0.25);
-        transition: background-color, box-shadow, transform, 0.3s;
-
-        // padding: simplest-calc(0.15) simplest-calc(0.2);
+        background: linear-gradient(135deg, $midnight-navy 0%, $deep-ocean 100%);
+        border: $very-thin-border solid add-alpha($mint-green, 0.2);
+        border-radius: $quarter-percent;
         padding: $half-percent;
-        background-color: $muted-blue;
         flex-basis: $ten-percent;
+        box-shadow: 0 0 12px add-alpha($mint-green, 0.04),
+                    0 2px 8px add-alpha($absolute-black, 0.3);
+        transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 
         h1,
         h2,
@@ -47,44 +46,40 @@
             min-width: 11ch;
             max-height: 2ch;
             color: $pure-white;
-
-            @extend %softer-text-shadow;
-            font-weight: 200;
+            font-weight: 600;
+            letter-spacing: 0.03em;
         }
 
         &:hover {
-            $box-shadow-size: simplest-calc(0.25);
-            box-shadow: $blue-gray $box-shadow-size $box-shadow-size 0 0;
+            transform: translateY(-2px);
+            border-color: add-alpha($mint-green, 0.45);
+            box-shadow: 0 0 20px add-alpha($mint-green, 0.1),
+                        0 4px 16px add-alpha($absolute-black, 0.4);
             cursor: pointer;
         }
 
         &:active {
-            box-shadow: none;
-
-            $top-and-right: simplest-calc(0.25);
-            transform: translate($top-and-right, $top-and-right);
+            transform: translateY(0);
+            box-shadow: 0 0 8px add-alpha($mint-green, 0.02);
         }
     }
 
     ss-footer {
         width: 100%;
         margin-top: auto;
-
-        // background-color: $midnight-navy;
-        // background-color: transparent;
-        // background-image: linear-gradient(to bottom, $charcoal 10%, $midnight-navy 90%);
         background-image: linear-gradient(
             to bottom,
-            $muted-blue 60%,
+            $deep-ocean 60%,
             $midnight-navy
         );
+        border-top: $very-thin-border solid add-alpha($mint-green, 0.2);
         padding: $quarter-percent $zero;
         box-sizing: border-box;
 
         footer {
             @include flex(center, center, row);
             width: 100%;
-            color: $pure-white;
+            color: $sage-green;
             padding: $eighth-percent 0;
 
             .footer-item {
@@ -96,13 +91,12 @@
                     font-size: calc($h6-font-size * 0.85);
                 }
 
-                // padding: $zero $half-percent;
                 .footer-item-text {
-                    color: $pure-white;
+                    color: $pale-mint;
                 }
 
                 &:last-child {
-                    border-left: $thin-border solid $pure-white;
+                    border-left: $thin-border solid add-alpha($pure-white, 0.15);
                 }
             }
         }
@@ -121,19 +115,30 @@
 
     ss-input {
         input {
-            font-family: $google-sans-code-font;
+            font-family: $fira-sans-font;
             padding: simplest-calc(0.25);
             border-radius: simplest-calc(0.25);
-            border: $muted-blue $thin-border solid;
-            box-shadow: $morning-frost-blue 0 0 simplest-calc(0.25);
-            transition: box-shadow, margin-left, margin-top, 0.3s;
+            border: 1px solid add-alpha($mint-green, 0.25);
+            background: add-alpha($midnight-navy, 0.6);
+            color: $pure-white;
+            box-shadow: 0 0 12px add-alpha($mint-green, 0.04);
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
             font-size: calc($h6-font-size * 1.25);
 
+            &::placeholder {
+                color: add-alpha($pure-white, 0.4);
+            }
+
             &:hover {
-                $box-shadow-size: simplest-calc(0.35);
-                box-shadow: $morning-frost-blue $box-shadow-size
-                    $box-shadow-size;
-                cursor: pointer;
+                border-color: add-alpha($mint-green, 0.45);
+                box-shadow: 0 0 20px add-alpha($mint-green, 0.1);
+                cursor: text;
+            }
+
+            &:focus {
+                outline: none;
+                border-color: $mint-green;
+                box-shadow: 0 0 0 3px add-alpha($mint-green, 0.15);
             }
         }
 
@@ -145,8 +150,7 @@
                 color: $charcoal;
 
                 &:hover {
-                    box-shadow: $morning-frost-blue simplest-calc(0.2)
-                        simplest-calc(0.2);
+                    box-shadow: 0 0 12px add-alpha($mint-green, 0.1);
                 }
             }
         }
@@ -154,16 +158,9 @@
 
     ss-paragraph {
         @include flex(center, center, column);
-        color: $neutral-black;
-
-        // background-color: $alabaster-stone;
-        // background-image: radial-gradient($alabaster-stone, $pure-white);
-        background-color: add-alpha($pure-white, 0.8);
-
-        // border: $light-charcoal $thin-border solid;
+        @include glass-panel;
+        color: $absolute-black;
         padding: $half-percent $one-percent;
-
-        // @extend %soft-border-radius;
         border-radius: $quarter-percent;
     }
 
