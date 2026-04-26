@@ -1,0 +1,16 @@
+<!-- module-infra-tile.component.html -->
+<ng-container>
+    <div class="infra-tile">
+        <div class="infra-tile-header">
+            <img [src]="module.icon.src" [alt]="module.icon.alt"
+                 class="infra-icon" />
+            <h4 class="infra-name">{{ module.name }}</h4>
+        </div>
+        <p class="infra-tagline">{{ module.tagline }}</p>
+        <div class="tech-badges">
+        <span class="tech-badge" *ngFor="let tech of module.techStack">
+            {{ tech }}
+        </span>
+        </div>
+    </div>
+</ng-container>

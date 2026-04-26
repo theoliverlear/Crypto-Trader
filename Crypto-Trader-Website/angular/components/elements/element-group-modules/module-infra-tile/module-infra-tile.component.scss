@@ -1,0 +1,69 @@
+// module-infra-tile.component.scss
+@use 'sass:color';
+@use '../../../../styles/globals' as *;
+@use '../../../../styles/gradients/global_gradient_variables' as *;
+// TODO: Replace pixels with variables.
+module-infra-tile {
+    display: block;
+
+    .infra-tile {
+        @include flex(flex-start, flex-start, column);
+        padding: $one-percent;
+        background: $pure-white;
+        border: 1px solid add-alpha($charcoal, 0.1);
+        border-left: 4px solid $teal-green;
+        border-radius: $quarter-percent;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px add-alpha($absolute-black, 0.08);
+        }
+    }
+
+    .infra-tile-header {
+        @include flex(flex-start, center, row);
+        gap: $half-percent;
+        margin-bottom: $quarter-percent;
+    }
+
+    .infra-icon {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+    }
+
+    .infra-name {
+        font-size: 1rem;
+        font-weight: 700;
+        color: $midnight-navy;
+        margin: 0;
+    }
+
+    .infra-tagline {
+        font-size: 0.8rem;
+        line-height: 1.5;
+        color: $blue-gray;
+        margin: 0 0 $quarter-percent;
+    }
+
+    .tech-badges {
+        @include flex(flex-start, center, row);
+        flex-wrap: wrap;
+        gap: $quarter-percent;
+        margin-top: auto;
+        padding-top: $half-percent;
+    }
+
+    .tech-badge {
+        display: inline-block;
+        padding: 3px 10px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        border-radius: 999px;
+        white-space: nowrap;
+        background: add-alpha($teal-green, 0.1);
+        color: $teal-green;
+    }
+}
