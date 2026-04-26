@@ -1,0 +1,53 @@
+@use 'sass:color';
+@use '../../../../styles/globals' as *;
+@use '../../../../styles/gradients/global_gradient_placeholders' as *;
+@use '../../../../styles/gradients/global_gradient_variables' as *;
+@use '../../../../styles/gradients/global_gradient_mixins' as *;
+
+start-trading-promo {
+    width: 100%;
+    margin: $two-percent 0;
+    .cta-section {
+        width: 100%;
+        background: linear-gradient(
+            180deg,
+            $ivory-white 0%,
+            $pure-white 50%,
+            add-alpha($pale-mint, 0.15) 100%
+        );
+        padding: $three-percent 0;
+
+        &.no-gradient {
+            background: none;
+        }
+    }
+
+    .section-content {
+        width: $eighty-percent;
+        margin: 0 auto;
+    }
+
+    .cta-content {
+        @include flex(center, center, column);
+        text-align: center;
+
+        eyebrow-label {
+            color: $teal-green;
+        }
+
+        ss-title h2 {
+            @include gradient-text($regular-logo);
+        }
+
+        subtitle {
+            color: $blue-gray;
+            margin-bottom: $one-percent;
+        }
+    }
+
+    .cta-row {
+        @include flex(center, center, row);
+        gap: $one-percent;
+        margin-top: $one-percent;
+    }
+}

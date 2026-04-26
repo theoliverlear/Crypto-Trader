@@ -1,0 +1,22 @@
+<!-- start-trading-promo.component.html -->
+<ng-container>
+    <section class="cta-section" [class.no-gradient]="!useGradientBackground">
+        <scroll-reveal [threshold]="0.2">
+            <div class="section-content cta-content">
+                <eyebrow-label [text]="'Ready to explore?'" />
+                <ss-title [text]="'Start Trading Today'"
+                          [tagType]="TagType.H2" />
+                <subtitle [text]="'Pick a plan. Set your strategy. Step away from the screen.'"
+                          [tagType]="TagType.H5" />
+                <div class="cta-row">
+                    <cta-button [text]="'Get Started'"
+                                [routerLink]="'/authorize'"
+                                [showArrow]="true" />
+                    <cta-button [text]="'Read the Docs'"
+                                [href]="'https://theoliverlear.github.io/Crypto-Trader/'"
+                                [showArrow]="false" />
+                </div>
+            </div>
+        </scroll-reveal>
+    </section>
+</ng-container>
