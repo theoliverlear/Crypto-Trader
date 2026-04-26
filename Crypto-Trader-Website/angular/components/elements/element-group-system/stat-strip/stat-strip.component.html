@@ -1,0 +1,13 @@
+<!-- stat-strip.component.html -->
+<ng-container>
+    <section class="stats-strip">
+        <scroll-reveal [threshold]="0.2">
+            <div class="stats-row">
+                <div class="stat-card" *ngFor="let stat of items; let i = index">
+                    <span class="stat-icon">{{ stat.icon }}</span>
+                    <span class="stat-label">{{ getDisplayLabel(stat, i) }}</span>
+                </div>
+            </div>
+        </scroll-reveal>
+    </section>
+</ng-container>

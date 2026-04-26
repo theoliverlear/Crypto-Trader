@@ -1,0 +1,52 @@
+// stat-strip.component.scss
+@use 'sass:color';
+@use '../../../../styles/globals' as *;
+@use '../../../../styles/gradients/global_gradient_variables' as *;
+// TODO: Replace pixels with variables.
+stat-strip {
+    display: block;
+    width: 100%;
+
+    .stats-strip {
+        width: 100%;
+        background: linear-gradient(135deg, $midnight-navy 0%, $deep-ocean 100%);
+        padding: $one-half-percent 0;
+    }
+
+    .stats-row {
+        @include flex(center, center, row);
+        flex-wrap: wrap;
+        gap: $one-percent;
+        width: $eighty-percent;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .stat-card {
+        @include flex(center, center, column);
+        gap: $quarter-percent;
+        padding: $half-percent $one-percent;
+        background: add-alpha($pure-white, 0.06);
+        border: 1px solid add-alpha($mint-green, 0.2);
+        border-radius: $half-percent;
+        min-width: 140px;
+        flex: 1 1 0;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px add-alpha($mint-green, 0.15);
+        }
+    }
+
+    .stat-icon {
+        font-size: 1.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: $pale-mint;
+        letter-spacing: 0.02em;
+    }
+}
