@@ -1,0 +1,49 @@
+// chat-bubble.component.scss
+@use '../../../../styles/globals' as *;
+
+chat-bubble {
+    display: block;
+    width: 100%;
+
+    .chat-bubble {
+        max-width: 75%;
+        padding: $half-percent $three-quarter-percent;
+        border-radius: $half-percent;
+        word-wrap: break-word;
+
+        .chat-bubble-role {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+
+        .chat-bubble-content {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        &.user {
+            margin-left: auto;
+            background-color: add-alpha($sunbeam-yellow, 0.15);
+            color: $alabaster-stone;
+
+            .chat-bubble-role {
+                color: $sunbeam-yellow;
+            }
+        }
+
+        &.assistant {
+            margin-right: auto;
+            background-color: add-alpha($pure-white, 0.06);
+            color: $alabaster-stone;
+
+            .chat-bubble-role {
+                color: add-alpha($pure-white, 0.5);
+            }
+        }
+    }
+}
