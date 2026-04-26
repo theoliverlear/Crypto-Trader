@@ -1,0 +1,18 @@
+// flip-words.component.scss
+flip-words {
+    .flip-word {
+        display: inline-block;
+        transition: transform 0.35s, opacity 0.35s;
+
+        &.swap {
+            transform: rotateX(90deg);
+            opacity: 0;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .flip-word {
+            transition: none;
+        }
+    }
+}

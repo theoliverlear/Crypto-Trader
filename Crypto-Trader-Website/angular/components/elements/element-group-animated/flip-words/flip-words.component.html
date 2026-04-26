@@ -1,0 +1,8 @@
+<!-- flip-words.component.html -->
+<ng-container>
+    <ss-title [tagType]="tagType"
+              class="flip-word"
+              [class.swap]="swap"
+              aria-live="polite"
+              [text]="`${words[current]}${shouldPunctuate ? '.' : ''}`"/>
+</ng-container>

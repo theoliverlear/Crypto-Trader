@@ -1,0 +1,42 @@
+// flip-words.component.ts
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { TagType } from '@theoliverlear/angular-suite';
+
+@Component({
+    selector: 'flip-words',
+    templateUrl: './flip-words.component.html',
+    styleUrls: ['./flip-words.component.scss'],
+    standalone: false,
+})
+export class FlipWordsComponent implements OnInit, OnDestroy {
+    @Input() public words: string[] = [];
+    @Input() public periodMs: number = 2000;
+    @Input() public tagType: TagType = TagType.SPAN;
+    @Input() shouldPunctuate: boolean = false;
+
+    public current: number = 0;
+    public swap: boolean = false;
+    private flipOutTimeout?: ReturnType<typeof setTimeout>;
+    private nextWordTimeout?: ReturnType<typeof setTimeout>;
+
+    public ngOnInit(): void {
+        this.schedule();
+    }
+
+    public ngOnDestroy(): void {
+        clearTimeout(this.flipOutTimeout);
+        clearTimeout(this.nextWordTimeout);
+    }
+
+    // TODO: Move to utils or service file.
+    private schedule(): void {
+        this.flipOutTimeout = setTimeout((): void => {
+            this.swap = true;
+        }, this.periodMs - 350);
+        this.nextWordTimeout = setTimeout((): void => {
+            this.current = (this.current + 1) % this.words.length;
+            this.swap = false;
+            this.schedule();
+        }, this.periodMs);
+    }
+}
