@@ -36,3 +36,10 @@ tink/
 
 **/__pycache__/
 /**/*.keras
+
+/Crypto-Trader-Website/dist/**
+/Crypto-Trader-Website/docs/**
+/Crypto-Trader-Website/node_modules/**
+
+/.aiassistant/**
+/.junie/**
