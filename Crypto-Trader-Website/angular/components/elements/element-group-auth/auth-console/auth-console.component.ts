@@ -197,5 +197,13 @@ export class AuthConsoleComponent implements WebSocketCapable, OnDestroy {
         }
     }
 
+    /** Navigates to the home page (close modal).
+     *
+     */
+    protected navigateHome(): void {
+        void this.router.navigate(['/']);
+    }
+
     protected readonly AuthPopup: typeof AuthPopup = AuthPopup;
+    protected readonly AuthType: typeof AuthType = AuthType;
 }
