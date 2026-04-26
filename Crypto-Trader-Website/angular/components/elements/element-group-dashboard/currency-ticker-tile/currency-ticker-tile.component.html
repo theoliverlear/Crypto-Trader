@@ -1,0 +1,19 @@
+<ng-container>
+    <div class="currency-tile" (click)="onClick()">
+        <img
+            [src]="currency.logoUrl"
+            [alt]="currency.currencyName"
+            class="currency-logo"
+        />
+        <div class="currency-info">
+            <span class="currency-code">{{ currency.currencyCode }}</span>
+            <span class="currency-name">{{ currency.currencyName }}</span>
+        </div>
+        <div class="currency-performance">
+            <performance-arrow
+                [performance]="performance"
+                [includePercent]="true"
+            />
+        </div>
+    </div>
+</ng-container>
