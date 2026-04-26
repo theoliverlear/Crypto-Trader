@@ -36,7 +36,12 @@ jobs:
       APP_NAME: ${{ secrets.APP_NAME }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       SECURITY_HONEYPOT_PATHS: ${{ secrets.SECURITY_HONEYPOT_PATHS }}
-      MAVEN_OPTS: "-XX:MaxMetaspaceSize=1g"
+      MAVEN_OPTS: >-
+          -Xms1g
+          -Xmx6g
+          -XX:MetaspaceSize=512m
+          -XX:MaxMetaspaceSize=2g
+          -XX:+UseG1GC
         # Docs workflow configuration
       # Minimum number of bytes for an OpenAPI document to be considered "ready" (tiny skeletons will be treated as not ready)
       OPENAPI_MIN_BYTES: "512"
@@ -60,6 +65,15 @@ jobs:
           distribution: temurin
           java-version: '23'
           cache: 'maven'
+
+      - name: Cache Dokka Metadata
+        uses: actions/cache@v4
+        with:
+          path: "**/target/dokka"
+          key: ${{ runner.os }}-dokka-${{ github.ref_name }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-dokka-${{ github.ref_name }}-
+            ${{ runner.os }}-dokka-
 
       # Build and install all modules with Dokka, so subsequent runs can resolve internal artifacts
       - name: Build (install) with Dokka for all modules
@@ -362,9 +376,21 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
+      - name: Cache .NET Global Tools
+        uses: actions/cache@v4
+        with:
+          path: ~/.dotnet/tools
+          key: ${{ runner.os }}-dotnet-tools
+          restore-keys: |
+            ${{ runner.os }}-dotnet-tools
+
       - name: Install ReportGenerator & add to PATH
         run: |
-          dotnet tool install --global dotnet-reportgenerator-globaltool
+          if [ ! -f "$HOME/.dotnet/tools/reportgenerator" ] && [ ! -f "$HOME/.dotnet/tools/reportgenerator.exe" ]; then
+            dotnet tool install --global dotnet-reportgenerator-globaltool
+          else
+            echo "ReportGenerator already installed (from cache)"
+          fi
           echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
 
       - name: Build single aggregate coverage site
