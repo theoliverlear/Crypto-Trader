@@ -1,0 +1,14 @@
+// icon-text-item.component.scss
+@use '../../../../styles/globals' as *;
+
+icon-text-item {
+    @include flex(flex-start, center, row);
+    gap: $half-percent;
+    font-size: 1rem;
+    line-height: 1.5;
+
+    .item-icon {
+        @include square-size(1.4rem);
+        flex-shrink: 0;
+    }
+}
