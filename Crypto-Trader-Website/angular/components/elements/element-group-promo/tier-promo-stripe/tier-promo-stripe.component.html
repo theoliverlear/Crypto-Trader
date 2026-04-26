@@ -1,8 +1,18 @@
 <!-- tier-promo-stripe.component.html -->
 <ng-container>
-    <div class="tier-promos">
-        @for (tier of SubscriptionTier.values(); track tier) {
-            <tier-promo [tier]="tier" />
-        }
-    </div>
+    <scroll-reveal [threshold]="0.15">
+        <div class="tier-header">
+            <eyebrow-label [text]="'Choose Your Edge'" />
+            <ss-title [text]="'Trading Tiers'" [tagType]="TagType.H2" />
+            <subtitle
+                [text]="'Every tier runs 24/7. No commissions. Upgrade or downgrade anytime.'"
+                [tagType]="TagType.H5"
+            />
+        </div>
+        <div class="tier-promos">
+            @for (tier of SubscriptionTier.values(); track tier) {
+                <tier-promo [tier]="tier" />
+            }
+        </div>
+    </scroll-reveal>
 </ng-container>
