@@ -1,0 +1,12 @@
+<ng-container>
+    <div
+        class="badge"
+        [class.badge-cash]="variant === 'cash'"
+        [class.badge-crypto]="variant === 'crypto'"
+        [class.badge-assets]="variant === 'assets'"
+        (click)="onClick()"
+    >
+        <span class="badge-label">{{ label }}</span>
+        <span class="badge-value">{{ value }}</span>
+    </div>
+</ng-container>

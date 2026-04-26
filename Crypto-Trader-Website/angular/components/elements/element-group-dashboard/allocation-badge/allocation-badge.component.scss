@@ -1,0 +1,49 @@
+// allocation-badge.component.scss
+@use 'sass:color';
+@use '../../../../styles/globals' as *;
+// TODO: Replace pixels with variables.
+allocation-badge {
+    .badge {
+        @include flex(center, center, row);
+        gap: $half-percent;
+        padding: $half-percent $one-percent;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+        &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .badge-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-value {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+    }
+
+    .badge-cash {
+        background-color: rgba($ocean-blue, 0.12);
+        color: $ocean-blue;
+        border: 1px solid rgba($ocean-blue, 0.25);
+    }
+
+    .badge-crypto {
+        background-color: rgba($teal-green, 0.12);
+        color: $teal-green;
+        border: 1px solid rgba($teal-green, 0.25);
+    }
+
+    .badge-assets {
+        background-color: rgba($bitcoin-color, 0.12);
+        color: color.adjust($bitcoin-color, $lightness: -12%);
+        border: 1px solid rgba($bitcoin-color, 0.25);
+    }
+}
