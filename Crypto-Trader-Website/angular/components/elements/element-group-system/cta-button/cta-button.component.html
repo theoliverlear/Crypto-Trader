@@ -1,0 +1,19 @@
+<!-- cta-button.component.html -->
+<ng-container>
+    <button
+        class="cta-button"
+        *ngIf="routerLink"
+        [routerLink]="routerLink"
+    >
+        {{ text }}<span *ngIf="showArrow" class="arrow"> →</span>
+    </button>
+    <a
+        class="cta-button"
+        *ngIf="href"
+        [href]="href"
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+        {{ text }}<span *ngIf="showArrow" class="arrow"> →</span>
+    </a>
+</ng-container>

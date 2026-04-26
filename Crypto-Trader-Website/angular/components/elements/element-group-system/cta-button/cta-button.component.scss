@@ -1,0 +1,65 @@
+// cta-button.component.scss
+@use 'angular/styles/globals' as *;
+
+// TODO: Replace pixels with variables.
+
+cta-button {
+    display: inline-block;
+
+    .cta-button {
+        display: inline-block;
+        background-color: $sunbeam-yellow;
+        color: $midnight-navy;
+        border: none;
+        border-radius: $half-percent;
+        padding: $half-percent $one-half-percent;
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        text-decoration: none;
+        transition:
+            box-shadow 200ms ease,
+            transform 200ms ease;
+
+        &:hover {
+            $box-shadow-size: simplest-calc(0.15);
+            box-shadow: add-alpha($sunbeam-yellow, 0.4)
+                0 $box-shadow-size simplest-calc(0.175);
+            cursor: pointer;
+        }
+
+        &:active {
+            box-shadow: none;
+            $offset: simplest-calc(0.25);
+            transform: translate($offset, $offset);
+        }
+    }
+
+    &.ghost .cta-button {
+        background-color: transparent;
+        color: $alabaster-stone;
+        border: 2px solid $alabaster-stone;
+
+        &:hover {
+            background-color: add-alpha($alabaster-stone, 0.1);
+            box-shadow: add-alpha($alabaster-stone, 0.2) 0 0 simplest-calc(0.5);
+        }
+    }
+
+    &.ghost-glass .cta-button {
+        background: transparent;
+        color: add-alpha($pure-white, 0.85);
+        border: 1px solid add-alpha($pure-white, 0.2);
+
+        &:hover {
+            background: add-alpha($pure-white, 0.06);
+            border-color: add-alpha($pure-white, 0.4);
+        }
+    }
+
+    @include reduced-motion {
+        .cta-button {
+            transition: none;
+        }
+    }
+}
