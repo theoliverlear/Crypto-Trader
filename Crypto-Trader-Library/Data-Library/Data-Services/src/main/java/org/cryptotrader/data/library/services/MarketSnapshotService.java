@@ -32,10 +32,14 @@ public class MarketSnapshotService implements MarketSnapshotOperations {
 
     @PostConstruct
     public void initKnownColumns() {
-        final String sql = "SELECT column_name FROM information_schema.columns WHERE table_name = 'market_snapshots'";
-        final List<String> existing = jdbcTemplate.queryForList(sql, String.class);
-        if (existing != null) {
-            this.knownColumns.addAll(existing);
+        try {
+            final String sql = "SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE UPPER(table_name) = 'MARKET_SNAPSHOTS'";
+            final List<String> existing = jdbcTemplate.queryForList(sql, String.class);
+            if (existing != null) {
+                this.knownColumns.addAll(existing);
+            }
+        } catch (DataAccessException e) {
+            log.warn("Could not load known columns (table may not exist yet): {}", e.getMessage());
         }
     }
 
