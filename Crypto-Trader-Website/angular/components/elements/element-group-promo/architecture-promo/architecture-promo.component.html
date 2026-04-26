@@ -1,0 +1,19 @@
+<!-- architecture-promo.component.html -->
+<ng-container>
+    <section class="architecture-section">
+        <scroll-reveal [threshold]="0.2">
+            <div class="section-content">
+                <div class="section-header">
+                    <eyebrow-label [text]="'THE FULL PICTURE'"/>
+                    <ss-title [text]="'How It All Connects'"
+                              [tagType]="TagType.H2"/>
+                    <subtitle [text]="'Every module plays a role. Together they form a complete automated trading platform.'"
+                              [tagType]="TagType.H5"/>
+                </div>
+
+                <module-architecture-map [layers]="architectureLayers"
+                                         [allModuleNames]="allModuleNames"/>
+            </div>
+        </scroll-reveal>
+    </section>
+</ng-container>

@@ -1,0 +1,40 @@
+@use '../../../../styles/globals' as *;
+@use '../../../../styles/gradients/global_gradient_placeholders' as *;
+@use '../../../../styles/gradients/global_gradient_variables' as *;
+@use '../../../../styles/gradients/global_gradient_mixins' as *;
+
+architecture-promo {
+    width: 100%;
+
+    .section-content {
+        width: $eighty-percent;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: $three-percent 0;
+    }
+
+    .section-header {
+        @include section-header-centered($midnight-navy, 0.8);
+
+        eyebrow-label {
+            color: $mint-green;
+        }
+
+        ss-title h2 {
+            @include gradient-text($light-logo);
+        }
+
+        subtitle {
+            color: $alabaster-stone;
+            opacity: 0.85;
+        }
+    }
+
+    .architecture-section {
+        width: 100%;
+        background:
+            radial-gradient(ellipse at 50% 30%, add-alpha($teal-green, 0.06), transparent 60%),
+            linear-gradient(180deg, $deep-ocean, $midnight-navy);
+        padding: $two-percent 0;
+    }
+}
