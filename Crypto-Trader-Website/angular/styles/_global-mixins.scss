@@ -1,0 +1,175 @@
+//=================================-Imports-==================================
+@use 'global-variables' as *;
+@use 'global-functions' as *;
+@use '@theoliverlear/styles-suite/sigwarth-variables' as *;
+@use '@theoliverlear/styles-suite/sigwarth-mixins' as *;
+
+//=================================-Mixins-===================================
+
+@mixin scroll-reveal-entrance($delay: 0ms, $duration: 600ms, $distance: 16px) {
+    opacity: 0;
+    transform: translateY($distance);
+    transition: opacity $duration ease, transform $duration ease;
+    @if $delay != 0ms {
+        transition-delay: $delay;
+    }
+}
+
+@mixin two-column-layout($copy-flex: 55%, $visual-flex: 40%, $gap: $two-percent) {
+    @include flex(space-between, stretch, row);
+    gap: $gap;
+
+    .copy-col {
+        @include flex(flex-start, flex-start, column);
+        gap: $half-percent;
+        flex: 1 1 $copy-flex;
+    }
+
+    .visual-col,
+    .modules-col {
+        flex: 1 1 $visual-flex;
+        @include flex(center, stretch, column);
+    }
+}
+
+@mixin two-column-responsive($display: flex, $direction: column, $align: center, $justify: stretch) {
+    @include flex($justify, $align, $direction);
+
+    .copy-col,
+    .visual-col,
+    .modules-col {
+        width: 100%;
+        flex: 1 1 auto;
+    }
+}
+
+@mixin elevated-card($border-color: $muted-blue, $radius: $half-percent) {
+    background: $pure-white;
+    border-radius: $radius;
+    box-shadow: add-alpha(black, 0.08) 0 4px 20px;
+    border-top: 4px solid $border-color;
+    transition: transform 250ms ease, box-shadow 250ms ease;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: add-alpha(black, 0.15) 0 8px 30px;
+    }
+}
+
+@mixin glass-panel($bg-alpha: 0.06, $border-alpha: 0.12, $blur: 16px) {
+    position: relative;
+    background: add-alpha($pure-white, $bg-alpha);
+    backdrop-filter: blur($blur) saturate(1.4);
+    -webkit-backdrop-filter: blur($blur) saturate(1.4);
+    border: 1px solid add-alpha($pure-white, $border-alpha);
+    border-radius: $half-percent;
+    box-shadow:
+        inset 0 1px 0 add-alpha($pure-white, 0.1),
+        0 8px 32px add-alpha(black, 0.3);
+}
+
+@mixin glass-reflection-line($left: 10%, $right: 10%, $height: 1px, $color: $pure-white, $opacity: 0.4) {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: $left;
+    right: $right;
+    height: $height;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        add-alpha($color, $opacity),
+        transparent
+    );
+}
+
+@mixin icon-text-row($icon-size: 1.4rem, $gap: $half-percent) {
+    @include flex(flex-start, center, row);
+    gap: $gap;
+    font-size: 1rem;
+    line-height: 1.5;
+
+    .prop-icon,
+    .trust-icon {
+        @include square-size($icon-size);
+        flex-shrink: 0;
+    }
+}
+
+@mixin promo-section-block($margin: $two-percent) {
+    display: block;
+    margin: $margin 0;
+}
+
+@mixin section-header-centered($title-color: $midnight-navy, $subtitle-opacity: 0.85) {
+    text-align: center;
+    margin-bottom: $two-percent;
+
+    subtitle {
+        opacity: $subtitle-opacity;
+    }
+}
+
+@mixin stagger-children($selector, $count, $interval: 200ms) {
+    @for $i from 1 through $count {
+        #{$selector}:nth-child(#{$i}) {
+            transition-delay: ($i - 1) * $interval;
+        }
+    }
+}
+
+@mixin reduced-motion($mode: reduce) {
+    @media (prefers-reduced-motion: $mode) {
+        @content;
+    }
+}
+
+@mixin reduced-motion-reset($opacity: 1, $transform: none, $transition: none) {
+    opacity: $opacity;
+    transform: $transform;
+    transition: $transition;
+}
+
+@mixin dark-section-backdrop($radius: $half-percent, $position: relative, $overflow: hidden) {
+    position: $position;
+    border-radius: $radius;
+    overflow: $overflow;
+}
+
+@mixin decorative-orb($radius: 50%, $blur: 40px) {
+    position: absolute;
+    border-radius: $radius;
+    filter: blur($blur);
+    pointer-events: none;
+}
+
+@mixin shimmer-overlay($duration: 8s, $width: 50%, $color: $pure-white, $opacity-low: 0.03, $opacity-high: 0.06) {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: $width;
+    height: 100%;
+    background: linear-gradient(
+        105deg,
+        transparent 40%,
+        add-alpha($color, $opacity-low) 45%,
+        add-alpha($color, $opacity-high) 50%,
+        add-alpha($color, $opacity-low) 55%,
+        transparent 60%
+    );
+    animation: shimmer $duration ease-in-out infinite;
+    pointer-events: none;
+}
+
+@mixin code-window-dot($size: 10px, $radius: 50%) {
+    width: $size;
+    height: $size;
+    border-radius: $radius;
+}
+
+@mixin mobile-breakpoint($max-width: 960px) {
+    @media (max-width: $max-width) {
+        @content;
+    }
+}
