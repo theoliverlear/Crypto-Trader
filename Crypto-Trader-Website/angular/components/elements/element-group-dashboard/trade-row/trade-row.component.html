@@ -1,0 +1,22 @@
+<ng-container>
+    <tr
+        class="trade-row"
+        [class.trade-buy]="trade.tradeType === 'BUY'"
+        [class.trade-sell]="trade.tradeType === 'SELL'"
+        (click)="onClick()"
+    >
+        <td class="trade-currency">{{ trade.currency }}</td>
+        <td>
+        <span
+            class="trade-type-badge"
+            [class.badge-buy]="trade.tradeType === 'BUY'"
+            [class.badge-sell]="trade.tradeType === 'SELL'"
+        >
+            {{ trade.tradeType }}
+        </span>
+        </td>
+        <td class="trade-value">{{ formatValue() }}</td>
+        <td>{{ trade.sharesChange }}</td>
+        <td class="trade-time">{{ formatTime() }}</td>
+    </tr>
+</ng-container>
