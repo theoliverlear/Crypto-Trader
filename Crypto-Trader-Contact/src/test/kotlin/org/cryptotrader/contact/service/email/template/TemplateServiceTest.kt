@@ -23,7 +23,7 @@ class TemplateServiceTest @Autowired constructor(
     val testBody: String = "Hello from Spring Boot in Kotlin"
     val name: String = "User"
     val ctaLabel: String = "Open app"
-    val year: String = "2025"
+    val year: String = "2026"
 
     @Nested
     @DisplayName("Process Template")
