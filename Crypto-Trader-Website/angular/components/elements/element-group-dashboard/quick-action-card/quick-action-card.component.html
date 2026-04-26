@@ -1,0 +1,20 @@
+<ng-container>
+    <div
+        class="dashboard-card"
+        [class.console-card]="isConsole"
+        [routerLink]="route"
+        role="link"
+        tabindex="0"
+    >
+        <ss-img [imageAsset]="icon" class="card-icon" />
+        <ss-title
+            [text]="label"
+            [tagType]="TagType.H5"
+            class="card-label"
+        />
+        <ss-paragraph
+            [text]="description"
+            class="card-description"
+        />
+    </div>
+</ng-container>

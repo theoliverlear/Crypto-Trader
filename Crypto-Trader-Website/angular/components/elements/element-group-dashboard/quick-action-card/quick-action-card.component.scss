@@ -1,0 +1,56 @@
+// quick-action-card.component.scss
+@use '../../../../styles/globals' as *;
+@use '../../../../styles/gradients/global_gradient_placeholders' as *;
+@use '../../../../styles/backgrounds/global_background_placeholders' as *;
+
+quick-action-card {
+    display: flex;
+
+    .dashboard-card {
+        @include flex(flex-start, center, column);
+        flex: 1;
+        gap: $quarter-percent;
+        padding: $one-percent $half-percent;
+        cursor: pointer;
+
+        background-color: add-alpha-opaque($alabaster-stone, 0.85, $pure-white);
+        border: $very-thin-border $charcoal solid;
+        box-shadow: $quarter-percent $quarter-percent 0 $absolute-black;
+
+        @extend %softer-border-radius;
+
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+        &:hover,
+        &:focus {
+            transform: translateY(-2px);
+            box-shadow: $half-percent $half-percent 0 $absolute-black;
+            outline: none;
+        }
+
+        .card-icon {
+            @include square-size($three-percent);
+            border-radius: 50%;
+            padding: $quarter-percent;
+            background-color: $air-blue;
+        }
+
+        .card-label {
+            @extend %signature-brand-gradient-text-small-reflection;
+        }
+
+        .card-description {
+            color: $charcoal;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+    }
+
+    .console-card {
+        .card-icon {
+            img {
+                filter: invert(1);
+            }
+        }
+    }
+}
