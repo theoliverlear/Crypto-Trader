@@ -1,6 +1,51 @@
 <!-- tier-promo.component.html -->
-<ng-container>
-    <ss-img [imageAsset]="getImageAsset()" />
+<div class="tier-card" [ngClass]="getTierClass()">
+    <div class="recommended-badge" *ngIf="isRecommended()">
+        Recommended
+    </div>
+
+    <div class="icon-wrap">
+        <ss-img [imageAsset]="getImageAsset()" />
+    </div>
+
     <ss-title [tagType]="TagType.H3" [text]="tier" />
+
+    <div class="price-label">{{ getPriceLabel() }}</div>
+
     <ss-paragraph [text]="getDescription()" />
-</ng-container>
+
+    <ul class="feature-list">
+        <li
+            *ngFor="let feature of getFeatures()"
+            [ngClass]="{ 'highlight': feature.highlight }"
+        >
+            <span class="check" aria-hidden="true">✓</span>
+            <span>{{ feature.text }}</span>
+        </li>
+    </ul>
+
+    <div class="ultimate-exclusive" *ngIf="isUltimate()">
+        <div class="exclusive-badge">
+            <span class="bolt" aria-hidden="true">⚡</span>
+            <span>Beast Mode</span>
+        </div>
+        <p class="exclusive-desc">
+            High-performance thread pool with 16 max threads —
+            your trades execute at maximum speed.
+        </p>
+        <div class="exclusive-badge">
+            <span class="bolt" aria-hidden="true">🤖</span>
+            <span>AI Chat</span>
+        </div>
+        <p class="exclusive-desc">
+            Personal AI assistant powered by LLM — ask questions,
+            get insights, and control your portfolio conversationally.
+        </p>
+    </div>
+
+    <cta-button
+        [text]="getCtaText()"
+        [routerLink]="'/authorize'"
+        [showArrow]="true"
+    />
+</div>
