@@ -26,11 +26,17 @@ import { LoadingWheelComponent } from '@components/elements/element-group-system
 import { PageTitleStripeComponent } from '@components/elements/element-group-system/page-title-stripe/page-title-stripe.component';
 import { PopupComponent } from '@components/elements/element-group-system/popup/popup.component';
 import { SimpleSortIconComponent } from '@components/elements/element-group-system/simple-sort-icon/simple-sort-icon.component';
+import { ModuleArchitectureMapComponent } from '@components/elements/element-group-modules/module-architecture-map/module-architecture-map.component';
+import { ModuleCardComponent } from '@components/elements/element-group-modules/module-card/module-card.component';
+import { ModuleInfraTileComponent } from '@components/elements/element-group-modules/module-infra-tile/module-infra-tile.component';
+import { ModuleInterfaceSelectorComponent } from '@components/elements/element-group-modules/module-interface-selector/module-interface-selector.component';
 import { StatStripComponent } from '@components/elements/element-group-system/stat-strip/stat-strip.component';
 import { FlipWordsComponent } from '@components/elements/element-group-animated/flip-words/flip-words.component';
 import { ScrollRevealComponent } from '@components/elements/element-group-animated/scroll-reveal/scroll-reveal.component';
 import { SearchInputComponent } from '@components/elements/element-group-input/search-input/search-input.component';
 import { ProfilePictureComponent } from '@components/elements/element-group-profile/profile-picture/profile-picture.component';
+
+// TODO: Fix module-promo sharing issue.
 
 const universalComponents = [
     AccordionComponent,
@@ -43,6 +49,10 @@ const universalComponents = [
     FlipWordsComponent,
     IconTextItemComponent,
     LoadingWheelComponent,
+    ModuleArchitectureMapComponent,
+    ModuleCardComponent,
+    ModuleInfraTileComponent,
+    ModuleInterfaceSelectorComponent,
     PageTitleStripeComponent,
     PopupComponent,
     ProfilePictureComponent,
