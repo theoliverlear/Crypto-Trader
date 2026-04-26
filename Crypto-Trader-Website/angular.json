@@ -15,7 +15,13 @@
             "sourceRoot": "",
             "projectType": "application",
             "prefix": "app",
-            "schematics": {},
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss",
+                    "skipTests": true,
+                    "flat": false
+                }
+            },
             "architect": {
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
@@ -45,9 +51,9 @@
                         ],
                         "styles": [
                             "angular/components/app/app.component.scss",
-                            "angular/components/elements/accordion/accordion.component.scss",
-                            "angular/components/elements/arrow/arrow.component.scss",
-                            "angular/components/elements/content-stripe/content-stripe.component.scss",
+                            "angular/components/elements/element-group-animated/fade-in-content/fade-in-content.component.scss",
+                            "angular/components/elements/element-group-animated/flip-words/flip-words.component.scss",
+                            "angular/components/elements/element-group-animated/scroll-reveal/scroll-reveal.component.scss",
                             "angular/components/elements/element-group-auth/auth-console-login-section/auth-console-login-section.component.scss",
                             "angular/components/elements/element-group-auth/auth-console-signup-section/auth-console-signup-section.component.scss",
                             "angular/components/elements/element-group-auth/auth-console-tab-section/auth-console-tab-section.component.scss",
@@ -55,20 +61,34 @@
                             "angular/components/elements/element-group-auth/auth-console/auth-console.component.scss",
                             "angular/components/elements/element-group-auth/auth-guard-popup/auth-guard-popup.component.scss",
                             "angular/components/elements/element-group-auth/auth-input/auth-input.component.scss",
+                            "angular/components/elements/element-group-chat/chat-bubble/chat-bubble.component.scss",
+                            "angular/components/elements/element-group-chat/chat-input/chat-input.component.scss",
+                            "angular/components/elements/element-group-chat/chat-overlay/chat-overlay.component.scss",
+                            "angular/components/elements/element-group-chat/chat-panel/chat-panel.component.scss",
                             "angular/components/elements/element-group-chart/chart/chart.component.scss",
                             "angular/components/elements/element-group-chart/live-chart/live-chart.component.scss",
                             "angular/components/elements/element-group-console/terminal/terminal.component.scss",
                             "angular/components/elements/element-group-currency/day-currency-chart/day-currency-chart.component.scss",
                             "angular/components/elements/element-group-currency/display-currency/display-currency.component.scss",
                             "angular/components/elements/element-group-currency/performance-arrow/performance-arrow.component.scss",
+                            "angular/components/elements/element-group-dashboard/allocation-badge/allocation-badge.component.scss",
+                            "angular/components/elements/element-group-dashboard/currency-ticker-tile/currency-ticker-tile.component.scss",
+                            "angular/components/elements/element-group-dashboard/quick-action-card/quick-action-card.component.scss",
+                            "angular/components/elements/element-group-dashboard/trade-row/trade-row.component.scss",
                             "angular/components/elements/element-group-input/search-input/search-input.component.scss",
+                            "angular/components/elements/element-group-modules/module-architecture-map/module-architecture-map.component.scss",
+                            "angular/components/elements/element-group-modules/module-card/module-card.component.scss",
+                            "angular/components/elements/element-group-modules/module-infra-tile/module-infra-tile.component.scss",
+                            "angular/components/elements/element-group-modules/module-interface-selector/module-interface-selector.component.scss",
                             "angular/components/elements/element-group-nav/exit-anchor/exit-anchor.component.scss",
                             "angular/components/elements/element-group-nav/home-anchor/home-anchor.component.scss",
                             "angular/components/elements/element-group-nav/nav-arrows/nav-arrows.component.scss",
                             "angular/components/elements/element-group-nav/nav-bar-item/nav-bar-item.component.scss",
                             "angular/components/elements/element-group-nav/nav-bar-profile-picture/nav-bar-profile-picture.component.scss",
                             "angular/components/elements/element-group-nav/nav-bar/nav-bar.component.scss",
+                            "angular/components/elements/element-group-nav/nav-bumper/nav-bumper.component.scss",
                             "angular/components/elements/element-group-nav/nav-console/nav-console.component.scss",
+                            "angular/components/elements/element-group-nav/nav-upgrade/nav-upgrade.component.scss",
                             "angular/components/elements/element-group-portfolio/asset-button/asset-button.component.scss",
                             "angular/components/elements/element-group-portfolio/asset-buttons/asset-buttons.component.scss",
                             "angular/components/elements/element-group-portfolio/asset-field-list/asset-field-list.component.scss",
@@ -94,10 +114,32 @@
                             "angular/components/elements/element-group-portfolio/portfolio-statistics-section/portfolio-statistics-section.component.scss",
                             "angular/components/elements/element-group-portfolio/portfolio-statistics/portfolio-statistics.component.scss",
                             "angular/components/elements/element-group-profile/profile-picture/profile-picture.component.scss",
+                            "angular/components/elements/element-group-promo/hero-promo/hero-promo.component.scss",
+                            "angular/components/elements/element-group-promo/meet-crypto-trader-promo/meet-crypto-trader-promo.component.scss",
                             "angular/components/elements/element-group-promo/paper-mode-promo/paper-mode-promo.component.scss",
+                            "angular/components/elements/element-group-promo/persona-selector/persona-selector.component.scss",
+                            "angular/components/elements/element-group-promo/pipeline-promo/pipeline-promo.component.scss",
+                            "angular/components/elements/element-group-promo/services-promo/services-promo.component.scss",
+                            "angular/components/elements/element-group-promo/interface-promo/interface-promo.component.scss",
+                            "angular/components/elements/element-group-promo/infra-promo/infra-promo.component.scss",
+                            "angular/components/elements/element-group-promo/architecture-promo/architecture-promo.component.scss",
+                            "angular/components/elements/element-group-promo/start-trading-promo/start-trading-promo.component.scss",
                             "angular/components/elements/element-group-promo/tier-promo-stripe/tier-promo-stripe.component.scss",
                             "angular/components/elements/element-group-promo/tier-promo/tier-promo.component.scss",
                             "angular/components/elements/element-group-promo/transparency-promo/transparency-promo.component.scss",
+                            "angular/components/elements/element-group-system/accordion/accordion.component.scss",
+                            "angular/components/elements/element-group-system/arrow/arrow.component.scss",
+                            "angular/components/elements/element-group-system/badge-grid/badge-grid.component.scss",
+                            "angular/components/elements/element-group-system/code-window/code-window.component.scss",
+                            "angular/components/elements/element-group-system/content-stripe/content-stripe.component.scss",
+                            "angular/components/elements/element-group-system/cta-button/cta-button.component.scss",
+                            "angular/components/elements/element-group-system/eyebrow-label/eyebrow-label.component.scss",
+                            "angular/components/elements/element-group-system/icon-text-item/icon-text-item.component.scss",
+                            "angular/components/elements/element-group-system/loading-wheel/loading-wheel.component.scss",
+                            "angular/components/elements/element-group-system/page-title-stripe/page-title-stripe.component.scss",
+                            "angular/components/elements/element-group-system/popup/popup.component.scss",
+                            "angular/components/elements/element-group-system/simple-sort-icon/simple-sort-icon.component.scss",
+                            "angular/components/elements/element-group-system/stat-strip/stat-strip.component.scss",
                             "angular/components/elements/element-group-trade/buy-type-selector/buy-type-selector.component.scss",
                             "angular/components/elements/element-group-trade/buy-type/buy-type.component.scss",
                             "angular/components/elements/element-group-trade/trade-checkout-confirm-panel/trade-checkout-confirm-panel.component.scss",
@@ -111,16 +153,14 @@
                             "angular/components/elements/element-group-trader/element-group-trader-report/trader-report/trader-report.component.scss",
                             "angular/components/elements/element-group-trader/trader-event-bubble/trader-event-bubble.component.scss",
                             "angular/components/elements/element-group-trader/trader-event-filter-bar/trader-event-filter-bar.component.scss",
-                            "angular/components/elements/loading-wheel/loading-wheel.component.scss",
-                            "angular/components/elements/page-title-stripe/page-title-stripe.component.scss",
-                            "angular/components/elements/popup/popup.component.scss",
-                            "angular/components/elements/simple-sort-icon/simple-sort-icon.component.scss",
                             "angular/components/pages/account/account.component.scss",
                             "angular/components/pages/authorize/authorize.component.scss",
+                            "angular/components/pages/chat/chat.component.scss",
                             "angular/components/pages/console/console.component.scss",
                             "angular/components/pages/currencies/currencies.component.scss",
                             "angular/components/pages/dashboard/dashboard.component.scss",
                             "angular/components/pages/home/home.component.scss",
+                            "angular/components/pages/modules/modules.component.scss",
                             "angular/components/pages/not-found/not-found.component.scss",
                             "angular/components/pages/portfolio/portfolio.component.scss",
                             "angular/components/pages/statistics/statistics.component.scss",
@@ -128,7 +168,8 @@
                             "angular/components/pages/trade/trade.component.scss",
                             "angular/components/pages/trader/trader.component.scss",
                             "node_modules/@theoliverlear/angular-suite/styles/_globals.scss",
-                            "node_modules/@theoliverlear/styles-suite/index.scss"
+                            "node_modules/@theoliverlear/styles-suite/index.scss",
+                            "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
                         ],
                         "scripts": [],
                         "fileReplacements": [],
@@ -139,7 +180,9 @@
                                 "angular/styles"
                             ]
                         },
-                        "allowedCommonJsDependencies": ["crypto-js"]
+                        "allowedCommonJsDependencies": [
+                            "crypto-js"
+                        ]
                     },
                     "configurations": {
                         "production": {
@@ -174,7 +217,7 @@
                             ],
                             "optimization": false,
                             "outputHashing": "none",
-                            "sourceMap": false,
+                            "sourceMap": true,
                             "namedChunks": false,
                             "aot": false,
                             "extractLicenses": false,
@@ -186,7 +229,8 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "buildTarget": "crypto-trader:build"
+                        "buildTarget": "crypto-trader:build",
+                        "port": 4200
                     },
                     "configurations": {
                         "hmr": {
@@ -221,7 +265,9 @@
                                 "output": "/assets"
                             }
                         ],
-                        "styles": ["angular/components/app/app.component.scss"],
+                        "styles": [
+                            "angular/components/app/app.component.scss"
+                        ],
                         "scripts": []
                     }
                 },
@@ -233,7 +279,9 @@
                             "tsconfig.spec.json",
                             "e2e/tsconfig.json"
                         ],
-                        "exclude": ["**/node_modules/**"]
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
                     }
                 },
                 "e2e": {
