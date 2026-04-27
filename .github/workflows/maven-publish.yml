@@ -8,14 +8,24 @@ on:
 permissions:
   contents: read
   packages: write
+  id-token: write
 
 jobs:
-  build:
-    permissions:
-      contents: read
-      packages: write
-    uses: theoliverlear/Sigwarth-Software-Suite/.github/workflows/maven-package.yml@master
-    with:
-      java-version: '23'
-      distribution: temurin
-    secrets: inherit
+  publish-on-aws:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DOCS_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Trigger CodeBuild and wait
+        uses: aws-actions/aws-codebuild-run-build@v1
+        with:
+          project-name: ct-maven-publish
+          buildspec-override: .aws/buildspec-maven-publish.yml
+          env-vars-for-codebuild: |
+            GITHUB_SHA,
+            GITHUB_REF_NAME,
+            GITHUB_REPOSITORY
