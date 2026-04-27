@@ -1,10 +1,10 @@
 name: Post updates to X
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "main", "development" ]
   pull_request:
     types: [ closed ]
-    branches: [ "main", "master" ]
+    branches: [ "main", "development" ]
   issues:
     types: [ opened ]
   release:
