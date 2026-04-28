@@ -135,13 +135,15 @@ public class ProductUserService {
      * </ol>
      *
      * @param userId the numeric ID of the user to delete
+     * @return {@code true} if the user was found and deleted; {@code false} if no user
+     *         exists for the given ID
      */
     @Transactional
-    public void deleteUserAndAllData(Long userId) {
+    public boolean deleteUserAndAllData(Long userId) {
         ProductUser user = this.productUserRepository.getUserById(userId);
         if (user == null) {
             log.warn("deleteUserAndAllData: user with id {} not found", userId);
-            return;
+            return false;
         }
         Portfolio portfolio = user.getPortfolio();
         if (portfolio != null) {
@@ -163,5 +165,6 @@ public class ProductUserService {
         }
         this.productUserRepository.delete(user);
         log.info("Deleted user and all associated data for userId: {}", userId);
+        return true;
     }
 }

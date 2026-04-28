@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @DisplayName("User Controller")
 public class UserControllerTest extends CryptoTraderTest {
@@ -49,12 +50,22 @@ public class UserControllerTest extends CryptoTraderTest {
         @Test
         @DisplayName("Should delete authenticated user account and return 200")
         public void deleteMyAccount_DeletesAccount_WhenAuthenticated() {
-            doNothing().when(productUserService).deleteUserAndAllData(any());
+            when(productUserService.deleteUserAndAllData(any())).thenReturn(true);
             doNothing().when(authContextService).logout();
             ResponseEntity<OperationSuccessfulResponse> response = userController.deleteMyAccount(testUser);
             verify(productUserService).deleteUserAndAllData(any());
             verify(authContextService).logout();
             assertEquals(HttpStatus.OK, response.getStatusCode());
+            assertNotNull(response.getBody());
+        }
+
+        @Test
+        @DisplayName("Should return 404 when user is not found during deletion")
+        public void deleteMyAccount_ReturnsNotFound_WhenUserNotFound() {
+            when(productUserService.deleteUserAndAllData(any())).thenReturn(false);
+            ResponseEntity<OperationSuccessfulResponse> response = userController.deleteMyAccount(testUser);
+            verify(productUserService).deleteUserAndAllData(any());
+            assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
             assertNotNull(response.getBody());
         }
 

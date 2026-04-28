@@ -58,7 +58,10 @@ public class UserController {
         if (user == null) {
             return new ResponseEntity<>(new OperationSuccessfulResponse(false), HttpStatus.UNAUTHORIZED);
         }
-        this.productUserService.deleteUserAndAllData(user.getId());
+        boolean deleted = this.productUserService.deleteUserAndAllData(user.getId());
+        if (!deleted) {
+            return new ResponseEntity<>(new OperationSuccessfulResponse(false), HttpStatus.NOT_FOUND);
+        }
         this.authContextService.logout();
         return ResponseEntity.ok(new OperationSuccessfulResponse(true));
     }
