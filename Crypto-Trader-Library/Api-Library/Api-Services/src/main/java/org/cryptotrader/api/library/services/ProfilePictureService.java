@@ -23,6 +23,9 @@ public class ProfilePictureService implements ProfilePictureOperations {
     public void saveProfilePicture(ProfilePicture profilePicture) {
         this.profilePictureRepository.save(profilePicture);
     }
+    public void deleteProfilePicture(ProfilePicture profilePicture) {
+        this.profilePictureRepository.delete(profilePicture);
+    }
     @Transactional
     public Optional<ProfilePicture> findByUserId(Long userId) {
         ProfilePicture profilePicture = this.profilePictureRepository.findByUserId(userId);

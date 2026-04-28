@@ -10,6 +10,7 @@ import java.util.Optional;
  */
 public interface ProfilePictureOperations {
     void saveProfilePicture(ProfilePicture profilePicture);
+    void deleteProfilePicture(ProfilePicture profilePicture);
     Optional<ProfilePicture> findByUserId(Long userId);
     boolean existsByUserId(Long userId);
 }

@@ -1,1 +1,40 @@
 <!-- account.component.html -->
+<div class="account-page">
+    <div class="account-danger-zone">
+        <h3 class="danger-zone-title">Danger Zone</h3>
+        <p class="danger-zone-description">
+            Deleting your account is permanent. All your data will be removed and cannot be recovered.
+        </p>
+        <button
+            class="delete-account-button"
+            (click)="onDeleteAccountClick()"
+        >
+            Delete Account
+        </button>
+    </div>
+
+    @if (showDeleteConfirmation) {
+        <div class="delete-confirm-overlay">
+            <div class="delete-confirm-dialog">
+                <h3 class="delete-confirm-title">Are you sure?</h3>
+                <p class="delete-confirm-message">
+                    This action is <strong>permanent</strong>. Your account and all associated data will be deleted immediately and cannot be recovered.
+                </p>
+                <div class="delete-confirm-actions">
+                    <button
+                        class="cancel-button"
+                        (click)="onCancelDelete()"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        class="confirm-delete-button"
+                        (click)="onConfirmDelete()"
+                    >
+                        Yes, Delete My Account
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+</div>

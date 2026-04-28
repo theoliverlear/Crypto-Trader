@@ -92,4 +92,13 @@ public class ProductUserService {
     public ProductUser getUserById(Long id) {
         return this.productUserRepository.getUserById(id);
     }
+    //---------------------------Delete-User-By-Id----------------------------
+    /**
+     * Delete a ProductUser by database id.
+     * @param id numeric id of the user to delete
+     */
+    public void deleteUserById(Long id) {
+        log.info("Deleting user with id: {}", id);
+        this.productUserRepository.deleteById(id);
+    }
 }

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -158,5 +160,43 @@ public class AccountController {
             String fileType = profilePicture.getFileType();
             return ResponseEntity.ok().contentType(MediaType.parseMediaType(fileType)).body(imageData);
         }
+    }
+
+    /**
+     * Deletes the authenticated user's account and all associated data.
+     *
+     * Removes the profile picture (if any), then deletes the user record
+     * (which cascades to the user's portfolio and related data).
+     *
+     * @param user the currently authenticated user resolved from the JWT
+     * @return {@link ResponseEntity} with {@link OperationSuccessfulResponse};
+     *         HTTP status {@code 200 OK} on success,
+     *         or {@code 401 UNAUTHORIZED} if not authenticated
+     * @see ProductUserService#deleteUserById(Long)
+     * @author Copilot
+     */
+    //----------------------------Delete-Account------------------------------
+    @Transactional
+    @DeleteMapping("/delete")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<OperationSuccessfulResponse> deleteAccount(
+            @AuthenticationPrincipal ProductUser user) {
+        if (user == null) {
+            return new ResponseEntity<>(new OperationSuccessfulResponse(false), HttpStatus.UNAUTHORIZED);
+        }
+        Long userId = user.getId();
+        // Remove profile picture before deleting the user to avoid FK constraint violations.
+        Optional<ProfilePicture> possibleProfilePicture = this.profilePictureService.findByUserId(userId);
+        if (possibleProfilePicture.isPresent()) {
+            ProfilePicture profilePicture = possibleProfilePicture.get();
+            // Nullify the user's FK to the profile picture first
+            user.setProfilePicture(null);
+            this.productUserService.saveUser(user);
+            // Now delete the profile picture (its user_id FK pointed to this user)
+            this.profilePictureService.deleteProfilePicture(profilePicture);
+        }
+        // Delete the user; cascades to portfolio and related data
+        this.productUserService.deleteUserById(userId);
+        return new ResponseEntity<>(new OperationSuccessfulResponse(true), HttpStatus.OK);
     }
 }
