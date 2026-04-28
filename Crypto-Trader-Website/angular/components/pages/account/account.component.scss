@@ -2,4 +2,149 @@
 @use '../../../styles/globals' as *;
 
 account {
+    .account-page {
+        @include flex(flex-start, center, column);
+        width: 100%;
+        padding: $two-percent;
+    }
+
+    // ── Danger Zone ─────────────────────────────────────────────────────────
+    .danger-zone {
+        @include flex(flex-start, flex-start, column);
+        gap: $one-percent;
+        width: 100%;
+        max-width: $eighty-percent;
+        padding: $one-percent $two-percent;
+        border: $very-thin-border rgba(255, 60, 60, 0.45) solid;
+        background: linear-gradient(
+            135deg,
+            rgba(80, 10, 10, 0.35) 0%,
+            rgba(50, 5, 5, 0.5) 100%
+        );
+
+        @extend %softer-border-radius;
+
+        .danger-zone-title {
+            margin: 0;
+            font-size: 1.1rem;
+            color: rgba(255, 100, 100, 0.9);
+            font-weight: 600;
+        }
+
+        .danger-zone-description {
+            margin: 0;
+            font-size: 0.9rem;
+            color: rgba(255, 200, 200, 0.75);
+            line-height: 1.5;
+        }
+
+        .delete-account-btn {
+            @include flex(center, center, row);
+            padding: 0.5rem 1.25rem;
+            border: $very-thin-border rgba(255, 60, 60, 0.6) solid;
+            border-radius: 6px;
+            background: rgba(180, 20, 20, 0.3);
+            color: rgba(255, 150, 150, 0.95);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s ease, border-color 0.15s ease,
+                color 0.15s ease;
+
+            &:hover {
+                background: rgba(200, 30, 30, 0.55);
+                border-color: rgba(255, 60, 60, 0.9);
+                color: #fff;
+            }
+
+            &:active {
+                background: rgba(200, 30, 30, 0.75);
+            }
+        }
+    }
+
+    // ── Confirmation Dialog ──────────────────────────────────────────────────
+    .confirm-dialog-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.65);
+        @include flex(center, center, column);
+        z-index: 1000;
+
+        .confirm-dialog {
+            @include flex(flex-start, flex-start, column);
+            gap: $one-percent;
+            max-width: 440px;
+            width: 90%;
+            padding: $two-percent;
+            background: linear-gradient(
+                135deg,
+                $midnight-navy 0%,
+                $deep-ocean 100%
+            );
+            border: $very-thin-border rgba(255, 60, 60, 0.4) solid;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6),
+                0 0 24px rgba(255, 60, 60, 0.08);
+
+            @extend %softer-border-radius;
+
+            .confirm-dialog-title {
+                margin: 0;
+                font-size: 1.15rem;
+                color: rgba(255, 100, 100, 0.9);
+                font-weight: 700;
+            }
+
+            .confirm-dialog-message {
+                margin: 0;
+                font-size: 0.9rem;
+                color: rgba(220, 220, 220, 0.85);
+                line-height: 1.55;
+            }
+
+            .confirm-dialog-actions {
+                @include flex(center, center, row);
+                gap: $one-percent;
+                width: 100%;
+                margin-top: 0.5rem;
+
+                .confirm-btn-cancel {
+                    flex: 1;
+                    padding: 0.5rem 1rem;
+                    border: $very-thin-border rgba(100, 160, 200, 0.4) solid;
+                    border-radius: 6px;
+                    background: rgba(50, 90, 130, 0.25);
+                    color: rgba(150, 200, 240, 0.9);
+                    font-size: 0.9rem;
+                    cursor: pointer;
+                    transition: background 0.15s ease, border-color 0.15s ease;
+
+                    &:hover {
+                        background: rgba(50, 90, 130, 0.45);
+                        border-color: rgba(100, 160, 200, 0.7);
+                    }
+                }
+
+                .confirm-btn-delete {
+                    flex: 1;
+                    padding: 0.5rem 1rem;
+                    border: $very-thin-border rgba(255, 60, 60, 0.6) solid;
+                    border-radius: 6px;
+                    background: rgba(180, 20, 20, 0.35);
+                    color: rgba(255, 150, 150, 0.95);
+                    font-size: 0.9rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: background 0.15s ease, border-color 0.15s ease,
+                        color 0.15s ease;
+
+                    &:hover {
+                        background: rgba(200, 30, 30, 0.6);
+                        border-color: rgba(255, 60, 60, 0.9);
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
 }

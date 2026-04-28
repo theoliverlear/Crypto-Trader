@@ -1,1 +1,48 @@
 <!-- account.component.html -->
+<ng-container>
+    <div class="account-page">
+        <div class="danger-zone">
+            <h3 class="danger-zone-title">Danger Zone</h3>
+            <p class="danger-zone-description">
+                Once you delete your account, all of your data will be
+                permanently removed. This action cannot be undone.
+            </p>
+            <button
+                class="delete-account-btn"
+                (click)="onDeleteAccountClick()"
+            >
+                Delete Account
+            </button>
+        </div>
+    </div>
+
+    @if (showDeleteConfirmDialog) {
+        <div class="confirm-dialog-overlay" (click)="onDeleteCancel()">
+            <div
+                class="confirm-dialog"
+                (click)="$event.stopPropagation()"
+            >
+                <h3 class="confirm-dialog-title">Are you sure?</h3>
+                <p class="confirm-dialog-message">
+                    This will permanently delete your account and all
+                    associated data. This action
+                    <strong>cannot be undone</strong>.
+                </p>
+                <div class="confirm-dialog-actions">
+                    <button
+                        class="confirm-btn-cancel"
+                        (click)="onDeleteCancel()"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        class="confirm-btn-delete"
+                        (click)="onDeleteConfirm()"
+                    >
+                        Yes, Delete My Account
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+</ng-container>
