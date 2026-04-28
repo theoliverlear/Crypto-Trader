@@ -14,6 +14,7 @@ import { TokenStorageService } from '@auth/token-storage.service';
 })
 export class AccountComponent implements OnInit {
     protected showDeleteConfirmDialog: boolean = false;
+    protected deleteErrorMessage: string | null = null;
 
     constructor(
         private readonly log: CryptoTraderLoggerService,
@@ -28,6 +29,7 @@ export class AccountComponent implements OnInit {
     }
 
     protected onDeleteAccountClick(): void {
+        this.deleteErrorMessage = null;
         this.showDeleteConfirmDialog = true;
     }
 
@@ -41,6 +43,8 @@ export class AccountComponent implements OnInit {
             },
             error: (error) => {
                 this.log.error('Failed to delete account', error);
+                this.deleteErrorMessage =
+                    'Unable to delete account. Please try again later or contact support.';
             },
         });
     }

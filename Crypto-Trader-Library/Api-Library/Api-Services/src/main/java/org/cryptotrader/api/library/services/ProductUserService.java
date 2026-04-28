@@ -144,7 +144,7 @@ public class ProductUserService {
             return;
         }
         Portfolio portfolio = user.getPortfolio();
-        if (portfolio != null && portfolio.getId() != null) {
+        if (portfolio != null) {
             Long portfolioId = portfolio.getId();
             List<TradeEvent> tradeEvents = this.tradeEventRepository.findAllByPortfolioId(portfolioId);
             this.tradeEventRepository.deleteAll(tradeEvents);
