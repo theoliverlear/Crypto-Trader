@@ -32,7 +32,7 @@ export default {
         '^@angular/(.*)$',
         '<THIRD_PARTY_MODULES>',
         '',
-        '^@theoliverlear/(.*)$',
+        '^@Sigwarth-Software/(.*)$',
         '^@app/(.*)$',
         '^@services/(.*)$',
         '^@assets/(.*)$',
