@@ -30,7 +30,7 @@ Choose how you want to begin.
 
 ### 2) Run the platform locally (developers)
 
-- Clone the repository: https://github.com/theoliverlear/Crypto-Trader
+- Clone the repository: https://github.com/Sigwarth-Software/Crypto-Trader
 - Build the project (pick one):
   - Gradle (Windows PowerShell): `./gradlew build` or `gradlew.bat build`
   - Maven (Windows PowerShell): `mvn -q -DskipTests package`
