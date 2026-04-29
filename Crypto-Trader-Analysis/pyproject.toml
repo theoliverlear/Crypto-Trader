@@ -54,9 +54,9 @@ all = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/theoliverlear/Crypto-Trader"
-Repository = "https://github.com/theoliverlear/Crypto-Trader"
-Issues = "https://github.com/theoliverlear/Crypto-Trader/issues"
+Homepage = "https://github.com/Sigwarth-Software/Crypto-Trader"
+Repository = "https://github.com/Sigwarth-Software/Crypto-Trader"
+Issues = "https://github.com/Sigwarth-Software/Crypto-Trader/issues"
 
 [project.scripts]
 crypto-trader-gpu-zero = "src.crypto_trader_analysis.gpu.run_gpu_zero:main"
