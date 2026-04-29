@@ -1,5 +1,5 @@
 {
-    "name": "@theoliverlear/crypto-trader-website",
+    "name": "@Sigwarth-Software/crypto-trader-website",
     "version": "0.0.3",
     "description": "The web interface for Crypto Trader.",
     "type": "module",
@@ -37,14 +37,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/theoliverlear/Crypto-Trader.git",
+        "url": "git+https://github.com/Sigwarth-Software/Crypto-Trader.git",
         "directory": "Crypto-Trader-Website"
     },
     "bugs": {
-        "url": "https://github.com/theoliverlear/Crypto-Trader/issues"
+        "url": "https://github.com/Sigwarth-Software/Crypto-Trader/issues"
     },
-    "homepage": "https://github.com/theoliverlear/Crypto-Trader#readme",
-    "author": "theoliverlear",
+    "homepage": "https://github.com/Sigwarth-Software/Crypto-Trader#readme",
+    "author": "Sigwarth-Software",
     "license": "ISC",
     "engines": {
         "node": ">=18"
