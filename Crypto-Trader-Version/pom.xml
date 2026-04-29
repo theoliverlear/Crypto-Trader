@@ -299,7 +299,7 @@
         <repository>
             <id>github</id>
             <name>GitHub Packages - Crypto-Trader</name>
-            <url>https://maven.pkg.github.com/theoliverlear/Crypto-Trader</url>
+            <url>https://maven.pkg.github.com/Sigwarth-Software/Crypto-Trader</url>
         </repository>
     </distributionManagement>
 
