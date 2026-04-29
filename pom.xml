@@ -440,7 +440,7 @@
             <dependency>
                 <groupId>com.sigwarthsoftware</groupId>
                 <artifactId>changelog-suite</artifactId>
-                <version>0.0.5</version>
+                <version>0.0.6</version>
             </dependency>
             <dependency>
                 <groupId>com.sigwarthsoftware</groupId>
@@ -1156,7 +1156,7 @@
         </repository>
         <repository>
             <id>github</id>
-            <url>https://maven.pkg.github.com/Sigwarth-Software/Sigwarth-Software-Suite</url>
+            <url>https://maven.pkg.github.com/theoliverlear/Sigwarth-Software-Suite</url>
         </repository>
         <!-- Standard public repositories -->
         <repository>
