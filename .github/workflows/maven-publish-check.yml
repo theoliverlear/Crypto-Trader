@@ -1,6 +1,7 @@
 name: Maven Publish Check
 
 on:
+  workflow_dispatch:
   pull_request:
     branches: [main]
     paths:
