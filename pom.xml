@@ -12,7 +12,7 @@
         Multi-module platform for automated cryptocurrency trading: Spring Boot services, JavaFX admin, shared libraries,
         docs, testing, and developer tooling. See the top-level README for architecture and usage.
     </description>
-    <url>https://github.com/theoliverlear/Crypto-Trader</url>
+    <url>https://github.com/Sigwarth-Software/Crypto-Trader</url>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -24,25 +24,25 @@
     <licenses>
         <license>
             <name>Sigwarth Software License</name>
-            <url>https://raw.githubusercontent.com/theoliverlear/Crypto-Trader/HEAD/LICENSE.md</url>
+            <url>https://raw.githubusercontent.com/Sigwarth-Software/Crypto-Trader/HEAD/LICENSE.md</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
 
     <developers>
         <developer>
-            <id>theoliverlear</id>
+            <id>Sigwarth-Software</id>
             <name>Oliver Lear Sigwarth</name>
             <email>sigwarthsoftware@gmail.com</email>
             <organization>Sigwarth Software</organization>
-            <organizationUrl>https://github.com/theoliverlear</organizationUrl>
+            <organizationUrl>https://github.com/Sigwarth-Software</organizationUrl>
         </developer>
     </developers>
 
     <scm>
-        <connection>scm:git:https://github.com/theoliverlear/Crypto-Trader.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/theoliverlear/Crypto-Trader.git</developerConnection>
-        <url>https://github.com/theoliverlear/Crypto-Trader</url>
+        <connection>scm:git:https://github.com/Sigwarth-Software/Crypto-Trader.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/Sigwarth-Software/Crypto-Trader.git</developerConnection>
+        <url>https://github.com/Sigwarth-Software/Crypto-Trader</url>
         <tag>HEAD</tag>
     </scm>
 
@@ -1132,7 +1132,7 @@
         <repository>
             <id>github</id>
             <name>GitHub Packages - Crypto-Trader</name>
-            <url>https://maven.pkg.github.com/theoliverlear/Crypto-Trader</url>
+            <url>https://maven.pkg.github.com/Sigwarth-Software/Crypto-Trader</url>
         </repository>
     </distributionManagement>
 
@@ -1156,7 +1156,7 @@
         </repository>
         <repository>
             <id>github</id>
-            <url>https://maven.pkg.github.com/theoliverlear/Sigwarth-Software-Suite</url>
+            <url>https://maven.pkg.github.com/Sigwarth-Software/Sigwarth-Software-Suite</url>
         </repository>
         <!-- Standard public repositories -->
         <repository>
