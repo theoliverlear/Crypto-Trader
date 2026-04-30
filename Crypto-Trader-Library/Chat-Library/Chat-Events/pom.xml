@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader-library</artifactId>
-        <version>0.1.0</version>
+        <version>0.2.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>chat-events</artifactId>
     <name>Chat-Events</name>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
 
 
     <properties>

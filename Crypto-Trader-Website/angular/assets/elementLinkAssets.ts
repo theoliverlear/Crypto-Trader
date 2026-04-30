@@ -86,7 +86,7 @@ export const getStartedElementLink: TextElementLink = new TextElementLink(
 );
 
 export const repositoryElementLink: TextElementLink = new TextElementLink(
-    'https://github.com/theoliverlear/Crypto-Trader',
+    'https://github.com/Sigwarth-Software/Crypto-Trader',
     TargetType.BLANK,
     false,
     'Explore Code',
@@ -94,7 +94,7 @@ export const repositoryElementLink: TextElementLink = new TextElementLink(
 );
 
 export const docsElementLink: TextElementLink = new TextElementLink(
-    'https://theoliverlear.github.io/Crypto-Trader/',
+    'https://sigwarth-software.github.io/Crypto-Trader/',
     TargetType.BLANK,
     false,
     'Read Docs',

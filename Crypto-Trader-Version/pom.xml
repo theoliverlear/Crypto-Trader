@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.cryptotrader</groupId>
         <artifactId>crypto-trader</artifactId>
-        <version>0.3.0</version>
+        <version>0.4.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -15,7 +15,7 @@
     <description>
         Interface for version management, POM parsing, and generating release notes for Crypto Trader.
     </description>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
     <properties>
         <maven.compiler.source>23</maven.compiler.source>
         <maven.compiler.target>23</maven.compiler.target>
@@ -299,7 +299,7 @@
         <repository>
             <id>github</id>
             <name>GitHub Packages - Crypto-Trader</name>
-            <url>https://maven.pkg.github.com/theoliverlear/Crypto-Trader</url>
+            <url>https://maven.pkg.github.com/Sigwarth-Software/Crypto-Trader</url>
         </repository>
     </distributionManagement>
 

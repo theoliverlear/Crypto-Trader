@@ -10,10 +10,14 @@ import java.util.List;
 
 @Getter
 public class ModuleLibrary {
+    // TODO: Remove hard-coded dependencies.
     public static String[] CRYPTO_TRADER_PARENT = {
             "Crypto-Trader-Admin",
+            "Crypto-Trader-Agent",
+//            "Crypto-Trader-Analysis", Not a Java/Kotlin dependency.
             "Crypto-Trader-Api",
             "Crypto-Trader-Assets",
+            "Crypto-Trader-Chat",
             "Crypto-Trader-Console",
             "Crypto-Trader-Contact",
             "Crypto-Trader-Coverage",
@@ -23,33 +27,81 @@ public class ModuleLibrary {
             "Crypto-Trader-Health",
             "Crypto-Trader-Library",
             "Crypto-Trader-Logging",
+//            "Crypto-Trader-Mobile", Gradle dependency.
             "Crypto-Trader-Security",
             "Crypto-Trader-Simulator",
             "Crypto-Trader-Testing",
-            "Crypto-Trader-Version"
+            "Crypto-Trader-Transactions",
+            "Crypto-Trader-Version",
+//            "Crypto-Trader-Website" Not a Java/Kotlin dependency.
     };
-    
+
     public static String[] LIBRARY_PARENT = {
             "Admin-Library",
             "Admin-Events",
             "Admin-Models",
+            "Agent-Library",
+            "Agent-Communication",
+            "Agent-Components",
+            "Agent-Config",
+            "Agent-Infrastructure",
+            "Agent-Models",
             "Api-Library",
             "Api-Communication",
             "Api-Components",
             "Api-Config",
             "Api-Events",
+            "Api-Extensions",
             "Api-Infrastructure",
             "Api-Models",
             "Api-Repositories",
             "Api-Scripts",
             "Api-Services",
+            "Chat-Library",
+            "Chat-Communication",
+            "Chat-Components",
+            "Chat-Config",
+            "Chat-Events",
+            "Chat-Models",
+            "Chat-Repositories",
+            "Chat-Services",
+            "Console-Library",
+            "Console-Communication",
+            "Console-Components",
+            "Console-Events",
+            "Console-Models",
+            "Console-Services",
             "Contact-Library",
             "Contact-Events",
             "Contact-Models",
             "Contact-Repositories",
+            "Data-Library",
+            "Data-Communication",
+            "Data-Components",
+            "Data-Models",
+            "Data-Repositories",
+            "Data-Services",
             "Desktop-Library",
             "Desktop-Components",
+            "Desktop-Styles",
+            "Engine-Library",
+            "Engine-Services",
             "Externals-Library",
+            "Health-Library",
+            "Health-Communication",
+            "Health-Components",
+            "Health-Config",
+            "Health-Models",
+            "Health-Repositories",
+            "Health-Services",
+            "Logging-Library",
+            "Logging-Communication",
+            "Logging-Config",
+            "Logging-Events",
+            "Logging-Infrastructure",
+            "Logging-Models",
+            "Logging-Repositories",
+            "Logging-Services",
             "Security-Library",
             "Security-Config",
             "Security-Events",
@@ -57,10 +109,15 @@ public class ModuleLibrary {
             "Security-Models",
             "Security-Repositories",
             "Security-Services",
+            "Universal-Library",
+            "Universal-Components",
+            "Universal-Config",
+            "Universal-Extensions",
+            "Universal-Models",
             "Version-Library",
             "Version-Models"
     };
-    
+
     public static List<ModuleLibrary> MODULES = getInitializedModules();
 
     private String name;

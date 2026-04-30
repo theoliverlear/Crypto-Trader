@@ -1,0 +1,38 @@
+name: Maven Publish Check
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - '**/pom.xml'
+      - '**/src/**'
+      - '.github/workflows/maven-publish-check.yml'
+      - '.aws/buildspec-maven-publish-check.yml'
+
+permissions:
+  contents: read
+  packages: read
+  id-token: write
+
+jobs:
+  publish-check-on-aws:
+    name: Validate Maven Publish (Dry Run)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DOCS_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Trigger CodeBuild and wait
+        uses: aws-actions/aws-codebuild-run-build@v1
+        with:
+          project-name: ct-maven-publish-check
+          buildspec-override: .aws/buildspec-maven-publish-check.yml
+          env-vars-for-codebuild: |
+            GITHUB_SHA,
+            GITHUB_REF_NAME,
+            GITHUB_REPOSITORY
