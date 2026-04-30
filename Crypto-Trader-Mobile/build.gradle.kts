@@ -18,7 +18,7 @@ android {
         //noinspection EditedTargetSdkVersion
         targetSdk = 36
         versionCode = 1
-        versionName = "0.0.2"
+        versionName = "0.0.3"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -56,8 +56,8 @@ val vicoVersion = "2.0.0"
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.3")
     // Shared library modules (mobile-classified JARs compiled to Java 21)
-    implementation("org.cryptotrader:api-communication:0.0.5:mobile") { isTransitive = false }
-    testImplementation("org.cryptotrader:crypto-trader-testing:0.0.4:mobile") { isTransitive = false }
+    implementation("org.cryptotrader:api-communication:0.0.6:mobile") { isTransitive = false }
+    testImplementation("org.cryptotrader:crypto-trader-testing:0.0.5:mobile") { isTransitive = false }
     // Compose BOM and core UI
     implementation(platform("androidx.compose:compose-bom:2024.09.01"))
     implementation("androidx.activity:activity-compose:1.9.2")
