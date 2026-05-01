@@ -83,6 +83,8 @@
         <surefire.version>3.2.5</surefire.version>
         <failsafe.version>3.2.5</failsafe.version>
         <skipDokka>false</skipDokka>
+        <!-- Skip Dokka during release builds via -Ddokka.skip=true (set by maven-release-plugin). -->
+        <dokka.skip>false</dokka.skip>
         <skipJavadoc>true</skipJavadoc>
         <surefire.forkedProcessTimeoutInSeconds>180</surefire.forkedProcessTimeoutInSeconds>
         <surefire.skipAfterFailureCount>1</surefire.skipAfterFailureCount>
@@ -1057,6 +1059,17 @@
                 <version>3.13.0</version>
                 <configuration>
                     <release>23</release>
+                    <!--
+                        Fork javac so each parallel module (-T 1C on
+                        CodeBuild's 72 vCPU container) compiles in its own
+                        process instead of contending on the single Maven
+                        JVM. Without forking, -T cannot saturate the cores.
+                        Memory bounds are sized so that up to ~24 concurrent
+                        forks comfortably fit under MAVEN_OPTS -Xmx96g.
+                    -->
+                    <fork>true</fork>
+                    <meminitial>512m</meminitial>
+                    <maxmem>2g</maxmem>
                 </configuration>
             </plugin>
             <plugin>
@@ -1123,6 +1136,19 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <!--
+                        Skip Dokka during release:prepare / release:perform so the
+                        release does not pay the cost of resolving the Dokka
+                        dependency graph and generating documentation. To produce
+                        documentation, run `mvn -Pdocs dokka:dokka` separately.
+                    -->
+                    <arguments>-Ddokka.skip=true</arguments>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -1195,6 +1221,7 @@
                             </execution>
                         </executions>
                         <configuration>
+                            <skip>${dokka.skip}</skip>
                             <outputDir>${project.build.directory}/dokka-html</outputDir>
                             <dokkaPlugins>
                                 <plugin>

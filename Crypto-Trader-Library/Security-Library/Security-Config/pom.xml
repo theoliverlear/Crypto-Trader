@@ -119,6 +119,9 @@
             <plugin>
                 <groupId>org.jetbrains.dokka</groupId>
                 <artifactId>dokka-maven-plugin</artifactId>
+                <configuration>
+                    <skip>${dokka.skip}</skip>
+                </configuration>
                 <executions>
                     <execution>
                         <id>dokka-html</id>

@@ -160,6 +160,9 @@
                 <groupId>org.jetbrains.dokka</groupId>
                 <artifactId>dokka-maven-plugin</artifactId>
                 <version>1.9.20</version>
+                <configuration>
+                    <skip>${dokka.skip}</skip>
+                </configuration>
                 <executions>
                     <execution>
                         <id>dokka-html</id>
