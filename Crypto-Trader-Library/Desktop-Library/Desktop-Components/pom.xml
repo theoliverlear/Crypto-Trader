@@ -196,6 +196,18 @@
                 <version>3.13.0</version>
                 <configuration>
                     <release>23</release>
+                    <!--
+                        Fork javac in this module too. The module-local
+                        <configuration> block overrides the parent pom's
+                        compiler config wholesale, so without these three
+                        lines Desktop-Components silently runs the in-process
+                        javac and becomes the long pole of -T 1C reactor
+                        builds (the "16:50 min" hot spot from the AWS
+                        investigation report).
+                    -->
+                    <fork>true</fork>
+                    <meminitial>512m</meminitial>
+                    <maxmem>2g</maxmem>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
@@ -220,6 +232,9 @@
             <plugin>
                 <groupId>org.jetbrains.dokka</groupId>
                 <artifactId>dokka-maven-plugin</artifactId>
+                <configuration>
+                    <skip>${dokka.skip}</skip>
+                </configuration>
                 <executions>
                     <execution>
                         <id>dokka-html</id>
