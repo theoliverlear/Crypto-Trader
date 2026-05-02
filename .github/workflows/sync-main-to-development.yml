@@ -72,7 +72,7 @@ jobs:
             pull-requests: write
 
         env:
-            GH_TOKEN: ${{ secrets.GH_TOKEN }}
+            GH_TOKEN: ${{ github.token }}
 
         steps:
             - name: Create sync PR if main is ahead of development
