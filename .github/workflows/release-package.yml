@@ -18,7 +18,7 @@ jobs:
       contents: read
       packages: write
     with:
-      package_name: '@theoliverlear/desktop-styles'
+      package_name: '@Sigwarth-Software/desktop-styles'
       package_dir: 'Crypto-Trader-Library/Desktop-Library/Desktop-Styles'
       scss_package: true
       node_version: '20'
