@@ -15,11 +15,11 @@ jobs:
         runs-on: ubuntu-latest
 
         permissions:
-            contents: read
+            contents: write
             pull-requests: write
 
         env:
-            GH_TOKEN: ${{ secrets.GH_TOKEN }}
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
         steps:
             - name: Checkout repository
