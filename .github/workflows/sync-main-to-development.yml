@@ -1,56 +1,3 @@
-# name: Sync main back to development
-
-# on:
-#   push:
-#     branches:
-#       - main
-
-# permissions:
-#   contents: read
-#   pull-requests: write
-
-# jobs:
-#   sync-main-to-development:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v4
-
-#       - name: Create or find sync PR
-#         id: sync_pr
-#         env:
-#           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-#         shell: bash
-#         run: |
-#           set -euo pipefail
-
-#           EXISTING_PR_NUMBER="$(gh pr list \
-#             --base development \
-#             --head main \
-#             --state open \
-#             --json number \
-#             --jq '.[0].number // empty')"
-
-#           if [ -n "$EXISTING_PR_NUMBER" ]; then
-#             echo "number=$EXISTING_PR_NUMBER" >> "$GITHUB_OUTPUT"
-#             exit 0
-#           fi
-
-#           NEW_PR_URL="$(gh pr create \
-#             --base development \
-#             --head main \
-#             --title "Sync main back to development" \
-#             --body "Automated sync PR to bring development up to date with main.")"
-
-#           NEW_PR_NUMBER="$(gh pr view "$NEW_PR_URL" --json number --jq '.number')"
-#           echo "number=$NEW_PR_NUMBER" >> "$GITHUB_OUTPUT"
-
-#       - name: Enable auto-merge
-#         env:
-#           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-#         run: |
-#           gh pr merge "${{ steps.sync_pr.outputs.number }}" --auto --merge
 name: Sync main back to development
 
 on:
@@ -72,9 +19,14 @@ jobs:
             pull-requests: write
 
         env:
-            GH_TOKEN: ${{ github.token }}
+            GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
         steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
             - name: Create sync PR if main is ahead of development
               id: sync_pr
               shell: bash
@@ -112,6 +64,7 @@ jobs:
                     --no-maintainer-edit)"
 
                   NEW_PR_NUMBER="$(gh pr view "$NEW_PR_URL" --json number --jq '.number')"
+
                   echo "Created sync PR: #$NEW_PR_NUMBER"
                   echo "number=$NEW_PR_NUMBER" >> "$GITHUB_OUTPUT"
 
