@@ -68,8 +68,8 @@ jobs:
                   echo "Created sync PR: #$NEW_PR_NUMBER"
                   echo "number=$NEW_PR_NUMBER" >> "$GITHUB_OUTPUT"
 
-            - name: Enable auto-merge
+            - name: Merge sync PR
               if: steps.sync_pr.outputs.number != ''
               shell: bash
               run: |
-                  gh pr merge "${{ steps.sync_pr.outputs.number }}" --auto --merge
+                  gh pr merge "${{ steps.sync_pr.outputs.number }}" --merge
