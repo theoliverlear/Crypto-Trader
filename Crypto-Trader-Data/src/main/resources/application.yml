@@ -25,12 +25,14 @@ spring:
       hibernate.jdbc.use_streams_for_binary: false
   datasource:
     hikari:
-      maximum-pool-size: 10
-      minimum-idle: 4
+      maximum-pool-size: 30
+      minimum-idle: 10
       connection-timeout: 5000
       connection-init-sql: "set synchronous_commit = off"
       leak-detection-threshold: 0  # set 0 to disable
       auto-commit: false
+      idle-timeout: 30000
+      max-lifetime: 1800000
   task:
     scheduling:
       pool:
