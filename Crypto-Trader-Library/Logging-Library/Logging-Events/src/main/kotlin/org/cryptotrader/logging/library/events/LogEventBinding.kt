@@ -1,5 +1,7 @@
 package org.cryptotrader.logging.library.events
 
-enum class LogEventBinding(val bindingName: String) {
-    FRONTEND_LOGS("frontendLogs-out-0");
+import org.cryptotrader.universal.library.events.model.EventBinding
+
+enum class LogEventBinding(override val bindingName: String) : EventBinding {
+    FRONTEND_LOGS_REQUESTS("frontendLogs-out-0");
 }
