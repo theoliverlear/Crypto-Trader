@@ -1,7 +1,7 @@
 package org.cryptotrader.logging.library.events.publisher
 
 import org.cryptotrader.logging.library.events.LogBatchEvent
-import org.cryptotrader.universal.library.component.EventPublisher
+import org.cryptotrader.universal.library.events.EventPublisher
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
