@@ -51,6 +51,30 @@ public class AssetTrader implements TradingEngine {
         }
         return false;
     }
+
+    @Override
+    public boolean canTrade() {
+        double currentPrice = this.asset.getCurrency().getUpdatedValue();
+        return this.canTrade(currentPrice);
+    }
+
+    @Override
+    public boolean canTrade(double currentPrice) {
+        double targetPrice = this.asset.getTargetPrice();
+        if (currentPrice > targetPrice) {
+            if (this.asset.canSell()) {
+                this.asset.setTargetPrice(currentPrice);
+                return true;
+            }
+        } else if (currentPrice < targetPrice) {
+            if (this.asset.canBuy()) {
+                this.asset.setTargetPrice(currentPrice);
+                return true;
+            }
+        }
+        return false;
+    }
+
     //--------------------------------Sell------------------------------------
     @Override
     public void sell(double currentPrice) {
