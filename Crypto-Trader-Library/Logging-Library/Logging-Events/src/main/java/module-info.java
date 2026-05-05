@@ -4,6 +4,7 @@ open module org.cryptotrader.logging.library.events {
     requires spring.beans;
     requires org.slf4j;
     requires org.cryptotrader.universal.library.components;
+    requires org.cryptotrader.universal.library.events;
 
     exports org.cryptotrader.logging.library.events;
     exports org.cryptotrader.logging.library.events.publisher;
