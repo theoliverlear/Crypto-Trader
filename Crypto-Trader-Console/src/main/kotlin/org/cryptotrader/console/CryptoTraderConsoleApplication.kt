@@ -15,7 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
     "org.cryptotrader.api.library.services",
     "org.cryptotrader.data.library.services",
     "org.cryptotrader.data.library.component",
-    "org.cryptotrader.universal.library.component",
+    "org.cryptotrader.universal.library.events",
     "org.cryptotrader.api.library.events"
 ])
 @EnableJpaRepositories(basePackages = [
