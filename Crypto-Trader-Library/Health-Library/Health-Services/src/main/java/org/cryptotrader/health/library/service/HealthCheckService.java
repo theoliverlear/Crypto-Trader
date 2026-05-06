@@ -7,6 +7,7 @@ import org.cryptotrader.health.library.model.ServiceStatus;
 import org.cryptotrader.health.library.repository.HealthStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -33,17 +34,17 @@ public class HealthCheckService {
     @Transactional
     public void checkAndPersist(CryptoTraderService service) {
         if (service == CryptoTraderService.DATABASE) {
-            checkDatabase();
+            this.checkDatabase();
             return;
         }
 
-        String url = getHealthUrl(service);
+        String url = this.getHealthUrl(service);
         ServiceStatus status;
         int httpCode = 0;
         String details = null;
 
         try {
-            var response = restTemplate.getForEntity(url, String.class);
+            ResponseEntity<String> response = this.restTemplate.getForEntity(url, String.class);
             httpCode = response.getStatusCode().value();
             status = (httpCode == 200) ? ServiceStatus.ALIVE : ServiceStatus.DEAD;
             details = (httpCode == 200) ? "HTTP 200 OK" : response.getBody();
@@ -93,7 +94,7 @@ public class HealthCheckService {
     private String getHealthUrl(CryptoTraderService service) {
         if (service == CryptoTraderService.DOCS) {
             // TODO: Replace hardcoded URL.
-            return "https://theoliverlear.github.io/Crypto-Trader/";
+            return "https://sigwarth-software.github.io/Crypto-Trader/";
         }
         if (service == CryptoTraderService.DATA) {
             return "http://" + ctDataHost + ":" + service.getPort() + "/actuator/health";
