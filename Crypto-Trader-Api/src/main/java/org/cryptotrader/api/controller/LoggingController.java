@@ -44,7 +44,7 @@ public class LoggingController {
         FrontendLogEvent event = this.mapToEvent(logEntry, request);
         FrontendLogBatchEvent batch = new FrontendLogBatchEvent(
             List.of(event), LocalDateTime.now(ZoneId.of("America/Chicago")));
-        this.logEventsPublisher.publishBatch(LogEventBinding.FRONTEND_LOGS.getBindingName(), batch);
+        this.logEventsPublisher.publishBatch(LogEventBinding.FRONTEND_LOGS_REQUESTS.getBindingName(), batch);
         return ResponseEntity.accepted()
             .body(new FrontendLogResponse(1, "accepted"));
     }
@@ -56,7 +56,7 @@ public class LoggingController {
         List<FrontendLogEvent> entries = this.parseNdjson(ndjsonBody, request);
         FrontendLogBatchEvent batch = new FrontendLogBatchEvent(
             entries, LocalDateTime.now(ZoneId.of("America/Chicago")));
-        this.logEventsPublisher.publishBatch(LogEventBinding.FRONTEND_LOGS.getBindingName(), batch);
+        this.logEventsPublisher.publishBatch(LogEventBinding.FRONTEND_LOGS_REQUESTS.getBindingName(), batch);
         return ResponseEntity.accepted()
             .body(new FrontendLogResponse(entries.size(), "accepted"));
     }
