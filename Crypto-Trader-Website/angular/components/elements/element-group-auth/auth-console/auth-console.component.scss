@@ -5,8 +5,7 @@ $auth-font: 'Inter', system-ui, 'Segoe UI', sans-serif;
 // TODO: Replace pixels with variables.
 auth-console {
     @include flex(center, center, column);
-    width: 100%;
-    max-width: 440px;
+    width: min(600px, $twenty-five-percent);
     z-index: 0;
 
     .auth-card {
