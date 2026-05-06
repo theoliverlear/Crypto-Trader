@@ -289,6 +289,10 @@
             <groupId>org.cryptotrader</groupId>
             <artifactId>universal-models</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>simulator-events</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
