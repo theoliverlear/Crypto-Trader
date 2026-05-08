@@ -2,7 +2,9 @@ package org.cryptotrader.console.library.component
 
 import org.cryptotrader.console.library.communication.request.ConsoleCommandRequest
 import org.cryptotrader.console.library.communication.response.ConsoleCommandResponse
-import org.cryptotrader.universal.library.component.EventPublisher
+import org.cryptotrader.universal.library.events.EventPublisher
+import org.cryptotrader.universal.library.events.RequestGatewayController
+import org.cryptotrader.universal.library.events.model.EventBinding
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,22 +19,30 @@ import java.util.concurrent.TimeoutException
 
 @Component
 class ConsoleRequestGateway @Autowired constructor(
-    private val eventPublisher: EventPublisher
+    override val eventPublisher: EventPublisher
+) : RequestGatewayController<ConsoleCommandRequest, ConsoleCommandResponse> (
+
 ) {
     private val log: Logger = LoggerFactory.getLogger(ConsoleRequestGateway::class.java)
-    private val pendingReplies: MutableMap<String, CompletableFuture<ConsoleCommandResponse>> =
+    override val pendingReplies: MutableMap<String, CompletableFuture<ConsoleCommandResponse>> =
         ConcurrentHashMap()
 
-    fun execute(
-        consoleTextCommand: ConsoleCommandRequest,
-        timeout: Duration = Duration.ofSeconds(15)
-    ): ConsoleCommandResponse {
-        return this.execute(consoleTextCommand, timeout, null)
+    override fun execute(binding: EventBinding, request: ConsoleCommandRequest): ConsoleCommandResponse {
+        return this.execute(binding, request, Duration.ofSeconds(15))
     }
 
-    fun execute(
-        consoleTextCommand: ConsoleCommandRequest,
-        timeout: Duration = Duration.ofSeconds(15),
+    override fun execute(
+        binding: EventBinding,
+        request: ConsoleCommandRequest,
+        timeout: Duration
+    ): ConsoleCommandResponse {
+        return this.execute(binding, request, timeout, null)
+    }
+
+    override fun execute(
+        binding: EventBinding,
+        request: ConsoleCommandRequest,
+        timeout: Duration,
         authorizationHeader: String?
     ): ConsoleCommandResponse {
 
@@ -51,10 +61,10 @@ class ConsoleRequestGateway @Autowired constructor(
         log.debug(
             "Publishing console command correlationId={} text={}",
             correlationId,
-            consoleTextCommand
+            request
         )
 
-        this.eventPublisher.publish(ConsoleEventBinding.CONSOLE_REQUESTS.bindingName, consoleTextCommand, headers)
+        this.eventPublisher.publish(ConsoleEventBinding.CONSOLE_REQUESTS.bindingName, request, headers)
 
         return try {
             future.get(timeout.toMillis(), TimeUnit.MILLISECONDS)
@@ -69,27 +79,8 @@ class ConsoleRequestGateway @Autowired constructor(
         }
     }
 
-    fun handleReply(message: Message<ConsoleCommandResponse>) {
-        val correlationHeader = message.headers["correlationId"]
-        val correlationId: String? = when (correlationHeader) {
-            is String -> correlationHeader
-            is ByteArray -> try {
-                String(correlationHeader, Charsets.UTF_8)
-            } catch (e: Exception) {
-                null
-            }
-            else -> null
-        }
-        if (correlationId == null) {
-            log.warn("Received console reply without correlationId; ignoring.")
-            return
-        }
-
-        val future: CompletableFuture<ConsoleCommandResponse>? = this.pendingReplies.remove(correlationId)
-        if (future == null) {
-            log.warn("No pending future for console reply correlationId={}", correlationId)
-            return
-        }
-        future.complete(message.payload)
+    fun handleConsoleReply(message: Message<ConsoleCommandResponse>) {
+        log.info("Handling console reply correlationId={}", message.headers["correlationId"])
+        this.handleReply(message)
     }
 }
