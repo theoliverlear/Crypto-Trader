@@ -24,8 +24,8 @@ spring:
           group: crypto-trader-console
           contentType: application/json
 
-        consoleReplies-out-0:
-          destination: ct.console.replies
+        consoleResponses-out-0:
+          destination: ct.console.responses
           contentType: application/json
 
       kafka:
