@@ -811,6 +811,11 @@
             </dependency>
             <dependency>
                 <groupId>org.cryptotrader</groupId>
+                <artifactId>universal-events</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
                 <artifactId>universal-extensions</artifactId>
                 <version>0.0.2</version>
             </dependency>
@@ -916,6 +921,46 @@
                 <groupId>org.cryptotrader</groupId>
                 <artifactId>crypto-trader-simulator</artifactId>
                 <version>0.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>simulator-library</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>simulator-communication</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>simulator-config</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>simulator-events</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>simulator-models</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>simulator-repositories</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>simulator-scripts</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>simulator-services</artifactId>
+                <version>0.0.1</version>
             </dependency>
 
             <dependency>
