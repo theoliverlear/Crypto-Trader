@@ -57,7 +57,7 @@ open class ConsoleEventsListener @Autowired constructor(
                 .withPayload(result)
                 .setHeader("correlationId", correlationIdHeader)
                 .build()
-            this.streamBridge.send(ConsoleEventBinding.CONSOLE_REPLIES.bindingName, replyMessage)
+            this.streamBridge.send(ConsoleEventBinding.CONSOLE_RESPONSES.bindingName, replyMessage)
         }
     }
 }
