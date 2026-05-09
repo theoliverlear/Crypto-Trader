@@ -18,4 +18,6 @@ module org.cryptotrader.universal.library.events {
 
     requires org.cryptotrader.universal.library.models;
     exports org.cryptotrader.universal.library.events;
+    exports org.cryptotrader.universal.library.events.model;
+    exports org.cryptotrader.universal.library.events.alias;
 }
