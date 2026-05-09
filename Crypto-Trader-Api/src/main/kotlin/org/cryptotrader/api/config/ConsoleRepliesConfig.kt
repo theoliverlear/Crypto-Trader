@@ -15,11 +15,11 @@ open class ConsoleRepliesConfig(
 ) {
     private val log: Logger = LoggerFactory.getLogger(ConsoleRepliesConfig::class.java)
 
-    @Bean(name = ["consoleRepliesConsumer"]) 
+    @Bean(name = ["consoleRepliesConsumer"])
     open fun consoleRepliesConsumer(): Consumer<Message<ConsoleCommandResponse>> {
         return Consumer { message ->
             log.debug("Dispatching console reply to gateway handler.")
-            this.gateway.handleReply(message)
+            this.gateway.handleConsoleReply(message)
         }
     }
 }
