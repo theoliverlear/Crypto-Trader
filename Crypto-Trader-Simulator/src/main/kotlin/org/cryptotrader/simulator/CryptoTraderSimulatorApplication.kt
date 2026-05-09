@@ -8,6 +8,7 @@ import org.springframework.boot.runApplication
     "org.cryptotrader.simulator.library.services",
     "org.cryptotrader.simulator.library.events",
     "org.cryptotrader.data.library.repository",
+    "org.cryptotrader.universal.library.events"
 ])
 class CryptoTraderSimulatorApplication
 
