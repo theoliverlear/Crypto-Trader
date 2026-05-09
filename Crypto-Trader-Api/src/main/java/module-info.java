@@ -85,6 +85,7 @@ open module org.cryptotrader.api {
     requires org.cryptotrader.logging.library.config;
 
     requires org.cryptotrader.simulator.library.events;
+    requires org.cryptotrader.simulator.library.communication;
 
     exports org.cryptotrader.api;
     exports org.cryptotrader.api.config;
