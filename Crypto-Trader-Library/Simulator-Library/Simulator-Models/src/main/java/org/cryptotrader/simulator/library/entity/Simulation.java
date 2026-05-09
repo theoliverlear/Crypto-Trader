@@ -1,0 +1,29 @@
+package org.cryptotrader.simulator.library.entity;
+
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.cryptotrader.api.library.entity.portfolio.UpdatableValues;
+import org.cryptotrader.api.library.entity.user.ProductUser;
+import org.cryptotrader.universal.library.entity.Identifiable;
+
+import java.time.LocalDate;
+
+@Getter
+@Setter
+@MappedSuperclass
+public class Simulation<T extends UpdatableValues> extends Identifiable {
+    @Column(name = "profit")
+    private double profit;
+
+    @Column(name = "start_date")
+    private LocalDate startDate;
+
+    @Column(name = "end_date")
+    private LocalDate endDate;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false, updatable = false)
+    private ProductUser user;
+}
