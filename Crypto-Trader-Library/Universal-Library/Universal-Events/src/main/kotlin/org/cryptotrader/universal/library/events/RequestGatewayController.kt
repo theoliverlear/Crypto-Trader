@@ -1,5 +1,6 @@
 package org.cryptotrader.universal.library.events
 
+import org.cryptotrader.universal.library.events.alias.GatewayReplies
 import org.cryptotrader.universal.library.events.model.EventBinding
 import org.cryptotrader.universal.library.events.model.RequestGateway
 import org.springframework.messaging.Message
@@ -11,7 +12,7 @@ import java.util.concurrent.TimeoutException
 
 abstract class RequestGatewayController<Request, Reply> :
     RequestGateway<Request, Reply> {
-    abstract val pendingReplies: MutableMap<String, CompletableFuture<Reply>>
+    abstract val pendingReplies: GatewayReplies<Reply>
     abstract val eventPublisher: EventPublisher
 
     fun getCorrelationId(): String {
