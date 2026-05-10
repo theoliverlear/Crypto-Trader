@@ -9,6 +9,7 @@ import org.cryptotrader.logging.library.events.FrontendLogBatchEvent;
 import org.cryptotrader.logging.library.events.FrontendLogEvent;
 import org.cryptotrader.logging.library.events.LogEventBinding;
 import org.cryptotrader.logging.library.events.publisher.LogEventsPublisher;
+import jakarta.annotation.security.PermitAll;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,6 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/logs")
 @Slf4j
+@PermitAll
 public class LoggingController {
     //============================-Variables-=================================
     private final LogEventsPublisher logEventsPublisher;
