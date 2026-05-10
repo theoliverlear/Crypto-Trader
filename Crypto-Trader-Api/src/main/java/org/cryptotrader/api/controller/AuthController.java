@@ -1,5 +1,6 @@
 package org.cryptotrader.api.controller;
 
+import jakarta.annotation.security.PermitAll;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.api.library.communication.request.LoginRequest;
@@ -30,12 +31,13 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
 /**
- * Authentication API endpoints implementing DPoP-bound access tokens and rotating refresh tokens.
- *
+ * Authentication API endpoints implementing DPoP-bound access tokens and
+ * rotating refresh tokens.
  */
 @RestController
 @RequestMapping("/api/auth")
 @Slf4j
+@PermitAll
 public class AuthController {
     private final AuthService authService;
     private final UserEventsPublisher userEventsPublisher;
