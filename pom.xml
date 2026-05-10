@@ -1115,6 +1115,7 @@
                     <fork>true</fork>
                     <meminitial>512m</meminitial>
                     <maxmem>2048m</maxmem>
+                    <parameters>true</parameters>
                 </configuration>
             </plugin>
             <plugin>
