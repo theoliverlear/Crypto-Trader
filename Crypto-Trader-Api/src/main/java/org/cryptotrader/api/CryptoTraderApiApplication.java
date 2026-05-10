@@ -30,8 +30,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         "org.cryptotrader.security.library.service",
         "org.cryptotrader.console.library.component",
         "org.cryptotrader.universal.library.component",
+        "org.cryptotrader.universal.library.events",
         "org.cryptotrader.logging.library.events.publisher",
         "org.cryptotrader.simulator.library.events",
+        "org.cryptotrader.simulator.library.services",
 })
 public class CryptoTraderApiApplication {
     public static void main(String[] args) {
