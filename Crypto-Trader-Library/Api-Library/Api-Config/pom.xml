@@ -230,6 +230,7 @@
                             <args>
                                 <!-- Bind to JDK 23 APIs while producing stable bytecode -->
                                 <arg>-Xjdk-release=23</arg>
+                                <arg>-java-parameters</arg>
                             </args>
                         </configuration>
                     </execution>
@@ -241,6 +242,7 @@
                             <jvmTarget>23</jvmTarget>
                             <args>
                                 <arg>-Xjdk-release=23</arg>
+                                <arg>-java-parameters</arg>
                             </args>
                         </configuration>
                     </execution>
