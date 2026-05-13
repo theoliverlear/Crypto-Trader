@@ -644,6 +644,11 @@
             </dependency>
             <dependency>
                 <groupId>org.cryptotrader</groupId>
+                <artifactId>console-infrastructure</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
                 <artifactId>console-library</artifactId>
                 <version>0.0.2</version>
             </dependency>
@@ -651,6 +656,11 @@
                 <groupId>org.cryptotrader</groupId>
                 <artifactId>console-models</artifactId>
                 <version>0.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>console-scripts</artifactId>
+                <version>0.0.1</version>
             </dependency>
             <dependency>
                 <groupId>org.cryptotrader</groupId>
