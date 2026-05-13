@@ -122,7 +122,7 @@ public class Currency {
     }
     //-------------------------Get-Updated-Value------------------------------
     public double getUpdatedValue() {
-        if (this.urlPath == null) {
+        if (this.urlPath == null || this.urlPath.isEmpty()) {
             this.urlPath = this.getCoinbaseUrl();
         }
         if (this.urlPath.equals(TESTING_URL)) {
@@ -135,15 +135,24 @@ public class Currency {
     public static Currency fromExisting(String currencyCode) {
         Set<Currency> currencies = SupportedCurrencies.SUPPORTED_CURRENCIES;
         return currencies.stream()
-                .filter(currency -> currency.getCurrencyCode().equalsIgnoreCase(currencyCode))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Currency with code " + currencyCode + " not found."));
+            .filter(currency -> currency.getCurrencyCode().equalsIgnoreCase(currencyCode))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Currency with code " + currencyCode + " not found."));
+    }
+
+    public static Currency fromHistory(CurrencyHistory currencyHistory) {
+        return Currency.builder()
+            .name(currencyHistory.getName())
+            .currencyCode(currencyHistory.getCurrency().getCurrencyCode())
+            .urlPath(currencyHistory.getCurrency().getUrlPath())
+            .value(currencyHistory.getValue())
+            .build();
     }
 
     public static Currency from(Currency currency) {
         Currency newCurrency = new Currency(currency.getName(), currency.getCurrencyCode(),
-                currency.getUrlPath(), currency.getValue(),
-                currency.getLastUpdated());
+            currency.getUrlPath(), currency.getValue(),
+            currency.getLastUpdated());
         return newCurrency;
     }
     //============================-Overrides-=================================
@@ -170,8 +179,8 @@ public class Currency {
     @Override
     public String toString() {
         String currencyString = """
-                %18s --- %5s - $%16s""".formatted(this.name, this.currencyCode,
-                decimalFormat.format(this.value));
+                %18s --- %5s - %16s""".formatted(this.name, this.currencyCode,
+            "$" + decimalFormat.format(this.value));
         return currencyString;
     }
     public static CurrencyBuilder builder() {
