@@ -31,6 +31,22 @@ spring:
       kafka:
         binder:
           brokers: localhost:9092
+          producer-properties:
+            linger.ms: 20
+            batch.size: 65536
+            compression.type: lz4
+            acks: 1
+          consumer-properties:
+            fetch.min.bytes: 1024
+            fetch.max.wait.ms: 500
+        bindings:
+          consoleRequestsConsumer-in-0:
+            consumer:
+              configuration:
+                group.instance.id: console-service-01
+                session.timeout.ms: 30000
+                heartbeat.interval.ms: 10000
+                max.poll.interval.ms: 900000
 
 security:
   jwt:
