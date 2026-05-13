@@ -13,6 +13,7 @@ spring:
           max-age: 0s
   thymeleaf:
     cache: false
+    check-template-location: false
   freemarker:
     cache: false
   datasource:
@@ -41,11 +42,10 @@ spring:
     function:
       sanitization:
         enabled: false
-      definition: consoleRepliesConsumer
+      sanitizing:
+        enabled: false
+      definition: consoleResponsesConsumer;portfolioSimulationResponsesConsumer
     stream:
-      function:
-        sanitizing:
-          enabled: false
       defaultBinder: kafka
       bindings:
         userRegistered-out-0:
@@ -56,9 +56,18 @@ spring:
           destination: ct.console.requests
           contentType: application/json
 
-        consoleRepliesConsumer-in-0:
-          destination: ct.console.replies
-          group: crypto-trader-api-console-replies
+        consoleResponsesConsumer-in-0:
+          destination: ct.console.responses
+          group: crypto-trader-api-console-responses
+          contentType: application/json
+
+        portfolioSimulationRequests-out-0:
+          destination: ct.simulator.requests
+          contentType: application/json
+
+        portfolioSimulationResponsesConsumer-in-0:
+          destination: ct.simulator.responses
+          group: crypto-trader-api-simulator-responses
           contentType: application/json
 
         contactCreated-in-0:
@@ -75,7 +84,29 @@ spring:
       kafka:
         binder:
           brokers: localhost:9092
+          producer-properties:
+            linger.ms: 20
+            batch.size: 65536
+            compression.type: lz4
+            acks: 1
+          consumer-properties:
+            fetch.min.bytes: 1024
+            fetch.max.wait.ms: 500
         bindings:
+          portfolioSimulationResponsesConsumer-in-0:
+            consumer:
+              configuration:
+                group.instance.id: api-simulator-responder-01
+                session.timeout.ms: 30000
+                heartbeat.interval.ms: 10000
+                max.poll.interval.ms: 900000
+          consoleResponsesConsumer-in-0:
+            consumer:
+              configuration:
+                group.instance.id: api-console-responder-01
+                session.timeout.ms: 30000
+                heartbeat.interval.ms: 10000
+                max.poll.interval.ms: 900000
           contactCreated-in-0:
             consumer:
               enableDlq: true
@@ -84,9 +115,6 @@ spring:
             consumer:
               enableDlq: true
               dlqName: ct.order.filled.v1.DLT
-  function:
-    sanitizing:
-      enabled: false
 
 logging:
   level:
