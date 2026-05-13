@@ -8,21 +8,32 @@ import org.cryptotrader.api.library.entity.portfolio.PortfolioAsset;
 @Getter
 @Setter
 @Slf4j
-public class AssetTrader implements TradingEngine {
+public class AssetTrader extends TradeEngine {
     //============================-Variables-=================================
     protected PortfolioAsset asset;
-    protected double minProfit;
-    private static final double DEFAULT_MIN_PROFIT = 0.01;
+    protected double minProfitPercent;
+    private static final double DEFAULT_MIN_PROFIT_PERCENT = 0.01;
     //===========================-Constructors-===============================
     public AssetTrader(PortfolioAsset asset) {
-        this(asset, DEFAULT_MIN_PROFIT);
+        this(asset, DEFAULT_MIN_PROFIT_PERCENT);
     }
 
-    public AssetTrader(PortfolioAsset asset, double minProfit) {
+    public AssetTrader(PortfolioAsset asset, TradeContext context) {
+        super(context);
         this.asset = asset;
-        this.minProfit = minProfit;
+        this.minProfitPercent = DEFAULT_MIN_PROFIT_PERCENT;
     }
 
+    public AssetTrader(PortfolioAsset asset, double minProfitPercent) {
+        this.asset = asset;
+        this.minProfitPercent = minProfitPercent;
+    }
+
+    public AssetTrader(PortfolioAsset asset, TradeContext context, double minProfitPercent) {
+        super(context);
+        this.asset = asset;
+        this.minProfitPercent = minProfitPercent;
+    }
 
     //=============================-Methods-==================================
 
@@ -36,6 +47,12 @@ public class AssetTrader implements TradingEngine {
     @Override
     public boolean trade(double currentPrice) {
         double targetPrice = this.asset.getTargetPrice();
+        double priceChangePercent = Math.abs(currentPrice - targetPrice) / targetPrice;
+
+        if (priceChangePercent < this.minProfitPercent) {
+            return false;
+        }
+
         if (currentPrice > targetPrice) {
             if (this.asset.canSell()) {
                 this.asset.setTargetPrice(currentPrice);
@@ -61,6 +78,12 @@ public class AssetTrader implements TradingEngine {
     @Override
     public boolean canTrade(double currentPrice) {
         double targetPrice = this.asset.getTargetPrice();
+        double priceChangePercent = Math.abs(currentPrice - targetPrice) / targetPrice;
+
+        if (priceChangePercent < this.minProfitPercent) {
+            return false;
+        }
+
         if (currentPrice > targetPrice) {
             if (this.asset.canSell()) {
                 this.asset.setTargetPrice(currentPrice);
@@ -82,10 +105,11 @@ public class AssetTrader implements TradingEngine {
         double walletDollars = this.asset.getAssetWalletDollars() + valueInDollars;
         this.asset.setAssetWalletDollars(walletDollars);
         this.asset.updateValues();
-        log.info("Selling {} shares of {} for {} dollars.",
-                          this.asset.getShares(),
-                          this.asset.getCurrency().getName(),
-                          walletDollars);
+        log.info("[{}] Selling {} shares of {} for {} dollars.",
+            this.getContext().toString().toUpperCase(),
+            this.asset.getShares(),
+            this.asset.getCurrency().getName(),
+            walletDollars);
         this.asset.setShares(0);
         this.asset.updateValues();
     }
@@ -95,10 +119,11 @@ public class AssetTrader implements TradingEngine {
         double shares = this.asset.getAssetWalletDollars() / currentPrice;
         this.asset.setShares(shares);
         this.asset.updateValues();
-        log.info("Buying {} shares of {} for {} dollars.",
-                          shares,
-                          this.asset.getCurrency().getName(),
-                          this.asset.getAssetWalletDollars());
+        log.info("[{}] Buying {} shares of {} for {} dollars.",
+            this.getContext().toString().toUpperCase(),
+            shares,
+            this.asset.getCurrency().getName(),
+            this.asset.getAssetWalletDollars());
         this.asset.setAssetWalletDollars(0);
         this.asset.updateValues();
     }
