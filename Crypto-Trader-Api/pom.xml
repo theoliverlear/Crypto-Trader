@@ -111,6 +111,10 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-events</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
             <artifactId>api-events</artifactId>
         </dependency>
         <dependency>
@@ -292,6 +296,10 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>simulator-events</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>simulator-config</artifactId>
         </dependency>
     </dependencies>
     <build>
