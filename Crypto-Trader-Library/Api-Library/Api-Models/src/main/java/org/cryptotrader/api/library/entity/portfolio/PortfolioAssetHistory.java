@@ -47,6 +47,10 @@ public class PortfolioAssetHistory extends Identifiable implements SequentiallyV
             @AttributeOverride(name = "rate", column = @Column(name = "vendor_rate", columnDefinition = "DECIMAL(6, 10)"))
     })
     private Vendor vendor;
+
+    @Column(name = "currency_price", columnDefinition = "DECIMAL(34, 18)")
+    private double currencyPrice;
+
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
     //===========================-Constructors-===============================
@@ -58,6 +62,7 @@ public class PortfolioAssetHistory extends Identifiable implements SequentiallyV
         this.assetWalletDollars = 0;
         this.targetPrice = this.currency.getValue();
         this.vendor = SupportedVendors.PAPER_MODE;
+        this.currencyPrice = this.currency.getValue();
         this.lastUpdated = LocalDateTime.now();
     }
     public PortfolioAssetHistory(PortfolioAsset portfolioAsset, boolean tradeOccurred) {
@@ -68,6 +73,7 @@ public class PortfolioAssetHistory extends Identifiable implements SequentiallyV
         this.shares = portfolioAsset.getShares();
         this.sharesValueInDollars = portfolioAsset.getSharesValueInDollars();
         this.assetWalletDollars = portfolioAsset.getAssetWalletDollars();
+        this.currencyPrice = this.currency.getValue();
         this.totalValueInDollars = portfolioAsset.getTotalValueInDollars();
         this.targetPrice = portfolioAsset.getTargetPrice();
         this.vendor = portfolioAsset.getVendor();
@@ -82,6 +88,7 @@ public class PortfolioAssetHistory extends Identifiable implements SequentiallyV
         this.shares = portfolioAsset.getShares();
         this.sharesValueInDollars = portfolioAsset.getSharesValueInDollars();
         this.assetWalletDollars = portfolioAsset.getAssetWalletDollars();
+        this.currencyPrice = this.currency.getValue();
         this.totalValueInDollars = portfolioAsset.getTotalValueInDollars();
         this.targetPrice = portfolioAsset.getTargetPrice();
         this.vendor = portfolioAsset.getVendor();
@@ -95,7 +102,7 @@ public class PortfolioAssetHistory extends Identifiable implements SequentiallyV
             this.valueChange = this.totalValueInDollars - previousHistory.getTotalValueInDollars();
         }
     }
-    
+
     public void calculateShareChange(PortfolioAssetHistory previousHistoryWithShares) {
         if (previousHistoryWithShares == null) {
             this.sharesChange = 0;
