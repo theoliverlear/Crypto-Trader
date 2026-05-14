@@ -1,19 +1,22 @@
 package org.cryptotrader.universal.library.events
 
-import org.cryptotrader.universal.library.events.alias.GatewayReplies
+import org.cryptotrader.universal.library.events.alias.GatewayResponses
 import org.cryptotrader.universal.library.events.model.EventBinding
 import org.cryptotrader.universal.library.events.model.RequestGateway
 import org.springframework.messaging.Message
 import java.time.Duration
 import java.util.UUID
 import java.util.concurrent.CompletableFuture
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
-abstract class RequestGatewayController<Request, Reply> :
-    RequestGateway<Request, Reply> {
-    abstract val pendingReplies: GatewayReplies<Reply>
+abstract class RequestGatewayController<Request, Response> :
+    RequestGateway<Request, Response> {
+    protected open val pendingResponses: GatewayResponses<Response> = ConcurrentHashMap()
     abstract val eventPublisher: EventPublisher
+
+    protected open val defaultTimeout: Duration = Duration.ofSeconds(15)
 
     fun getCorrelationId(): String {
         return UUID.randomUUID().toString()
@@ -28,27 +31,31 @@ abstract class RequestGatewayController<Request, Reply> :
         return headers
     }
 
-    fun getFutureReply(): CompletableFuture<Reply> {
-        return CompletableFuture<Reply>()
+    fun getFutureResponse(): CompletableFuture<Response> {
+        return CompletableFuture<Response>()
     }
 
-    fun setPendingReply(correlationId: String, future: CompletableFuture<Reply>) {
-        this.pendingReplies[correlationId] = future
+    fun setPendingResponse(correlationId: String, future: CompletableFuture<Response>) {
+        this.pendingResponses[correlationId] = future
     }
 
-    fun tryExecuteAndWait(future: CompletableFuture<Reply>, correlationId: String, timeout: Duration): Reply {
+    fun tryExecuteAndWait(
+        future: CompletableFuture<Response>,
+        correlationId: String,
+        timeout: Duration
+    ): Response {
         return try {
             future.get(timeout.toMillis(), TimeUnit.MILLISECONDS)
         } catch (exception: TimeoutException) {
-            this.pendingReplies.remove(correlationId)
+            this.pendingResponses.remove(correlationId)
             throw exception
         } catch (exception: Exception) {
-            this.pendingReplies.remove(correlationId)
+            this.pendingResponses.remove(correlationId)
             throw exception
         }
     }
 
-    fun handleReply(message: Message<Reply>) {
+    fun handleResponse(message: Message<Response>) {
         val correlationHeader = message.headers["correlationId"]
         val correlationId: String? = when (correlationHeader) {
             is String -> correlationHeader
@@ -62,8 +69,16 @@ abstract class RequestGatewayController<Request, Reply> :
         if (correlationId == null) {
             return
         }
-        val future: CompletableFuture<Reply>? = this.pendingReplies.remove(correlationId)
+        val future: CompletableFuture<Response>? = this.pendingResponses.remove(correlationId)
         future?.complete(message.payload)
+    }
+
+    override fun execute(binding: EventBinding, request: Request): Response {
+        return this.execute(binding, request, defaultTimeout)
+    }
+
+    override fun execute(binding: EventBinding, request: Request, timeout: Duration): Response {
+        return this.execute(binding, request, timeout, null)
     }
 
     override fun execute(
@@ -71,21 +86,21 @@ abstract class RequestGatewayController<Request, Reply> :
         request: Request,
         timeout: Duration,
         authorizationHeader: String?
-    ): Reply {
+    ): Response {
 
         val correlationId: String = this.getCorrelationId()
-        val future = this.getFutureReply()
-        this.setPendingReply(correlationId, future)
+        val future = this.getFutureResponse()
+        this.setPendingResponse(correlationId, future)
         val headers = this.getInitialHeaders(correlationId, authorizationHeader)
         this.eventPublisher.publish(binding.bindingName, request, headers)
 
         return try {
             future.get(timeout.toMillis(), TimeUnit.MILLISECONDS)
         } catch (exception: TimeoutException) {
-            this.pendingReplies.remove(correlationId)
+            this.pendingResponses.remove(correlationId)
             throw exception
         } catch (exception: Exception) {
-            this.pendingReplies.remove(correlationId)
+            this.pendingResponses.remove(correlationId)
             throw exception
         }
     }
