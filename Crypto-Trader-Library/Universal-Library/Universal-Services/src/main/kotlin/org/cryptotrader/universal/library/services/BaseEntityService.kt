@@ -64,8 +64,8 @@ abstract class BaseEntityService<Entity : IdentifiableEntity<Id>, Id : Any, Repo
     }
 
     override fun save(entity: Entity): Entity {
-        log.info("Saving new {} entity.", this.getEntityName(entity))
         return try {
+            log.info("Saving new {} entity.", this.getEntityName(entity))
             this.repository.save(entity)
         } catch (exception: IllegalArgumentException) {
             log.warn("Failed to save {} with ID {}.", this.getEntityName(entity), entity.id)
@@ -74,8 +74,8 @@ abstract class BaseEntityService<Entity : IdentifiableEntity<Id>, Id : Any, Repo
     }
 
     override fun saveAll(entities: List<Entity>): List<Entity> {
-        log.info("Saving {} {} entities.", entities.size, this.getEntityName(entities.first()))
         return try {
+            log.info("Saving {} {} entities.", entities.size, this.getEntityName(entities.first()))
             this.repository.saveAll(entities)
         } catch (exception: IllegalArgumentException) {
             log.error("Failed to save {} {} entities.", entities.size, this.getEntityName(entities.first()), exception)
@@ -105,6 +105,7 @@ abstract class BaseEntityService<Entity : IdentifiableEntity<Id>, Id : Any, Repo
                 false
             }
         }
+        log.warn("Entity with ID {} does not exist, cannot delete.", id)
         return false
     }
 
@@ -124,6 +125,7 @@ abstract class BaseEntityService<Entity : IdentifiableEntity<Id>, Id : Any, Repo
                 false
             }
         }
+        log.error("Failed to delete {} {}, not all entities exist.", entities.size, this.getEntityName(entities.first()))
         return false
     }
 
