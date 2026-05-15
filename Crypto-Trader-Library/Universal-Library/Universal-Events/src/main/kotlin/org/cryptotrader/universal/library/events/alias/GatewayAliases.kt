@@ -3,4 +3,4 @@ package org.cryptotrader.universal.library.events.alias
 
 import java.util.concurrent.CompletableFuture
 
-typealias GatewayReplies<Reply> = MutableMap<String, CompletableFuture<Reply>>
+typealias GatewayResponses<Response> = MutableMap<String, CompletableFuture<Response>>
