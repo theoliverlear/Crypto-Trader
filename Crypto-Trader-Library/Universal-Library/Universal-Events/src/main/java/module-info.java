@@ -3,7 +3,7 @@ module org.cryptotrader.universal.library.events {
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires static lombok;
-    requires static org.slf4j;
+    requires org.slf4j;
     requires org.apache.httpcomponents.httpclient;
     requires org.apache.httpcomponents.httpcore;
     requires spring.beans;
@@ -20,4 +20,5 @@ module org.cryptotrader.universal.library.events {
     exports org.cryptotrader.universal.library.events;
     exports org.cryptotrader.universal.library.events.model;
     exports org.cryptotrader.universal.library.events.alias;
+    exports org.cryptotrader.universal.library.events.config;
 }
