@@ -25,7 +25,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -245,14 +249,20 @@ public class CurrencyService {
         return rows.stream()
                 .map(record -> {
                     Object time = record[0];
-                    String isoTime;
+                    LocalDateTime localDateTime = null;
                     if (time instanceof Timestamp timestamp) {
-                        isoTime = timestamp.toLocalDateTime().toString();
+                        localDateTime = timestamp.toLocalDateTime();
                     } else if (time instanceof LocalDateTime dateTime) {
-                        isoTime = dateTime.toString();
-                    } else {
-                        isoTime = String.valueOf(time);
+                        localDateTime = dateTime;
+                    } else if (time instanceof Instant instant) {
+                        localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+                    } else if (time instanceof OffsetDateTime offsetDateTime) {
+                        localDateTime = offsetDateTime.toLocalDateTime();
+                    } else if (time instanceof ZonedDateTime zonedDateTime) {
+                        localDateTime = zonedDateTime.toLocalDateTime();
                     }
+
+                    String isoTime = localDateTime != null ? localDateTime.toString() : String.valueOf(time);
                     double valueAtTime = ((Number) record[1]).doubleValue();
                     return new TimeValueResponse(isoTime, valueAtTime);
                 })
