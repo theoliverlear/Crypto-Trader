@@ -115,6 +115,14 @@ export class TraderEventBubbleComponent {
         return 'No Change';
     }
 
+    getTradeId(): number {
+        return this.tradeEvent.id
+    }
+
+    getTradeIdString(): string {
+        return `Trade #${this.tradeEvent.id}. If you have any questions, please contact support with your trade ID.`
+    }
+
     getSharesChange(): string {
         let numDecimals: number = 2;
         if (this.tradeEvent.sharesChange < 1) {
