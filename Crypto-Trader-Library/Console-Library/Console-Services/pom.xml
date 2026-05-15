@@ -165,6 +165,10 @@
         </dependency>
         <dependency>
             <groupId>org.cryptotrader</groupId>
+            <artifactId>console-scripts</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
             <artifactId>data-services</artifactId>
         </dependency>
         <dependency>
@@ -190,6 +194,10 @@
         <dependency>
             <groupId>org.cryptotrader</groupId>
             <artifactId>api-events</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>console-infrastructure</artifactId>
         </dependency>
     </dependencies>
     <build>
