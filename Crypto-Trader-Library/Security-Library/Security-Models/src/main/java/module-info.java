@@ -7,4 +7,5 @@ open module org.cryptotrader.security.library.models {
 
     exports org.cryptotrader.security.library.entity.ip;
     exports org.cryptotrader.security.library.entity.key;
+    exports org.cryptotrader.security.library.model.key;
 }
