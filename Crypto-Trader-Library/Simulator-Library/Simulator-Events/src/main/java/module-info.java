@@ -9,4 +9,6 @@ module org.cryptotrader.simulator.library.events {
 
     exports org.cryptotrader.simulator.library.events;
     exports org.cryptotrader.simulator.library.events.publisher;
+
+    opens org.cryptotrader.simulator.library.events to spring.core, spring.beans, spring.context;
 }
