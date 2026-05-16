@@ -1,10 +1,10 @@
 package org.cryptotrader.universal.library.services
 
-import org.cryptotrader.universal.library.entity.IdentifiableEntity
+import org.cryptotrader.universal.library.entity.Identifiable
 import org.cryptotrader.universal.library.model.exception.EntityNotFoundException
 import kotlin.jvm.Throws
 
-interface EntityPersistenceHandler<Entity : IdentifiableEntity<Id>, Id> {
+interface EntityPersistenceHandler<Entity : Identifiable<Id>, Id : Any> {
     fun save(entity: Entity): Entity
 
     fun saveAll(entities: List<Entity>): List<Entity>
