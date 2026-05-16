@@ -1,6 +1,6 @@
 package org.cryptotrader.universal.library.services
 
-import org.cryptotrader.universal.library.entity.IdentifiableEntity
+import org.cryptotrader.universal.library.entity.Identifiable
 import org.cryptotrader.universal.library.model.exception.EntityNotFoundException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -9,7 +9,7 @@ import org.springframework.core.ResolvableType
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.Optional
 
-abstract class BaseEntityService<Entity : IdentifiableEntity<Id>, Id : Any, Repository : JpaRepository<Entity, Id>>(
+abstract class BaseEntityService<Entity : Identifiable<Id>, Id : Any, Repository : JpaRepository<Entity, Id>>(
     val repository: Repository
 ) : EntityHandler<Entity, Id> {
 
