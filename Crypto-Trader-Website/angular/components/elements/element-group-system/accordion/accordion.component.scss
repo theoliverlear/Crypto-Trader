@@ -4,6 +4,11 @@
 accordion {
     display: block;
     margin: $half-percent 0;
+    ss-title {
+        p {
+            font-size: 1rem;
+        }
+    }
 }
 
 mat-expansion-panel-header {
