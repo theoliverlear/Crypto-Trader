@@ -1,6 +1,6 @@
 package org.cryptotrader.universal.library.model.exception;
 
-import org.cryptotrader.universal.library.entity.IdentifiableEntity;
+import org.cryptotrader.universal.library.entity.Identifiable;
 
 public class EntityNotFoundException extends RuntimeException {
     private static String DEFAULT_MESSAGE = "Entity not found";
@@ -13,11 +13,11 @@ public class EntityNotFoundException extends RuntimeException {
         super(message);
     }
 
-    public EntityNotFoundException(String message, IdentifiableEntity entity) {
+    public <T> EntityNotFoundException(String message, Identifiable<T> entity) {
         super(message + ": ID " + entity.getId() + " (" + entity.getClass().getSimpleName() + ")" );
     }
 
-    public EntityNotFoundException(IdentifiableEntity entity) {
+    public <T> EntityNotFoundException(Identifiable<T> entity) {
         super(DEFAULT_MESSAGE + ": ID " + entity.getId() + " (" + entity.getClass().getSimpleName() + ")" );
     }
 }
