@@ -804,11 +804,13 @@
                 <artifactId>desktop-library</artifactId>
                 <version>0.0.4</version>
             </dependency>
+
             <dependency>
                 <groupId>org.cryptotrader</groupId>
                 <artifactId>externals-library</artifactId>
                 <version>0.0.4</version>
             </dependency>
+
             <dependency>
                 <groupId>org.cryptotrader</groupId>
                 <artifactId>universal-components</artifactId>
@@ -838,6 +840,11 @@
                 <groupId>org.cryptotrader</groupId>
                 <artifactId>universal-models</artifactId>
                 <version>0.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cryptotrader</groupId>
+                <artifactId>universal-services</artifactId>
+                <version>0.0.1</version>
             </dependency>
 
             <dependency>
