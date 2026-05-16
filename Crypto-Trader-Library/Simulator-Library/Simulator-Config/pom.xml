@@ -234,6 +234,14 @@
             <groupId>org.cryptotrader</groupId>
             <artifactId>simulator-services</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-events</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>simulator-events</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
