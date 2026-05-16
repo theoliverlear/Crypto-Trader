@@ -1,14 +1,10 @@
 package org.cryptotrader.data.library.services;
 //=================================-Imports-==================================
-
 import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.api.library.communication.request.FuzzyTimeValueRequest;
 import org.cryptotrader.api.library.communication.response.DisplayCurrencyListResponse;
 import org.cryptotrader.api.library.communication.response.DisplayCurrencyResponse;
 import org.cryptotrader.api.library.communication.response.TimeValueResponse;
-import org.cryptotrader.data.library.component.CurrencyDataRetriever;
-import org.cryptotrader.data.library.component.CurrencyJsonGenerator;
-import org.cryptotrader.data.library.component.MarketSnapshotsBackfiller;
 import org.cryptotrader.data.library.entity.currency.Currency;
 import org.cryptotrader.data.library.entity.currency.CurrencyHistory;
 import org.cryptotrader.data.library.entity.currency.UniqueCurrency;
@@ -18,7 +14,10 @@ import org.cryptotrader.data.library.repository.CurrencyHistoryRepository;
 import org.cryptotrader.data.library.repository.CurrencyRepository;
 import org.cryptotrader.data.library.repository.UniqueCurrencyHistoryRepository;
 import org.cryptotrader.data.library.repository.UniqueCurrencyRepository;
-import org.cryptotrader.data.library.services.models.MarketSnapshotOperations;
+import org.cryptotrader.data.library.services.entity.CurrencyEntityService;
+import org.cryptotrader.data.library.services.entity.CurrencyHistoryEntityService;
+import org.cryptotrader.data.library.services.entity.UniqueCurrencyEntityService;
+import org.cryptotrader.data.library.services.entity.UniqueCurrencyHistoryEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -41,10 +40,11 @@ public class CurrencyService {
     private final CurrencyHistoryRepository currencyHistoryRepository;
     private final UniqueCurrencyRepository uniqueCurrencyRepository;
     private final UniqueCurrencyHistoryRepository uniqueCurrencyHistoryRepository;
-    private final CurrencyDataRetriever currencyDataRetriever;
-    private final MarketSnapshotsBackfiller backfiller;
-    private final MarketSnapshotOperations snapshotService;
-    private final CurrencyJsonGenerator currencyJsonGenerator;
+
+    private final CurrencyEntityService currencyEntityService;
+    private final CurrencyHistoryEntityService currencyHistoryEntityService;
+    private final UniqueCurrencyEntityService uniqueCurrencyEntityService;
+    private final UniqueCurrencyHistoryEntityService uniqueCurrencyHistoryEntityService;
 
     //===========================-Constructors-===============================
     @Autowired
@@ -52,18 +52,18 @@ public class CurrencyService {
                            CurrencyHistoryRepository currencyHistoryRepository,
                            UniqueCurrencyRepository uniqueCurrencyRepository,
                            UniqueCurrencyHistoryRepository uniqueCurrencyHistoryRepository,
-                           CurrencyDataRetriever currencyDataRetriever,
-                           MarketSnapshotsBackfiller backfiller,
-                           MarketSnapshotOperations snapshotService,
-                           CurrencyJsonGenerator currencyJsonGenerator) {
+                           CurrencyEntityService currencyEntityService,
+                           CurrencyHistoryEntityService currencyHistoryEntityService,
+                           UniqueCurrencyEntityService uniqueCurrencyEntityService,
+                           UniqueCurrencyHistoryEntityService uniqueCurrencyHistoryEntityService) {
         this.currencyRepository = currencyRepository;
         this.currencyHistoryRepository = currencyHistoryRepository;
         this.uniqueCurrencyRepository = uniqueCurrencyRepository;
         this.uniqueCurrencyHistoryRepository = uniqueCurrencyHistoryRepository;
-        this.currencyDataRetriever = currencyDataRetriever;
-        this.backfiller = backfiller;
-        this.snapshotService = snapshotService;
-        this.currencyJsonGenerator = currencyJsonGenerator;
+        this.currencyEntityService = currencyEntityService;
+        this.currencyHistoryEntityService = currencyHistoryEntityService;
+        this.uniqueCurrencyEntityService = uniqueCurrencyEntityService;
+        this.uniqueCurrencyHistoryEntityService = uniqueCurrencyHistoryEntityService;
     }
 
 
@@ -140,7 +140,8 @@ public class CurrencyService {
     }
 
     public List<Currency> getAllCurrencies() {
-        return this.currencyRepository.findAll();
+//        return this.currencyRepository.findAll();
+        return this.currencyEntityService.findAll();
     }
 
     public List<String> getAllCurrencyCodes() {
@@ -161,8 +162,8 @@ public class CurrencyService {
     }
 
     public void saveCurrency(Currency currency) {
-        this.currencyRepository.save(currency);
-        this.currencyHistoryRepository.save(new CurrencyHistory(currency, currency.getValue()));
+        this.currencyEntityService.save(currency);
+        this.currencyHistoryEntityService.save(new CurrencyHistory(currency, currency.getValue()));
     }
 
     public void saveUniqueCurrencyIfNew(Currency currency, Currency previousCurrency, Currency updatedCurrency) {
@@ -178,8 +179,11 @@ public class CurrencyService {
     public void saveUniqueCurrency(Currency currency) {
         UniqueCurrency uniqueCurrency = new UniqueCurrency(currency);
         UniqueCurrencyHistory uniqueCurrencyHistory = new UniqueCurrencyHistory(currency);
-        this.uniqueCurrencyRepository.save(uniqueCurrency);
-        this.uniqueCurrencyHistoryRepository.save(uniqueCurrencyHistory);
+//        this.uniqueCurrencyRepository.save(uniqueCurrency);
+//        this.uniqueCurrencyHistoryRepository.save(uniqueCurrencyHistory);
+
+        this.uniqueCurrencyEntityService.save(uniqueCurrency);
+        this.uniqueCurrencyHistoryEntityService.save(uniqueCurrencyHistory);
 
     }
 
@@ -192,13 +196,15 @@ public class CurrencyService {
         return this.currencyRepository.getCurrencyByCurrencyCode(currencyCode);
     }
     public boolean existsInCurrencyTable(String currencyCode) {
-        return this.currencyRepository.existsByCurrencyCode(currencyCode);
+//        return this.currencyRepository.existsByCurrencyCode(currencyCode);
+        return this.currencyEntityService.existsById(currencyCode);
     }
     public boolean existsInCurrencyHistoryTable(String currencyCode) {
         return this.currencyHistoryRepository.existsByCurrencyCurrencyCode(currencyCode);
     }
     public boolean existsInUniqueCurrencyTable(String currencyCode) {
-        return this.uniqueCurrencyRepository.existsByCurrency(currencyCode);
+//        return this.uniqueCurrencyRepository.existsByCurrency(currencyCode);
+        return this.uniqueCurrencyEntityService.existsById(currencyCode);
     }
     public boolean existsInUniqueCurrencyHistoryTable(String currencyCode) {
         return this.uniqueCurrencyHistoryRepository.existsByCurrencyCurrencyCode(currencyCode);
