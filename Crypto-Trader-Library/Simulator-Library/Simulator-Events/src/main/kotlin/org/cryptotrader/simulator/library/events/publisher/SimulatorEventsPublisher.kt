@@ -15,6 +15,11 @@ class SimulatorEventsPublisher @Autowired constructor(
     private val log = LoggerFactory.getLogger(SimulatorEventsPublisher::class.java)
 
     fun publishEvent(binding: SimulatorEventBinding, simulationRequest: PortfolioSimulationRequest) {
-        // TODO: Fill this in.
+        if (this.eventPublisher != null) {
+            this.log.info("Publishing event {} to {}", simulationRequest, binding.bindingName)
+            this.eventPublisher.publish(binding.bindingName, simulationRequest)
+        } else {
+            this.log.error("EventPublisher is null, cannot publish event")
+        }
     }
 }
