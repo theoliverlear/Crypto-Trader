@@ -34,27 +34,27 @@ abstract class BaseEntityService<Entity : Identifiable<Id>, Id : Any, Repository
     }
 
     override fun findById(id: Id): Optional<Entity> {
-        log.debug("Finding {} with ID {}.", this.getEntityName(), id)
+        log.info("Finding {} with ID {}.", this.getEntityName(), id)
         return this.repository.findById(id)
     }
 
     override fun findByIds(ids: List<Id>): List<Entity> {
-        log.debug("Finding {} {}.", ids.size, this.getEntityName())
+        log.info("Finding {} {}.", ids.size, this.getEntityName())
         return this.repository.findAllById(ids)
     }
 
     override fun findAll(): List<Entity> {
-        log.debug("Finding all {} entities.", this.getEntityName())
+        log.info("Finding all {} entities.", this.getEntityName())
         return this.repository.findAll()
     }
 
     override fun exists(entity: Entity): Boolean {
-        log.debug("Checking existence of {} with ID {}.", this.getEntityName(entity), entity.id)
+        log.info("Checking existence of {} with ID {}.", this.getEntityName(entity), entity.id)
         return this.repository.existsById(entity.id)
     }
 
     override fun existsById(id: Id): Boolean {
-        log.debug("Checking existence of {} with ID {}.", this.getEntityName(), id)
+        log.info("Checking existence of {} with ID {}.", this.getEntityName(), id)
         return this.repository.existsById(id)
     }
 
