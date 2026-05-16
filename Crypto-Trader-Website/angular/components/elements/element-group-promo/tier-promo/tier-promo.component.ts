@@ -95,6 +95,9 @@ export class TierPromoComponent {
     }
 
     protected getPriceLabel(): string {
+        if (!this.prices) {
+            return 'Loading...'
+        }
         let price: number
         switch (this.tier) {
             case SubscriptionTier.FREE:
