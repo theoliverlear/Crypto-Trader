@@ -205,6 +205,14 @@
             <groupId>org.cryptotrader</groupId>
             <artifactId>simulator-scripts</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>simulator-communication</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>data-services</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
