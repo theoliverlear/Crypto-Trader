@@ -22,4 +22,4 @@ cryptotrader:
   api:
     cors:
       allowed-origins: "https://sscryptotrader.com"
-      allowed-headers: "authorization,dpop,content-type"
+      allowed-headers: "authorization,dpop,content-type,x-client-app"
