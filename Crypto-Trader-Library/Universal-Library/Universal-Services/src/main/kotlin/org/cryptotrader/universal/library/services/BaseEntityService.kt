@@ -1,27 +1,42 @@
 package org.cryptotrader.universal.library.services
 
 import org.cryptotrader.universal.library.entity.Identifiable
+import org.cryptotrader.universal.library.model.annotation.Loggable
 import org.cryptotrader.universal.library.model.exception.EntityNotFoundException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.aop.support.AopUtils
 import org.springframework.core.ResolvableType
 import org.springframework.data.jpa.repository.JpaRepository
+import java.lang.reflect.Field
+import java.lang.reflect.Modifier
 import java.util.Optional
+import java.util.concurrent.ConcurrentHashMap
 
 abstract class BaseEntityService<Entity : Identifiable<Id>, Id : Any, Repository : JpaRepository<Entity, Id>>(
     val repository: Repository
 ) : EntityHandler<Entity, Id> {
 
+    // TODO: Move to logging or universal.
+    private object Ansi {
+        const val RESET = "\u001B[0m"
+        const val BOLD = "\u001B[1m"
+        const val MAGENTA = "\u001B[35m"
+        const val BLUE = "\u001B[34m"
+        const val WHITE = "\u001B[37m"
+        const val RED = "\u001B[31m"
+        const val GRAY = "\u001B[90m"
+    }
+
     protected val log: Logger = LoggerFactory.getLogger(javaClass)
     private val entityType: Class<out Entity> by lazy { this.resolveEntityType() }
+    private val loggableFieldsByType: MutableMap<Class<*>, List<Field>> = ConcurrentHashMap()
 
     override fun saveIfNew(entity: Entity): Entity {
         if (!this.exists(entity)) {
             return this.save(entity)
         }
-        log.info("{} with ID {} already exists, skipping save.",
-            this.getEntityName(entity), entity.id)
+        log.info("{} already exists, skipping save. {}", this.formatEntityName(entity), this.getEntityContent(entity))
         return entity
     }
 
@@ -29,7 +44,7 @@ abstract class BaseEntityService<Entity : Identifiable<Id>, Id : Any, Repository
         if (this.exists(entity)) {
             return this.delete(entity)
         }
-        log.warn("Entity with ID {} does not exist, cannot delete.", entity.id)
+        log.warn("{} does not exist, cannot delete. {}", this.formatEntityName(entity), this.getEntityContent(entity))
         return false
     }
 
@@ -49,7 +64,7 @@ abstract class BaseEntityService<Entity : Identifiable<Id>, Id : Any, Repository
     }
 
     override fun exists(entity: Entity): Boolean {
-        log.info("Checking existence of {} with ID {}.", this.getEntityName(entity), entity.id)
+        log.info("Checking existence of {}.{}", this.formatEntityName(entity), this.getEntityContent(entity))
         return this.repository.existsById(entity.id)
     }
 
@@ -65,10 +80,10 @@ abstract class BaseEntityService<Entity : Identifiable<Id>, Id : Any, Repository
 
     override fun save(entity: Entity): Entity {
         return try {
-            log.info("Saving new {} entity.", this.getEntityName(entity))
+            log.info("Saving new {}.{}", this.formatEntityName(entity), this.getEntityContent(entity))
             this.repository.save(entity)
         } catch (exception: IllegalArgumentException) {
-            log.warn("Failed to save {} with ID {}.", this.getEntityName(entity), entity.id)
+            log.warn("Failed to save {}. {}", this.formatEntityName(entity), this.getEntityContent(entity))
             throw exception
         }
     }
@@ -85,11 +100,11 @@ abstract class BaseEntityService<Entity : Identifiable<Id>, Id : Any, Repository
 
     override fun delete(entity: Entity): Boolean {
         return try {
-            log.info("Deleting {} with ID {}.", this.getEntityName(entity), entity.id)
+            log.info("Deleting {}.{}", this.formatEntityName(entity), this.getEntityContent(entity))
             this.repository.delete(entity)
             true
         } catch (exception: IllegalArgumentException) {
-            log.error("Failed to delete {} with ID {}.", this.getEntityName(entity), entity.id, exception)
+            log.error("Failed to delete {}.{}", this.formatEntityName(entity), this.getEntityContent(entity), exception)
             false
         }
     }
@@ -130,11 +145,11 @@ abstract class BaseEntityService<Entity : Identifiable<Id>, Id : Any, Repository
     }
 
     override fun update(entity: Entity): Entity {
-        if (!this.exists(entity)) {
-            log.info("Updating {} with ID {}.", this.getEntityName(entity), entity.id)
+        if (this.exists(entity)) {
+            log.info("Updating {}.{}", this.formatEntityName(entity), this.getEntityContent(entity))
             return this.save(entity)
         }
-        log.error("Failed to update {} with ID {}, entity does not exist.", this.getEntityName(entity), entity.id)
+        log.error("Failed to update {} because it does not exist.{}", this.formatEntityName(entity), this.getEntityContent(entity))
         throw EntityNotFoundException(entity)
     }
 
@@ -147,12 +162,92 @@ abstract class BaseEntityService<Entity : Identifiable<Id>, Id : Any, Repository
         throw EntityNotFoundException()
     }
 
-    private fun getEntityName(entity: Entity): String {
-        return AopUtils.getTargetClass(entity).simpleName ?: "UnknownEntity"
+    protected fun getEntityName(entity: Entity): String {
+        return this.colorizeEntityName(AopUtils.getTargetClass(entity).simpleName ?: "UnknownEntity")
     }
 
-    private fun getEntityName(): String {
-        return this.entityType.simpleName ?: "UnknownEntity"
+    protected fun getEntityName(): String {
+        return this.colorizeEntityName(this.entityType.simpleName ?: "UnknownEntity")
+    }
+
+    protected fun formatEntityName(entity: Entity): String {
+        return this.getEntityName(entity)
+    }
+
+    protected fun getEntityContent(entity: Entity, withName: Boolean = false): String {
+        val entityClass: Class<*> = AopUtils.getTargetClass(entity)
+        val loggableValues: List<String> = this.getLoggableFields(entityClass)
+            .map { field ->
+                val annotation: Loggable = field.getAnnotation(Loggable::class.java)
+                val key: String = annotation.name.ifBlank { field.name }
+                val valueText: String = if (annotation.redact) {
+                    "${Ansi.RED}***${Ansi.RESET}"
+                } else {
+                    "${Ansi.WHITE}${this.formatLogValue(this.readFieldValue(field, entity))}${Ansi.RESET}"
+                }
+                "${Ansi.GRAY}\t${Ansi.RESET}${Ansi.BLUE}${key}${Ansi.RESET}${Ansi.GRAY}: ${Ansi.RESET}$valueText"
+            }
+
+        if (loggableValues.isEmpty()) {
+            return ""
+        }
+
+        return buildString {
+            if (withName) {
+                append(this@BaseEntityService.formatEntityName(entity))
+                append(":")
+            }
+            append("\n${Ansi.GRAY}{${Ansi.RESET}\n")
+            append(loggableValues.joinToString(",\n"))
+            append("\n${Ansi.GRAY}}${Ansi.RESET}")
+        }
+    }
+
+    private fun getLoggableFields(entityClass: Class<*>): List<Field> {
+        return this.loggableFieldsByType.computeIfAbsent(entityClass) {
+            val fields: MutableList<Field> = mutableListOf()
+            var currentClass: Class<*>? = entityClass
+            while (currentClass != null && currentClass != Any::class.java) {
+                currentClass.declaredFields
+                    .asSequence()
+                    .filter { field ->
+                        field.isAnnotationPresent(Loggable::class.java) &&
+                            !field.isSynthetic &&
+                            !Modifier.isStatic(field.modifiers)
+                    }
+                    .forEach { field ->
+                        field.isAccessible = true
+                        fields.add(field)
+                    }
+                currentClass = currentClass.superclass
+            }
+            fields
+        }
+    }
+
+    private fun readFieldValue(field: Field, entity: Entity): Any? {
+        return try {
+            field.get(entity)
+        } catch (exception: IllegalAccessException) {
+            log.warn("Failed to read loggable field {} on {}.", field.name, this.getEntityName(entity), exception)
+            null
+        }
+    }
+
+    private fun colorizeEntityName(entityName: String): String {
+        return "${Ansi.BOLD}${Ansi.MAGENTA}${entityName}${Ansi.RESET}"
+    }
+
+    private fun formatLogValue(value: Any?): String {
+        return when (value) {
+            null -> "null"
+            is Array<*> -> value.joinToString(prefix = "[", postfix = "]") { this.formatLogValue(it) }
+            is Collection<*> -> value.joinToString(prefix = "[", postfix = "]") { this.formatLogValue(it) }
+            is Map<*, *> -> value.entries.joinToString(prefix = "{", postfix = "}") { (key, mapValue) ->
+                "${this.formatLogValue(key)}: ${this.formatLogValue(mapValue)}"
+            }
+            else -> value.toString()
+        }
     }
 
     @Suppress("UNCHECKED_CAST")
