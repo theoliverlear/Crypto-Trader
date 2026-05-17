@@ -38,7 +38,7 @@ public interface CurrencyHistoryRepository extends JpaRepository<CurrencyHistory
     @Query(value = """
         SELECT t.bucket_start AS last_updated, ch.currency_value AS value \
         FROM generate_series(:startDate, :endDate, (:intervalMs || ' milliseconds')::interval) AS t(bucket_start) \
-        LEFT JOIN LATERAL ( \
+        JOIN LATERAL ( \
             SELECT ch.currency_value, ch.last_updated \
             FROM currency_history ch \
             WHERE ch.currency_code = :code \
@@ -47,7 +47,6 @@ public interface CurrencyHistoryRepository extends JpaRepository<CurrencyHistory
             ORDER BY ch.last_updated ASC \
             LIMIT 1 \
         ) ch ON true \
-        WHERE ch.currency_value IS NOT NULL \
         ORDER BY t.bucket_start ASC""", nativeQuery = true)
     List<Object[]> findHistoryByInterval(@Param("code") String currencyCode,
                                          @Param("startDate") LocalDateTime startDate,
