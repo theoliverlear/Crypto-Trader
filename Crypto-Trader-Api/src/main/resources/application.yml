@@ -154,4 +154,4 @@ cryptotrader:
     aead: true
   cors:
     allowed-origins: "http://localhost:4200"
-    allowed-headers: "authorization,dpop,content-type"
+    allowed-headers: "authorization,dpop,content-type,x-client-app"
