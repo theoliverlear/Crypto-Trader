@@ -4,12 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.cryptotrader.health.library.entity.HealthStatus;
 import org.cryptotrader.health.library.model.CryptoTraderService;
 import org.cryptotrader.health.library.model.ServiceStatus;
-import org.cryptotrader.health.library.repository.HealthStatusRepository;
+import org.cryptotrader.health.library.service.entity.HealthStatusEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.Socket;
@@ -20,10 +19,9 @@ import java.time.ZoneId;
 @Service
 public class HealthCheckService {
 
-    @Autowired
-    private HealthStatusRepository healthStatusRepository;
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
+
+    private final HealthStatusEntityService healthStatusEntityService;
 
     @Value("${PSQL_HOST:localhost}")
     private String psqlHost;
@@ -31,7 +29,14 @@ public class HealthCheckService {
     @Value("${CT_DATA_HOST:localhost}")
     private String ctDataHost;
 
-    @Transactional
+
+    @Autowired
+    public HealthCheckService(RestTemplate restTemplate,
+                              HealthStatusEntityService healthStatusEntityService) {
+        this.restTemplate = restTemplate;
+        this.healthStatusEntityService = healthStatusEntityService;
+    }
+
     public void checkAndPersist(CryptoTraderService service) {
         if (service == CryptoTraderService.DATABASE) {
             this.checkDatabase();
@@ -62,7 +67,8 @@ public class HealthCheckService {
             .checkedAt(LocalDateTime.now(ZoneId.of("America/Chicago")))
             .build();
 
-        healthStatusRepository.save(entity);
+//        this.healthStatusRepository.save(entity);
+        this.healthStatusEntityService.save(entity);
         log.info("Health check for {}: {} (HTTP {})", service, status, httpCode);
     }
 
@@ -70,9 +76,9 @@ public class HealthCheckService {
         ServiceStatus status;
         String details = null;
 
-        try (Socket socket = new Socket(psqlHost, CryptoTraderService.DATABASE.getPort())) {
+        try (Socket socket = new Socket(this.psqlHost, CryptoTraderService.DATABASE.getPort())) {
             status = ServiceStatus.ALIVE;
-            details = "PostgreSQL accepting connections at " + psqlHost + ":" + CryptoTraderService.DATABASE.getPort();
+            details = "PostgreSQL accepting connections at " + this.psqlHost + ":" + CryptoTraderService.DATABASE.getPort();
         } catch (Exception e) {
             status = ServiceStatus.DEAD;
             details = e.getMessage();
@@ -87,7 +93,8 @@ public class HealthCheckService {
             .checkedAt(LocalDateTime.now(ZoneId.of("America/Chicago")))
             .build();
 
-        healthStatusRepository.save(entity);
+//        this.healthStatusRepository.save(entity);
+        this.healthStatusEntityService.save(entity);
         log.info("Health check for {}: {}", CryptoTraderService.DATABASE, status);
     }
 
@@ -97,7 +104,7 @@ public class HealthCheckService {
             return "https://sigwarth-software.github.io/Crypto-Trader/";
         }
         if (service == CryptoTraderService.DATA) {
-            return "http://" + ctDataHost + ":" + service.getPort() + "/actuator/health";
+            return "http://" + this.ctDataHost + ":" + service.getPort() + "/actuator/health";
         }
         return "http://localhost:" + service.getPort() + "/actuator/health";
     }
