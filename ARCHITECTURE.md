@@ -34,6 +34,22 @@ systems.
 - Finds currency data
 - Accepts intelligence from `Crypto-Trader-Analysis`
 
+## Decentralization
+Crypto Trader is intentionally decentralized at the module level. Core
+capabilities are split into independent services so that ownership is clear,
+deployment can happen in smaller units, and one failing component does not
+bring down the entire application.
+
+    API down? We can still keep trading.
+    Engine down? We can still keep managing.
+    Data down? We can still keep simulating.
+
+This design gives the platform stronger service availability. If one module is
+unavailable, other modules can continue operating, and the user experience can
+degrade in a contained way instead of failing globally. The result is a system
+that is easier to isolate, recover, and extend without turning a single
+service outage into a full application outage.
+
 ---
 
 ## Event-driven Modules
