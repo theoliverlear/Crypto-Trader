@@ -57,6 +57,7 @@ open module org.cryptotrader.console {
     requires org.cryptotrader.console.library.models;
     requires org.cryptotrader.console.library.services;
     requires org.cryptotrader.console.library.events;
+    requires org.cryptotrader.console.library.repositories;
 
     requires org.cryptotrader.data.library.services;
     requires org.cryptotrader.data.library.components;
