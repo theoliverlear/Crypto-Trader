@@ -166,7 +166,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <jvmArguments>--add-opens java.base/java.lang=ALL-UNNAMED --add-reads org.cryptotrader.health.library.services=ALL-UNNAMED --add-reads org.cryptotrader.health.library.models=ALL-UNNAMED --add-reads org.cryptotrader.health.library.repositories=ALL-UNNAMED --add-reads org.cryptotrader.health.library.components=ALL-UNNAMED</jvmArguments>
+                    <jvmArguments>--add-opens java.base/java.lang=spring.core,spring.aop,ALL-UNNAMED --add-reads org.cryptotrader.health.library.services=ALL-UNNAMED --add-reads org.cryptotrader.health.library.models=ALL-UNNAMED --add-reads org.cryptotrader.health.library.repositories=ALL-UNNAMED --add-reads org.cryptotrader.health.library.components=ALL-UNNAMED</jvmArguments>
                 </configuration>
             </plugin>
             <plugin>
@@ -186,7 +186,7 @@
                 <version>3.2.5</version>
                 <configuration>
                     <useModulePath>true</useModulePath>
-                    <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading --add-opens java.base/java.lang=ALL-UNNAMED --add-reads org.cryptotrader.health.library.services=ALL-UNNAMED --add-reads org.cryptotrader.health.library.models=ALL-UNNAMED --add-reads org.cryptotrader.health.library.repositories=ALL-UNNAMED --add-reads org.cryptotrader.health.library.components=ALL-UNNAMED</argLine>
+                    <argLine>@{argLine} -Dfile.encoding=UTF-8 -XX:+EnableDynamicAgentLoading --add-opens java.base/java.lang=spring.core,spring.aop,ALL-UNNAMED --add-reads org.cryptotrader.health.library.services=ALL-UNNAMED --add-reads org.cryptotrader.health.library.models=ALL-UNNAMED --add-reads org.cryptotrader.health.library.repositories=ALL-UNNAMED --add-reads org.cryptotrader.health.library.components=ALL-UNNAMED</argLine>
                 </configuration>
             </plugin>
             <plugin>
