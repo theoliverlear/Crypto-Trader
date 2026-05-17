@@ -55,6 +55,10 @@
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.cryptotrader</groupId>
+            <artifactId>universal-services</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
