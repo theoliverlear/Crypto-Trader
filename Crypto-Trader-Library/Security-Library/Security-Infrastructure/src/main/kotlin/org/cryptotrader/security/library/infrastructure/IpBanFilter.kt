@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.cryptotrader.security.library.service.model.IpBanManager
+import org.cryptotrader.security.library.service.model.IpBanPolicy
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -27,6 +28,10 @@ class IpBanFilter(
                                   response: HttpServletResponse,
                                   filterChain: FilterChain) {
         val clientIp: String = request.remoteAddr
+        if (IpBanPolicy.shouldBypass(clientIp)) {
+            filterChain.doFilter(request, response)
+            return
+        }
         val trustedIp: String = this.psqlHost ?:
         System.getenv("PSQL_HOST")
         ?: throw IllegalStateException("PSQL_HOST environment variable is not set")
