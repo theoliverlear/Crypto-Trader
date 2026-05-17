@@ -31,6 +31,15 @@ open class PortfolioCommandService @Autowired constructor(
         }
     }
 
+    // TODO: Should be moved to portfolio service class.
+    open fun getInitializedPortfolio(userId: Long): Portfolio {
+        val portfolio: Portfolio =
+            this.portfolioService.getPortfolioByUserId(userId)
+                ?: return Portfolio()
+        Hibernate.initialize(portfolio.assets)
+        return portfolio
+    }
+
     @CommandHelp(
         command = "portfolio show",
         description = "Show the authenticated user's portfolio"
