@@ -49,6 +49,14 @@ public class FrontendLogService {
                         .build())
                 .toList();
 
+        if (entities.isEmpty()) {
+            return;
+        }
+
+        if (entities.size() == 1) {
+            this.frontendLogEntityService.save(entities.getFirst());
+            return;
+        }
         this.frontendLogEntityService.saveAll(entities);
         log.info("Persisted {} frontend log entries", entities.size());
     }
