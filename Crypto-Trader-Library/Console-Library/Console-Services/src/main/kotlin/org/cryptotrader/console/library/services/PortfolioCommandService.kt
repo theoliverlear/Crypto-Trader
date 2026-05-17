@@ -38,8 +38,7 @@ open class PortfolioCommandService @Autowired constructor(
     private fun executeShowCommand(): ConsoleCommandResponse {
         val currentUser: ProductUser = this.authContextService.getAuthenticatedProductUser() ?:
             return ConsoleCommandResponse("No authenticated user found.")
-        val userPortfolio: Portfolio = this.portfolioService.getPortfolioByUserId(currentUser.id)
-        Hibernate.initialize(userPortfolio.assets)
+        val userPortfolio: Portfolio = this.getInitializedPortfolio(currentUser.id)
         return ConsoleCommandResponse(userPortfolio.toString(),
             PortfolioResponse(userPortfolio))
     }
