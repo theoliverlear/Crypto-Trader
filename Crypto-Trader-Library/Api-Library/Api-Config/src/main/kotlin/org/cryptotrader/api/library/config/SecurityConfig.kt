@@ -4,8 +4,6 @@ import jakarta.annotation.security.PermitAll
 import org.cryptotrader.api.library.infrastructure.JwtAuthenticationFilter
 import org.cryptotrader.api.library.infrastructure.dpop.BindingEnforcementFilter
 import org.cryptotrader.api.library.infrastructure.dpop.DpopValidationFilter
-import org.cryptotrader.security.library.service.InMemoryIpBanService
-import org.cryptotrader.security.library.service.IpBanService
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
@@ -86,10 +84,6 @@ open class SecurityConfig {
             .addFilterAfter(bindingEnforcementFilter, JwtAuthenticationFilter::class.java)
             .build()
     }
-
-    @Bean
-    @ConditionalOnMissingBean(IpBanService::class)
-    open fun ipBanService(): IpBanService = InMemoryIpBanService()
 
     @Bean
     @ConditionalOnMissingBean(CorsConfigurationSource::class)
