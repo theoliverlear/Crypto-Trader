@@ -10,6 +10,8 @@ import lombok.Setter;
 
 import org.cryptotrader.data.library.model.http.ApiDataRetriever;
 import org.cryptotrader.data.library.entity.currency.builder.CurrencyBuilder;
+import org.cryptotrader.universal.library.entity.Identifiable;
+import org.cryptotrader.universal.library.model.annotation.Loggable;
 
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
@@ -20,15 +22,18 @@ import java.util.Set;
 @Entity
 @Table(name = "currencies")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "currencyCode")
-public class Currency {
+public class Currency extends Identifiable<String> {
     //============================-Variables-=================================
     @Column(name = "currency_name")
+    @Loggable
     private String name;
     @Id
     @Column(name = "currency_code")
+    @Loggable
     private String currencyCode;
     private String urlPath;
     @Column(name = "currency_value", columnDefinition = "DECIMAL(34, 18)")
+    @Loggable
     private double value;
     @JsonIgnore
     @Transient
@@ -194,5 +199,15 @@ public class Currency {
     public void setValue(double value) {
         this.value = value;
         this.lastUpdated = LocalDateTime.now();
+    }
+
+    @Override
+    public String getId() {
+        return this.currencyCode;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.currencyCode = id;
     }
 }

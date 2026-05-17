@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.cryptotrader.universal.library.entity.Identifiable;
+import org.cryptotrader.universal.library.model.annotation.Loggable;
 
 import java.time.LocalDateTime;
 
@@ -17,22 +19,39 @@ import java.time.LocalDateTime;
 @Table(name = "unique_currencies")
 @AllArgsConstructor
 @NoArgsConstructor
-public class UniqueCurrency {
-    @Column(name = "currency_name")
-    private String name;
+public class UniqueCurrency extends Identifiable<String> {
     @Id
     @Column(name = "currency_code")
     private String currency;
+
+    @Loggable
+    @Column(name = "currency_name")
+    private String name;
+
     private String urlPath;
+
+    @Loggable
     @Column(name = "currency_value", columnDefinition = "DECIMAL(34, 18)")
     private double value;
+
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
+
     public UniqueCurrency(Currency currency) {
         this.name = currency.getName();
         this.currency = currency.getCurrencyCode();
         this.urlPath = currency.getUrlPath();
         this.value = currency.getValue();
         this.lastUpdated = LocalDateTime.now();
+    }
+
+    @Override
+    public String getId() {
+        return this.currency;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.currency = id;
     }
 }
