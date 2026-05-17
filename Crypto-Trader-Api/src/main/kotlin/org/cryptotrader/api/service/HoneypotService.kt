@@ -3,6 +3,7 @@ package org.cryptotrader.api.service
 import jakarta.servlet.http.HttpServletRequest
 import org.cryptotrader.security.library.model.BanType
 import org.cryptotrader.security.library.service.IpBanService
+import org.cryptotrader.security.library.service.model.IpBanPolicy
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
@@ -30,7 +31,7 @@ class HoneypotService(
 
         if (this.isViolation(path, query)) {
             val clientIp = extractClientIp(request)
-            if (clientIp.isNotBlank()) {
+            if (clientIp.isNotBlank() && !IpBanPolicy.shouldBypass(clientIp)) {
                 this.ipBanService.ban(clientIp, BanType.PERMA)
             }
             return ResponseEntity.notFound().build()
