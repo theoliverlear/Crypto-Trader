@@ -5,6 +5,18 @@ open module org.cryptotrader.security.library.services {
     requires inet.ipaddr;
     requires org.apache.tomcat.embed.core;
     requires spring.context;
+    requires org.cryptotrader.security.library.repositories;
+    requires org.cryptotrader.security.library.models;
+    requires spring.beans;
+    requires spring.tx;
+    requires spring.web;
+    requires java.net.http;
+    requires static lombok;
+    requires org.cryptotrader.universal.library.services;
+    requires spring.aop;
+    requires spring.core;
 
     exports org.cryptotrader.security.library.service;
+    exports org.cryptotrader.security.library.service.model;
+    exports org.cryptotrader.security.library.service.entity;
 }
